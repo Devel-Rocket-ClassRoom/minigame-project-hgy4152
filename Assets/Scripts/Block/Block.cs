@@ -28,11 +28,12 @@ public class Block : MonoBehaviour
     SpriteRenderer CreateBackground()
     {
         if (_whiteSprite == null)
-            _whiteSprite = Sprite.Create(
-                Texture2D.whiteTexture,
-                new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height),
-                Vector2.one * 0.5f
-            );
+        {
+            var tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, Color.white);
+            tex.Apply();
+            _whiteSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 1f);
+        }
 
         var bgGO = new GameObject("Background");
         bgGO.transform.SetParent(transform, false);

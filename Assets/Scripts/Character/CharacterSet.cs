@@ -13,6 +13,7 @@ public class CharacterSet : MonoBehaviour
 
     void Awake()
     {
+        // ?? 연산자 : 없으면 탐색해서 할당
         warriorCreator ??= GetComponent<WarriorCreator>();
         archerCreator ??= GetComponent<ArcherCreator>();
         priestCreator ??= GetComponent<PriestCreator>();

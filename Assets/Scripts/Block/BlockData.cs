@@ -9,4 +9,5 @@ public class BlockData : ScriptableObject
     public int attackPower = 10;
     public AnimatorController animationClip;
     public ClassType ownerClass;
+    public Color blockColor = Color.white;
 }

@@ -10,6 +10,7 @@
 # Dynamic libraries
 *.so
 *.dylib
+*.dll
 
 # Static libraries
 *.a
@@ -46,6 +47,7 @@
 
 # NuGet Packages
 *.nupkg
+**/[Pp]ackages/*
 !**/[Pp]ackages/build/
 
 # .NET build artifacts
@@ -84,9 +86,6 @@ playground.xcworkspace
 /[Uu]ser[Ss]ettings/
 /[Mm]emory[Cc]aptures/
 
-# asset
-Assets/Imported
-
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
@@ -123,21 +122,8 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 
-
-*.pdb
-*.pdb.meta
-
-### Rider
-*.idea/
-
-### VS
-*.vsconfig
-
 # Local History for Visual Studio Code
 .history/
-    
+
 # Built Visual Studio Code Extensions
 *.vsix
-
-# Codex
-**/AGENTS.md

@@ -11,6 +11,13 @@ public class CharacterSet : MonoBehaviour
     [SerializeField]
     PriestCreator priestCreator;
 
+    void Awake()
+    {
+        warriorCreator ??= GetComponent<WarriorCreator>();
+        archerCreator ??= GetComponent<ArcherCreator>();
+        priestCreator ??= GetComponent<PriestCreator>();
+    }
+
     public BlockCreator GetCreator(ClassType classType) =>
         classType switch
         {

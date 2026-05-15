@@ -1,3 +1,34 @@
+### C++
+# Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Dynamic libraries
+*.so
+*.dylib
+
+# Static libraries
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Debug files
+*.dSYM/
+*.idb
+*.pdb
+
 ### C#
 # Build results
 [Bb]in/
@@ -15,7 +46,6 @@
 
 # NuGet Packages
 *.nupkg
-**/[Pp]ackages/*
 !**/[Pp]ackages/build/
 
 # .NET build artifacts
@@ -24,31 +54,24 @@ artifacts/
 # Publish output
 publish/
 
-### Android
-# Gradle files
-.gradle/
-build/
+### Objective-C
+# Xcode user settings
+xcuserdata/
 
-# Local configuration file (sdk path, etc)
-local.properties
+# Xcode build data
+DerivedData/
 
-# Log files
-*.log
+# Obj-C/Swift specific
+*.hmap
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.apk
-output.json
+# App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
 
-# IntelliJ
-*.iml
-.idea/
-
-# Keystore files
-*.jks
-*.keystore
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
 
 ### Unity
 # Unity generated directories
@@ -60,6 +83,9 @@ output.json
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emory[Cc]aptures/
+
+# asset
+Assets/Imported
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
@@ -73,6 +99,7 @@ output.json
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 
 ### Windows
@@ -96,8 +123,21 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+
+*.pdb
+*.pdb.meta
+
+### Rider
+*.idea/
+
+### VS
+*.vsconfig
+
 # Local History for Visual Studio Code
 .history/
-
+    
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Codex
+**/AGENTS.md

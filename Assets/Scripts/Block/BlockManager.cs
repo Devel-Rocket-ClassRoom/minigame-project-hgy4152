@@ -8,7 +8,7 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     CharacterSet characterSet;
 
-    public LinkedList<Block> hand = new();
+    public List<Block> hand = new();
 
     static readonly ClassType[] _allTypes = (ClassType[])System.Enum.GetValues(typeof(ClassType));
 
@@ -19,7 +19,7 @@ public class BlockManager : MonoBehaviour
 
         ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
         Block block = characterSet.CreateBlock(classType);
-        hand.AddLast(block);
+        hand.Add(block);
         Debug.Log($"[BlockManager] Drew {classType} block. Hand: {hand.Count}/{MaxHandSize}");
         return block;
     }

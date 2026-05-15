@@ -1,11 +1,12 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BlockData", menuName = "ChainKnights/BlockData")]
 public class BlockData : ScriptableObject
 {
-    public int id;
+    public string id;
     public Sprite icon;
     public int attackPower = 10;
-    public AnimationClip animationClip;
+    public AnimatorController animationClip;
     public ClassType ownerClass;
 }

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh issue *)",
+      "Bash(Get-Content \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Sprites/cq-assets-master/blocks/ui_skill_icon_paladin_anchor.png.meta\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 10)",
+      "Bash(git checkout *)",
+      "Bash(xargs -I{} head -3 {})",
+      "Bash(xargs -I{} head -5 {})",
+      "Bash(mkdir -p \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Scripts/Block\")",
+      "Bash(mkdir -p \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Scripts/Chain\")",
+      "Bash(mkdir -p \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Scripts/Character\")",
+      "Bash(mkdir -p \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Scripts/UI\")",
+      "Bash(mkdir -p \"C:/Users/hgy41/UnityClass/minigame-project-hgy4152/Assets/Scripts/Boss\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Read(//c/Users/hgy41/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(powershell *)",
+      "PowerShell(Get-Process *)"
+    ]
+  }
+}

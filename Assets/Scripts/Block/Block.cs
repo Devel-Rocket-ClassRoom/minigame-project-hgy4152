@@ -37,6 +37,7 @@ public class Block : MonoBehaviour
 
         var bgGO = new GameObject("Background");
         bgGO.transform.SetParent(transform, false);
+        bgGO.transform.localScale = Vector3.one * 1.1f;
         var sr = bgGO.AddComponent<SpriteRenderer>();
         sr.sprite = _whiteSprite;
         sr.sortingOrder = _sr.sortingOrder - 1;

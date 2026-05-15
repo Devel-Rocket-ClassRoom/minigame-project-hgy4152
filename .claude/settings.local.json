@@ -19,7 +19,9 @@
       "Bash(python3 -c ' *)",
       "Bash(python -c ' *)",
       "Bash(powershell *)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\hgy41\\\\UnityClass\\\\minigame-project-hgy4152\\\\Assets\\\\Scripts\" -Recurse -File)",
+      "Bash(Select-Object -ExpandProperty FullName)"
     ]
   }
 }

@@ -53,6 +53,8 @@ TemporaryDependencyNodeTargetIdentifier=netstandard2.1
 Assets/Scripts/Block/
  Block.cs
  BlockData.cs
+ BlockManager.cs
+ DrawPhaseTimer.cs
 Assets/Scripts/Character/
  ArcherCreator.cs
  BlockCreator.cs

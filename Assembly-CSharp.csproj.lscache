@@ -57,6 +57,7 @@ Assets/Scripts/Core/
 Assets/Scripts/
  SafeAreaFitter.cs
  UI/
+  DrawPhaseUI.cs
   HandUI.cs
   Slot.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs

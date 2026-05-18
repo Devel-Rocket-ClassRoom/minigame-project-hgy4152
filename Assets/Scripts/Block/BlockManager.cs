@@ -8,6 +8,9 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     CharacterSet characterSet;
 
+    [SerializeField]
+    HandUI handUI;
+
     public List<Block> hand = new();
 
     static readonly ClassType[] _allTypes = (ClassType[])System.Enum.GetValues(typeof(ClassType));
@@ -20,11 +23,25 @@ public class BlockManager : MonoBehaviour
         ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
         Block block = characterSet.CreateBlock(classType);
         hand.Add(block);
-        AssignChainGroup(block);
-        Debug.Log(
-            $"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}"
-        );
+
+        RefreshAllBlockVisuals();
+
+        Debug.Log($"[BlockManager] Drew {classType} block. Hand: {hand.Count}/{MaxHandSize}");
         return block;
+    }
+
+    public void RefreshAllBlockVisuals()
+    {
+        var groups = ChainResolver.ResolveChains(hand);
+        foreach (var group in groups)
+        {
+            for (int i = 0; i < group.Blocks.Count; i++)
+            {
+                bool hasRight = i < group.Blocks.Count - 1;
+                group.Blocks[i].SetChainVisual(group.Length, hasRight);
+            }
+        }
+        handUI?.Refresh(groups);
     }
 
     public void DrawUntilFull()

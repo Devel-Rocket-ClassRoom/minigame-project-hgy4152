@@ -16,6 +16,14 @@ public class DrawPhaseTimer : MonoBehaviour
 
     Coroutine _phaseCoroutine;
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartDrawPhase();
+        }
+    }
+
     public void StartDrawPhase()
     {
         if (_phaseCoroutine != null)

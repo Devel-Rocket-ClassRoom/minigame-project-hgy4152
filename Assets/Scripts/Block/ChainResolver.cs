@@ -11,12 +11,21 @@ public static class ChainResolver
 
         while (i < hand.Count)
         {
+            // Skip null blocks
+            if (hand[i] == null || hand[i].data == null)
+            {
+                i++;
+                continue;
+            }
+
             var group = new ChainGroup();
             group.Add(hand[i]);
             i++;
 
             while (
                 i < hand.Count
+                && hand[i] != null
+                && hand[i].data != null
                 && hand[i].data.id == group.Blocks[0].data.id
                 && group.Length < MaxChainLength
             )

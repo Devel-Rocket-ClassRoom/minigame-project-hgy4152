@@ -18,7 +18,7 @@ public class DrawPhaseTimer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Time.time % drawInterval == 0)
         {
             StartDrawPhase();
         }

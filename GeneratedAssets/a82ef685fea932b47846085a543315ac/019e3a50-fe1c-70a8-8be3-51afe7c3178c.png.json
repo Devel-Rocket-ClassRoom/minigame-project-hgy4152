@@ -1,0 +1,38 @@
+{
+    "asset": "a82ef685fea932b47846085a543315ac",
+    "fileName": "019e3a50-fe1c-70a8-8be3-51afe7c3178c.png",
+    "prompt": "Flat 2D side-view landscape with a very thick ground/dirt layer at the bottom (occupying about 40% of the screen height). Very sparse autumn orange trees standing on the high ground. Large mountains in the far background. 16-bit pixel art, teal sky, orthographic, matching the style and color palette of the reference image. No perspective.",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 7,
+                "doodle": [],
+                "label": "Image",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "37b5aff748d8f6a41a521b0afd5d5496",
+                "unlabeledIndex": -1
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

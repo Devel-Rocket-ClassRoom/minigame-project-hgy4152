@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - blockData: {instanceID: 0}
   - blockPrefab: {instanceID: 0}
+  - blockHand: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

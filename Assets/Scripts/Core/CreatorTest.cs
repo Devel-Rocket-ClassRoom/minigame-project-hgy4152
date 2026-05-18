@@ -6,16 +6,6 @@ public class CreatorTest : MonoBehaviour
     [SerializeField]
     CharacterSet characterSet;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            Spawn(ClassType.Warrior);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            Spawn(ClassType.Archer);
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            Spawn(ClassType.Priest);
-    }
-
     void Spawn(ClassType classType)
     {
         Block block = characterSet.CreateBlock(classType);

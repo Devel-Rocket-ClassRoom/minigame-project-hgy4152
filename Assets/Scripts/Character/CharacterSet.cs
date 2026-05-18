@@ -11,6 +11,9 @@ public class CharacterSet : MonoBehaviour
     [SerializeField]
     PriestCreator priestCreator;
 
+    [SerializeField]
+    protected Transform blockHand;
+
     void Awake()
     {
         // ?? 연산자 : 없으면 탐색해서 할당
@@ -28,5 +31,6 @@ public class CharacterSet : MonoBehaviour
             _ => null,
         };
 
-    public Block CreateBlock(ClassType classType) => GetCreator(classType)?.CreateBlock();
+    public Block CreateBlock(ClassType classType, Transform parent = null) =>
+        GetCreator(classType)?.CreateBlock(parent != null ? parent : blockHand);
 }

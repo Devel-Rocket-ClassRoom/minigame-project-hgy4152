@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockManager : MonoBehaviour
@@ -7,6 +7,9 @@ public class BlockManager : MonoBehaviour
 
     [SerializeField]
     CharacterSet characterSet;
+
+    [SerializeField]
+    Slot[] slots;
 
     [SerializeField]
     HandUI handUI;
@@ -20,13 +23,28 @@ public class BlockManager : MonoBehaviour
         if (hand.Count >= MaxHandSize)
             return null;
 
-        ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
-        Block block = characterSet.CreateBlock(classType);
-        hand.Add(block);
+        int slotIndex = hand.Count;
+        if (slots == null || slotIndex >= slots.Length || slots[slotIndex] == null)
+        {
+            Debug.LogError($"[BlockManager] slots[{slotIndex}] is not assigned in the Inspector.");
+            return null;
+        }
 
+        ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
+        Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
+
+        if (block == null)
+        {
+            Debug.LogWarning($"[BlockManager] Failed to create block for {classType}.");
+            return null;
+        }
+
+        hand.Add(block);
+        AssignChainGroup(block);
+        slots[slotIndex].PlaceBlock(block, RefreshConnectors);
         RefreshAllBlockVisuals();
 
-        Debug.Log($"[BlockManager] Drew {classType} block. Hand: {hand.Count}/{MaxHandSize}");
+        Debug.Log($"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}");
         return block;
     }
 
@@ -36,12 +54,22 @@ public class BlockManager : MonoBehaviour
         foreach (var group in groups)
         {
             for (int i = 0; i < group.Blocks.Count; i++)
-            {
-                bool hasRight = i < group.Blocks.Count - 1;
-                group.Blocks[i].SetChainVisual(group.Length, hasRight);
-            }
+                group.Blocks[i].SetChainVisual(group.Length);
         }
         handUI?.Refresh(groups);
+    }
+
+    void RefreshConnectors()
+    {
+        for (int i = 0; i < slots.Length - 1; i++)
+        {
+            if (slots[i] == null || slots[i + 1] == null) continue;
+            bool sameGroup = slots[i].Block != null
+                && slots[i + 1].Block != null
+                && slots[i].Block.chainGroupId == slots[i + 1].Block.chainGroupId;
+            Color color = sameGroup ? slots[i].Block.data.blockColor : Color.clear;
+            slots[i].SetConnector(sameGroup, color);
+        }
     }
 
     public void DrawUntilFull()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,13 +15,14 @@ public class DrawPhaseTimer : MonoBehaviour
     public event Action OnPhaseEnded;
 
     Coroutine _phaseCoroutine;
+    float _endTime;
 
-    void Update()
+    public float RemainingRatio =>
+        _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / PhaseDuration) : 0f;
+
+    void Start()
     {
-        if (Time.time % drawInterval == 0)
-        {
-            StartDrawPhase();
-        }
+        StartDrawPhase();
     }
 
     public void StartDrawPhase()
@@ -39,22 +40,20 @@ public class DrawPhaseTimer : MonoBehaviour
         _phaseCoroutine = null;
     }
 
+    public void PlayHandNow()
+    {
+        StopDrawPhase();
+        OnPhaseEnded?.Invoke();
+    }
+
     IEnumerator DrawPhaseRoutine()
     {
-        float endTime = Time.time + PhaseDuration;
+        _endTime = Time.time + PhaseDuration;
         Debug.Log("[DrawPhaseTimer] Draw phase started (20s).");
 
-        while (Time.time < endTime)
+        while (Time.time < _endTime)
         {
-            Block drawn = blockManager.DrawBlock();
-            if (drawn == null)
-            {
-                Debug.Log("[DrawPhaseTimer] Hand full (12/12). Stopping draw.");
-                break;
-            }
-            Debug.Log(
-                $"[DrawPhaseTimer] Hand: {blockManager.hand.Count}/12 | Remaining: {endTime - Time.time:F1}s"
-            );
+            blockManager.DrawBlock();
             yield return new WaitForSeconds(drawInterval);
         }
 

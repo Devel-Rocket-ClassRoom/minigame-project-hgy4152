@@ -15,7 +15,7 @@ public class BlockManager : MonoBehaviour
     HandUI handUI;
 
     public List<Block> hand = new();
-
+    public bool IsHandFull => hand.Count >= MaxHandSize;
     static readonly ClassType[] _allTypes = (ClassType[])System.Enum.GetValues(typeof(ClassType));
 
     public Block DrawBlock()
@@ -44,7 +44,9 @@ public class BlockManager : MonoBehaviour
         slots[slotIndex].PlaceBlock(block, RefreshConnectors);
         RefreshAllBlockVisuals();
 
-        Debug.Log($"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}");
+        Debug.Log(
+            $"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}"
+        );
         return block;
     }
 
@@ -63,10 +65,15 @@ public class BlockManager : MonoBehaviour
     {
         for (int i = 0; i < slots.Length - 1; i++)
         {
-            if (slots[i] == null || slots[i + 1] == null) continue;
-            bool sameGroup = slots[i].Block != null
+            if (slots[i] == null || slots[i + 1] == null)
+                continue;
+
+            // 앞블럭이랑 뒤블럭이 같을 때
+            bool sameGroup =
+                slots[i].Block != null
                 && slots[i + 1].Block != null
                 && slots[i].Block.chainGroupId == slots[i + 1].Block.chainGroupId;
+
             Color color = sameGroup ? slots[i].Block.data.blockColor : Color.clear;
             slots[i].SetConnector(sameGroup, color);
         }

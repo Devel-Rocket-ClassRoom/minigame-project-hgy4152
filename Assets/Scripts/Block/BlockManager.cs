@@ -9,13 +9,14 @@ public class BlockManager : MonoBehaviour
     CharacterSet characterSet;
 
     [SerializeField]
-    Slot[] slots;
+    List<Slot> slots;
 
     [SerializeField]
     HandUI handUI;
 
     public List<Block> hand = new();
     public bool IsHandFull => hand.Count >= MaxHandSize;
+
     static readonly ClassType[] _allTypes = (ClassType[])System.Enum.GetValues(typeof(ClassType));
 
     public Block DrawBlock()
@@ -24,7 +25,7 @@ public class BlockManager : MonoBehaviour
             return null;
 
         int slotIndex = hand.Count;
-        if (slots == null || slotIndex >= slots.Length || slots[slotIndex] == null)
+        if (slots == null || slotIndex >= slots.Count || slots[slotIndex] == null)
         {
             Debug.LogError($"[BlockManager] slots[{slotIndex}] is not assigned in the Inspector.");
             return null;
@@ -40,6 +41,7 @@ public class BlockManager : MonoBehaviour
         }
 
         hand.Add(block);
+        block.OnDiscardRequested = Discard;
         AssignChainGroup(block);
         slots[slotIndex].PlaceBlock(block, RefreshConnectors);
         RefreshAllBlockVisuals();
@@ -48,6 +50,26 @@ public class BlockManager : MonoBehaviour
             $"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}"
         );
         return block;
+    }
+
+    public void Discard(Block block)
+    {
+        int idx = hand.IndexOf(block);
+        if (idx < 0)
+            return;
+
+        hand.RemoveAt(idx);
+        Destroy(block.gameObject);
+
+        Slot empty = slots[idx];
+        empty.Clear();
+        empty.transform.SetAsLastSibling();
+        slots.RemoveAt(idx);
+        slots.Add(empty);
+
+        DrawBlock();
+        RefreshAllBlockVisuals();
+        RefreshConnectors();
     }
 
     public void RefreshAllBlockVisuals()
@@ -63,12 +85,11 @@ public class BlockManager : MonoBehaviour
 
     void RefreshConnectors()
     {
-        for (int i = 0; i < slots.Length - 1; i++)
+        for (int i = 0; i < slots.Count - 1; i++)
         {
             if (slots[i] == null || slots[i + 1] == null)
                 continue;
 
-            // 앞블럭이랑 뒤블럭이 같을 때
             bool sameGroup =
                 slots[i].Block != null
                 && slots[i + 1].Block != null
@@ -83,6 +104,12 @@ public class BlockManager : MonoBehaviour
     {
         while (hand.Count < MaxHandSize)
             DrawBlock();
+    }
+
+    public void DisableDiscard()
+    {
+        foreach (var block in hand)
+            block.OnDiscardRequested = null;
     }
 
     void AssignChainGroup(Block block)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Block : MonoBehaviour
@@ -30,6 +31,7 @@ public class Block : MonoBehaviour
         _sprite = CreateSpriteImage();
 
         var button = GetComponent<Button>();
+
         if (button != null)
         {
             button.targetGraphic = _background;
@@ -41,10 +43,11 @@ public class Block : MonoBehaviour
     {
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = true;
+
         StartCoroutine(FlyInCoroutine(targetLocalPos, duration, onComplete));
     }
 
-    System.Collections.IEnumerator FlyInCoroutine(Vector2 targetLocalPos, float duration, System.Action onComplete)
+    IEnumerator FlyInCoroutine(Vector2 targetLocalPos, float duration, System.Action onComplete)
     {
         Vector2 startPos = targetLocalPos + new Vector2(1000, 0);
         float elapsed = 0;
@@ -69,9 +72,11 @@ public class Block : MonoBehaviour
         _background.color = data.blockColor;
     }
 
+    public System.Action<Block> OnDiscardRequested;
+
     void OnClicked()
     {
-        Debug.Log($"[Block] Clicked: {data?.id} ({data?.ownerClass})");
+        OnDiscardRequested?.Invoke(this);
     }
 
     public void Init(BlockData blockData)

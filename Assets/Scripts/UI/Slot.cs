@@ -15,6 +15,11 @@ public class Slot : MonoBehaviour
         block.FlyIn(Vector2.zero, 0.4f, onArrived);
     }
 
+    public void Clear()
+    {
+        Block = null;
+    }
+
     public void SetConnector(bool active, Color color)
     {
         if (connector == null) return;

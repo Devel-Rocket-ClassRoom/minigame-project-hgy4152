@@ -43,7 +43,7 @@ public class DrawPhaseTimer : MonoBehaviour
     public void PlayHandNow()
     {
         StopDrawPhase();
-        OnPhaseEnded?.Invoke();
+        EndPhase();
     }
 
     IEnumerator DrawPhaseRoutine()
@@ -58,6 +58,13 @@ public class DrawPhaseTimer : MonoBehaviour
         }
 
         _phaseCoroutine = null;
+        EndPhase();
+    }
+
+    void EndPhase()
+    {
+        blockManager.DrawUntilFull();
+        blockManager.DisableDiscard();
         Debug.Log($"[DrawPhaseTimer] Phase ended. Final hand: {blockManager.hand.Count}/12");
         OnPhaseEnded?.Invoke();
     }

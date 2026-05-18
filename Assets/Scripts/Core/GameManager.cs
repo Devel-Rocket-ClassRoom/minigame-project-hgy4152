@@ -28,14 +28,24 @@ public class GameManager : MonoBehaviour
         var context = new GameContext();
         context.IngestGroups(groups);
 
+        // 데미지 함수
         int damage = 0;
-        foreach (var g in groups)
-            damage += g.Length * g.Blocks[0].data.attackPower;
+        damage += (int)(context.chain1Count * 1.1f);
+        damage += (int)(context.chain2Count * 1.2f);
+        damage += (int)(context.chain3Count * 1.3f);
+        damage += (int)(context.classDistribution[ClassType.Warrior] * 1.3f);
+        damage += (int)(context.classDistribution[ClassType.Archer] * 1.3f);
+        damage += (int)(context.classDistribution[ClassType.Priest] * 1.3f);
 
-        boss.TakeDamage(damage);
-        Debug.Log(
-            $"[GameManager] Settled: {damage} dmg | "
-                + $"chains {context.chain1Count}/{context.chain2Count}/{context.chain3Count}"
-        );
+        int atk = 0;
+        foreach (var g in groups)
+        {
+            // 같은 스킬끼리 그룹으로 뭉치기 때문에 전부 같은 값을 가진 블럭들임
+            // 그래서 가장 첫번째 인덱스인 0으로 하드 코딩함
+            atk += g.Blocks[0].data.attackPower;
+        }
+
+        boss.TakeDamage(damage * atk);
+        Debug.Log($"[GameManager] Settled: {damage * atk} dmg");
     }
 }

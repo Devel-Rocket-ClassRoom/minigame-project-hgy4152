@@ -18,6 +18,7 @@ public class GameContext
             else if (g.Length == 3)
                 chain3Count++;
 
+            // 없는 키면 만들어서 추가하게 끔
             classDistribution[g.DominantClass] =
                 classDistribution.GetValueOrDefault(g.DominantClass) + 1;
         }

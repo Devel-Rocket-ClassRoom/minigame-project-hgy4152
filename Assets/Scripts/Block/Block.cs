@@ -1,31 +1,44 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class Block : MonoBehaviour
 {
     public BlockData data;
     public int chainGroupId = -1;
 
-    SpriteRenderer _sr;
-    SpriteRenderer _background;
+    Image _sprite;
+    Image _background;
 
     static Sprite _whiteSprite;
 
     void Awake()
     {
-        _sr = GetComponent<SpriteRenderer>();
         _background = CreateBackground();
+        _sprite = CreateSpriteImage();
+
+        // Ensure the button uses the background for visual feedback
+        var button = GetComponent<UnityEngine.UI.Button>();
+        if (button != null)
+        {
+            button.targetGraphic = _background;
+            button.onClick.AddListener(OnClicked);
+        }
+    }
+
+    void OnClicked()
+    {
+        Debug.Log($"[Block] Clicked: {data?.id} ({data?.ownerClass})");
     }
 
     public void Init(BlockData blockData)
     {
         data = blockData;
         if (blockData.icon != null)
-            _sr.sprite = blockData.icon;
+            _sprite.sprite = blockData.icon;
         _background.color = blockData.blockColor;
     }
 
-    SpriteRenderer CreateBackground()
+    Image CreateBackground()
     {
         if (_whiteSprite == null)
         {
@@ -38,9 +51,15 @@ public class Block : MonoBehaviour
         var bgGO = new GameObject("Background");
         bgGO.transform.SetParent(transform, false);
         bgGO.transform.localScale = Vector3.one * 1.1f;
-        var sr = bgGO.AddComponent<SpriteRenderer>();
-        sr.sprite = _whiteSprite;
-        sr.sortingOrder = _sr.sortingOrder - 1;
-        return sr;
+        var img = bgGO.AddComponent<Image>();
+        img.sprite = _whiteSprite;
+        return img;
+    }
+
+    Image CreateSpriteImage()
+    {
+        var spriteGO = new GameObject("SpriteImage");
+        spriteGO.transform.SetParent(transform, false);
+        return spriteGO.AddComponent<Image>();
     }
 }

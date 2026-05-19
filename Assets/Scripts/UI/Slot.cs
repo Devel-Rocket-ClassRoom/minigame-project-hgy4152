@@ -15,6 +15,13 @@ public class Slot : MonoBehaviour
         block.FlyIn(Vector2.zero, 0.4f, onArrived);
     }
 
+    public void ShiftBlock(Block block, System.Action onArrived = null)
+    {
+        Block = block;
+        block.transform.SetParent(transform, true);
+        block.Slide(Vector2.zero, 0.2f, onArrived);
+    }
+
     public void Clear()
     {
         Block = null;
@@ -22,7 +29,8 @@ public class Slot : MonoBehaviour
 
     public void SetConnector(bool active, Color color)
     {
-        if (connector == null) return;
+        if (connector == null)
+            return;
         connector.gameObject.SetActive(active);
         connector.color = color;
     }

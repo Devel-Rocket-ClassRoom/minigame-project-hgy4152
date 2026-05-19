@@ -50,9 +50,6 @@ public class BlockManager : MonoBehaviour
         slots[slotIndex].PlaceBlock(block, RefreshConnectors);
         RefreshAllBlockVisuals();
 
-        Debug.Log(
-            $"[BlockManager] Drew {classType} block (group {block.chainGroupId}). Hand: {hand.Count}/{MaxHandSize}"
-        );
         return block;
     }
 
@@ -64,17 +61,23 @@ public class BlockManager : MonoBehaviour
 
         hand.RemoveAt(idx);
         Destroy(block.gameObject);
-
-        Slot empty = slots[idx];
-        empty.Clear();
-        empty.transform.SetAsLastSibling();
-        slots.RemoveAt(idx);
-        slots.Add(empty);
-
+        slots[idx].Clear();
         _discardsUsed++;
+
+        // 오른쪽 블록들을 슬롯 고정 상태에서 왼쪽으로 슬라이드
+        for (int i = idx; i < hand.Count; i++)
+        {
+            slots[i + 1].Clear();
+            bool isLast = i == hand.Count - 1;
+            slots[i].ShiftBlock(hand[i], isLast ? (System.Action)RefreshConnectors : null);
+        }
+
+        // 체인 그룹 재배정 (idx부터 끝까지)
+        for (int i = idx; i < hand.Count; i++)
+            AssignChainGroupAt(i);
+
         DrawBlock();
         RefreshAllBlockVisuals();
-        RefreshConnectors();
     }
 
     public int DiscardsRemaining => Mathf.Max(0, discardLimit - _discardsUsed);
@@ -142,26 +145,28 @@ public class BlockManager : MonoBehaviour
             block.OnDiscardRequested = null;
     }
 
-    void AssignChainGroup(Block block)
+    void AssignChainGroup(Block block) => AssignChainGroupAt(hand.Count - 1);
+
+    void AssignChainGroupAt(int i)
     {
-        int last = hand.Count - 1;
-        if (last == 0)
+        if (i == 0)
         {
-            block.chainGroupId = 0;
+            hand[i].chainGroupId = 0;
             return;
         }
 
-        Block prev = hand[last - 1];
-        if (prev.data.id != block.data.id)
+        Block cur = hand[i];
+        Block prev = hand[i - 1];
+        if (prev.data.id != cur.data.id)
         {
-            block.chainGroupId = prev.chainGroupId + 1;
+            cur.chainGroupId = prev.chainGroupId + 1;
             return;
         }
 
         int groupSize = 0;
-        for (int i = last - 1; i >= 0 && hand[i].chainGroupId == prev.chainGroupId; i--)
+        for (int j = i - 1; j >= 0 && hand[j].chainGroupId == prev.chainGroupId; j--)
             groupSize++;
 
-        block.chainGroupId = groupSize < 3 ? prev.chainGroupId : prev.chainGroupId + 1;
+        cur.chainGroupId = groupSize < 3 ? prev.chainGroupId : prev.chainGroupId + 1;
     }
 }

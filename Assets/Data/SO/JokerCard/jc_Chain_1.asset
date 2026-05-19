@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b630098c8225614d8564639f33b51f3, type: 3}
-  m_Name: TestJoker
+  m_Script: {fileID: 11500000, guid: ca850aee26439fd4384ded63e18815a8, type: 3}
+  m_Name: jc_Chain_1
   m_EditorClassIdentifier: Assembly-CSharp::SkillCard
-  id: 
-  name: 
-  description: 
-  icon: {fileID: 0}
+  id: ch1
+  name: "\uAE30\uBCF8\uC774 \uC911\uC694\uD558\uB2E4"
+  description: "1\uCCB4\uC778\uC758 \uB370\uBBF8\uC9C0\uAC00 \uB298\uC5B4\uB0A9\uB2C8\uB2E4"
+  icon: {fileID: -4148792812005622833, guid: ad3e660764e37db4ab9b1234e73556c3, type: 3}
   trigger: 0
   condition: 
   effects: []

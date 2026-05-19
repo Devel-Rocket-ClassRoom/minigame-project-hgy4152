@@ -35,7 +35,7 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
+        ClassType classType = _allTypes[Random.Range(1, _allTypes.Length)];
         Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
 
         if (block == null)

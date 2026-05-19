@@ -4,7 +4,7 @@ using UnityEngine;
 public class BossController : MonoBehaviour
 {
     [SerializeField]
-    int maxHp = 1000;
+    int maxHp = 100000;
 
     int currentHp;
 

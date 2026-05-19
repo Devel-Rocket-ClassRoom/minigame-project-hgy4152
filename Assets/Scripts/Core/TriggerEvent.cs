@@ -1,7 +1,8 @@
 public enum TriggerEvent
 {
-    OnDecide,
-    OnDraw,
-    OnDiscard,
-    OnTurnStart,
+    Chain,
+    Time,
+    Discard,
+    Class,
+    BlockState,
 }

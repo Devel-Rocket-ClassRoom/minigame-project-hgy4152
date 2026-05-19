@@ -8,8 +8,8 @@ public class ChainJudge
     public Dictionary<ClassType, int> classDistribution = new();
 
     public bool isShiftBlock = true;
-
     private ClassType previousClass = ClassType.None;
+
     public float remainingTimeRatio;
     public int turnIndex;
     public int discardRemaining;

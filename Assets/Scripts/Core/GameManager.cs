@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,8 +36,10 @@ public class GameManager : MonoBehaviour
         damage += (int)(judge.chain1Count * 1.1f);
         damage += (int)(judge.chain2Count * 1.2f);
         damage += (int)(judge.chain3Count * 1.3f);
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * 1.3f);
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Archer) * 1.3f);
+
+        // 없으면 넘어가도록
+        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * 1.3f); 
+        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Archer)* 1.3f);
         damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Priest) * 1.3f);
 
         int atk = 0;

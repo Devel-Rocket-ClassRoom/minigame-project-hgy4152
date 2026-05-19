@@ -4,11 +4,14 @@ using UnityEngine.UI;
 
 public class JokerCardSlotUI : MonoBehaviour
 {
-    [SerializeField]
     Image icon;
-
-    [SerializeField]
     TextMeshProUGUI cardName;
+
+    void Awake()
+    {
+        icon = GetComponentInChildren<Image>();
+        cardName = GetComponentInChildren<TextMeshProUGUI>();
+    }
 
     public void Refresh(JokerCard card)
     {

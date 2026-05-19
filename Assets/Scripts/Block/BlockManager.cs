@@ -6,6 +6,10 @@ public class BlockManager : MonoBehaviour
     const int MaxHandSize = 12;
 
     [SerializeField]
+    int discardLimit = 5;
+    int _discardsUsed;
+
+    [SerializeField]
     CharacterSet characterSet;
 
     [SerializeField]
@@ -31,7 +35,7 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        ClassType classType = _allTypes[Random.Range(0, _allTypes.Length)];
+        ClassType classType = _allTypes[Random.Range(1, _allTypes.Length)];
         Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
 
         if (block == null)
@@ -67,10 +71,15 @@ public class BlockManager : MonoBehaviour
         slots.RemoveAt(idx);
         slots.Add(empty);
 
+        _discardsUsed++;
         DrawBlock();
         RefreshAllBlockVisuals();
         RefreshConnectors();
     }
+
+    public int DiscardsRemaining => Mathf.Max(0, discardLimit - _discardsUsed);
+
+    public void ResetDiscardCount() => _discardsUsed = 0;
 
     public void RefreshAllBlockVisuals()
     {

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6, type: 3}
-  m_Name: pr_Beatrice
+  m_Name: wa_Reon
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
-  id: pr1
-  icon: {fileID: -6905186287862360458, guid: fcca18dd0823def4b8ae7967f7250883, type: 3}
+  id: wa1
+  icon: {fileID: 1964829391883163220, guid: 884326cd716df54498ad4f0c736b3c5f, type: 3}
   attackPower: 10
   animationClip: {fileID: 0}
-  ownerClass: 2
-  blockColor: {r: 0.49411768, g: 0.79215693, b: 0.0627451, a: 1}
+  ownerClass: 1
+  blockColor: {r: 0.86666673, g: 0.06666667, b: 0, a: 1}

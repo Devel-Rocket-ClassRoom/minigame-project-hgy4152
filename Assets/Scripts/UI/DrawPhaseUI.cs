@@ -3,10 +3,7 @@ using UnityEngine.UI;
 
 public class DrawPhaseUI : MonoBehaviour
 {
-    [SerializeField]
     DrawPhaseTimer drawPhaseTimer;
-
-    [SerializeField]
     BlockManager blockManager;
 
     [SerializeField]
@@ -17,6 +14,8 @@ public class DrawPhaseUI : MonoBehaviour
 
     void Awake()
     {
+        drawPhaseTimer = GetComponent<DrawPhaseTimer>();
+        blockManager = GetComponent<BlockManager>();
         handPlayButton.onClick.AddListener(drawPhaseTimer.PlayHandNow);
     }
 

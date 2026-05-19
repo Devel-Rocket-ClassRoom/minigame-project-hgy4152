@@ -62,7 +62,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. Always create a feature branch before writing any code. 
 
-**Use the format `feature/day{N}-{short-description}`. Never commit directly to main.**
+**Use the format `feature/part{N}-{short-description}`. Never commit directly to main.**
 
 ---
 

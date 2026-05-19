@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     BossController boss;
 
+    [SerializeField]
+    JokerManager jokerManager;
+
     void OnEnable()
     {
         drawPhaseTimer.OnPhaseEnded += Settle;
@@ -31,17 +34,13 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
 
-        // 데미지 함수
         int damage = 0;
         damage += (int)(judge.chain1Count * 1.1f);
         damage += (int)(judge.chain2Count * 1.2f);
         damage += (int)(judge.chain3Count * 1.3f);
-
-        // 없으면 넘어가도록
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * 1.3f); 
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Archer)* 1.3f);
+        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * 1.3f);
+        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Archer) * 1.3f);
         damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Priest) * 1.3f);
-
         int atk = 0;
         foreach (var g in groups)
         {
@@ -49,6 +48,10 @@ public class GameManager : MonoBehaviour
             // 그래서 가장 첫번째 인덱스인 0으로 하드 코딩함
             atk += g.Blocks[0].data.attackPower;
         }
+
+        foreach (var card in jokerManager.ActiveHand)
+            if (card != null)
+                damage += card.GetBonus(judge);
 
         boss.TakeDamage(damage * atk);
         Debug.Log($"[GameManager] Settled: {damage * atk} dmg");

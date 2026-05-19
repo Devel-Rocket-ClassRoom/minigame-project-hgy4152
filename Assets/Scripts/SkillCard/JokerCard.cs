@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SkillCard", menuName = "ChainKnights/SkillCard")]
-public class SkillCard : ScriptableObject
+[CreateAssetMenu(fileName = "JokerCard", menuName = "ChainKnights/JokerCard")]
+public class JokerCard : ScriptableObject
 {
     public string id;
     public new string name;

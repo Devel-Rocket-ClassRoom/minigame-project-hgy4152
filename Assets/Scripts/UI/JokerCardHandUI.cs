@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class SkillCardHandUI : MonoBehaviour
+public class JokerCardHandUI : MonoBehaviour
 {
     [SerializeField]
-    SkillCardSlotUI[] slots = new SkillCardSlotUI[5];
+    JokerCardSlotUI[] slots = new JokerCardSlotUI[5];
 
-    public void Refresh(SkillCard[] cards)
+    public void Refresh(JokerCard[] cards)
     {
         for (int i = 0; i < slots.Length; i++)
             slots[i].Refresh(i < cards.Length ? cards[i] : null);

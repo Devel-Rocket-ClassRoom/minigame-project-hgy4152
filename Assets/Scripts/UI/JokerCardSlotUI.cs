@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillCardSlotUI : MonoBehaviour
+public class JokerCardSlotUI : MonoBehaviour
 {
     [SerializeField]
     Image icon;
@@ -10,7 +10,7 @@ public class SkillCardSlotUI : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI cardName;
 
-    public void Refresh(SkillCard card)
+    public void Refresh(JokerCard card)
     {
         if (card == null)
         {

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         var groups = ChainResolver.ResolveChains(blockManager.hand);
 
-        var context = new GameContext();
+        var context = new ChainJudge();
         context.IngestGroups(groups);
 
         // 데미지 함수

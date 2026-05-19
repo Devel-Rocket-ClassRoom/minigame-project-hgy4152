@@ -31,6 +31,7 @@ public class CharacterSet : MonoBehaviour
             _ => null,
         };
 
+    // 해당 직업의 크리에이터의 CreateBlock 실행
     public Block CreateBlock(ClassType classType, Transform parent = null) =>
         GetCreator(classType)?.CreateBlock(parent != null ? parent : blockHand);
 }

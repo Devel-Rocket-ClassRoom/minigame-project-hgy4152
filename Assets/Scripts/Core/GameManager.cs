@@ -25,17 +25,17 @@ public class GameManager : MonoBehaviour
     {
         var groups = ChainResolver.ResolveChains(blockManager.hand);
 
-        var context = new GameContext();
-        context.IngestGroups(groups);
+        var judge = new ChainJudge();
+        judge.IngestGroups(groups);
 
         // 데미지 함수
         int damage = 0;
-        damage += (int)(context.chain1Count * 1.1f);
-        damage += (int)(context.chain2Count * 1.2f);
-        damage += (int)(context.chain3Count * 1.3f);
-        damage += (int)(context.classDistribution[ClassType.Warrior] * 1.3f);
-        damage += (int)(context.classDistribution[ClassType.Archer] * 1.3f);
-        damage += (int)(context.classDistribution[ClassType.Priest] * 1.3f);
+        damage += (int)(judge.chain1Count * 1.1f);
+        damage += (int)(judge.chain2Count * 1.2f);
+        damage += (int)(judge.chain3Count * 1.3f);
+        damage += (int)(judge.classDistribution[ClassType.Warrior] * 1.3f);
+        damage += (int)(judge.classDistribution[ClassType.Archer] * 1.3f);
+        damage += (int)(judge.classDistribution[ClassType.Priest] * 1.3f);
 
         int atk = 0;
         foreach (var g in groups)

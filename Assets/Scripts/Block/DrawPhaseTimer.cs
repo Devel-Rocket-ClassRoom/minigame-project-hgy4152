@@ -49,7 +49,6 @@ public class DrawPhaseTimer : MonoBehaviour
     IEnumerator DrawPhaseRoutine()
     {
         _endTime = Time.time + PhaseDuration;
-        Debug.Log("[DrawPhaseTimer] Draw phase started (20s).");
 
         while (Time.time < _endTime)
         {
@@ -63,8 +62,8 @@ public class DrawPhaseTimer : MonoBehaviour
 
     void EndPhase()
     {
-        blockManager.DrawUntilFull();
-        blockManager.DisableDiscard();
+        blockManager.DrawUntilFull(); // 일찍 턴 끝낼 시 부족한 카드 수 자동 채움
+        blockManager.DisableDiscard(); // 버리기 비활성화
         Debug.Log($"[DrawPhaseTimer] Phase ended. Final hand: {blockManager.hand.Count}/12");
         OnPhaseEnded?.Invoke();
     }

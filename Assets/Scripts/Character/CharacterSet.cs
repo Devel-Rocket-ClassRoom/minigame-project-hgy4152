@@ -3,35 +3,26 @@ using UnityEngine;
 public class CharacterSet : MonoBehaviour
 {
     [SerializeField]
-    WarriorCreator warriorCreator;
+    WarriorCharacter warriorCharacter;
 
     [SerializeField]
-    ArcherCreator archerCreator;
+    ArcherCharacter archerCharacter;
 
     [SerializeField]
-    PriestCreator priestCreator;
+    PriestCharacter priestCharacter;
 
     [SerializeField]
     protected Transform blockHand;
 
-    void Awake()
-    {
-        // ?? 연산자 : 없으면 탐색해서 할당
-        warriorCreator ??= GetComponent<WarriorCreator>();
-        archerCreator ??= GetComponent<ArcherCreator>();
-        priestCreator ??= GetComponent<PriestCreator>();
-    }
-
-    public BlockCreator GetCreator(ClassType classType) =>
+    public Character GetCharacter(ClassType classType) =>
         classType switch
         {
-            ClassType.Warrior => warriorCreator,
-            ClassType.Archer => archerCreator,
-            ClassType.Priest => priestCreator,
+            ClassType.Warrior => warriorCharacter,
+            ClassType.Archer => archerCharacter,
+            ClassType.Priest => priestCharacter,
             _ => null,
         };
 
-    // 해당 직업의 크리에이터의 CreateBlock 실행
     public Block CreateBlock(ClassType classType, Transform parent = null) =>
-        GetCreator(classType)?.CreateBlock(parent != null ? parent : blockHand);
+        GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);
 }

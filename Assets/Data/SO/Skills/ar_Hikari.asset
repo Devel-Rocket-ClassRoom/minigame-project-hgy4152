@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6, type: 3}
-  m_Name: ar_Hwalang
+  m_Name: ar_Hikari
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
   id: ar1
   icon: {fileID: -7577876707538463352, guid: 8daecc66e77902442aff6e5518bed856, type: 3}

@@ -1585,6 +1585,7 @@ MonoBehaviour:
   drawPhaseTimer: {fileID: 790201220}
   blockManager: {fileID: 790201221}
   boss: {fileID: 1753358843}
+  jokerManager: {fileID: 650838004}
 --- !u!4 &142566054
 Transform:
   m_ObjectHideFlags: 0
@@ -7125,9 +7126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JokerManager
   handUI: {fileID: 1684222076}
   activeHand:
-  - {fileID: 11400000, guid: 8e529d7144a210a4b9c68919db845fb7, type: 2}
-  - {fileID: 11400000, guid: c8a0a0785d2eafd4fa71e3e5e0d1e095, type: 2}
-  - {fileID: 11400000, guid: 79e222b78457d864f97f09da0f5fffa1, type: 2}
+  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
+  - {fileID: 11400000, guid: c0f2984d59ca84845a870b3ba0afcc01, type: 2}
+  - {fileID: 11400000, guid: 92a48090f9e88704d8a4ed89ced1a66f, type: 2}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!4 &650838005

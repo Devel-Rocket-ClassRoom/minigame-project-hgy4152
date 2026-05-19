@@ -21,6 +21,8 @@ public class DrawPhaseTimer : MonoBehaviour
     Coroutine _phaseCoroutine;
     float _endTime;
 
+    public bool IsActive => _phaseCoroutine != null;
+
     public float RemainingRatio =>
         _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / PhaseDuration) : 0f;
 
@@ -48,7 +50,7 @@ public class DrawPhaseTimer : MonoBehaviour
     public void PlayHandNow()
     {
         StopDrawPhase();
-        EndPhase();
+        StartCoroutine(FillThenEnd());
     }
 
     IEnumerator DrawPhaseRoutine()
@@ -62,14 +64,29 @@ public class DrawPhaseTimer : MonoBehaviour
         }
 
         _phaseCoroutine = null;
+        yield return StartCoroutine(FillHandRoutine());
         EndPhase();
+    }
+
+    IEnumerator FillThenEnd()
+    {
+        yield return StartCoroutine(FillHandRoutine());
+        EndPhase();
+    }
+
+    IEnumerator FillHandRoutine()
+    {
+        while (!blockManager.IsHandFull)
+        {
+            blockManager.DrawBlock();
+            yield return new WaitForSeconds(0.3f);
+        }
+        yield return new WaitForSeconds(0.5f);
     }
 
     void EndPhase()
     {
-        blockManager.DrawUntilFull(); // 일찍 턴 끝낼 시 부족한 카드 수 자동 채움
-        blockManager.DisableDiscard(); // 버리기 비활성화
-        Debug.Log($"[DrawPhaseTimer] Phase ended. Final hand: {blockManager.hand.Count}/12");
+        blockManager.DisableDiscard();
         OnPhaseEnded?.Invoke();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Block : MonoBehaviour
 {
@@ -39,12 +40,48 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void FlyIn(Vector2 targetLocalPos, float duration, System.Action onComplete = null)
+    public void FlyIn(Vector2 targetLocalPos, float duration, Action onComplete = null)
     {
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = true;
 
         StartCoroutine(FlyInCoroutine(targetLocalPos, duration, onComplete));
+    }
+
+    public void Slide(Vector2 targetLocalPos, float duration, Action onComplete = null)
+    {
+        if (_layoutElement != null)
+            _layoutElement.ignoreLayout = true;
+
+        StartCoroutine(
+            SlideCoroutine(_rectTransform.anchoredPosition, targetLocalPos, duration, onComplete)
+        );
+    }
+
+    IEnumerator SlideCoroutine(
+        Vector2 startPos,
+        Vector2 targetLocalPos,
+        float duration,
+        Action onComplete
+    )
+    {
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            t = t * (2 - t);
+            _rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetLocalPos, t);
+            yield return null;
+        }
+
+        _rectTransform.anchoredPosition = targetLocalPos;
+        if (_layoutElement != null)
+            _layoutElement.ignoreLayout = false;
+
+        yield return new WaitForEndOfFrame();
+        onComplete?.Invoke();
     }
 
     IEnumerator FlyInCoroutine(Vector2 targetLocalPos, float duration, System.Action onComplete)
@@ -64,6 +101,8 @@ public class Block : MonoBehaviour
         _rectTransform.anchoredPosition = targetLocalPos;
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = false;
+
+        yield return new WaitForEndOfFrame();
         onComplete?.Invoke();
     }
 
@@ -72,7 +111,7 @@ public class Block : MonoBehaviour
         _background.color = data.blockColor;
     }
 
-    public System.Action<Block> OnDiscardRequested;
+    public Action<Block> OnDiscardRequested;
 
     void OnClicked()
     {

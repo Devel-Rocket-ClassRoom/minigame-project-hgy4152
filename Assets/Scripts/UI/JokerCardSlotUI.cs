@@ -26,6 +26,6 @@ public class JokerCardSlotUI : MonoBehaviour
         cardName.enabled = true;
 
         icon.sprite = card.icon;
-        cardName.text = card.name;
+        cardName.text = card.cardName;
     }
 }

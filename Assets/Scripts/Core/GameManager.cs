@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     JokerManager jokerManager;
+
+    [SerializeField]
+    CharacterSet characterSet;
+
+    [SerializeField]
+    float perGroupDelay = 0.4f;
 
     void OnEnable()
     {
@@ -34,26 +41,43 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
 
-        int damage = 0;
-        damage += (int)(judge.chain1Count * 1.1f);
-        damage += (int)(judge.chain2Count * 1.2f);
-        damage += (int)(judge.chain3Count * 1.3f);
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * 1.3f);
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Archer) * 1.3f);
-        damage += (int)(judge.classDistribution.GetValueOrDefault(ClassType.Priest) * 1.3f);
-        int atk = 0;
-        foreach (var g in groups)
+        int jokerBonus = 0;
+        if (jokerManager != null)
+            foreach (var card in jokerManager.ActiveHand)
+                if (card != null)
+                    jokerBonus += card.GetBonus(judge);
+
+        StartCoroutine(PlayGroupSequence(groups, judge, jokerBonus));
+    }
+
+    IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge, int jokerBonus)
+    {
+        int totalGroups = Mathf.Max(1, groups.Count);
+        foreach (var group in groups)
         {
-            // 같은 스킬끼리 그룹으로 뭉치기 때문에 전부 같은 값을 가진 블럭들임
-            // 그래서 가장 첫번째 인덱스인 0으로 하드 코딩함
-            atk += g.Blocks[0].data.attackPower;
+            var character = characterSet?.GetCharacter(group.DominantClass);
+            character?.PlayAttack();
+
+            int groupDmg = CalcGroupDamage(group);
+            groupDmg += jokerBonus / totalGroups;
+            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
+
+            boss.TakeDamage(groupDmg);
+            Debug.Log($"[GameManager] Group {group.DominantClass} x{group.Length}: {groupDmg} dmg");
+
+            yield return new WaitForSeconds(perGroupDelay);
         }
+    }
 
-        foreach (var card in jokerManager.ActiveHand)
-            if (card != null)
-                damage += card.GetBonus(judge);
-
-        boss.TakeDamage(damage * atk);
-        Debug.Log($"[GameManager] Settled: {damage * atk} dmg");
+    int CalcGroupDamage(ChainGroup group)
+    {
+        float chainMul = group.Length switch
+        {
+            1 => 1.1f,
+            2 => 1.2f,
+            3 => 1.3f,
+            _ => 1f,
+        };
+        return (int)(chainMul * group.Blocks[0].data.attackPower * group.Length);
     }
 }

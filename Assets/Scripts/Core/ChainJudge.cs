@@ -10,6 +10,11 @@ public class ChainJudge
     public bool isShiftBlock = true;
 
     private ClassType previousClass = ClassType.None;
+    public int turnIndex;
+    public int discardRemaining;
+    public int[] prevChainCounts = new int[3];
+    public List<object> activeModifiers = new();
+    public object bossPattern;
 
     public void IngestGroups(List<ChainGroup> groups)
     {
@@ -28,7 +33,6 @@ public class ChainJudge
             else if (g.Length == 3)
                 chain3Count++;
 
-            // 없는 키면 만들어서 추가하게 끔
             classDistribution[g.DominantClass] =
                 classDistribution.GetValueOrDefault(g.DominantClass) + 1;
 

@@ -133,6 +133,7 @@ public class BlockManager : MonoBehaviour
             slots.Add(empty);
         }
         RefreshAllBlockVisuals();
+        RefreshConnectors();
     }
 
     public void DisableDiscard()

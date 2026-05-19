@@ -55,12 +55,19 @@ public class GameManager : MonoBehaviour
         int totalGroups = Mathf.Max(1, groups.Count);
         foreach (var group in groups)
         {
+            // 애니메이션 실행
             var character = characterSet?.GetCharacter(group.DominantClass);
             character?.PlayAttack();
 
+            
             int groupDmg = CalcGroupDamage(group);
+
+            // 조커 보너스 부분 나중에 손봐야함
+            // 보너스 받은량을 지금 전체 그룹 수로 나눠서 배분중이라 바꿔야함
             groupDmg += jokerBonus / totalGroups;
-            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
+
+            // 각자 패시브 실행(널 연산자)
+            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg; 
 
             boss.TakeDamage(groupDmg);
             Debug.Log($"[GameManager] Group {group.DominantClass} x{group.Length}: {groupDmg} dmg");
@@ -72,6 +79,7 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.StartDrawPhase();
     }
 
+    // 블럭 자체 데미지 상승 로직
     int CalcGroupDamage(ChainGroup group)
     {
         float chainMul = group.Length switch

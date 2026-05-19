@@ -29,6 +29,7 @@ public class DrawPhaseTimer : MonoBehaviour
     {
         if (_phaseCoroutine != null)
             StopCoroutine(_phaseCoroutine);
+        blockManager.ResetDiscardCount();
         _phaseCoroutine = StartCoroutine(DrawPhaseRoutine());
     }
 

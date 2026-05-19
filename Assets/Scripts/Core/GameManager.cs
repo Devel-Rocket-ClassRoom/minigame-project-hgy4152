@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
         var judge = new ChainJudge();
         judge.IngestGroups(groups);
+        judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
+        judge.discardRemaining = blockManager.DiscardsRemaining;
 
         // 데미지 함수
         int damage = 0;

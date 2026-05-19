@@ -10,6 +10,7 @@ public class ChainJudge
     public bool isShiftBlock = true;
 
     private ClassType previousClass = ClassType.None;
+    public float remainingTimeRatio;
     public int turnIndex;
     public int discardRemaining;
     public int[] prevChainCounts = new int[3];

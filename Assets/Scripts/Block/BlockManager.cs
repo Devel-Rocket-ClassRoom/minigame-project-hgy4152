@@ -115,6 +115,26 @@ public class BlockManager : MonoBehaviour
             DrawBlock();
     }
 
+    public void RemoveGroup(ChainGroup group)
+    {
+        foreach (var block in group.Blocks)
+        {
+            int idx = hand.IndexOf(block);
+            if (idx < 0)
+                continue;
+
+            hand.RemoveAt(idx);
+            Destroy(block.gameObject);
+
+            Slot empty = slots[idx];
+            empty.Clear();
+            empty.transform.SetAsLastSibling();
+            slots.RemoveAt(idx);
+            slots.Add(empty);
+        }
+        RefreshAllBlockVisuals();
+    }
+
     public void DisableDiscard()
     {
         foreach (var block in hand)

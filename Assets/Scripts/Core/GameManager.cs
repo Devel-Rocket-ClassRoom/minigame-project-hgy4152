@@ -65,8 +65,11 @@ public class GameManager : MonoBehaviour
             boss.TakeDamage(groupDmg);
             Debug.Log($"[GameManager] Group {group.DominantClass} x{group.Length}: {groupDmg} dmg");
 
+            blockManager.RemoveGroup(group);
             yield return new WaitForSeconds(perGroupDelay);
         }
+
+        drawPhaseTimer.StartDrawPhase();
     }
 
     int CalcGroupDamage(ChainGroup group)

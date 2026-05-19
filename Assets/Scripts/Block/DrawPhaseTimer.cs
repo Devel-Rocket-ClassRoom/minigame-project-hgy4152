@@ -7,10 +7,14 @@ public class DrawPhaseTimer : MonoBehaviour
     const float PhaseDuration = 20f;
 
     [SerializeField]
+    float drawInterval = 1.5f;
+
     BlockManager blockManager;
 
-    [SerializeField]
-    float drawInterval = 1.5f;
+    void Awake()
+    {
+        blockManager = GetComponent<BlockManager>();
+    }
 
     public event Action OnPhaseEnded;
 

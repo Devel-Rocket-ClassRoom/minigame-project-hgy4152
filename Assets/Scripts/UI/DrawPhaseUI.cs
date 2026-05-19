@@ -3,20 +3,17 @@ using UnityEngine.UI;
 
 public class DrawPhaseUI : MonoBehaviour
 {
-    [SerializeField]
     DrawPhaseTimer drawPhaseTimer;
-
-    [SerializeField]
     BlockManager blockManager;
-
-    [SerializeField]
     Slider timerSlider;
-
-    [SerializeField]
     Button handPlayButton;
 
     void Awake()
     {
+        drawPhaseTimer = GetComponent<DrawPhaseTimer>();
+        blockManager = GetComponent<BlockManager>();
+        timerSlider = GetComponentInChildren<Slider>();
+        handPlayButton = GetComponentInChildren<Button>();
         handPlayButton.onClick.AddListener(drawPhaseTimer.PlayHandNow);
     }
 

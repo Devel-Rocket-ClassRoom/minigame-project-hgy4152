@@ -16,5 +16,5 @@ MonoBehaviour:
   icon: {fileID: -7577876707538463352, guid: 8daecc66e77902442aff6e5518bed856, type: 3}
   attackPower: 10
   animationClip: {fileID: 0}
-  ownerClass: 1
+  ownerClass: 2
   blockColor: {r: 0.990566, g: 0.8578572, b: 0.4812656, a: 1}

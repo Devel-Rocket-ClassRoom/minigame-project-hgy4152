@@ -23,6 +23,8 @@ public class JokerCardSlotUI : MonoBehaviour
         }
 
         icon.enabled = true;
+        cardName.enabled = true;
+
         icon.sprite = card.icon;
         cardName.text = card.name;
     }

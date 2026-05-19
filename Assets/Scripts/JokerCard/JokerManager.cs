@@ -12,7 +12,7 @@ public class JokerManager : MonoBehaviour
 
     void Start()
     {
-        handUI.Refresh(activeHand);
+        SetHand(activeHand);
     }
 
     public void SetCard(int slot, JokerCard card)

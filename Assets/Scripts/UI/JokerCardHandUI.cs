@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class JokerCardHandUI : MonoBehaviour
 {
-    [SerializeField]
-    JokerCardSlotUI[] slots = new JokerCardSlotUI[5];
+    JokerCardSlotUI[] slots;
+
+    void Awake()
+    {
+        slots = GetComponentsInChildren<JokerCardSlotUI>();
+    }
 
     public void Refresh(JokerCard[] cards)
     {

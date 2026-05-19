@@ -1,16 +1,26 @@
 using System.Collections.Generic;
 
-public class GameContext
+public class ChainJudge
 {
     public int chain1Count;
     public int chain2Count;
     public int chain3Count;
     public Dictionary<ClassType, int> classDistribution = new();
 
+    public bool isShiftBlock = true;
+
+    private ClassType previousClass = ClassType.None;
+
     public void IngestGroups(List<ChainGroup> groups)
     {
         foreach (var g in groups)
         {
+            if (previousClass == g.DominantClass)
+            {
+                // 겹쳐서 나오면 false
+                isShiftBlock = false;
+            }
+
             if (g.Length == 1)
                 chain1Count++;
             else if (g.Length == 2)
@@ -21,6 +31,8 @@ public class GameContext
             // 없는 키면 만들어서 추가하게 끔
             classDistribution[g.DominantClass] =
                 classDistribution.GetValueOrDefault(g.DominantClass) + 1;
+
+            previousClass = g.DominantClass;
         }
     }
 }

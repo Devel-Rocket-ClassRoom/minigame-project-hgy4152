@@ -1,6 +1,7 @@
 public enum ClassType
 {
-    Warrior = 0,
-    Archer = 1,
-    Priest = 2,
+    None,
+    Warrior,
+    Archer,
+    Priest,
 }

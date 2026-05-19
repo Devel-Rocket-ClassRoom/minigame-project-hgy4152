@@ -48,6 +48,8 @@ public class BossUI : MonoBehaviour
             hpText.text = $"{current} / {max}";
     }
 
+
+    // 나중에 그룹별 서로 다른 데미지를 출력해볼까 싶어서 이렇게 해봄
     void HandleDamageTaken(int amount)
     {
         if (damageTextPrefab == null || damageSpawnRoot == null)

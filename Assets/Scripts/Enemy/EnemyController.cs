@@ -50,11 +50,15 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        if (!IsAlive || amount <= 0)
+        if (amount <= 0)
+            return;
+
+        SpawnDamageText(amount);
+
+        if (!IsAlive)
             return;
 
         currentHp = Mathf.Max(0, currentHp - amount);
-        SpawnDamageText(amount);
         OnDamageTaken?.Invoke(amount);
         OnHpChanged?.Invoke(currentHp, maxHp);
 

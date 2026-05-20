@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     BlockManager blockManager;
 
     [SerializeField]
-    BossController boss;
+    EnemyController boss;
 
     [SerializeField]
     JokerManager jokerManager;
@@ -20,16 +20,58 @@ public class GameManager : MonoBehaviour
     CharacterSet characterSet;
 
     [SerializeField]
+    StageManager stageManager;
+
+    [SerializeField]
+    JokerRewardUI jokerRewardUI;
+
+    [SerializeField]
+    GameObject clearTextObject;
+
+    [SerializeField]
     float perGroupDelay = 0.4f;
+
+    public bool IsPaused { get; private set; }
 
     void OnEnable()
     {
         drawPhaseTimer.OnPhaseEnded += Settle;
+        stageManager.OnStageClear += HandleStageClear;
+        stageManager.OnAllStagesCleared += HandleAllStagesCleared;
     }
 
     void OnDisable()
     {
         drawPhaseTimer.OnPhaseEnded -= Settle;
+        stageManager.OnStageClear -= HandleStageClear;
+        stageManager.OnAllStagesCleared -= HandleAllStagesCleared;
+    }
+
+    void Start()
+    {
+        stageManager.StartStage();
+    }
+
+    public void SetPaused(bool paused) => IsPaused = paused;
+
+    public void BeginBattle()
+    {
+        SetPaused(false);
+        drawPhaseTimer.StartDrawPhase();
+    }
+
+    void HandleStageClear(StageManager.StageEntry entry)
+    {
+        drawPhaseTimer.StopDrawPhase();
+        SetPaused(true);
+        jokerRewardUI.Show();
+    }
+
+    void HandleAllStagesCleared()
+    {
+        drawPhaseTimer.StopDrawPhase();
+        if (clearTextObject != null)
+            clearTextObject.SetActive(true);
     }
 
     void Settle()
@@ -55,19 +97,12 @@ public class GameManager : MonoBehaviour
         int totalGroups = Mathf.Max(1, groups.Count);
         foreach (var group in groups)
         {
-            // 애니메이션 실행
             var character = characterSet?.GetCharacter(group.DominantClass);
             character?.PlayAttack();
 
-            
             int groupDmg = CalcGroupDamage(group);
-
-            // 조커 보너스 부분 나중에 손봐야함
-            // 보너스 받은량을 지금 전체 그룹 수로 나눠서 배분중이라 바꿔야함
             groupDmg += jokerBonus / totalGroups;
-
-            // 각자 패시브 실행(널 연산자)
-            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg; 
+            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
 
             boss.TakeDamage(groupDmg);
             Debug.Log($"[GameManager] Group {group.DominantClass} x{group.Length}: {groupDmg} dmg");
@@ -76,10 +111,10 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(perGroupDelay);
         }
 
-        drawPhaseTimer.StartDrawPhase();
+        if (boss.IsAlive)
+            drawPhaseTimer.StartDrawPhase();
     }
 
-    // 블럭 자체 데미지 상승 로직
     int CalcGroupDamage(ChainGroup group)
     {
         float chainMul = group.Length switch

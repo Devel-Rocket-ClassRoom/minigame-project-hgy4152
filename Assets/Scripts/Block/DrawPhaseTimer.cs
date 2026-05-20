@@ -28,7 +28,7 @@ public class DrawPhaseTimer : MonoBehaviour
 
     void Start()
     {
-        StartDrawPhase();
+        // Startup driven by GameManager.BeginBattle() via StageIntroUI
     }
 
     public void StartDrawPhase()

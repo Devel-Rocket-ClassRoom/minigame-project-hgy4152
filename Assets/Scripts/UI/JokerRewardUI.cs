@@ -12,10 +12,19 @@ public class JokerRewardUI : MonoBehaviour
     Button[] cardButtons = new Button[3];
 
     [SerializeField]
-    TMP_Text[] cardNameTexts = new TMP_Text[3];
+    Image[] selectFrames = new Image[3];
 
     [SerializeField]
-    TMP_Text[] cardDescTexts = new TMP_Text[3];
+    Image[] cardImage = new Image[3];
+
+    [SerializeField]
+    RectTransform tooltipPanel;
+
+    [SerializeField]
+    TMP_Text tooltipNameText;
+
+    [SerializeField]
+    TMP_Text tooltipDescText;
 
     [SerializeField]
     JokerCard[] rewardPool;
@@ -30,10 +39,14 @@ public class JokerRewardUI : MonoBehaviour
     GameManager gameManager;
 
     JokerCard[] _offered = new JokerCard[3];
+    int _selectedIdx = -1;
 
     void Awake()
     {
-        if (panel != null) panel.SetActive(false);
+        if (panel != null)
+            panel.SetActive(false);
+        if (tooltipPanel != null)
+            tooltipPanel.gameObject.SetActive(false);
     }
 
     void Start()
@@ -41,29 +54,70 @@ public class JokerRewardUI : MonoBehaviour
         for (int i = 0; i < cardButtons.Length; i++)
         {
             int idx = i;
-            cardButtons[i].onClick.AddListener(() => SelectCard(idx));
+            cardButtons[i].onClick.AddListener(() => OnCardClicked(idx));
         }
     }
 
     public void Show()
     {
         _offered = PickRandom(3);
+        _selectedIdx = -1;
+
         for (int i = 0; i < 3; i++)
         {
             bool valid = i < _offered.Length && _offered[i] != null;
-            cardButtons[idx_to_use(i)].gameObject.SetActive(valid);
+            cardButtons[i].gameObject.SetActive(valid);
+            if (selectFrames[i] != null)
+                selectFrames[i].enabled = false;
             if (valid)
-            {
-                cardNameTexts[i].text = _offered[i].cardName;
-                cardDescTexts[i].text = _offered[i].description;
-            }
+                cardImage[i].sprite = _offered[i].icon;
         }
+
+        tooltipPanel.gameObject.SetActive(false);
         panel.SetActive(true);
     }
 
-    private int idx_to_use(int i) => i; // Helper to avoid closure issues if needed, but array access is fine
+    void OnCardClicked(int idx)
+    {
+        if (_selectedIdx == idx)
+        {
+            ConfirmPick(idx);
+        }
+        else
+        {
+            _selectedIdx = idx;
+            ShowSelection(idx);
+        }
+    }
 
-    void SelectCard(int idx)
+    void ShowSelection(int idx)
+    {
+        for (int i = 0; i < selectFrames.Length; i++)
+            if (selectFrames[i] != null)
+                selectFrames[i].enabled = i == idx;
+
+        tooltipNameText.text = _offered[idx].cardName;
+        tooltipDescText.text = _offered[idx].description;
+        PositionTooltip(idx);
+        tooltipPanel.gameObject.SetActive(true);
+    }
+
+    void PositionTooltip(int idx)
+    {
+        var btnRect = cardButtons[idx].GetComponent<RectTransform>();
+        float width = cardImage[idx].GetComponent<RectTransform>().rect.width;
+        float centerPos = cardButtons[cardButtons.Length / 2].GetComponent<RectTransform>().localPosition.x;
+
+
+        bool isRight = btnRect.localPosition.x > centerPos;
+        float offsetX = isRight ? width : -width;
+
+        // 버튼 월드 좌표 → 툴팁 패널 부모 로컬 좌표로 변환
+        Vector2 btnInParent = tooltipPanel.parent.InverseTransformPoint(btnRect.position);
+        tooltipPanel.localPosition = btnInParent + new Vector2(offsetX, 0);
+    }
+
+    void ConfirmPick(int idx)
     {
         if (idx < _offered.Length && _offered[idx] != null)
         {
@@ -71,6 +125,13 @@ public class JokerRewardUI : MonoBehaviour
             if (slot >= 0)
                 jokerManager.SetCard(slot, _offered[idx]);
         }
+
+        tooltipPanel.gameObject.SetActive(false);
+        for (int i = 0; i < selectFrames.Length; i++)
+            if (selectFrames[i] != null)
+                selectFrames[i].enabled = false;
+
+        _selectedIdx = -1;
         panel.SetActive(false);
         gameManager.SetPaused(false);
         stageManager.AdvanceToNext();

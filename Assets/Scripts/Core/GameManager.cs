@@ -29,7 +29,12 @@ public class GameManager : MonoBehaviour
     GameObject clearTextObject;
 
     [SerializeField]
+    float stageClearDisplayDuration = 1.5f;
+
+    [SerializeField]
     float perGroupDelay = 0.4f;
+
+    bool _stageClearPending;
 
     public bool IsPaused { get; private set; }
 
@@ -64,7 +69,7 @@ public class GameManager : MonoBehaviour
     {
         drawPhaseTimer.StopDrawPhase();
         SetPaused(true);
-        jokerRewardUI.Show();
+        _stageClearPending = true;
     }
 
     void HandleAllStagesCleared()
@@ -111,8 +116,25 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(perGroupDelay);
         }
 
-        if (boss.IsAlive)
+        if (_stageClearPending)
+        {
+            _stageClearPending = false;
+            yield return StartCoroutine(ShowStageClear());
+            jokerRewardUI.Show();
+        }
+        else if (boss.IsAlive)
+        {
             drawPhaseTimer.StartDrawPhase();
+        }
+    }
+
+    IEnumerator ShowStageClear()
+    {
+        if (clearTextObject != null)
+            clearTextObject.SetActive(true);
+        yield return new WaitForSeconds(stageClearDisplayDuration);
+        if (clearTextObject != null)
+            clearTextObject.SetActive(false);
     }
 
     int CalcGroupDamage(ChainGroup group)

@@ -34,10 +34,6 @@ public class StageIntroUI : MonoBehaviour
         if (panel != null) panel.SetActive(false);
     }
 
-    void Start()
-    {
-    }
-
     void HandleStageStart(StageManager.StageEntry entry)
     {
         gameManager.SetPaused(true);

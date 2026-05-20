@@ -4,7 +4,13 @@ using UnityEngine;
 public class JokerCard_BlockStateShift : JokerCard
 {
     [SerializeField]
-    int bonus = 10;
+    float bonus = 1.2f;
 
-    public override int GetBonus(ChainJudge judge) => judge.isShiftBlock ? bonus : 0;
+    public override int GetBonus(ChainJudge judge)
+    {
+        return 0;
+    }
+
+    public override float DeckBonus(ChainJudge judge) => judge.isShiftBlock ? bonus : 1;
+    
 }

@@ -5,8 +5,13 @@ using UnityEngine;
 public class JokerCard_ClassWarrior : JokerCard
 {
     [SerializeField]
-    int bonusPerBlock = 2;
+    int bonusPerGroup = 2;
 
     public override int GetBonus(ChainJudge judge) =>
-        judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * bonusPerBlock;
+        judge.classDistribution.GetValueOrDefault(ClassType.Warrior) * bonusPerGroup;
+
+    public override float DeckBonus(ChainJudge judge)
+    {
+        return 1;
+    }
 }

@@ -57,6 +57,14 @@ public class GameManager : MonoBehaviour
         stageManager.StartStage();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            jokerRewardUI.Show();
+        }
+    }
+
     public void SetPaused(bool paused) => IsPaused = paused;
 
     public void BeginBattle()
@@ -83,35 +91,51 @@ public class GameManager : MonoBehaviour
     {
         var groups = ChainResolver.ResolveChains(blockManager.hand);
 
+        // 전체 그룹 조사
         var judge = new ChainJudge();
         judge.IngestGroups(groups);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
 
-        int jokerBonus = 0;
+        StartCoroutine(PlayGroupSequence(groups, judge));
+    }
+
+    IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge)
+    {
+        float deckBonus = 1f;
         if (jokerManager != null)
             foreach (var card in jokerManager.ActiveHand)
                 if (card != null)
-                    jokerBonus += card.GetBonus(judge);
+                    deckBonus *= card.DeckBonus(judge);
 
-        StartCoroutine(PlayGroupSequence(groups, judge, jokerBonus));
-    }
-
-    IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge, int jokerBonus)
-    {
-        int totalGroups = Mathf.Max(1, groups.Count);
         foreach (var group in groups)
         {
+            // 애니메이션 재생
             var character = characterSet?.GetCharacter(group.DominantClass);
             character?.PlayAttack();
 
+            // 그룹별 형태 조사 후 조커 카드 보너스 부여
+            var groupJudge = new ChainJudge();
+            groupJudge.IngestGroup(group);
+            int groupBonus = 0;
+            if (jokerManager != null)
+            {
+                foreach (var card in jokerManager.ActiveHand)
+                {
+                    if (card != null)
+                    {
+                        groupBonus += card.GetBonus(groupJudge);
+                    }
+                }
+            }
+
+            // 체인별 데미지 증가
             int groupDmg = CalcGroupDamage(group);
-            groupDmg += jokerBonus / totalGroups;
+            groupDmg += groupBonus;
             groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
+            groupDmg = (int)(groupDmg * deckBonus);
 
             boss.TakeDamage(groupDmg);
-            Debug.Log($"[GameManager] Group {group.DominantClass} x{group.Length}: {groupDmg} dmg");
-
             blockManager.RemoveGroup(group);
             yield return new WaitForSeconds(perGroupDelay);
         }

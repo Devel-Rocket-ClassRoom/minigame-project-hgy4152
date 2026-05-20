@@ -40,4 +40,19 @@ public class ChainJudge
             previousClass = g.DominantClass;
         }
     }
+    public void IngestGroup(ChainGroup g)
+    {
+
+        if (g.Length == 1)
+            chain1Count++;
+        else if (g.Length == 2)
+            chain2Count++;
+        else if (g.Length == 3)
+            chain3Count++;
+
+        classDistribution[g.DominantClass] =
+            classDistribution.GetValueOrDefault(g.DominantClass) + 1;
+
+    }
+
 }

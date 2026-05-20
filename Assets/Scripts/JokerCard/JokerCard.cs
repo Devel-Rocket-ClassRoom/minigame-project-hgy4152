@@ -8,5 +8,7 @@ public abstract class JokerCard : ScriptableObject
     public Sprite icon;
     public int rarity;
 
-    public abstract int GetBonus(ChainJudge judge);
+    public abstract int GetBonus(ChainJudge judge); // 그룹 보너스
+    public abstract float DeckBonus(ChainJudge judge); // 핸드 보너스
+
 }

@@ -31,7 +31,6 @@ public class StageManager : MonoBehaviour
     {
         if (enemy != null)
             enemy.OnDefeated += HandleEnemyDefeated;
-
     }
 
     void OnDisable()

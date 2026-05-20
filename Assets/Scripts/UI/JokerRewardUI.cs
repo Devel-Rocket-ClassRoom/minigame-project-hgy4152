@@ -90,6 +90,8 @@ public class JokerRewardUI : MonoBehaviour
         }
     }
 
+
+
     void ShowSelection(int idx)
     {
         for (int i = 0; i < selectFrames.Length; i++)

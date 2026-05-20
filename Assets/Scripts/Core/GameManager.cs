@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     GameObject clearTextObject;
 
     [SerializeField]
+    ModeClearUI modeClearUI;
+
+    [SerializeField]
     float stageClearDisplayDuration = 1.5f;
 
     [SerializeField]
@@ -86,8 +89,7 @@ public class GameManager : MonoBehaviour
     void HandleAllStagesCleared()
     {
         drawPhaseTimer.StopDrawPhase();
-        if (clearTextObject != null)
-            clearTextObject.SetActive(true);
+        modeClearUI?.Show();
     }
 
     void Settle()
@@ -139,11 +141,11 @@ public class GameManager : MonoBehaviour
             }
 
             int groupDmg = CalcGroupDamage(group);
-            groupDmg += judge.bossFlatBonus;
-            groupDmg = (int)(groupDmg * judge.bossDamageMultiplier);
+            groupDmg -= judge.bossFlatBonus;
+            groupDmg = Mathf.FloorToInt(groupDmg * (2 - judge.bossDamageMultiplier));
             groupDmg += groupBonus;
             groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
-            groupDmg = (int)(groupDmg * deckBonus);
+            groupDmg = Mathf.FloorToInt(groupDmg * deckBonus);
 
             boss.TakeDamage(groupDmg);
             blockManager.RemoveGroup(group);

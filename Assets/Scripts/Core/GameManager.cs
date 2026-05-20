@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     StageManager stageManager;
 
     [SerializeField]
+    BossPatternSystem bossPatternSystem;
+
+    [SerializeField]
     JokerRewardUI jokerRewardUI;
 
     [SerializeField]
@@ -97,6 +100,12 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
 
+        if (bossPatternSystem != null)
+        {
+            bossPatternSystem.Inject(judge);
+            bossPatternSystem.AdvanceTurn();
+        }
+
         StartCoroutine(PlayGroupSequence(groups, judge));
     }
 
@@ -129,8 +138,9 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            // 체인별 데미지 증가
             int groupDmg = CalcGroupDamage(group);
+            groupDmg += judge.bossFlatBonus;
+            groupDmg = (int)(groupDmg * judge.bossDamageMultiplier);
             groupDmg += groupBonus;
             groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
             groupDmg = (int)(groupDmg * deckBonus);

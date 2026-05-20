@@ -14,8 +14,10 @@ public class ChainJudge
     public int turnIndex;
     public int discardRemaining;
     public int[] prevChainCounts = new int[3];
-    public List<object> activeModifiers = new();
-    public object bossPattern;
+    public int bossFlatBonus;
+    public float bossDamageMultiplier = 1f;
+    public List<Modifier> activeModifiers = new();
+    public BossPattern bossPattern;
 
     public void IngestGroups(List<ChainGroup> groups)
     {
@@ -40,9 +42,9 @@ public class ChainJudge
             previousClass = g.DominantClass;
         }
     }
+
     public void IngestGroup(ChainGroup g)
     {
-
         if (g.Length == 1)
             chain1Count++;
         else if (g.Length == 2)
@@ -52,7 +54,5 @@ public class ChainJudge
 
         classDistribution[g.DominantClass] =
             classDistribution.GetValueOrDefault(g.DominantClass) + 1;
-
     }
-
 }

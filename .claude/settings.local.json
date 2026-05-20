@@ -22,7 +22,12 @@
       "PowerShell(Get-Process *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\hgy41\\\\UnityClass\\\\minigame-project-hgy4152\\\\Assets\\\\Scripts\" -Recurse -File)",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(git branch *)"
+      "Bash(git branch *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\UnityRepo\\\\minigame-project-hgy4152\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\UnityRepo\\\\minigame-project-hgy4152\" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 20 | ForEach-Object { $_.FullName })",
+      "Bash(Select-Object FullName)",
+      "Skill(update-config)"
     ]
   }
 }

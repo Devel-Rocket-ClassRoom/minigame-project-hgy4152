@@ -27,7 +27,10 @@
       "Bash(Select-Object -First 20)",
       "PowerShell(Get-ChildItem -Path \"D:\\\\UnityRepo\\\\minigame-project-hgy4152\" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 20 | ForEach-Object { $_.FullName })",
       "Bash(Select-Object FullName)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "mcp__unity-mcp__Unity_GetConsoleLogs",
+      "mcp__unity-mcp__Unity_RunCommand",
+      "Bash(git stash *)"
     ]
   }
 }

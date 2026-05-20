@@ -17,4 +17,4 @@ MonoBehaviour:
   description: "\uC218\uB828\uC7A5 \uC878\uC5C5\uC2EC\uC0AC\uB97C \uC704\uD55C \uC740\uC778\uD615"
   icon: {fileID: -9052378557628932334, guid: 69bffa0855a23f14f8ed414c71d2775f, type: 3}
   hp: 500
-  bossPattern: {fileID: 11400000, guid: 00893e99ed6b43945b051ff0b2ed2992, type: 2}
+  bossPattern: {fileID: 11400000, guid: ed2b6b330db06724baaf5dcabc05e0fa, type: 2}

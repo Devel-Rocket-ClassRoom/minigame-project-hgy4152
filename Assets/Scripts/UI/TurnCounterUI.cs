@@ -25,6 +25,6 @@ public class TurnCounterUI : MonoBehaviour
     void Refresh()
     {
         if (label != null)
-            label.text = $"TURN {bossPatternSystem.TurnIndex} / {maxTurns}";
+            label.text = $"TURN {bossPatternSystem.TurnIndex + 1} / {maxTurns}";
     }
 }

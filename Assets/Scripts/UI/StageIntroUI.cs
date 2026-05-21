@@ -11,6 +11,9 @@ public class StageIntroUI : MonoBehaviour
     TMP_Text introText;
 
     [SerializeField]
+    TMP_Text TurnText;
+
+    [SerializeField]
     TMP_Text stageText;
 
     [SerializeField]
@@ -18,6 +21,9 @@ public class StageIntroUI : MonoBehaviour
 
     [SerializeField]
     float introDuration = 2f;
+
+    [SerializeField]
+    float turnDisplayDuration = 1f;
 
     [SerializeField]
     StageManager stageManager;
@@ -58,5 +64,14 @@ public class StageIntroUI : MonoBehaviour
         yield return new WaitForSeconds(introDuration);
         panel.SetActive(false);
         gameManager.OnStageIntroComplete();
+    }
+
+    public IEnumerator ShowTurnRoutine(int turn, int maxTurns)
+    {
+        introText.text = $"TURN {turn} / {maxTurns}";
+        TurnText.text = $"TURN {turn} / {maxTurns}";
+        panel.SetActive(true);
+        yield return new WaitForSeconds(turnDisplayDuration);
+        panel.SetActive(false);
     }
 }

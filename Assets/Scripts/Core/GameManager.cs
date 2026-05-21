@@ -29,10 +29,16 @@ public class GameManager : MonoBehaviour
     JokerRewardUI jokerRewardUI;
 
     [SerializeField]
+    StageIntroUI stageIntroUI;
+
+    [SerializeField]
     GameObject clearTextObject;
 
     [SerializeField]
     ModeClearUI modeClearUI;
+
+    [SerializeField]
+    int maxTurns = 5;
 
     [SerializeField]
     float stageClearDisplayDuration = 1.5f;
@@ -42,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     bool _stageClearPending;
     bool _jokerRewardPending;
+    int _currentTurn;
 
     public bool IsPaused { get; private set; }
     public CharacterSet CharacterSet => characterSet;
@@ -52,6 +59,7 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.OnPhaseEnded += Settle;
         stageManager.OnStageClear += HandleStageClear;
         stageManager.OnAllStagesCleared += HandleAllStagesCleared;
+        stageManager.OnStageStart += HandleStageStart;
     }
 
     void OnDisable()
@@ -59,6 +67,7 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.OnPhaseEnded -= Settle;
         stageManager.OnStageClear -= HandleStageClear;
         stageManager.OnAllStagesCleared -= HandleAllStagesCleared;
+        stageManager.OnStageStart -= HandleStageStart;
     }
 
     void Start()
@@ -96,6 +105,19 @@ public class GameManager : MonoBehaviour
     public void BeginBattle()
     {
         SetPaused(false);
+        StartCoroutine(StartTurnRoutine());
+    }
+
+    void HandleStageStart(StageManager.StageEntry entry)
+    {
+        _currentTurn = 0;
+    }
+
+    IEnumerator StartTurnRoutine()
+    {
+        _currentTurn++;
+        if (stageIntroUI != null)
+            yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
         drawPhaseTimer.StartDrawPhase();
     }
 
@@ -194,7 +216,10 @@ public class GameManager : MonoBehaviour
         }
         else if (boss.IsAlive)
         {
-            drawPhaseTimer.StartDrawPhase();
+            if (_currentTurn >= maxTurns)
+                modeClearUI?.Show(this, "GAME OVER");
+            else
+                StartCoroutine(StartTurnRoutine());
         }
     }
 

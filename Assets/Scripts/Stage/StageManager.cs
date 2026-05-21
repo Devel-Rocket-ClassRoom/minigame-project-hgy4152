@@ -57,6 +57,11 @@ public class StageManager : MonoBehaviour
     public void AdvanceToNext()
     {
         currentIndex++;
+        if (currentIndex >= stages.Length)
+        {
+            OnAllStagesCleared?.Invoke();
+            return;
+        }
         StartStage();
     }
 }

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4933b97c4c03f2446834276db6bc5b40, type: 3}
   m_Name: Rogue 1
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  id: 
-  enemyName: 
+  id: Ch2_s1
+  enemyName: "\uC232\uC758 \uB3C4\uC801"
   description: 
-  icon: {fileID: 0}
-  hp: 0
+  icon: {fileID: 21300000, guid: e3e45a66f3c01c44bb57b9dd4162b614, type: 3}
+  hp: 600
   bossPattern: {fileID: 0}

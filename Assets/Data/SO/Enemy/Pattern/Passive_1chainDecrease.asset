@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Passive_1chainDecrease
   m_EditorClassIdentifier: Assembly-CSharp::Mod_Multiplier
   modName: "\uB274\uBE44 \uC808\uB2E8\uAE30"
-  description: "\"1\uCCB4\uC778 \uB370\uBBF8\uC9C0 30% \uAC10\uC18C\""
+  description: "1\uCCB4\uC778 \uB370\uBBF8\uC9C0 30% \uAC10\uC18C"
   factor: 1.3

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4933b97c4c03f2446834276db6bc5b40, type: 3}
   m_Name: Scavenger
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  id: 
-  enemyName: 
+  id: Ch2_s3
+  enemyName: "\uC2A4\uCE90\uBE48\uC838"
   description: 
-  icon: {fileID: 0}
-  hp: 0
-  bossPattern: {fileID: 0}
+  icon: {fileID: 21300000, guid: f6777e98f5f7eab4a8caf220fa45d867, type: 3}
+  hp: 1000
+  bossPattern: {fileID: 11400000, guid: 346f144fcef5ac74ba3e19efb753c462, type: 2}

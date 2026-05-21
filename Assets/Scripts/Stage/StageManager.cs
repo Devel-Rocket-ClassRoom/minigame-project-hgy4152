@@ -39,6 +39,7 @@ public class StageManager : MonoBehaviour
             enemy.OnDefeated -= HandleEnemyDefeated;
     }
 
+
     public void StartStage()
     {
         var entry = stages[currentIndex];
@@ -57,6 +58,11 @@ public class StageManager : MonoBehaviour
     public void AdvanceToNext()
     {
         currentIndex++;
+        if (currentIndex >= stages.Length)
+        {
+            OnAllStagesCleared?.Invoke();
+            return;
+        }
         StartStage();
     }
 }

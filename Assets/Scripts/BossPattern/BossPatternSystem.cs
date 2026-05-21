@@ -26,6 +26,7 @@ public class BossPatternSystem : MonoBehaviour
     {
         current = entry.enemyData != null ? entry.enemyData.bossPattern : null;
         turnIndex = 0;
+        OnInjected?.Invoke();
     }
 
     public void Inject(ChainJudge judge)

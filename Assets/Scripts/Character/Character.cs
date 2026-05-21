@@ -8,8 +8,12 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     BlockCreator creator;
 
+    [SerializeField]
+    Sprite icon;
+
     public abstract ClassType Type { get; }
     public BlockCreator Creator => creator;
+    public Sprite Icon => icon;
 
     public void PlayAttack() => anim.SetTrigger("Attack");
 

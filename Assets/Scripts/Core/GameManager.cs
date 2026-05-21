@@ -102,12 +102,15 @@ public class GameManager : MonoBehaviour
 
     public void SetPaused(bool paused) => IsPaused = paused;
 
+    // 데미지 표기 용
+    // 시퀀스랑 합쳐놓으면 턴 인덱스가 시작할 때 증가되기 때문에 2턴에 진행될 정보가 들어가서 틀려짐
     public int[] PreviewGroupDamages(List<ChainGroup> groups)
     {
         var judge = new ChainJudge();
         judge.IngestGroups(groups);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
+
         if (bossPatternSystem != null)
             bossPatternSystem.ApplyModifiers(judge);
         return CalcDamages(groups, judge);
@@ -216,8 +219,10 @@ public class GameManager : MonoBehaviour
         var damages = CalcDamages(groups, judge);
         for (int i = 0; i < groups.Count; i++)
         {
+            // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
             character?.PlayAttack();
+
             boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);
             yield return new WaitForSeconds(perGroupDelay);

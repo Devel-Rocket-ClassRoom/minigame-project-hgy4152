@@ -19,13 +19,15 @@ public class HandUI : MonoBehaviour
         for (int i = 0; i < groups.Count; i++)
         {
             var g = groups[i];
+            // 등록 및 중복체크 
             if (!seen.Add((g.DominantClass, g.Length)))
                 continue;
+
             var character = gameManager.CharacterSet?.GetCharacter(g.DominantClass);
             string hex =
                 character != null ? ColorUtility.ToHtmlStringRGB(character.classColor) : "FFFFFF";
             sb.AppendLine(
-                $"<color=#{hex}>[{g.Blocks[0].chainGroupId}] {g.DominantClass} x{g.Length} - {damages[i]}</color>"
+                $"<color=#{hex}>{g.DominantClass} x{g.Length} - {damages[i]}</color>"
             );
         }
         groupText.text = sb.ToString();

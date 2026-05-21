@@ -1,0 +1,1 @@
+C:\Users\hgy41\UnityClass\minigame-project-hgy4152\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\t5n5ku18\obj\arm64-v8a

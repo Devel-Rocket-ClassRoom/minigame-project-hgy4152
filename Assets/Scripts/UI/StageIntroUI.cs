@@ -11,6 +11,9 @@ public class StageIntroUI : MonoBehaviour
     TMP_Text introText;
 
     [SerializeField]
+    TMP_Text TurnText;
+
+    [SerializeField]
     TMP_Text stageText;
 
     [SerializeField]
@@ -66,8 +69,7 @@ public class StageIntroUI : MonoBehaviour
     public IEnumerator ShowTurnRoutine(int turn, int maxTurns)
     {
         introText.text = $"TURN {turn} / {maxTurns}";
-        chapterText.text = "";
-        stageText.text = "";
+        TurnText.text = $"TURN {turn} / {maxTurns}";
         panel.SetActive(true);
         yield return new WaitForSeconds(turnDisplayDuration);
         panel.SetActive(false);

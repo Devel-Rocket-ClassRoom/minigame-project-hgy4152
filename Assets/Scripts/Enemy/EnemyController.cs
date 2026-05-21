@@ -48,12 +48,12 @@ public class EnemyController : MonoBehaviour
         OnHpChanged?.Invoke(currentHp, maxHp);
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, Color color)
     {
         if (amount <= 0)
             return;
 
-        SpawnDamageText(amount);
+        SpawnDamageText(amount, color);
 
         if (!IsAlive)
             return;
@@ -66,12 +66,12 @@ public class EnemyController : MonoBehaviour
             OnDefeated?.Invoke();
     }
 
-    void SpawnDamageText(int amount)
+    void SpawnDamageText(int amount, Color color)
     {
         if (damageTextPrefab == null || damageSpawnRoot == null)
             return;
         var instance = Instantiate(damageTextPrefab, damageSpawnRoot);
         instance.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        instance.Show(amount);
+        instance.Show(amount, color);
     }
 }

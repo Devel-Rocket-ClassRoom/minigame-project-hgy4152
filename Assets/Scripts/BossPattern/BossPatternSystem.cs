@@ -29,16 +29,13 @@ public class BossPatternSystem : MonoBehaviour
         OnInjected?.Invoke();
     }
 
-    public void Inject(ChainJudge judge)
+    public void ApplyModifiers(ChainJudge judge)
     {
         judge.activeModifiers.Clear();
         judge.bossPattern = current;
         judge.turnIndex = turnIndex;
         if (current == null)
-        {
-            OnInjected?.Invoke();
             return;
-        }
 
         foreach (var m in current.passive)
             if (m != null)
@@ -53,6 +50,11 @@ public class BossPatternSystem : MonoBehaviour
 
         foreach (var m in judge.activeModifiers)
             m.Apply(judge);
+    }
+
+    public void Inject(ChainJudge judge)
+    {
+        ApplyModifiers(judge);
         OnInjected?.Invoke();
     }
 

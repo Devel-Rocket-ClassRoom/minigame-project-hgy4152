@@ -102,6 +102,53 @@ public class GameManager : MonoBehaviour
 
     public void SetPaused(bool paused) => IsPaused = paused;
 
+    // 데미지 표기 용
+    // 시퀀스랑 합쳐놓으면 턴 인덱스가 시작할 때 증가되기 때문에 2턴에 진행될 정보가 들어가서 틀려짐
+    public int[] PreviewGroupDamages(List<ChainGroup> groups)
+    {
+        var judge = new ChainJudge();
+        judge.IngestGroups(groups);
+        judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
+        judge.discardRemaining = blockManager.DiscardsRemaining;
+
+        if (bossPatternSystem != null)
+            bossPatternSystem.ApplyModifiers(judge);
+        return CalcDamages(groups, judge);
+    }
+
+    int[] CalcDamages(List<ChainGroup> groups, ChainJudge judge)
+    {
+        float deckBonus = 1f;
+        if (jokerManager != null)
+            foreach (var card in jokerManager.ActiveHand)
+                if (card != null)
+                    deckBonus *= card.DeckBonus(judge);
+
+        var result = new int[groups.Count];
+        for (int i = 0; i < groups.Count; i++)
+        {
+            var group = groups[i];
+            var character = characterSet?.GetCharacter(group.DominantClass);
+
+            var groupJudge = new ChainJudge();
+            groupJudge.IngestGroup(group);
+            int groupBonus = 0;
+            if (jokerManager != null)
+                foreach (var card in jokerManager.ActiveHand)
+                    if (card != null)
+                        groupBonus += card.GetBonus(groupJudge);
+
+            int dmg = CalcGroupDamage(group);
+            dmg -= judge.bossFlatBonus;
+            dmg += groupBonus;
+            dmg = Mathf.FloorToInt(dmg * (2 - judge.bossDamageMultiplier));
+            dmg = character?.ApplyPassive(judge, dmg) ?? dmg;
+            dmg = Mathf.FloorToInt(dmg * deckBonus);
+            result[i] = dmg;
+        }
+        return result;
+    }
+
     public void BeginBattle()
     {
         SetPaused(false);
@@ -132,7 +179,7 @@ public class GameManager : MonoBehaviour
     void HandleAllStagesCleared()
     {
         drawPhaseTimer.StopDrawPhase();
-        modeClearUI?.Show(this);
+        modeClearUI?.Show(this, Color.green);
     }
 
     public void OnStageIntroComplete()
@@ -169,42 +216,15 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge)
     {
-        float deckBonus = 1f;
-        if (jokerManager != null)
-            foreach (var card in jokerManager.ActiveHand)
-                if (card != null)
-                    deckBonus *= card.DeckBonus(judge);
-
-        foreach (var group in groups)
+        var damages = CalcDamages(groups, judge);
+        for (int i = 0; i < groups.Count; i++)
         {
-            // 애니메이션 재생
-            var character = characterSet?.GetCharacter(group.DominantClass);
+            // 애니메이션
+            var character = characterSet?.GetCharacter(groups[i].DominantClass);
             character?.PlayAttack();
 
-            // 그룹별 형태 조사 후 조커 카드 보너스 부여
-            var groupJudge = new ChainJudge();
-            groupJudge.IngestGroup(group);
-            int groupBonus = 0;
-            if (jokerManager != null)
-            {
-                foreach (var card in jokerManager.ActiveHand)
-                {
-                    if (card != null)
-                    {
-                        groupBonus += card.GetBonus(groupJudge);
-                    }
-                }
-            }
-
-            int groupDmg = CalcGroupDamage(group);
-            groupDmg -= judge.bossFlatBonus;
-            groupDmg = Mathf.FloorToInt(groupDmg * (2 - judge.bossDamageMultiplier));
-            groupDmg += groupBonus;
-            groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
-            groupDmg = Mathf.FloorToInt(groupDmg * deckBonus);
-
-            boss.TakeDamage(groupDmg);
-            blockManager.RemoveGroup(group);
+            boss.TakeDamage(damages[i], character.classColor);
+            blockManager.RemoveGroup(groups[i]);
             yield return new WaitForSeconds(perGroupDelay);
         }
 
@@ -217,7 +237,7 @@ public class GameManager : MonoBehaviour
         else if (boss.IsAlive)
         {
             if (_currentTurn >= maxTurns)
-                modeClearUI?.Show(this, "GAME OVER");
+                modeClearUI?.Show(this, Color.red, "게임 오버");
             else
                 StartCoroutine(StartTurnRoutine());
         }

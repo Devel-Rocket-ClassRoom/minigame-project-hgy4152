@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockManager : MonoBehaviour
@@ -8,6 +9,9 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     int discardLimit = 5;
     int _discardsUsed;
+    bool _swapPending;
+
+    public event Action OnDrawBlocked;
 
     [SerializeField]
     CharacterSet characterSet;
@@ -26,7 +30,14 @@ public class BlockManager : MonoBehaviour
     public Block DrawBlock()
     {
         if (hand.Count >= MaxHandSize)
+        {
+            if (!_swapPending)
+            {
+                _swapPending = true;
+                OnDrawBlocked?.Invoke();
+            }
             return null;
+        }
 
         int slotIndex = hand.Count;
         if (slots == null || slotIndex >= slots.Count || slots[slotIndex] == null)
@@ -55,6 +66,7 @@ public class BlockManager : MonoBehaviour
 
     public void Discard(Block block)
     {
+        _swapPending = false;
         int idx = hand.IndexOf(block);
         if (idx < 0)
             return;

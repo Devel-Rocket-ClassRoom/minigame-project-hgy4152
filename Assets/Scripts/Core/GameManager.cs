@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        _jokerRewardPending = true;
         stageManager.StartStage();
     }
 
@@ -79,7 +80,15 @@ public class GameManager : MonoBehaviour
             // 즉시 모드 클리어
             HandleAllStagesCleared();
         }
-
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            // 즉시 스테이지 클리어
+            // 스테이지 클리어 시 활성화 될 것들 확인
+            drawPhaseTimer.StopDrawPhase();
+            SetPaused(true);
+            _jokerRewardPending = true;
+            StartCoroutine(CheatStageClear());
+        }
     }
 
     public void SetPaused(bool paused) => IsPaused = paused;
@@ -196,6 +205,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(stageClearDisplayDuration);
         if (clearTextObject != null)
             clearTextObject.SetActive(false);
+    }
+
+    IEnumerator CheatStageClear()
+    {
+        yield return StartCoroutine(ShowStageClear());
+        stageManager.AdvanceToNext();
     }
 
     int CalcGroupDamage(ChainGroup group)

@@ -3,25 +3,29 @@ using UnityEngine;
 public class CharacterSet : MonoBehaviour
 {
     [SerializeField]
-    WarriorCharacter warriorCharacter;
-
-    [SerializeField]
-    ArcherCharacter archerCharacter;
-
-    [SerializeField]
-    PriestCharacter priestCharacter;
+    Character[] characterPrefabs;
 
     [SerializeField]
     protected Transform blockHand;
 
-    public Character GetCharacter(ClassType classType) =>
-        classType switch
+    Character[] instances;
+
+    void Awake()
+    {
+        instances = new Character[characterPrefabs.Length];
+        for (int i = 0; i < characterPrefabs.Length; i++)
         {
-            ClassType.Warrior => warriorCharacter,
-            ClassType.Archer => archerCharacter,
-            ClassType.Priest => priestCharacter,
-            _ => null,
-        };
+            instances[i] = Instantiate(characterPrefabs[i], transform);
+        }
+    }
+
+    public Character GetCharacter(ClassType classType)
+    {
+        foreach (var c in instances)
+            if (c.Type == classType)
+                return c;
+        return null;
+    }
 
     public Block CreateBlock(ClassType classType, Transform parent = null) =>
         GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);

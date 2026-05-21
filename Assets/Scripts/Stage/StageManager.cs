@@ -39,6 +39,7 @@ public class StageManager : MonoBehaviour
             enemy.OnDefeated -= HandleEnemyDefeated;
     }
 
+
     public void StartStage()
     {
         var entry = stages[currentIndex];

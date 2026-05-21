@@ -17,7 +17,7 @@ public class CardSwapUI : MonoBehaviour
     Image newCardImage;
 
     [SerializeField]
-    TextMeshProUGUI newCardName;
+    TextMeshProUGUI Text;
 
     System.Action<int> _onSlotPicked;
 
@@ -25,6 +25,9 @@ public class CardSwapUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(false);
+
+        if (Text != null)
+            Text.enabled = false;
     }
 
     public void Show(JokerCard[] currentHand, JokerCard newCard, System.Action<int> onSlotPicked)
@@ -41,8 +44,6 @@ public class CardSwapUI : MonoBehaviour
                 newCardImage.sprite = newCard.icon;
         }
 
-        if (newCardName != null && newCard != null)
-            newCardName.text = newCard.cardName;
 
         for (int i = 0; i < slotButtons.Length; i++)
         {
@@ -52,11 +53,15 @@ public class CardSwapUI : MonoBehaviour
         }
 
         panel.SetActive(true);
+        Text.enabled = true;
     }
 
     void OnSlotClicked(int idx)
     {
         panel.SetActive(false);
+        Text.enabled = false;
+        newCardImage.enabled = false;
+
         var cb = _onSlotPicked;
         _onSlotPicked = null;
         cb?.Invoke(idx);

@@ -98,6 +98,11 @@ public class GameManager : MonoBehaviour
             _jokerRewardPending = true;
             StartCoroutine(CheatStageClear());
         }
+        if(Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            // 턴 데미지 없이 넘기기
+            BeginBattle();
+        }
     }
 
     public void SetPaused(bool paused) => IsPaused = paused;

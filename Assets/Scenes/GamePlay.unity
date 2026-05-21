@@ -9206,9 +9206,9 @@ MonoBehaviour:
   titleText: {fileID: 225710805}
   restartButton: {fileID: 1151181405}
   characterIcons:
-  - {fileID: 1540054380}
-  - {fileID: 1418945243}
   - {fileID: 2109050953}
+  - {fileID: 1418945243}
+  - {fileID: 1540054380}
   jokerSlots:
   - {fileID: 1748565912}
   - {fileID: 1664241457}
@@ -14054,18 +14054,6 @@ MonoBehaviour:
     stage: 3
     isBoss: 1
     enemyData: {fileID: 11400000, guid: 1237d960b1aecde4994760c42570367d, type: 2}
-  - chapter: 0
-    stage: 0
-    isBoss: 0
-    enemyData: {fileID: 0}
-  - chapter: 0
-    stage: 0
-    isBoss: 0
-    enemyData: {fileID: 0}
-  - chapter: 0
-    stage: 0
-    isBoss: 0
-    enemyData: {fileID: 0}
   enemy: {fileID: 1753358849}
 --- !u!4 &1083830753
 Transform:

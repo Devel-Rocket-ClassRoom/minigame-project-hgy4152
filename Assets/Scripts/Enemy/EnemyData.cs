@@ -8,4 +8,5 @@ public class EnemyData : ScriptableObject
     public string description;
     public Sprite icon;
     public int hp;
+    public BossPattern bossPattern;
 }

@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4933b97c4c03f2446834276db6bc5b40, type: 3}
-  m_Name: Silver
+  m_Name: Scavenger
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  id: ch1_s3
-  enemyName: "\uC740\uC778\uD615"
-  description: "\uC218\uB828\uC7A5 \uC878\uC5C5\uC2EC\uC0AC\uB97C \uC704\uD55C \uC740\uC778\uD615"
-  icon: {fileID: -9052378557628932334, guid: 69bffa0855a23f14f8ed414c71d2775f, type: 3}
-  hp: 500
+  id: 
+  enemyName: 
+  description: 
+  icon: {fileID: 0}
+  hp: 0
+  bossPattern: {fileID: 0}

@@ -8120,11 +8120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JokerManager
   handUI: {fileID: 1684222076}
   activeHand:
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &650838005
 Transform:
   m_ObjectHideFlags: 0
@@ -21714,7 +21714,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92a48090f9e88704d8a4ed89ced1a66f, type: 2}
   - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
   jokerManager: {fileID: 650838004}
-  stageManager: {fileID: 1083830752}
   gameManager: {fileID: 142566053}
   cardSwapUI: {fileID: 2024221347}
 --- !u!224 &1790308777 stripped

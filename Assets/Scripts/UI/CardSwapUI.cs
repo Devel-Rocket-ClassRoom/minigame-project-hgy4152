@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardSwapUI : MonoBehaviour
 {
@@ -7,42 +8,62 @@ public class CardSwapUI : MonoBehaviour
     GameObject panel;
 
     [SerializeField]
-    BlockManager blockManager;
+    JokerCardSlotUI[] handSlots;
 
     [SerializeField]
-    TMP_Text promptText;
+    Button[] slotButtons;
 
-    void OnEnable()
-    {
-        blockManager.OnDrawBlocked += Show;
-    }
+    [SerializeField]
+    Image newCardImage;
 
-    void OnDisable()
-    {
-        blockManager.OnDrawBlocked -= Show;
-    }
+    [SerializeField]
+    TextMeshProUGUI Text;
+
+    System.Action<int> _onSlotPicked;
 
     void Awake()
     {
-        if (panel != null) panel.SetActive(false);
+        if (panel != null)
+            panel.SetActive(false);
+
+        if (Text != null)
+            Text.enabled = false;
     }
 
-    void Show()
+    public void Show(JokerCard[] currentHand, JokerCard newCard, System.Action<int> onSlotPicked)
     {
-        if (panel != null) panel.SetActive(true);
-        if (promptText != null) promptText.text = "버릴 카드를 선택하세요";
+        _onSlotPicked = onSlotPicked;
 
-        foreach (var block in blockManager.hand)
-            block.OnDiscardRequested = OnCardSelected;
+        for (int i = 0; i < handSlots.Length; i++)
+            handSlots[i].Refresh(i < currentHand.Length ? currentHand[i] : null);
+
+        if (newCardImage != null)
+        {
+            newCardImage.enabled = newCard != null;
+            if (newCard != null)
+                newCardImage.sprite = newCard.icon;
+        }
+
+
+        for (int i = 0; i < slotButtons.Length; i++)
+        {
+            int idx = i;
+            slotButtons[i].onClick.RemoveAllListeners();
+            slotButtons[i].onClick.AddListener(() => OnSlotClicked(idx));
+        }
+
+        panel.SetActive(true);
+        Text.enabled = true;
     }
 
-    void OnCardSelected(Block block)
+    void OnSlotClicked(int idx)
     {
-        if (panel != null) panel.SetActive(false);
+        panel.SetActive(false);
+        Text.enabled = false;
+        newCardImage.enabled = false;
 
-        foreach (var b in blockManager.hand)
-            b.OnDiscardRequested = blockManager.Discard;
-
-        blockManager.Discard(block);
+        var cb = _onSlotPicked;
+        _onSlotPicked = null;
+        cb?.Invoke(idx);
     }
 }

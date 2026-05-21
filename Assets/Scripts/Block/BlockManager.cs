@@ -25,7 +25,7 @@ public class BlockManager : MonoBehaviour
     public List<Block> hand = new();
     public bool IsHandFull => hand.Count >= MaxHandSize;
 
-    static readonly ClassType[] _allTypes = (ClassType[])System.Enum.GetValues(typeof(ClassType));
+    static readonly ClassType[] _allTypes = (ClassType[])Enum.GetValues(typeof(ClassType));
 
     public Block DrawBlock()
     {
@@ -46,7 +46,7 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        ClassType classType = _allTypes[Random.Range(1, _allTypes.Length)];
+        ClassType classType = _allTypes[UnityEngine.Random.Range(1, _allTypes.Length)];
         Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
 
         if (block == null)
@@ -81,7 +81,7 @@ public class BlockManager : MonoBehaviour
         {
             slots[i + 1].Clear();
             bool isLast = i == hand.Count - 1;
-            slots[i].ShiftBlock(hand[i], isLast ? (System.Action)RefreshConnectors : null);
+            slots[i].ShiftBlock(hand[i], isLast ? RefreshConnectors : null);
         }
 
         // 체인 그룹 재배정 (idx부터 끝까지)

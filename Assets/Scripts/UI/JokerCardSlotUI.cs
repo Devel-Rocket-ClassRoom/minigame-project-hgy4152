@@ -5,27 +5,27 @@ using UnityEngine.UI;
 public class JokerCardSlotUI : MonoBehaviour
 {
     Image icon;
-    TextMeshProUGUI cardName;
 
     void Awake()
     {
-        icon = GetComponentInChildren<Image>();
-        cardName = GetComponentInChildren<TextMeshProUGUI>();
+        icon = GetComponentInChildren<Image>(true);
     }
 
     public void Refresh(JokerCard card)
     {
+        if (icon == null)
+            icon = GetComponentInChildren<Image>(true);
+
+        if (icon == null)
+            return;
+
         if (card == null)
         {
             icon.enabled = false;
-            cardName.text = string.Empty;
             return;
         }
 
         icon.enabled = true;
-        cardName.enabled = true;
-
         icon.sprite = card.icon;
-        cardName.text = card.cardName;
     }
 }

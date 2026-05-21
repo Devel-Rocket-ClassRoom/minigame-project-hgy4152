@@ -33,9 +33,6 @@ public class JokerRewardUI : MonoBehaviour
     JokerManager jokerManager;
 
     [SerializeField]
-    StageManager stageManager;
-
-    [SerializeField]
     GameManager gameManager;
 
     [SerializeField]
@@ -160,8 +157,7 @@ public class JokerRewardUI : MonoBehaviour
 
     void FinishReward()
     {
-        gameManager.SetPaused(false);
-        stageManager.AdvanceToNext();
+        gameManager.BeginBattle();
     }
 
     int FindEmptySlot()

@@ -41,8 +41,11 @@ public class GameManager : MonoBehaviour
     float perGroupDelay = 0.4f;
 
     bool _stageClearPending;
+    bool _jokerRewardPending;
 
     public bool IsPaused { get; private set; }
+    public CharacterSet CharacterSet => characterSet;
+    public JokerManager JokerManager => jokerManager;
 
     void OnEnable()
     {
@@ -65,10 +68,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // 치트키
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            // 조커 획득
             jokerRewardUI.Show();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            // 즉시 모드 클리어
+            HandleAllStagesCleared();
+        }
+
     }
 
     public void SetPaused(bool paused) => IsPaused = paused;
@@ -84,12 +95,26 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.StopDrawPhase();
         SetPaused(true);
         _stageClearPending = true;
+        _jokerRewardPending = true;
     }
 
     void HandleAllStagesCleared()
     {
         drawPhaseTimer.StopDrawPhase();
-        modeClearUI?.Show();
+        modeClearUI?.Show(this);
+    }
+
+    public void OnStageIntroComplete()
+    {
+        if (_jokerRewardPending)
+        {
+            _jokerRewardPending = false;
+            jokerRewardUI.Show();
+        }
+        else
+        {
+            BeginBattle();
+        }
     }
 
     void Settle()
@@ -156,7 +181,7 @@ public class GameManager : MonoBehaviour
         {
             _stageClearPending = false;
             yield return StartCoroutine(ShowStageClear());
-            jokerRewardUI.Show();
+            stageManager.AdvanceToNext();
         }
         else if (boss.IsAlive)
         {

@@ -37,7 +37,8 @@ public class StageIntroUI : MonoBehaviour
 
     void Awake()
     {
-        if (panel != null) panel.SetActive(false);
+        if (panel != null)
+            panel.SetActive(false);
     }
 
     void HandleStageStart(StageManager.StageEntry entry)
@@ -56,6 +57,6 @@ public class StageIntroUI : MonoBehaviour
     {
         yield return new WaitForSeconds(introDuration);
         panel.SetActive(false);
-        gameManager.BeginBattle();
+        gameManager.OnStageIntroComplete();
     }
 }

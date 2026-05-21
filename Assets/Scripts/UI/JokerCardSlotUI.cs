@@ -13,6 +13,12 @@ public class JokerCardSlotUI : MonoBehaviour
 
     public void Refresh(JokerCard card)
     {
+        if (icon == null)
+            icon = GetComponentInChildren<Image>(true);
+
+        if (icon == null)
+            return;
+
         if (card == null)
         {
             icon.enabled = false;
@@ -20,7 +26,6 @@ public class JokerCardSlotUI : MonoBehaviour
         }
 
         icon.enabled = true;
-
         icon.sprite = card.icon;
     }
 }

@@ -35,9 +35,6 @@ public class GameManager : MonoBehaviour
     ModeClearUI modeClearUI;
 
     [SerializeField]
-    GameOverUI gameOverUI;
-
-    [SerializeField]
     int maxTurns = 5;
 
     [SerializeField]
@@ -201,7 +198,7 @@ public class GameManager : MonoBehaviour
         else if (boss.IsAlive)
         {
             if (bossPatternSystem != null && bossPatternSystem.TurnIndex >= maxTurns)
-                gameOverUI?.Show();
+                modeClearUI?.Show(this, "GAME OVER");
             else
                 drawPhaseTimer.StartDrawPhase();
         }

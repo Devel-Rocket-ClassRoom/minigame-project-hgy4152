@@ -1,10 +1,18 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ModeClearUI : MonoBehaviour
 {
     [SerializeField]
     GameObject panel;
+
+    [SerializeField]
+    TMP_Text titleText;
+
+    [SerializeField]
+    Button restartButton;
 
     [SerializeField]
     Image[] characterIcons = new Image[3];
@@ -23,10 +31,17 @@ public class ModeClearUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(false);
+        if (restartButton != null)
+            restartButton.onClick.AddListener(() =>
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex)
+            );
     }
 
-    public void Show(GameManager gameManager)
+    public void Show(GameManager gameManager, string title = "MODE CLEAR")
     {
+        if (titleText != null)
+            titleText.text = title;
+
         var charSet = gameManager.CharacterSet;
         for (int i = 0; i < DisplayOrder.Length; i++)
         {

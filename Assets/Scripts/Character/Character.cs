@@ -18,5 +18,7 @@ public abstract class Character : MonoBehaviour
 
     public void PlayAttack() => anim.SetTrigger("Attack");
 
-    public virtual int ApplyPassive(ChainJudge judge, int damage) => damage;
+    public virtual void PlaySkillEffect(int chainCount) { }
+
+    public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 }

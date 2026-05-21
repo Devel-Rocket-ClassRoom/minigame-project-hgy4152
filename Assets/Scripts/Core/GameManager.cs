@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
             dmg -= judge.bossFlatBonus;
             dmg += groupBonus;
             dmg = Mathf.FloorToInt(dmg * (2 - judge.bossDamageMultiplier));
-            dmg = character?.ApplyPassive(judge, dmg) ?? dmg;
+            dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
             dmg = Mathf.FloorToInt(dmg * deckBonus);
             result[i] = dmg;
         }
@@ -227,6 +227,7 @@ public class GameManager : MonoBehaviour
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
             character?.PlayAttack();
+            character?.PlaySkillEffect(groups[i].Length);
 
             boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);

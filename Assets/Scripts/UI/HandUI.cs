@@ -8,11 +8,26 @@ public class HandUI : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI groupText;
 
+    [SerializeField]
+    GameManager gameManager;
+
     public void Refresh(List<ChainGroup> groups)
     {
         var sb = new StringBuilder();
-        foreach (var g in groups)
-            sb.AppendLine($"[{g.Blocks[0].chainGroupId}] {g.DominantClass} x{g.Length}");
+        var damages = gameManager.PreviewGroupDamages(groups);
+        var seen = new HashSet<(ClassType, int)>();
+        for (int i = 0; i < groups.Count; i++)
+        {
+            var g = groups[i];
+            if (!seen.Add((g.DominantClass, g.Length)))
+                continue;
+            var character = gameManager.CharacterSet?.GetCharacter(g.DominantClass);
+            string hex =
+                character != null ? ColorUtility.ToHtmlStringRGB(character.classColor) : "FFFFFF";
+            sb.AppendLine(
+                $"<color=#{hex}>[{g.Blocks[0].chainGroupId}] {g.DominantClass} x{g.Length} - {damages[i]}</color>"
+            );
+        }
         groupText.text = sb.ToString();
     }
 }

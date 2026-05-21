@@ -12,6 +12,7 @@ public abstract class Character : MonoBehaviour
     Sprite icon;
 
     public abstract ClassType Type { get; }
+    public abstract Color classColor { get; }
     public BlockCreator Creator => creator;
     public Sprite Icon => icon;
 

@@ -13,9 +13,10 @@ public class FloatingDamageText : MonoBehaviour
     [SerializeField]
     float rise = 80f;
 
-    public void Show(int amount)
+    public void Show(int amount, Color color)
     {
         label.text = amount.ToString();
+        label.color = color;
         StartCoroutine(Float());
     }
 

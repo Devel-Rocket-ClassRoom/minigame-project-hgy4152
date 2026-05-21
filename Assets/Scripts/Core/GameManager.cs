@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
     void HandleAllStagesCleared()
     {
         drawPhaseTimer.StopDrawPhase();
-        modeClearUI?.Show(this);
+        modeClearUI?.Show(this, Color.green);
     }
 
     public void OnStageIntroComplete()
@@ -198,8 +198,8 @@ public class GameManager : MonoBehaviour
 
             int groupDmg = CalcGroupDamage(group);
             groupDmg -= judge.bossFlatBonus;
-            groupDmg = Mathf.FloorToInt(groupDmg * (2 - judge.bossDamageMultiplier));
             groupDmg += groupBonus;
+            groupDmg = Mathf.FloorToInt(groupDmg * (2 - judge.bossDamageMultiplier));
             groupDmg = character?.ApplyPassive(judge, groupDmg) ?? groupDmg;
             groupDmg = Mathf.FloorToInt(groupDmg * deckBonus);
 
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
         else if (boss.IsAlive)
         {
             if (_currentTurn >= maxTurns)
-                modeClearUI?.Show(this, "GAME OVER");
+                modeClearUI?.Show(this, Color.red, "게임 오버");
             else
                 StartCoroutine(StartTurnRoutine());
         }

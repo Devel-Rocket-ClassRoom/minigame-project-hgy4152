@@ -37,10 +37,13 @@ public class ModeClearUI : MonoBehaviour
             );
     }
 
-    public void Show(GameManager gameManager, string title = "MODE CLEAR")
+    public void Show(GameManager gameManager, Color color, string title = "모험 완료")
     {
         if (titleText != null)
+        {
             titleText.text = title;
+            titleText.color = color;
+        }
 
         var charSet = gameManager.CharacterSet;
         for (int i = 0; i < DisplayOrder.Length; i++)

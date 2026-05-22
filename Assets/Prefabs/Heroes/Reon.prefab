@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3059709565305514277}
   - component: {fileID: 6437507022374874377}
   - component: {fileID: 1441075468376229531}
+  - component: {fileID: 5477197007614495793}
   m_Layer: 0
   m_Name: Reon
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   anim: {fileID: 1441075468376229531}
   creator: {fileID: 6437507022374874377}
   icon: {fileID: 21300000, guid: 1520551423f5c474d833b254dcfe7d1a, type: 3}
+  skill: {fileID: 5477197007614495793}
 --- !u!114 &6437507022374874377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,3 +147,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5477197007614495793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8269467986108667068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e6752293d86874580c827ee2e102ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WarriorSkill
+  effectPrefab: {fileID: 5085636098222641073, guid: 30136f9e7f57a8c4abded64e562a3a40, type: 3}
+  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}

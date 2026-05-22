@@ -13,6 +13,8 @@ public class ChainJudge
     public float remainingTimeRatio;
     public int turnIndex;
     public int discardRemaining;
+    public int discardUsed;
+    public int bossMaxHp;
     public int[] prevChainCounts = new int[3];
     public int bossFlatBonus;
     public float bossDamageMultiplier = 1f;

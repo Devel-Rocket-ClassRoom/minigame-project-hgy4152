@@ -93,6 +93,7 @@ public class BlockManager : MonoBehaviour
     }
 
     public int DiscardsRemaining => Mathf.Max(0, discardLimit - _discardsUsed);
+    public int DiscardsUsed => _discardsUsed;
 
     public void ResetDiscardCount() => _discardsUsed = 0;
 

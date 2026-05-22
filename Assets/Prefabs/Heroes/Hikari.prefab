@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4972757418016788864}
   - component: {fileID: 5598690412530539374}
   - component: {fileID: 995628499764311731}
+  - component: {fileID: 9041249986455009890}
   m_Layer: 0
   m_Name: Hikari
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   anim: {fileID: 995628499764311731}
   creator: {fileID: 5598690412530539374}
   icon: {fileID: 21300000, guid: 183bce3ec6fe2ca4a91e57b5171b2de4, type: 3}
+  skill: {fileID: 9041249986455009890}
 --- !u!114 &5598690412530539374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,3 +147,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9041249986455009890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3938667083484446728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91dc9c83073f2564888b3c0de93c94ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArcherSkill
+  effectPrefab: {fileID: 4176732619518356672, guid: 7c42660ab7d10c444a9f4fd982f4ace6, type: 3}
+  moveDuration: 0.2

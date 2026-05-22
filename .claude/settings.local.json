@@ -37,7 +37,9 @@
       "Bash(git commit *)",
       "Bash(git rm *)",
       "Bash(gh milestone *)",
-      "Bash(gh api *)"
+      "Bash(gh api *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\hgy41\\\\UnityClass\\\\minigame-project-hgy4152\\\\Assets\\\\Scripts\" -Directory)",
+      "Bash(Select-Object Name)"
     ]
   }
 }

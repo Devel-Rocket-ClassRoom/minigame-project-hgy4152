@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/EnemyData")]
-public class EnemyData : ScriptableObject
+public class EnemyData : ScriptableObject, IDisplayable
 {
     public string id;
     public string enemyName;
@@ -9,4 +9,8 @@ public class EnemyData : ScriptableObject
     public Sprite icon;
     public int hp;
     public BossPattern bossPattern;
+
+    public string Id => id;
+    public string DisplayName => enemyName;
+    string IDisplayable.Description => description;
 }

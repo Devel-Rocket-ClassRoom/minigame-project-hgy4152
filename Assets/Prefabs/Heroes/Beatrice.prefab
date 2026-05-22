@@ -160,4 +160,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PriestSkill
   effectPrefab: {fileID: 6183797451724450189, guid: 96002f8a12232e54da2335f5d9f8e56a, type: 3}
-  descendOffset: {x: 0, y: 3, z: 0}
+  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}

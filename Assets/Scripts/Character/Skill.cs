@@ -5,6 +5,9 @@ public abstract class Skill : MonoBehaviour
     [SerializeField]
     protected GameObject effectPrefab;
 
+    public Transform target;
+    public Vector3 testPos => target.position;
+
     public abstract void Chain1(Vector3 targetPos, float scaleFactor);
     public abstract void Chain2(Vector3 targetPos, float scaleFactor);
     public abstract void Chain3(Vector3 targetPos, float scaleFactor);

@@ -16,12 +16,6 @@ public class DrawPhaseTimer : MonoBehaviour
         blockManager = GetComponent<BlockManager>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            StopCoroutine(DrawPhaseRoutine());
-    }
-
     public event Action OnPhaseEnded;
 
     Coroutine _phaseCoroutine;
@@ -31,6 +25,12 @@ public class DrawPhaseTimer : MonoBehaviour
 
     public float RemainingRatio =>
         _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / PhaseDuration) : 0f;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            StopDrawPhase();
+    }
 
     public void StartDrawPhase()
     {

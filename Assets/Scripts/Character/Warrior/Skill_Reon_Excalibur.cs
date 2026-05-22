@@ -10,9 +10,6 @@ public class Skill_Reon_Excalibur : Skill
     [SerializeField]
     float moveDuration = 0.15f;
 
-    public Transform target;
-    public Vector3 testPos => target.position;
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))

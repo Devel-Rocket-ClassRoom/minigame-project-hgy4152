@@ -160,4 +160,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherSkill
   effectPrefab: {fileID: 4176732619518356672, guid: 7c42660ab7d10c444a9f4fd982f4ace6, type: 3}
+  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
   moveDuration: 0.2

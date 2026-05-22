@@ -1,7 +1,9 @@
 {
     "name": "TableTests",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "Assembly-CSharp"
+    ],
     "includePlatforms": [
         "Editor"
     ],

@@ -6,6 +6,7 @@ public class TableRegistry : ScriptableObject
     public BlockTable Block;
     public JokerCardTable JokerCard;
     public EnemyTable Enemy;
+    public CharacterTable Character;
 
     private static TableRegistry _instance;
     public static TableRegistry Instance =>

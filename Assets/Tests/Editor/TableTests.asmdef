@@ -2,7 +2,7 @@
     "name": "TableTests",
     "rootNamespace": "",
     "references": [
-        "Assembly-CSharp"
+        "ChainKnights"
     ],
     "includePlatforms": [
         "Editor"

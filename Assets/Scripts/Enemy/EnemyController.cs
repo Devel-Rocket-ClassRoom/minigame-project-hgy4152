@@ -54,6 +54,7 @@ public class EnemyController : MonoBehaviour
             return;
 
         SpawnDamageText(amount, color);
+        PlayHitEffect(amount);
 
         if (!IsAlive)
             return;
@@ -65,6 +66,8 @@ public class EnemyController : MonoBehaviour
         if (currentHp == 0)
             OnDefeated?.Invoke();
     }
+
+    protected virtual void PlayHitEffect(int damage) { }
 
     void SpawnDamageText(int amount, Color color)
     {

@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
             _jokerRewardPending = true;
             StartCoroutine(CheatStageClear());
         }
-        if(Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             // 턴 데미지 없이 넘기기
             BeginBattle();
@@ -115,6 +115,9 @@ public class GameManager : MonoBehaviour
         judge.IngestGroups(groups);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
+
+        judge.discardUsed = blockManager.DiscardsUsed;
+        judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
             bossPatternSystem.ApplyModifiers(judge);
@@ -147,7 +150,7 @@ public class GameManager : MonoBehaviour
             dmg -= judge.bossFlatBonus;
             dmg += groupBonus;
             dmg = Mathf.FloorToInt(dmg * (2 - judge.bossDamageMultiplier));
-            dmg = character?.ApplyPassive(judge, dmg) ?? dmg;
+            dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
             dmg = Mathf.FloorToInt(dmg * deckBonus);
             result[i] = dmg;
         }
@@ -209,6 +212,8 @@ public class GameManager : MonoBehaviour
         judge.IngestGroups(groups);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
+        judge.discardUsed = blockManager.DiscardsUsed;
+        judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
         {
@@ -227,6 +232,7 @@ public class GameManager : MonoBehaviour
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
             character?.PlayAttack();
+            character?.PlaySkillEffect(groups[i].Length, boss.transform.position);
 
             boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);

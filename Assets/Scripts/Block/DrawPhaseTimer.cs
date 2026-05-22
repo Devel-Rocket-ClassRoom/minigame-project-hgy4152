@@ -26,9 +26,10 @@ public class DrawPhaseTimer : MonoBehaviour
     public float RemainingRatio =>
         _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / PhaseDuration) : 0f;
 
-    void Start()
+    void Update()
     {
-        // Startup driven by GameManager.BeginBattle() via StageIntroUI
+        if (Input.GetKeyDown(KeyCode.Space))
+            StopDrawPhase();
     }
 
     public void StartDrawPhase()

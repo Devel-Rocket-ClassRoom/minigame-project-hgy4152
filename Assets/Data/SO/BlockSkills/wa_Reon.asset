@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: wa_Reon
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
   id: wa1
+  displayName: "\uC131\uAC80 \uC18C\uD658"
+  description: "\uC131\uAC80 \"\uC5D1\uC2A4\uCE7C\uB9AC\uBC84\"\uB97C \uC18C\uD658\uD574\uC11C
+    \uACF5\uACA9\uD55C\uB2E4."
   icon: {fileID: 1964829391883163220, guid: 884326cd716df54498ad4f0c736b3c5f, type: 3}
   attackPower: 10
-  animationClip: {fileID: 0}
   ownerClass: 1
   blockColor: {r: 0.86666673, g: 0.06666667, b: 0, a: 1}

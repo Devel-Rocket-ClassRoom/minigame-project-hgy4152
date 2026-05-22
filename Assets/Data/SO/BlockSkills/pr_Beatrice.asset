@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: pr_Beatrice
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
   id: pr1
+  displayName: "\uC2EC\uD310\uC758 \uBE5B"
+  description: "\uBE5B\uC758 \uD798\uC73C\uB85C \uC801\uB4E4\uC744 \uC2EC\uD310\uD55C\uB2E4."
   icon: {fileID: -6905186287862360458, guid: fcca18dd0823def4b8ae7967f7250883, type: 3}
   attackPower: 10
-  animationClip: {fileID: 0}
   ownerClass: 3
   blockColor: {r: 0.49411768, g: 0.79215693, b: 0.0627451, a: 1}

@@ -18,15 +18,19 @@ public class CharacterSlotUI : MonoBehaviour
     {
         Character = character;
         IsInParty = isInParty;
-        
+
         if (portrait != null && character.Icon != null)
             portrait.sprite = character.Icon;
-            
+
         if (inPartyLbl != null)
         {
-            inPartyLbl.text = "출전 중";
+            inPartyLbl.text = "장착중";
+            inPartyLbl.gameObject.SetActive(true);
         }
-        
+
+        if (partyOverlay != null)
+            partyOverlay.SetActive(isInParty);
+
         UpdateState(false);
     }
 
@@ -34,9 +38,6 @@ public class CharacterSlotUI : MonoBehaviour
     {
         if (highlight != null)
             highlight.SetActive(isSelected);
-            
-        if (partyOverlay != null)
-            partyOverlay.SetActive(isSelected && IsInParty);
     }
 
     public void OnClick()

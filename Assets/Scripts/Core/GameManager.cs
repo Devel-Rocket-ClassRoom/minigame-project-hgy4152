@@ -81,6 +81,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (AdventurePartyContext.PendingCharacterIds != null)
+            characterSet.SetCharactersByIds(AdventurePartyContext.PendingCharacterIds);
+
         _jokerRewardPending = true;
         stageManager.StartStage();
     }

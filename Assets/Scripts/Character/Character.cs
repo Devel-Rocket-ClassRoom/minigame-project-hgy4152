@@ -14,8 +14,15 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     Skill skill;
 
-    public abstract ClassType Type { get; }
-    public abstract Color classColor { get; }
+    public string characterName;
+
+    [TextArea]
+    public string passiveDescription;
+
+    public string CharacterName => characterName;
+    public string PassiveDescription => passiveDescription;
+public abstract ClassType Type { get; }
+public abstract Color classColor { get; }
     public BlockCreator Creator => creator;
     public Sprite Icon => icon;
 

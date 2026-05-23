@@ -1,16 +1,14 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
 
 public class AdventureReadyUI : MonoBehaviour
 {
     [Header("Character List")]
     public Transform gridContent;
     public CharacterSlotUI slotPrefab;
-    public List<Character> availableCharacters;
 
     [Header("Top Party Slots")]
     public Image[] partyPortraits;
@@ -38,30 +36,41 @@ public class AdventureReadyUI : MonoBehaviour
         }
         slots.Clear();
 
-        // Normally you'd get this from a SaveManager or CharacterManager
-        // For now, use the serialized list
-        foreach (var charPrefab in availableCharacters)
+        var table = TableRegistry.Instance?.Character;
+        if (table == null)
         {
+            Debug.LogWarning("[AdventureReadyUI] CharacterTable을 찾을 수 없어 목록 생성을 건너뜁니다.");
+            return;
+        }
+
+        // TODO: 소유 캐릭터 시스템 도입 시 여기서 필터링
+        foreach (var def in table.All)
+        {
+            if (def == null || def.prefab == null)
+                continue;
+
             var slotGo = Instantiate(slotPrefab, gridContent);
             var slotUI = slotGo.GetComponent<CharacterSlotUI>();
-            
-            // Dummy check for party (e.g. first 2 are in party)
-            bool inParty = currentParty.Count < 2; 
-            if (inParty) currentParty.Add(charPrefab);
 
-            slotUI.Setup(charPrefab, inParty);
+            // Dummy check for party (e.g. first 2 are in party) — Part24-3에서 정리 예정
+            bool inParty = currentParty.Count < 2;
+            if (inParty)
+                currentParty.Add(def.prefab);
+
+            slotUI.Setup(def.prefab, inParty);
             slotUI.OnSelected = HandleSlotSelected;
             slots.Add(slotUI);
-            
+
             // Setup Button component if missing
             var btn = slotGo.GetComponent<Button>();
-            if (btn == null) btn = slotGo.gameObject.AddComponent<Button>();
+            if (btn == null)
+                btn = slotGo.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(slotUI.OnClick);
-}
+        }
 
         if (slots.Count > 0)
             HandleSlotSelected(slots[0]);
-            
+
         UpdatePartyDisplay();
     }
 
@@ -78,12 +87,16 @@ public class AdventureReadyUI : MonoBehaviour
 
     private void UpdateInfoPanel(Character character)
     {
-        if (infoName != null) infoName.text = character.CharacterName;
-        if (infoClass != null) infoClass.text = character.Type.ToString();
-        if (infoPassiveDesc != null) infoPassiveDesc.text = character.PassiveDescription;
-        
+        if (infoName != null)
+            infoName.text = character.CharacterName;
+        if (infoClass != null)
+            infoClass.text = character.Type.ToString();
+        if (infoPassiveDesc != null)
+            infoPassiveDesc.text = character.PassiveDescription;
+
         // Hide stats, show passive instead
-        if (infoPassiveDesc != null) infoPassiveDesc.gameObject.SetActive(true);
+        if (infoPassiveDesc != null)
+            infoPassiveDesc.gameObject.SetActive(true);
     }
 
     private void UpdatePartyDisplay()
@@ -103,5 +116,6 @@ public class AdventureReadyUI : MonoBehaviour
     }
 
     public void OnPlayClicked() => GameStateMachine.Instance.TransitionTo(GameState.Adventure);
+
     public void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

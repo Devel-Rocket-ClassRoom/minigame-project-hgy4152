@@ -9,19 +9,19 @@ public class AdventureReadyUI : MonoBehaviour
     [Header("Character List")]
     public Transform gridContent;
     public CharacterSlotUI slotPrefab;
-    public List<Character> availableCharacters;
 
     [Header("Top Party Slots")]
     public Image[] partyPortraits;
 
     [Header("Info Panel")]
+    public Image infoIcon;
     public TextMeshProUGUI infoName;
     public TextMeshProUGUI infoPassiveDesc;
     public TextMeshProUGUI infoClass;
 
     private List<CharacterSlotUI> slots = new List<CharacterSlotUI>();
     private CharacterSlotUI selectedSlot;
-    private List<Character> currentParty = new List<Character>();
+    private List<CharacterDef> currentParty = new List<CharacterDef>();
 
     private void Start()
     {
@@ -37,19 +37,30 @@ public class AdventureReadyUI : MonoBehaviour
         }
         slots.Clear();
 
-        // Normally you'd get this from a SaveManager or CharacterManager
-        // For now, use the serialized list
-        foreach (var charPrefab in availableCharacters)
+        var table = TableRegistry.Instance?.Character;
+        if (table == null)
         {
+            Debug.LogWarning(
+                "[AdventureReadyUI] CharacterTable을 찾을 수 없어 목록 생성을 건너뜁니다."
+            );
+            return;
+        }
+
+        // TODO: 소유 캐릭터 시스템 도입 시 여기서 필터링
+        foreach (var def in table.All)
+        {
+            if (def == null)
+                continue;
+
             var slotGo = Instantiate(slotPrefab, gridContent);
             var slotUI = slotGo.GetComponent<CharacterSlotUI>();
 
-            // Dummy check for party (e.g. first 2 are in party)
+            // Dummy check for party (e.g. first 2 are in party) — Part24-5에서 정리 예정
             bool inParty = currentParty.Count < 2;
             if (inParty)
-                currentParty.Add(charPrefab);
+                currentParty.Add(def);
 
-            slotUI.Setup(charPrefab, inParty);
+            slotUI.Setup(def, inParty);
             slotUI.OnSelected = HandleSlotSelected;
             slots.Add(slotUI);
 
@@ -83,21 +94,19 @@ public class AdventureReadyUI : MonoBehaviour
             s.UpdateState(s == slot);
         }
 
-        UpdateInfoPanel(slot.Character);
+        UpdateInfoPanel(slot.Def);
     }
 
-    private void UpdateInfoPanel(Character character)
+    private void UpdateInfoPanel(CharacterDef def)
     {
+        if (infoIcon != null)
+            infoIcon.sprite = def.icon;
         if (infoName != null)
-            infoName.text = character.CharacterName;
+            infoName.text = def.displayName;
         if (infoClass != null)
-            infoClass.text = character.Type.ToString();
+            infoClass.text = def.classType.ToString();
         if (infoPassiveDesc != null)
-            infoPassiveDesc.text = character.PassiveDescription;
-
-        // Hide stats, show passive instead
-        if (infoPassiveDesc != null)
-            infoPassiveDesc.gameObject.SetActive(true);
+            infoPassiveDesc.text = def.description;
     }
 
     private void UpdatePartyDisplay()
@@ -106,7 +115,7 @@ public class AdventureReadyUI : MonoBehaviour
         {
             if (i < currentParty.Count)
             {
-                partyPortraits[i].sprite = currentParty[i].Icon;
+                partyPortraits[i].sprite = currentParty[i].icon;
                 partyPortraits[i].gameObject.SetActive(true);
             }
             else

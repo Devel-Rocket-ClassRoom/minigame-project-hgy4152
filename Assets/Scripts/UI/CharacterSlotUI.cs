@@ -11,16 +11,16 @@ public class CharacterSlotUI : MonoBehaviour
     
     public System.Action<CharacterSlotUI> OnSelected;
 
-    public Character Character { get; private set; }
+    public CharacterDef Def { get; private set; }
     public bool IsInParty { get; private set; }
 
-    public void Setup(Character character, bool isInParty)
+    public void Setup(CharacterDef def, bool isInParty)
     {
-        Character = character;
+        Def = def;
         IsInParty = isInParty;
 
-        if (portrait != null && character.Icon != null)
-            portrait.sprite = character.Icon;
+        if (portrait != null && def.icon != null)
+            portrait.sprite = def.icon;
 
         if (inPartyLbl != null)
         {

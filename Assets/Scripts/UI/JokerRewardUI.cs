@@ -27,9 +27,6 @@ public class JokerRewardUI : MonoBehaviour
     TMP_Text tooltipDescText;
 
     [SerializeField]
-    JokerCard[] rewardPool;
-
-    [SerializeField]
     JokerManager jokerManager;
 
     [SerializeField]
@@ -171,18 +168,54 @@ public class JokerRewardUI : MonoBehaviour
 
     JokerCard[] PickRandom(int count)
     {
-        if (rewardPool == null || rewardPool.Length == 0)
+        var allCards = TableRegistry.Instance?.JokerCard?.All;
+        if (allCards == null || allCards.Count == 0)
             return new JokerCard[0];
 
-        var pool = new List<JokerCard>(rewardPool);
-        int take = Mathf.Min(count, pool.Count);
+        var ownedIds = new HashSet<string>();
+        foreach (var c in jokerManager.ActiveHand)
+            if (c != null)
+                ownedIds.Add(c.id);
+
+        var pools = new Dictionary<Rarity, List<JokerCard>>
+        {
+            { Rarity.Common, new List<JokerCard>() },
+            { Rarity.Rare, new List<JokerCard>() },
+            { Rarity.Epic, new List<JokerCard>() },
+        };
+        foreach (var card in allCards)
+            if (card != null && !ownedIds.Contains(card.id))
+                pools[card.rarity].Add(card);
+
+        var available = new List<JokerCard>();
+        foreach (var list in pools.Values)
+            available.AddRange(list);
+
+        int take = Mathf.Min(count, available.Count);
         var result = new JokerCard[take];
         for (int i = 0; i < take; i++)
         {
-            int r = Random.Range(0, pool.Count);
-            result[i] = pool[r];
-            pool.RemoveAt(r);
+            var picked = PickWeighted(pools, available);
+            result[i] = picked;
+            pools[picked.rarity].Remove(picked);
+            available.Remove(picked);
         }
         return result;
+    }
+
+    JokerCard PickWeighted(Dictionary<Rarity, List<JokerCard>> pools, List<JokerCard> available)
+    {
+        int roll = Random.Range(0, 100);
+        Rarity target =
+            roll < 60 ? Rarity.Common
+            : roll < 90 ? Rarity.Rare
+            : Rarity.Epic;
+
+        if (pools[target].Count > 0)
+        {
+            var pool = pools[target];
+            return pool[Random.Range(0, pool.Count)];
+        }
+        return available[Random.Range(0, available.Count)];
     }
 }

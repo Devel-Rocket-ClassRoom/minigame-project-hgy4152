@@ -8,6 +8,9 @@ public class SaveSlotPickerUI : MonoBehaviour
     GameObject panel;
 
     [SerializeField]
+    SaveSlotEntryUI previewEntry;
+
+    [SerializeField]
     SaveSlotEntryUI[] slotEntries = new SaveSlotEntryUI[SaveManager.SlotCount];
 
     [SerializeField]
@@ -22,8 +25,19 @@ public class SaveSlotPickerUI : MonoBehaviour
             panel.SetActive(false);
     }
 
-    public void Show(SaveManager mgr, Action<int> onSlotPicked, Action onCanceled)
+    public void Show(
+        SaveManager mgr,
+        SaveSlotData draft,
+        Action<int> onSlotPicked,
+        Action onCanceled
+    )
     {
+        if (panel != null)
+            panel.SetActive(true);
+
+        if (previewEntry != null)
+            previewEntry.Refresh(-1, draft, TableRegistry.Instance);
+
         var reg = TableRegistry.Instance;
         for (int i = 0; i < SaveManager.SlotCount; i++)
         {
@@ -54,9 +68,6 @@ public class SaveSlotPickerUI : MonoBehaviour
                 onCanceled?.Invoke();
             });
         }
-
-        if (panel != null)
-            panel.SetActive(true);
     }
 
     void Hide()

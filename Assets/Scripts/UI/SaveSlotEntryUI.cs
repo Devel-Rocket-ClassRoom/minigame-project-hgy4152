@@ -22,7 +22,7 @@ public class SaveSlotEntryUI : MonoBehaviour
     public void Refresh(int slotIndex, SaveSlotData data, TableRegistry reg)
     {
         if (slotLabel != null)
-            slotLabel.text = $"슬롯 {slotIndex + 1}";
+            slotLabel.text = slotIndex < 0 ? "저장할 데이터" : $"슬롯 {slotIndex + 1}";
 
         bool isEmpty = data == null;
         if (emptyOverlay != null)
@@ -52,7 +52,7 @@ public class SaveSlotEntryUI : MonoBehaviour
         {
             Sprite sp = null;
             if (i < data.characterIds.Length && !string.IsNullOrEmpty(data.characterIds[i]))
-                sp = reg.Character.Get(data.characterIds[i])?.icon;
+                sp = reg.Character.Get(data.characterIds[i])?.prefab.Icon;
             SetSprite(i < characterIcons.Length ? characterIcons[i] : null, sp);
         }
 

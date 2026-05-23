@@ -15,6 +15,7 @@ MonoBehaviour:
   id: ar_hikari
   classType: 2
   prefab: {fileID: 4972757418016788864, guid: 257f83b2037a9674cb965814bede9feb, type: 3}
-  displayName: "\uD788\uCE74\uB9AC"
-  description: 
+  rarity: 0
+  displayName: chr_ar_hikari_name
+  description: chr_ar_hikari_desc
   icon: {fileID: 0}

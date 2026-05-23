@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: ar_Hikari
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
   id: ar1
-  displayName: "\uB3CC\uD48D \uD654\uC0B4"
-  description: "\uBC14\uB78C\uC758 \uD798\uC744 \uB2F4\uC740 \uD654\uC0B4\uC744 \uBC1C\uC0AC\uD55C\uB2E4."
+  displayName: blk_ar1_name
+  description: blk_ar1_desc
   icon: {fileID: -7577876707538463352, guid: 8daecc66e77902442aff6e5518bed856, type: 3}
+  rarity: 0
   attackPower: 10
   ownerClass: 2
   blockColor: {r: 0.990566, g: 0.8578572, b: 0.4812656, a: 1}

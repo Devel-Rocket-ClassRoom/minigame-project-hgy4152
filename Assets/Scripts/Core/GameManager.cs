@@ -225,6 +225,7 @@ public class GameManager : MonoBehaviour
         var draft = saveManager.BuildFromCurrentState(this);
         saveSlotPickerUI.Show(
             saveManager,
+            draft,
             onSlotPicked: slot =>
             {
                 if (saveManager.HasSlot(slot))

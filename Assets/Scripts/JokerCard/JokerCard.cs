@@ -6,7 +6,7 @@ public abstract class JokerCard : ScriptableObject, IDisplayable
     public string cardName;
     public string description;
     public Sprite icon;
-    public int rarity;
+    public Rarity rarity;
 
     public string Id => id;
     public string DisplayName => cardName;

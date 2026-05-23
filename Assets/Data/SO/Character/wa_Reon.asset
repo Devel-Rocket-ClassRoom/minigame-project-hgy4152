@@ -15,6 +15,7 @@ MonoBehaviour:
   id: wa_reon
   classType: 1
   prefab: {fileID: 3059709565305514277, guid: 285d3e1ba7f3b764489ed6694e01143d, type: 3}
-  displayName: "\uB808\uC628"
-  description: 
+  rarity: 0
+  displayName: chr_wa_reon_name
+  description: chr_wa_reon_desc
   icon: {fileID: 0}

@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c74a8bc803b72345b27844205e5c212, type: 3}
   m_Name: BlockTable
   m_EditorClassIdentifier: Assembly-CSharp::BlockTable
-  entries:
-  - {fileID: 11400000, guid: a4760b6928a91cc4c85170b8c68eb767, type: 2}
-  - {fileID: 11400000, guid: 73f03e127426f2645a83e6dff58c62cb, type: 2}
-  - {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
+  entries: []

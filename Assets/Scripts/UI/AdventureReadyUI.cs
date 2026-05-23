@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine;
@@ -46,6 +47,9 @@ public class AdventureReadyUI : MonoBehaviour
             return;
         }
 
+        var equippedIds = AdventurePartyContext.PendingCharacterIds;
+        var equippedSet = equippedIds != null ? new HashSet<string>(equippedIds) : null;
+
         // TODO: 소유 캐릭터 시스템 도입 시 여기서 필터링
         foreach (var def in table.All)
         {
@@ -55,8 +59,7 @@ public class AdventureReadyUI : MonoBehaviour
             var slotGo = Instantiate(slotPrefab, gridContent);
             var slotUI = slotGo.GetComponent<CharacterSlotUI>();
 
-            // Dummy check for party (e.g. first 2 are in party) — Part24-5에서 정리 예정
-            bool inParty = currentParty.Count < 2;
+            bool inParty = equippedSet != null && equippedSet.Contains(def.id);
             if (inParty)
                 currentParty.Add(def);
 
@@ -125,7 +128,14 @@ public class AdventureReadyUI : MonoBehaviour
         }
     }
 
-    public void OnPlayClicked() => GameStateMachine.Instance.TransitionTo(GameState.Adventure);
+    public void OnPlayClicked()
+    {
+        if (currentParty.Count > 0)
+        {
+            AdventurePartyContext.PendingCharacterIds = currentParty.Select(d => d.id).ToArray();
+        }
+        GameStateMachine.Instance.TransitionTo(GameState.Adventure);
+    }
 
     public void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

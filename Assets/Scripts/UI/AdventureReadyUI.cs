@@ -9,6 +9,7 @@ public class AdventureReadyUI : MonoBehaviour
     [Header("Character List")]
     public Transform gridContent;
     public CharacterSlotUI slotPrefab;
+    public List<Character> availableCharacters;
 
     [Header("Top Party Slots")]
     public Image[] partyPortraits;
@@ -36,28 +37,19 @@ public class AdventureReadyUI : MonoBehaviour
         }
         slots.Clear();
 
-        var table = TableRegistry.Instance?.Character;
-        if (table == null)
+        // Normally you'd get this from a SaveManager or CharacterManager
+        // For now, use the serialized list
+        foreach (var charPrefab in availableCharacters)
         {
-            Debug.LogWarning("[AdventureReadyUI] CharacterTable을 찾을 수 없어 목록 생성을 건너뜁니다.");
-            return;
-        }
-
-        // TODO: 소유 캐릭터 시스템 도입 시 여기서 필터링
-        foreach (var def in table.All)
-        {
-            if (def == null || def.prefab == null)
-                continue;
-
             var slotGo = Instantiate(slotPrefab, gridContent);
             var slotUI = slotGo.GetComponent<CharacterSlotUI>();
 
-            // Dummy check for party (e.g. first 2 are in party) — Part24-3에서 정리 예정
+            // Dummy check for party (e.g. first 2 are in party)
             bool inParty = currentParty.Count < 2;
             if (inParty)
-                currentParty.Add(def.prefab);
+                currentParty.Add(charPrefab);
 
-            slotUI.Setup(def.prefab, inParty);
+            slotUI.Setup(charPrefab, inParty);
             slotUI.OnSelected = HandleSlotSelected;
             slots.Add(slotUI);
 
@@ -68,10 +60,19 @@ public class AdventureReadyUI : MonoBehaviour
             btn.onClick.AddListener(slotUI.OnClick);
         }
 
-        if (slots.Count > 0)
-            HandleSlotSelected(slots[0]);
+        var defaultSlot = FindFirstPartySlot() ?? (slots.Count > 0 ? slots[0] : null);
+        if (defaultSlot != null)
+            HandleSlotSelected(defaultSlot);
 
         UpdatePartyDisplay();
+    }
+
+    private CharacterSlotUI FindFirstPartySlot()
+    {
+        foreach (var s in slots)
+            if (s.IsInParty)
+                return s;
+        return null;
     }
 
     private void HandleSlotSelected(CharacterSlotUI slot)

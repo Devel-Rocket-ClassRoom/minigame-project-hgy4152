@@ -93,8 +93,8 @@ public class JokerRewardUI : MonoBehaviour
             if (selectFrames[i] != null)
                 selectFrames[i].enabled = i == idx;
 
-        tooltipNameText.text = _offered[idx].cardName;
-        tooltipDescText.text = _offered[idx].description;
+        tooltipNameText.text = Localization.Get(_offered[idx].cardName);
+        tooltipDescText.text = Localization.Get(_offered[idx].description);
         PositionTooltip(idx);
         tooltipPanel.gameObject.SetActive(true);
     }

@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ModeClearUI : MonoBehaviour
@@ -33,11 +32,15 @@ public class ModeClearUI : MonoBehaviour
             panel.SetActive(false);
         if (restartButton != null)
             restartButton.onClick.AddListener(() =>
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex)
-            );
+            {
+                if (GameStateMachine.Instance != null)
+                    GameStateMachine.Instance.TransitionTo(GameState.Lobby);
+                else
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            });
     }
 
-    public void Show(GameManager gameManager, Color color, string title = "¸ðÇè ¿Ï·á")
+    public void Show(GameManager gameManager, Color color, string title = "ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½")
     {
         if (titleText != null)
         {

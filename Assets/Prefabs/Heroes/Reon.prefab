@@ -111,6 +111,9 @@ MonoBehaviour:
   creator: {fileID: 6437507022374874377}
   icon: {fileID: 21300000, guid: 1520551423f5c474d833b254dcfe7d1a, type: 3}
   skill: {fileID: 5477197007614495793}
+  characterName: "\uB808\uC628"
+  passiveDescription: "\uCCA0\uBCBD \uC218\uBE44: \uCCB4\uB825\uC774 50% \uC774\uD558\uC77C
+    \uB54C \uBC29\uC5B4\uB825\uC774 \uC0C1\uC2B9\uD569\uB2C8\uB2E4."
 --- !u!114 &6437507022374874377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,3 +164,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WarriorSkill
   effectPrefab: {fileID: 5085636098222641073, guid: 30136f9e7f57a8c4abded64e562a3a40, type: 3}
   target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
+  spawnOffset: 12
+  moveDuration: 0.15

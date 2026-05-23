@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03157b4216c9479cb9fb292b89af3924, type: 3}
+  m_Name: jc_LateTurn_turn_l
+  m_EditorClassIdentifier: Assembly-CSharp::JokerCard_LateTurn
+  id: turn_l
+  cardName: jkr_turn_l_name
+  description: jkr_turn_l_desc
+  icon: {fileID: 0}
+  rarity: 1
+  turnThreshold: 4
+  bonus: 1.3

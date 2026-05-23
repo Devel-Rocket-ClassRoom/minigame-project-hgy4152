@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "jc_WarriorFocus", menuName = "ChainKnights/Joker/WarriorFocus")]

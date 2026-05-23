@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b997cc6d24bf5c40a66c16317bf6106, type: 3}
   m_Name: CharacterTable
   m_EditorClassIdentifier: ChainKnights::CharacterTable
-  entries:
-  - {fileID: 11400000, guid: 0a6983fa42b58c742bd36551fc366ba8, type: 2}
-  - {fileID: 11400000, guid: 1581195a95883dd41ab9c8918d8300c5, type: 2}
-  - {fileID: 11400000, guid: 91cb2823a48610042bb1e99daa0df188, type: 2}
+  entries: []

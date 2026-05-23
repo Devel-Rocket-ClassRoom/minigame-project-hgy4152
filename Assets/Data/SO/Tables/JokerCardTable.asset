@@ -12,34 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0d37ad565fb2048bdf81300d86ce8b, type: 3}
   m_Name: JokerCardTable
   m_EditorClassIdentifier: Assembly-CSharp::JokerCardTable
-  entries:
-  - {fileID: 11400000, guid: c0f2984d59ca84845a870b3ba0afcc01, type: 2}
-  - {fileID: 11400000, guid: 92a48090f9e88704d8a4ed89ced1a66f, type: 2}
-  - {fileID: 11400000, guid: 960e24e3f53b4cf42a436465fc4a645e, type: 2}
-  - {fileID: 11400000, guid: 2de24eaf14e641d592d2e34a9f28d67a, type: 2}
-  - {fileID: 11400000, guid: f16893290572438d8fc40558eeb3cc48, type: 2}
-  - {fileID: 11400000, guid: 97a78d438f474a12a39c8bf3aab3cc25, type: 2}
-  - {fileID: 11400000, guid: 29e823e655e941f695da4eb073c86582, type: 2}
-  - {fileID: 11400000, guid: 50793981a0d24f2bbf1e2a6aca36de95, type: 2}
-  - {fileID: 11400000, guid: c6d8e05a61cc436eaf08259c4354dbd1, type: 2}
-  - {fileID: 11400000, guid: 45eada5cd4534e7bbf346867ba9534cf, type: 2}
-  - {fileID: 11400000, guid: 9244c70db3ee4d029fefd7b289587c75, type: 2}
-  - {fileID: 11400000, guid: 43cc72796610474eb2a2f9b856067125, type: 2}
-  - {fileID: 11400000, guid: 1c2cc412479c4ccbb58377b63c3fd3fb, type: 2}
-  - {fileID: 11400000, guid: fc6b1b6cf928426e837f560adf92f0a1, type: 2}
-  - {fileID: 11400000, guid: 96330f1a0691481291b8502575c5e5bb, type: 2}
-  - {fileID: 11400000, guid: feeea385e861473f9c695e07a1770e6f, type: 2}
-  - {fileID: 11400000, guid: e99ea86f290a4464b3a5a9df6e5efaea, type: 2}
-  - {fileID: 11400000, guid: aecd44d53f974541890c1a0fdb2aa60e, type: 2}
-  - {fileID: 11400000, guid: 381f7182d2be4b428eb159fc93f82f54, type: 2}
-  - {fileID: 11400000, guid: 62034e96240c4bf68e819208f0df0724, type: 2}
-  - {fileID: 11400000, guid: 54287d1f2c404f278b8d55f23d86df3d, type: 2}
-  - {fileID: 11400000, guid: 7e16b13ade9d4e25acb3d3b3f04e480c, type: 2}
-  - {fileID: 11400000, guid: 23ff5eb900fb4843a2bdec116bdc8da4, type: 2}
-  - {fileID: 11400000, guid: 659d6bf4667744288d65ac146adaee83, type: 2}
-  - {fileID: 11400000, guid: 05bbd9d4544b46cbb0c4ed200b186892, type: 2}
-  - {fileID: 11400000, guid: ad9418211bda4a54a9146a9848a81f6c, type: 2}
-  - {fileID: 11400000, guid: e1cdcf5abddd4522b4845177c0327e4a, type: 2}
-  - {fileID: 11400000, guid: 22cf627afaf64fd488281be7db3e9f85, type: 2}
-  - {fileID: 11400000, guid: e25b8e982f1543e099e527d7a7ea2bd2, type: 2}
-  - {fileID: 11400000, guid: 544f5521435b47f294a3dbbe0b46f10a, type: 2}
+  entries: []

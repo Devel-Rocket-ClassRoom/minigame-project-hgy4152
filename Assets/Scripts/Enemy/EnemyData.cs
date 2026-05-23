@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyData : ScriptableObject, IDisplayable
 {
     public string id;
+    public Rarity rarity;
     public string enemyName;
     public string description;
     public Sprite icon;

@@ -15,3 +15,4 @@ MonoBehaviour:
   Block: {fileID: 11400000, guid: f3c98cfe20f96774e84a9f723a88c689, type: 2}
   JokerCard: {fileID: 11400000, guid: 1782c16c813bec94792c102a45e54b6c, type: 2}
   Enemy: {fileID: 11400000, guid: e11a8e8258546ab49b15ba96aa45e6e1, type: 2}
+  Character: {fileID: 11400000, guid: 898798d1747ef9f44ade0e12eb6945d6, type: 2}

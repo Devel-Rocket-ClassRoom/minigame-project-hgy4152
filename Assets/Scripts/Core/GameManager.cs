@@ -38,6 +38,15 @@ public class GameManager : MonoBehaviour
     ModeClearUI modeClearUI;
 
     [SerializeField]
+    SaveManager saveManager;
+
+    [SerializeField]
+    SaveSlotPickerUI saveSlotPickerUI;
+
+    [SerializeField]
+    ConfirmDialogUI confirmDialog;
+
+    [SerializeField]
     int maxTurns = 5;
 
     [SerializeField]
@@ -102,6 +111,24 @@ public class GameManager : MonoBehaviour
         {
             // 턴 데미지 없이 넘기기
             BeginBattle();
+        }
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            // 슬롯 0 로드
+            if (saveManager != null && saveManager.TryLoad(0, out var saveData))
+            {
+                characterSet.SetCharactersByIds(saveData.characterIds);
+                var jokerCards = new JokerCard[saveData.jokerIds.Length];
+                for (int i = 0; i < saveData.jokerIds.Length; i++)
+                {
+                    var id = saveData.jokerIds[i];
+                    jokerCards[i] = string.IsNullOrEmpty(id)
+                        ? null
+                        : TableRegistry.Instance.JokerCard.Get(id);
+                }
+                jokerManager.SetHand(jokerCards);
+                Debug.Log("[Save] 슬롯 0 로드 완료");
+            }
         }
     }
 
@@ -188,6 +215,30 @@ public class GameManager : MonoBehaviour
     {
         drawPhaseTimer.StopDrawPhase();
         modeClearUI?.Show(this, Color.green);
+        OpenSaveFlow();
+    }
+
+    void OpenSaveFlow()
+    {
+        if (saveManager == null || saveSlotPickerUI == null)
+            return;
+        var draft = saveManager.BuildFromCurrentState(this);
+        saveSlotPickerUI.Show(
+            saveManager,
+            draft,
+            onSlotPicked: slot =>
+            {
+                if (saveManager.HasSlot(slot))
+                    confirmDialog?.Show(
+                        $"슬롯 {slot + 1} 덮어쓸까요?",
+                        onYes: () => saveManager.Save(slot, draft),
+                        onNo: OpenSaveFlow
+                    );
+                else
+                    saveManager.Save(slot, draft);
+            },
+            onCanceled: () => { }
+        );
     }
 
     public void OnStageIntroComplete()

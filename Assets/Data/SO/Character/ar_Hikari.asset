@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
+  m_Name: ar_Hikari
+  m_EditorClassIdentifier: ChainKnights::CharacterDef
+  id: ar_hikari
+  classType: 2
+  prefab: {fileID: 4972757418016788864, guid: 257f83b2037a9674cb965814bede9feb, type: 3}
+  rarity: 0
+  displayName: chr_ar_hikari_name
+  description: chr_ar_hikari_desc
+  icon: {fileID: 0}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bronze
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: ch1_s2
-  enemyName: "\uAD6C\uB9AC\uC778\uD615"
-  description: "\uCD08\uBCF4 \uBAA8\uD5D8\uAC00\uB4E4\uC744 \uC704\uD55C \uC5F0\uC2B5\uC6A9
-    \uAD6C\uB9AC\uC778\uD615\uC774\uB2E4."
+  rarity: 0
+  enemyName: enm_ch1_s2_name
+  description: enm_ch1_s2_desc
   icon: {fileID: -1442158203069545052, guid: a122f024ff96d134ab51f7fa01b7df8d, type: 3}
   hp: 300

@@ -81,11 +81,36 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (AdventurePartyContext.PendingCharacterIds != null)
+        if (!string.IsNullOrEmpty(BossPartyContext.BossId))
+            InitFromBossContext();
+        else if (AdventurePartyContext.PendingCharacterIds != null)
             characterSet.SetCharactersByIds(AdventurePartyContext.PendingCharacterIds);
 
         _jokerRewardPending = true;
         stageManager.StartStage();
+    }
+
+    void InitFromBossContext()
+    {
+        if (saveManager != null && saveManager.TryLoad(BossPartyContext.SaveSlotIndex, out var saveData))
+        {
+            characterSet.SetCharactersByIds(saveData.characterIds);
+
+            var jokerCards = new JokerCard[saveData.jokerIds.Length];
+            for (int i = 0; i < saveData.jokerIds.Length; i++)
+            {
+                var id = saveData.jokerIds[i];
+                jokerCards[i] = string.IsNullOrEmpty(id)
+                    ? null
+                    : TableRegistry.Instance.JokerCard.Get(id);
+            }
+            jokerManager.SetHand(jokerCards);
+        }
+
+        if (TableRegistry.Instance?.Enemy.TryGet(BossPartyContext.BossId, out var bossData) == true)
+            stageManager.SetSingleBossStage(bossData);
+
+        BossPartyContext.BossId = null;
     }
 
     private void Update()

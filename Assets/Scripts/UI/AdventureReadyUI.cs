@@ -105,11 +105,11 @@ public class AdventureReadyUI : MonoBehaviour
         if (infoIcon != null)
             infoIcon.sprite = def.icon;
         if (infoName != null)
-            infoName.text = def.displayName;
+            infoName.text = Localization.Get(def.displayName);
         if (infoClass != null)
             infoClass.text = def.classType.ToString();
         if (infoPassiveDesc != null)
-            infoPassiveDesc.text = def.description;
+            infoPassiveDesc.text = Localization.Get(def.description);
     }
 
     private void UpdatePartyDisplay()

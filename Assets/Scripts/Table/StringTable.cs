@@ -42,10 +42,11 @@ public abstract class StringTable<T> : ScriptableObject
 
     public IReadOnlyList<T> All => entries;
 
-    public string GetName(string id) => Get(id) is IDisplayable d ? d.DisplayName : id;
+    public string GetName(string id) =>
+        Get(id) is IDisplayable d ? Localization.Get(d.DisplayName) : id;
 
     public string GetDescription(string id) =>
-        Get(id) is IDisplayable d ? d.Description : string.Empty;
+        Get(id) is IDisplayable d ? Localization.Get(d.Description) : string.Empty;
 
 #if UNITY_EDITOR
     private void OnValidate() => _cache = null;

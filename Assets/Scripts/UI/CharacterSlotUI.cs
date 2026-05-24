@@ -19,8 +19,8 @@ public class CharacterSlotUI : MonoBehaviour
         Def = def;
         IsInParty = isInParty;
 
-        if (portrait != null && def.icon != null)
-            portrait.sprite = def.icon;
+        if (portrait != null && def.prefab.Icon != null)
+            portrait.sprite = def.prefab.Icon;
 
         if (inPartyLbl != null)
         {

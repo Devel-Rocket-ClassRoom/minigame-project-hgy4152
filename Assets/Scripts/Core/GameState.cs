@@ -4,4 +4,5 @@ public enum GameState
     Lobby,
     AdventureReady,
     Adventure,
+    BossReady,
 }

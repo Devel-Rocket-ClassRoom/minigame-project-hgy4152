@@ -1,0 +1,58 @@
+name: 🗂️ 작업 이슈
+description: 기능 구현, 시스템 작업 등 일반 태스크
+title: "[TASK] "
+labels: ["task"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: 🎯 목표
+      description: 이 이슈에서 달성하려는 목표를 간략히 설명해 주세요.
+      placeholder: 예) 보스 3종의 BossPattern SO 작성 및 각 보스 플레이테스트 완료 (크리티컬 패스)
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 📋 작업 내용
+      description: 완료해야 할 세부 작업 항목을 체크리스트로 작성해 주세요.
+      value: |
+        - [ ] **작업 항목 1**
+          - 세부 내용
+        - [ ] **작업 항목 2**
+          - 세부 내용
+        - [ ] **작업 항목 3**
+          - 세부 내용
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: ✅ 완료 기준
+      description: 이슈가 완료되었다고 판단할 수 있는 조건을 작성해 주세요.
+      placeholder: |
+        - 조건 1
+        - 조건 2
+    validations:
+      required: true
+
+  - type: input
+    id: systems
+    attributes:
+      label: 🔧 관련 시스템
+      description: 관련된 시스템/컴포넌트를 쉼표로 구분해 주세요.
+      placeholder: 예) BossPattern, BossPatternSystem, Modifier, GameContext
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 🔗 의존성
+      description: 이 작업 이전에 완료되어야 할 이슈가 있으면 작성해 주세요.
+      placeholder: |
+        - #이슈번호 설명
+    validations:
+      required: false

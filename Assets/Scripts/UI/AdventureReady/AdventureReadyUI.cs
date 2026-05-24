@@ -13,12 +13,17 @@ public class AdventureReadyUI : MonoBehaviour
 
     [Header("Top Party Slots")]
     public Image[] partyPortraits;
+    public TextMeshProUGUI[] partyNames;
 
     [Header("Info Panel")]
-    public Image infoIcon;
     public TextMeshProUGUI infoName;
     public TextMeshProUGUI infoPassiveDesc;
     public TextMeshProUGUI infoClass;
+
+    [Header("Buttons")]
+    public Button startButton;
+    public Button cancelButton;
+    public Button backgroundButton;
 
     [Header("Warning")]
     public CanvasGroup partyWarningGroup;
@@ -31,6 +36,12 @@ public class AdventureReadyUI : MonoBehaviour
 
     private void Start()
     {
+        if (startButton != null)
+            startButton.onClick.AddListener(OnPlayClicked);
+        if (cancelButton != null)
+            cancelButton.onClick.AddListener(OnBackClicked);
+        if (backgroundButton != null)
+            backgroundButton.onClick.AddListener(Deselect);
         InitializeList();
     }
 
@@ -43,7 +54,9 @@ public class AdventureReadyUI : MonoBehaviour
         var table = TableRegistry.Instance?.Character;
         if (table == null)
         {
-            Debug.LogWarning("[AdventureReadyUI] CharacterTable을 찾을 수 없어 목록 생성을 건너뜁니다.");
+            Debug.LogWarning(
+                "[AdventureReadyUI] CharacterTable을 찾을 수 없어 목록 생성을 건너뜁니다."
+            );
             return;
         }
 
@@ -68,25 +81,20 @@ public class AdventureReadyUI : MonoBehaviour
             slotUI.OnRemoveClicked = HandleRemove;
             slots.Add(slotUI);
 
+            var deployBtn = slotUI.deployButton?.GetComponent<Button>();
+            if (deployBtn != null)
+                deployBtn.onClick.AddListener(slotUI.OnDeployClick);
+            var removeBtn = slotUI.removeButton?.GetComponent<Button>();
+            if (removeBtn != null)
+                removeBtn.onClick.AddListener(slotUI.OnRemoveClick);
+
             var btn = slotGo.GetComponent<Button>();
             if (btn == null)
                 btn = slotGo.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(slotUI.OnClick);
         }
 
-        var defaultSlot = FindFirstPartySlot() ?? (slots.Count > 0 ? slots[0] : null);
-        if (defaultSlot != null)
-            HandleSlotSelected(defaultSlot);
-
         UpdatePartyDisplay();
-    }
-
-    private CharacterSlotUI FindFirstPartySlot()
-    {
-        foreach (var s in slots)
-            if (s.IsInParty)
-                return s;
-        return null;
     }
 
     private void HandleSlotSelected(CharacterSlotUI slot)
@@ -96,6 +104,13 @@ public class AdventureReadyUI : MonoBehaviour
             s.UpdateVisuals(s == slot);
 
         UpdateInfoPanel(slot.Def);
+    }
+
+    private void Deselect()
+    {
+        selectedSlot = null;
+        foreach (var s in slots)
+            s.UpdateVisuals(false);
     }
 
     private void HandleDeploy(CharacterSlotUI slot)
@@ -121,8 +136,6 @@ public class AdventureReadyUI : MonoBehaviour
 
     private void UpdateInfoPanel(CharacterDef def)
     {
-        if (infoIcon != null)
-            infoIcon.sprite = def.icon;
         if (infoName != null)
             infoName.text = Localization.Get(def.displayName);
         if (infoClass != null)
@@ -137,12 +150,19 @@ public class AdventureReadyUI : MonoBehaviour
         {
             if (i < currentParty.Count)
             {
-                partyPortraits[i].sprite = currentParty[i].icon;
+                partyPortraits[i].sprite = currentParty[i].prefab.Icon;
                 partyPortraits[i].gameObject.SetActive(true);
+                if (partyNames != null && i < partyNames.Length && partyNames[i] != null)
+                {
+                    partyNames[i].text = Localization.Get(currentParty[i].displayName);
+                    partyNames[i].gameObject.SetActive(true);
+                }
             }
             else
             {
                 partyPortraits[i].gameObject.SetActive(false);
+                if (partyNames != null && i < partyNames.Length && partyNames[i] != null)
+                    partyNames[i].gameObject.SetActive(false);
             }
         }
     }

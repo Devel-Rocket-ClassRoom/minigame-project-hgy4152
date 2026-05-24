@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 458842478}
   - component: {fileID: 458842477}
   - component: {fileID: 458842479}
+  - component: {fileID: 458842480}
   m_Layer: 0
   m_Name: PatternPreviewArea
   m_TagString: Untagged
@@ -506,7 +507,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -84, y: -191}
-  m_SizeDelta: {x: 1000, y: 300}
+  m_SizeDelta: {x: 1000, y: 480}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &458842477
 MonoBehaviour:
@@ -560,6 +561,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: ChainKnights::PatternPreviewUI
   cardContainer: {fileID: 458842476}
   cardPrefab: {fileID: 5876225987717043636, guid: 2a64a873be78fd24da8233ce3a9cd870, type: 3}
+--- !u!114 &458842480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458842474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &572425529
 GameObject:
   m_ObjectHideFlags: 0

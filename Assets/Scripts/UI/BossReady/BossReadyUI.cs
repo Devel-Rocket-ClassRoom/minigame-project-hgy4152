@@ -10,9 +10,10 @@ public class BossReadyUI : MonoBehaviour
     public Transform saveSlotParent;
     public SaveSlotUI saveSlotPrefab;
 
-    [Header("Boss Slots")]
-    public Transform bossSlotParent;
-    public BossSlotUI bossSlotPrefab;
+    [Header("Boss Navigation")]
+    public BossSlotUI bossDisplay;
+    public Button prevBossButton;
+    public Button nextBossButton;
 
     [Header("Pattern Preview")]
     public PatternPreviewUI patternPreview;
@@ -32,14 +33,17 @@ public class BossReadyUI : MonoBehaviour
     public Button backButton;
 
     private readonly List<SaveSlotUI> saveSlots = new();
-    private readonly List<BossSlotUI> bossSlots = new();
+    private readonly List<EnemyData> bossList = new();
+    private readonly Dictionary<int, SaveSlotData> slotDataCache = new();
 
+    private SaveManager saveManager;
     private SaveSlotUI selectedSaveSlot;
-    private BossSlotUI selectedBossSlot;
-    private SaveSlotData selectedSlotData;
+    private int bossIndex = -1;
 
     private void Start()
     {
+        saveManager = FindObjectOfType<SaveManager>();
+
         if (startButton != null)
             startButton.onClick.AddListener(OnStartClicked);
         if (backButton != null)
@@ -64,17 +68,20 @@ public class BossReadyUI : MonoBehaviour
 
     private void InitSaveSlots()
     {
-        var saveManager = FindObjectOfType<SaveManager>();
-
         for (int i = 0; i < SaveManager.SlotCount; i++)
         {
             var slotGo = Instantiate(saveSlotPrefab, saveSlotParent);
             var slotUI = slotGo.GetComponent<SaveSlotUI>();
 
             if (saveManager != null && saveManager.TryLoad(i, out var data))
+            {
+                slotDataCache[i] = data;
                 slotUI.Setup(i, data);
+            }
             else
+            {
                 slotUI.SetupEmpty(i);
+            }
 
             var btn = slotGo.GetComponent<Button>() ?? slotGo.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(slotUI.OnClick);
@@ -86,46 +93,57 @@ public class BossReadyUI : MonoBehaviour
     private void InitBossSlots()
     {
         var table = TableRegistry.Instance?.Enemy;
-        if (table == null) return;
+        if (table != null)
+            foreach (var e in table.All)
+                if (e != null && e.bossPattern != null)
+                    bossList.Add(e);
 
-        foreach (var enemy in table.All)
-        {
-            if (enemy == null || enemy.bossPattern == null) continue;
+        if (prevBossButton != null)
+            prevBossButton.onClick.AddListener(OnPrevBoss);
+        if (nextBossButton != null)
+            nextBossButton.onClick.AddListener(OnNextBoss);
 
-            var slotGo = Instantiate(bossSlotPrefab, bossSlotParent);
-            var slotUI = slotGo.GetComponent<BossSlotUI>();
-            slotUI.Setup(enemy);
+        if (bossList.Count > 0)
+            ShowBoss(0);
+    }
 
-            var btn = slotGo.GetComponent<Button>() ?? slotGo.gameObject.AddComponent<Button>();
-            btn.onClick.AddListener(slotUI.OnClick);
-            slotUI.OnSelected = HandleBossSlotSelected;
-            bossSlots.Add(slotUI);
-        }
+    private void ShowBoss(int index)
+    {
+        bossIndex = index;
+        bossDisplay?.Setup(bossList[index]);
+        patternPreview?.Show(bossList[index].bossPattern);
+        RefreshStartButton();
+    }
+
+    private void OnPrevBoss()
+    {
+        if (bossList.Count == 0)
+            return;
+        ShowBoss((bossIndex - 1 + bossList.Count) % bossList.Count);
+    }
+
+    private void OnNextBoss()
+    {
+        if (bossList.Count == 0)
+            return;
+        ShowBoss((bossIndex + 1) % bossList.Count);
     }
 
     private void HandleSaveSlotSelected(SaveSlotUI slot)
     {
+        selectedSaveSlot?.SetSelected(false);
         selectedSaveSlot = slot;
-        selectedSlotData = null;
+        selectedSaveSlot.SetSelected(true);
 
-        var saveManager = FindObjectOfType<SaveManager>();
-        if (saveManager != null && slot.HasData)
-            saveManager.TryLoad(slot.SlotIndex, out selectedSlotData);
-
-        UpdateDeckSummary(selectedSlotData);
-        RefreshStartButton();
-    }
-
-    private void HandleBossSlotSelected(BossSlotUI slot)
-    {
-        selectedBossSlot = slot;
-        patternPreview?.Show(slot.Def.bossPattern);
+        slotDataCache.TryGetValue(slot.SlotIndex, out var data);
+        UpdateDeckSummary(data);
         RefreshStartButton();
     }
 
     private void UpdateDeckSummary(SaveSlotData data)
     {
-        if (deckSummaryPanel == null) return;
+        if (deckSummaryPanel == null)
+            return;
 
         if (data == null)
         {
@@ -141,7 +159,8 @@ public class BossReadyUI : MonoBehaviour
             var sb = new System.Text.StringBuilder();
             foreach (var id in data.characterIds)
             {
-                if (string.IsNullOrEmpty(id)) continue;
+                if (string.IsNullOrEmpty(id))
+                    continue;
                 if (charTable != null && charTable.TryGet(id, out var def))
                     sb.AppendLine(Localization.Get(def.displayName));
                 else
@@ -156,7 +175,8 @@ public class BossReadyUI : MonoBehaviour
             var sb = new System.Text.StringBuilder();
             foreach (var id in data.jokerIds)
             {
-                if (string.IsNullOrEmpty(id)) continue;
+                if (string.IsNullOrEmpty(id))
+                    continue;
                 if (jokerTable != null && jokerTable.TryGet(id, out var card))
                     sb.AppendLine(card.cardName);
                 else
@@ -168,19 +188,21 @@ public class BossReadyUI : MonoBehaviour
 
     private void RefreshStartButton()
     {
-        if (startButton == null) return;
-        startButton.interactable = selectedSaveSlot != null && selectedBossSlot != null;
+        if (startButton == null)
+            return;
+        startButton.interactable = selectedSaveSlot != null && bossIndex >= 0;
     }
 
     private void OnStartClicked()
     {
-        if (selectedSaveSlot == null || selectedBossSlot == null) return;
+        if (selectedSaveSlot == null || bossIndex < 0)
+            return;
         StartCoroutine(ShowFullscreenAndWait());
     }
 
     private IEnumerator ShowFullscreenAndWait()
     {
-        fullscreenPatternPreview?.Show(selectedBossSlot.Def.bossPattern);
+        fullscreenPatternPreview?.Show(bossList[bossIndex].bossPattern);
 
         fullscreenPreview.gameObject.SetActive(true);
         float dur = 0.3f;
@@ -195,10 +217,9 @@ public class BossReadyUI : MonoBehaviour
     private void OnEnterBossConfirmed()
     {
         BossPartyContext.SaveSlotIndex = selectedSaveSlot.SlotIndex;
-        BossPartyContext.BossId = selectedBossSlot.Def.id;
+        BossPartyContext.BossId = bossList[bossIndex].id;
         GameStateMachine.Instance.TransitionTo(GameState.Adventure);
     }
 
-    private void OnBackClicked() =>
-        GameStateMachine.Instance.TransitionTo(GameState.Lobby);
+    private void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

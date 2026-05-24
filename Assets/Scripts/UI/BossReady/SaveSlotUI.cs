@@ -9,6 +9,7 @@ public class SaveSlotUI : MonoBehaviour
     public TextMeshProUGUI characterSummary;
     public TextMeshProUGUI dateLabel;
     public GameObject emptyOverlay;
+    public Image selectionHighlight;
 
     public System.Action<SaveSlotUI> OnSelected;
 
@@ -29,7 +30,8 @@ public class SaveSlotUI : MonoBehaviour
             var names = new System.Text.StringBuilder();
             foreach (var id in data.characterIds)
             {
-                if (string.IsNullOrEmpty(id)) continue;
+                if (string.IsNullOrEmpty(id))
+                    continue;
                 if (table != null && table.TryGet(id, out var def))
                     names.AppendLine(Localization.Get(def.displayName));
                 else
@@ -63,6 +65,12 @@ public class SaveSlotUI : MonoBehaviour
             dateLabel.text = "";
         if (emptyOverlay != null)
             emptyOverlay.SetActive(true);
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (selectionHighlight != null)
+            selectionHighlight.enabled = selected;
     }
 
     public void OnClick() => OnSelected?.Invoke(this);

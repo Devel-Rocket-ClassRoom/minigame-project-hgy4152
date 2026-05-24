@@ -8,8 +8,6 @@ public class BossSlotUI : MonoBehaviour
     public TextMeshProUGUI bossNameLabel;
     public TextMeshProUGUI rarityLabel;
 
-    public System.Action<BossSlotUI> OnSelected;
-
     public EnemyData Def { get; private set; }
 
     public void Setup(EnemyData boss)
@@ -25,6 +23,4 @@ public class BossSlotUI : MonoBehaviour
         if (rarityLabel != null)
             rarityLabel.text = boss.rarity.ToString();
     }
-
-    public void OnClick() => OnSelected?.Invoke(this);
 }

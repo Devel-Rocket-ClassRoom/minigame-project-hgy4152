@@ -5,11 +5,14 @@ using TMPro;
 public class CharacterSlotUI : MonoBehaviour
 {
     public Image portrait;
-    public GameObject highlight;
-    public GameObject partyOverlay;
-    public TextMeshProUGUI inPartyLbl;
-    
+    public GameObject maskOverlay;
+    public GameObject deployButton;
+    public GameObject deployedLabel;
+    public GameObject removeButton;
+
     public System.Action<CharacterSlotUI> OnSelected;
+    public System.Action<CharacterSlotUI> OnDeployClicked;
+    public System.Action<CharacterSlotUI> OnRemoveClicked;
 
     public CharacterDef Def { get; private set; }
     public bool IsInParty { get; private set; }
@@ -19,29 +22,34 @@ public class CharacterSlotUI : MonoBehaviour
         Def = def;
         IsInParty = isInParty;
 
-        if (portrait != null && def.prefab.Icon != null)
+        if (portrait != null && def.prefab != null && def.prefab.Icon != null)
             portrait.sprite = def.prefab.Icon;
 
-        if (inPartyLbl != null)
-        {
-            inPartyLbl.text = "장착중";
-            inPartyLbl.gameObject.SetActive(true);
-        }
-
-        if (partyOverlay != null)
-            partyOverlay.SetActive(isInParty);
-
-        UpdateState(false);
+        UpdateVisuals(false);
     }
 
-    public void UpdateState(bool isSelected)
+    public void SetInParty(bool inParty)
     {
-        if (highlight != null)
-            highlight.SetActive(isSelected);
+        IsInParty = inParty;
+        UpdateVisuals(false);
     }
 
-    public void OnClick()
+    public void UpdateVisuals(bool isSelected)
     {
-        OnSelected?.Invoke(this);
+        bool showMask = IsInParty || isSelected;
+        bool showDeploy = isSelected && !IsInParty;
+        bool showDeployed = IsInParty && !isSelected;
+        bool showRemove = IsInParty && isSelected;
+
+        if (maskOverlay != null) maskOverlay.SetActive(showMask);
+        if (deployButton != null) deployButton.SetActive(showDeploy);
+        if (deployedLabel != null) deployedLabel.SetActive(showDeployed);
+        if (removeButton != null) removeButton.SetActive(showRemove);
     }
+
+    public void OnClick() => OnSelected?.Invoke(this);
+
+    public void OnDeployClick() => OnDeployClicked?.Invoke(this);
+
+    public void OnRemoveClick() => OnRemoveClicked?.Invoke(this);
 }

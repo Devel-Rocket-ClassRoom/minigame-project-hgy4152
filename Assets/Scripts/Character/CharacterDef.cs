@@ -9,8 +9,6 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public Rarity rarity;
     public string displayName;
     public string description;
-    public Sprite icon;
-
     public string Id => id;
     public string DisplayName => displayName;
     string IDisplayable.Description => description;

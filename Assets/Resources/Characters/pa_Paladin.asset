@@ -15,6 +15,7 @@ MonoBehaviour:
   id: pa_paladin
   classType: 4
   prefab: {fileID: 1100000000000000003, guid: e708192a3b4c5d6ef7889aabbccddeef, type: 3}
+  blockData: {fileID: 0}
   rarity: 0
   displayName: chr_pa_paladin_name
   description: chr_pa_paladin_desc

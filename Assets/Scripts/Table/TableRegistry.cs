@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TableRegistry", menuName = "ChainKnights/Table/TableRegistry")]
 public class TableRegistry : ScriptableObject
 {
-    public BlockTable Block;
     public JokerCardTable JokerCard;
     public EnemyTable Enemy;
     public CharacterTable Character;

@@ -6,12 +6,19 @@ using UnityEngine.UI;
 public class SaveSlotUI : MonoBehaviour
 {
     public TextMeshProUGUI slotLabel;
-    public TextMeshProUGUI characterSummary;
     public TextMeshProUGUI dateLabel;
-    public GameObject emptyOverlay;
-    public Image selectionHighlight;
 
-    public System.Action<SaveSlotUI> OnSelected;
+    [SerializeField]
+    Image[] characterIcons = new Image[3];
+
+    [SerializeField]
+    Image[] jokerIcons = new Image[5];
+
+    [SerializeField]
+    Button[] characterButtons = new Button[3];
+
+    [SerializeField]
+    Button[] jokerButtons = new Button[5];
 
     public int SlotIndex { get; private set; }
     public bool HasData { get; private set; }
@@ -24,54 +31,45 @@ public class SaveSlotUI : MonoBehaviour
         if (slotLabel != null)
             slotLabel.text = $"슬롯 {slotIndex + 1}";
 
-        if (characterSummary != null)
+        if (dateLabel != null)
         {
-            var table = TableRegistry.Instance?.Character;
-            var names = new System.Text.StringBuilder();
-            foreach (var id in data.characterIds)
-            {
-                if (string.IsNullOrEmpty(id))
-                    continue;
-                if (table != null && table.TryGet(id, out var def))
-                    names.AppendLine(Localization.Get(def.displayName));
-                else
-                    names.AppendLine(id);
-            }
-            characterSummary.text = names.ToString().TrimEnd();
-        }
-
-        if (dateLabel != null && !string.IsNullOrEmpty(data.clearedAtIso))
-        {
-            if (DateTime.TryParse(data.clearedAtIso, out var dt))
+            if (
+                !string.IsNullOrEmpty(data.clearedAtIso)
+                && DateTime.TryParse(data.clearedAtIso, out var dt)
+            )
                 dateLabel.text = dt.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
             else
-                dateLabel.text = data.clearedAtIso;
+                dateLabel.text = "";
         }
 
-        if (emptyOverlay != null)
-            emptyOverlay.SetActive(false);
+        var reg = TableRegistry.Instance;
+        for (int i = 0; i < characterIcons.Length; i++)
+        {
+            Sprite sp = null;
+            if (
+                reg != null
+                && i < data.characterIds.Length
+                && !string.IsNullOrEmpty(data.characterIds[i])
+            )
+                sp = reg.Character.Get(data.characterIds[i])?.prefab.Icon;
+            SetSprite(characterIcons[i], sp);
+        }
+
+        for (int i = 0; i < jokerIcons.Length; i++)
+        {
+            Sprite sp = null;
+            if (reg != null && i < data.jokerIds.Length && !string.IsNullOrEmpty(data.jokerIds[i]))
+                sp = reg.JokerCard.Get(data.jokerIds[i])?.icon;
+            SetSprite(jokerIcons[i], sp);
+        }
     }
 
-    public void SetupEmpty(int slotIndex)
+    static void SetSprite(Image img, Sprite sprite)
     {
-        SlotIndex = slotIndex;
-        HasData = false;
-
-        if (slotLabel != null)
-            slotLabel.text = $"슬롯 {slotIndex + 1}";
-        if (characterSummary != null)
-            characterSummary.text = "";
-        if (dateLabel != null)
-            dateLabel.text = "";
-        if (emptyOverlay != null)
-            emptyOverlay.SetActive(true);
+        if (img == null)
+            return;
+        img.enabled = sprite != null;
+        if (sprite != null)
+            img.sprite = sprite;
     }
-
-    public void SetSelected(bool selected)
-    {
-        if (selectionHighlight != null)
-            selectionHighlight.enabled = selected;
-    }
-
-    public void OnClick() => OnSelected?.Invoke(this);
 }

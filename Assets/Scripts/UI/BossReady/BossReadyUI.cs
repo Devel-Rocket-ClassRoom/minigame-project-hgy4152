@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class BossReadyUI : MonoBehaviour
 {
-    [Header("Save Slots")]
-    public Transform saveSlotParent;
-    public SaveSlotUI saveSlotPrefab;
+    [Header("Save Slot Carousel")]
+    public SaveSlotUI saveSlotDisplay;
+    public SaveSlotSwipeArea saveSlotSwipeArea;
 
     [Header("Boss Navigation")]
     public BossSlotUI bossDisplay;
@@ -20,19 +20,17 @@ public class BossReadyUI : MonoBehaviour
     public Button startButton;
     public Button backButton;
 
-    private readonly List<SaveSlotUI> saveSlots = new();
+    private readonly List<(int slotIndex, SaveSlotData data)> saveSlotList = new();
     private readonly List<EnemyData> bossList = new();
-    private readonly Dictionary<int, SaveSlotData> slotDataCache = new();
 
     [SerializeField]
     private SaveManager saveManager;
 
-    private SaveSlotUI selectedSaveSlot;
+    private int saveSlotIndex = -1;
     private int bossIndex = -1;
 
     private void Start()
     {
-
         if (startButton != null)
             startButton.onClick.AddListener(OnStartClicked);
         if (backButton != null)
@@ -47,25 +45,30 @@ public class BossReadyUI : MonoBehaviour
 
     private void InitSaveSlots()
     {
-        for (int i = 0; i < SaveManager.SlotCount; i++)
+        if (saveManager != null)
         {
-            var slotGo = Instantiate(saveSlotPrefab, saveSlotParent);
-            var slotUI = slotGo.GetComponent<SaveSlotUI>();
-
-            if (saveManager != null && saveManager.TryLoad(i, out var data))
+            for (int i = 0; i < SaveManager.SlotCount; i++)
             {
-                slotDataCache[i] = data;
-                slotUI.Setup(i, data);
+                if (saveManager.TryLoad(i, out var data))
+                    saveSlotList.Add((i, data));
             }
-            else
-            {
-                slotUI.SetupEmpty(i);
-            }
+        }
 
-            var btn = slotGo.GetComponent<Button>() ?? slotGo.gameObject.AddComponent<Button>();
-            btn.onClick.AddListener(slotUI.OnClick);
-            slotUI.OnSelected = HandleSaveSlotSelected;
-            saveSlots.Add(slotUI);
+        if (saveSlotSwipeArea != null)
+        {
+            saveSlotSwipeArea.OnSwipeLeft = OnNextSaveSlot;
+            saveSlotSwipeArea.OnSwipeRight = OnPrevSaveSlot;
+        }
+
+        if (saveSlotList.Count > 0)
+        {
+            if (saveSlotDisplay != null)
+                saveSlotDisplay.gameObject.SetActive(true);
+            ShowSaveSlot(0);
+        }
+        else if (saveSlotDisplay != null)
+        {
+            saveSlotDisplay.gameObject.SetActive(false);
         }
     }
 
@@ -84,6 +87,30 @@ public class BossReadyUI : MonoBehaviour
 
         if (bossList.Count > 0)
             ShowBoss(0);
+    }
+
+    private void ShowSaveSlot(int index)
+    {
+        if (saveSlotList.Count == 0 || saveSlotDisplay == null)
+            return;
+        saveSlotIndex = index;
+        var entry = saveSlotList[index];
+        saveSlotDisplay.Setup(entry.slotIndex, entry.data);
+        RefreshStartButton();
+    }
+
+    private void OnPrevSaveSlot()
+    {
+        if (saveSlotList.Count == 0)
+            return;
+        ShowSaveSlot((saveSlotIndex - 1 + saveSlotList.Count) % saveSlotList.Count);
+    }
+
+    private void OnNextSaveSlot()
+    {
+        if (saveSlotList.Count == 0)
+            return;
+        ShowSaveSlot((saveSlotIndex + 1) % saveSlotList.Count);
     }
 
     private void ShowBoss(int index)
@@ -108,26 +135,18 @@ public class BossReadyUI : MonoBehaviour
         ShowBoss((bossIndex + 1) % bossList.Count);
     }
 
-    private void HandleSaveSlotSelected(SaveSlotUI slot)
-    {
-        selectedSaveSlot?.SetSelected(false);
-        selectedSaveSlot = slot;
-        selectedSaveSlot.SetSelected(true);
-        RefreshStartButton();
-    }
-
     private void RefreshStartButton()
     {
         if (startButton == null)
             return;
-        startButton.interactable = selectedSaveSlot != null && bossIndex >= 0;
+        startButton.interactable = saveSlotIndex >= 0 && bossIndex >= 0;
     }
 
     private void OnStartClicked()
     {
-        if (selectedSaveSlot == null || bossIndex < 0)
+        if (saveSlotIndex < 0 || bossIndex < 0)
             return;
-        BossPartyContext.SaveSlotIndex = selectedSaveSlot.SlotIndex;
+        BossPartyContext.SaveSlotIndex = saveSlotList[saveSlotIndex].slotIndex;
         BossPartyContext.BossId = bossList[bossIndex].id;
         GameStateMachine.Instance.TransitionTo(GameState.Adventure);
     }

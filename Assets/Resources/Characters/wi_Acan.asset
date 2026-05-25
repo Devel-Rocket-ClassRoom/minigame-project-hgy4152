@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
-  m_Name: hu_Hunter
+  m_Name: wi_Acan
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: hu_hunter
-  classType: 6
-  prefab: {fileID: 3300000000000000003, guid: 192a3b4c5d6e7f88899aabbccddeeff0, type: 3}
-  blockData: {fileID: 0}
+  id: 
+  classType: 0
+  prefab: {fileID: 0}
   rarity: 0
-  displayName: chr_hu_hunter_name
-  description: chr_hu_hunter_desc
-  icon: {fileID: 0}
+  displayName: 
+  description: 

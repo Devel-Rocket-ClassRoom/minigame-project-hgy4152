@@ -49,8 +49,6 @@ MonoBehaviour:
   creator: {fileID: 2200000000000000004}
   icon: {fileID: 0}
   skill: {fileID: 0}
-  characterName: Wizard
-  passiveDescription:
 --- !u!114 &2200000000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0

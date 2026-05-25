@@ -49,8 +49,6 @@ MonoBehaviour:
   creator: {fileID: 3300000000000000004}
   icon: {fileID: 0}
   skill: {fileID: 0}
-  characterName: Hunter
-  passiveDescription:
 --- !u!114 &3300000000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0

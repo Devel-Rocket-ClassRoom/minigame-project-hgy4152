@@ -24,6 +24,9 @@ public class ModeClearUI : MonoBehaviour
         ClassType.Warrior,
         ClassType.Archer,
         ClassType.Priest,
+        ClassType.Paladin,
+        ClassType.Wizard,
+        ClassType.Hunter,
     };
 
     void Awake()

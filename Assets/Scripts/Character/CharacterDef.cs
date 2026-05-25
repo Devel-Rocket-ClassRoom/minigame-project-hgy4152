@@ -6,6 +6,7 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public string id;
     public ClassType classType;
     public Character prefab;
+    public BlockData blockData;
     public Rarity rarity;
     public string displayName;
     public string description;

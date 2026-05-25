@@ -15,6 +15,7 @@ MonoBehaviour:
   id: pr_beatrice
   classType: 3
   prefab: {fileID: 599271511147300192, guid: df1cdd1b303e293478bce80a9e4888eb, type: 3}
+  blockData: {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
   rarity: 0
   displayName: chr_pr_beatrice_name
   description: chr_pr_beatrice_desc

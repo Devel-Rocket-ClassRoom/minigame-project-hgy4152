@@ -3271,6 +3271,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 3687919479667094706, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
+      propertyPath: swipeThreshold
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3706396299008388636, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
       propertyPath: m_Name
       value: SaveSlot
@@ -3402,6 +3406,22 @@ PrefabInstance:
     - target: {fileID: 7626793427320359674, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064647527319116191, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064647527319116191, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064647527319116191, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064647527319116191, guid: 952d1902d3d393f4c99e7290ecef5675, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

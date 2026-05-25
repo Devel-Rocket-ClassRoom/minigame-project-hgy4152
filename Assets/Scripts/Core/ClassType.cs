@@ -4,4 +4,7 @@ public enum ClassType
     Warrior,
     Archer,
     Priest,
+    Paladin,
+    Wizard,
+    Hunter,
 }

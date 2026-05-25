@@ -111,9 +111,6 @@ MonoBehaviour:
   creator: {fileID: 3990032338686259886}
   icon: {fileID: 21300000, guid: a4835102dec012c43a17e0cea8616ea0, type: 3}
   skill: {fileID: -4092750051759250212}
-  characterName: "\uBCA0\uC544\uD2B8\uB9AC\uCCB4"
-  passiveDescription: "\uCE58\uC720\uC758 \uBB3C\uACB0: \uC2A4\uD0AC \uC0AC\uC6A9
-    \uC2DC \uC544\uAD70 \uC804\uCCB4\uC758 \uCCB4\uB825\uC744 \uD68C\uBCF5\uC2DC\uD0B5\uB2C8\uB2E4."
 --- !u!114 &3990032338686259886
 MonoBehaviour:
   m_ObjectHideFlags: 0

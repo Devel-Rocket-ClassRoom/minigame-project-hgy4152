@@ -24,13 +24,14 @@ public class BossReadyUI : MonoBehaviour
     private readonly List<EnemyData> bossList = new();
     private readonly Dictionary<int, SaveSlotData> slotDataCache = new();
 
+    [SerializeField]
     private SaveManager saveManager;
+
     private SaveSlotUI selectedSaveSlot;
     private int bossIndex = -1;
 
     private void Start()
     {
-        saveManager = FindObjectOfType<SaveManager>();
 
         if (startButton != null)
             startButton.onClick.AddListener(OnStartClicked);

@@ -119,6 +119,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &27242058
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 186.58669
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 84.6911
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881068016374823071, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4993265478507337879, guid: 705058e8f16dad54e87801682776678e, type: 3}
+      propertyPath: m_Name
+      value: SaveManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 705058e8f16dad54e87801682776678e, type: 3}
 --- !u!1 &68021390
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,14 +426,9 @@ MonoBehaviour:
   prevBossButton: {fileID: 1413782451}
   nextBossButton: {fileID: 1652584321}
   patternPreview: {fileID: 458842479}
-  deckSummaryPanel: {fileID: 0}
-  deckCharacterNames: {fileID: 0}
-  deckJokerNames: {fileID: 0}
-  fullscreenPreview: {fileID: 0}
-  fullscreenPatternPreview: {fileID: 0}
-  enterBossButton: {fileID: 0}
   startButton: {fileID: 1332825558}
   backButton: {fileID: 978201522}
+  saveManager: {fileID: 1410764378}
 --- !u!114 &266099667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1547,6 +1599,17 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: 50}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 1, y: 0}
+--- !u!114 &1410764378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3581093449395326213, guid: 705058e8f16dad54e87801682776678e, type: 3}
+  m_PrefabInstance: {fileID: 27242058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4724f267bf13c94e9a8c2ab4e5f16f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::SaveManager
 --- !u!1 &1413782450
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,3 +2055,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 982323305}
   - {fileID: 266099670}
+  - {fileID: 27242058}

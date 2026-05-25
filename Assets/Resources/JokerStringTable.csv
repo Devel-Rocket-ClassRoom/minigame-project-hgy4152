@@ -1,16 +1,4 @@
 Key,Value
-blk_ar1_name,돌풍 화살
-blk_ar1_desc,바람의 힘을 담은 화살을 발사한다.
-blk_pr1_name,심판의 빛
-blk_pr1_desc,빛의 힘으로 적들을 심판한다.
-blk_wa1_name,성검 소환
-blk_wa1_desc,"성검 ""엑스칼리버""를 소환해서 공격한다."
-chr_ar_hikari_name,히카리
-chr_ar_hikari_desc,
-chr_pr_beatrice_name,베아트리스
-chr_pr_beatrice_desc,
-chr_wa_reon_name,레온
-chr_wa_reon_desc,
 jkr_bs1_name,태그 매치
 jkr_bs1_desc,서로 다른 직업을 번갈아가면서 구성했을 시 데미지가 상승합니다
 jkr_ch1_name,기본이 중요하다
@@ -71,15 +59,3 @@ jkr_full_name,완전체
 jkr_full_desc,교대 배치와 세 직업 모두 출현 시 최강의 데미지.
 jkr_spd_e_name,전광석화
 jkr_spd_e_desc,남은 시간이 70% 이상일 때 강력한 데미지 상승.
-enm_ch1_s1_name,나무인형
-enm_ch1_s1_desc,새내기 모험가들이 연습하기 좋은 나무인형이다.
-enm_ch1_s2_name,구리인형
-enm_ch1_s2_desc,초보 모험가들을 위한 연습용 구리인형이다.
-enm_ch1_s3_name,은인형
-enm_ch1_s3_desc,수련장 졸업심사를 위한 은인형
-enm_Ch2_s1_name,숲의 도적
-enm_Ch2_s1_desc,
-enm_Ch2_s2_name,숲의 사냥꾼
-enm_Ch2_s2_desc,
-enm_Ch2_s3_name,스캐빈져
-enm_Ch2_s3_desc,

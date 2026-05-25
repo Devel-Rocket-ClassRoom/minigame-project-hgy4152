@@ -13,18 +13,28 @@ public static class Localization
         return _map.TryGetValue(key, out var v) && !string.IsNullOrEmpty(v) ? v : key;
     }
 
+    static readonly string[] TableNames =
+    {
+        "HeroesStringTable",
+        "JokerStringTable",
+        "EnemyStringTable",
+    };
+
     static void EnsureLoaded()
     {
         if (_map != null)
             return;
         _map = new Dictionary<string, string>();
-        var asset = Resources.Load<TextAsset>("StringTable");
-        if (asset == null)
+        foreach (var name in TableNames)
         {
-            Debug.LogWarning("[Localization] Resources/StringTable.csv 를 찾을 수 없습니다.");
-            return;
+            var asset = Resources.Load<TextAsset>(name);
+            if (asset == null)
+            {
+                Debug.LogWarning($"[Localization] Resources/{name}.csv 를 찾을 수 없습니다.");
+                continue;
+            }
+            ParseCsv(asset.text, _map);
         }
-        ParseCsv(asset.text, _map);
     }
 
     static void ParseCsv(string text, Dictionary<string, string> dict)

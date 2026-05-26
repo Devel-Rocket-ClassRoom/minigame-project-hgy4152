@@ -29,6 +29,9 @@ public class BossReadyUI : MonoBehaviour
     [SerializeField]
     SaveSlotInfoPanel saveSlotInfoPanel;
 
+    [SerializeField]
+    GameObject emptySlotMessage;
+
     private int saveSlotIndex = -1;
     private int bossIndex = -1;
 
@@ -66,16 +69,14 @@ public class BossReadyUI : MonoBehaviour
             saveSlotSwipeArea.OnSwipeRight = OnPrevSaveSlot;
         }
 
-        if (saveSlotList.Count > 0)
-        {
-            if (saveSlotDisplay != null)
-                saveSlotDisplay.gameObject.SetActive(true);
+        bool hasSlots = saveSlotList.Count > 0;
+        if (saveSlotDisplay != null)
+            saveSlotDisplay.gameObject.SetActive(hasSlots);
+        if (emptySlotMessage != null)
+            emptySlotMessage.SetActive(!hasSlots);
+
+        if (hasSlots)
             ShowSaveSlot(0);
-        }
-        else if (saveSlotDisplay != null)
-        {
-            saveSlotDisplay.gameObject.SetActive(false);
-        }
     }
 
     private void InitBossSlots()

@@ -8,9 +8,9 @@ public class BossSlotUI : MonoBehaviour
     public TextMeshProUGUI bossNameLabel;
     public TextMeshProUGUI rarityLabel;
 
-    public EnemyData Def { get; private set; }
+    public BossData Def { get; private set; }
 
-    public void Setup(EnemyData boss)
+    public void Setup(BossData boss)
     {
         Def = boss;
 
@@ -18,7 +18,7 @@ public class BossSlotUI : MonoBehaviour
             portrait.sprite = boss.icon;
 
         if (bossNameLabel != null)
-            bossNameLabel.text = boss.enemyName;
+            bossNameLabel.text = boss.bossName;
 
         if (rarityLabel != null)
             rarityLabel.text = boss.rarity.ToString();

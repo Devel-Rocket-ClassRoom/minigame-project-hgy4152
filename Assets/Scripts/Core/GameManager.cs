@@ -92,7 +92,10 @@ public class GameManager : MonoBehaviour
 
     void InitFromBossContext()
     {
-        if (saveManager != null && saveManager.TryLoad(BossPartyContext.SaveSlotIndex, out var saveData))
+        if (
+            saveManager != null
+            && saveManager.TryLoad(BossPartyContext.SaveSlotIndex, out var saveData)
+        )
         {
             characterSet.SetCharactersByIds(saveData.characterIds);
 
@@ -168,24 +171,46 @@ public class GameManager : MonoBehaviour
     {
         var judge = new ChainJudge();
         judge.IngestGroups(groups);
+        judge.IngestHand(blockManager.hand);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
-
         judge.discardUsed = blockManager.DiscardsUsed;
         judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
+        {
+            bossPatternSystem.PopulatePrevState(judge);
             bossPatternSystem.ApplyModifiers(judge);
+        }
         return CalcDamages(groups, judge);
     }
 
     int[] CalcDamages(List<ChainGroup> groups, ChainJudge judge)
     {
+        // 우측 조커 스킵 인덱스 계산
+        var skipJokerIndices = new HashSet<int>();
+        if (judge.skipRightmostJokers > 0 && jokerManager != null)
+        {
+            int skipped = 0;
+            for (
+                int k = jokerManager.ActiveHand.Length - 1;
+                k >= 0 && skipped < judge.skipRightmostJokers;
+                k--
+            )
+            {
+                if (jokerManager.ActiveHand[k] != null)
+                {
+                    skipJokerIndices.Add(k);
+                    skipped++;
+                }
+            }
+        }
+
         float deckBonus = 1f;
         if (jokerManager != null)
-            foreach (var card in jokerManager.ActiveHand)
-                if (card != null)
-                    deckBonus *= card.DeckBonus(judge);
+            for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
+                if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
+                    deckBonus *= jokerManager.ActiveHand[k].DeckBonus(judge);
 
         var result = new int[groups.Count];
         for (int i = 0; i < groups.Count; i++)
@@ -197,14 +222,26 @@ public class GameManager : MonoBehaviour
             groupJudge.IngestGroup(group);
             int groupBonus = 0;
             if (jokerManager != null)
-                foreach (var card in jokerManager.ActiveHand)
-                    if (card != null)
-                        groupBonus += card.GetBonus(groupJudge);
+                for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
+                    if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
+                        groupBonus += jokerManager.ActiveHand[k].GetBonus(groupJudge);
 
-            int dmg = CalcGroupDamage(group);
+            int dmg = CalcGroupDamage(group, judge);
             dmg -= judge.bossFlatBonus;
             dmg += groupBonus;
             dmg = Mathf.FloorToInt(dmg * (2 - judge.bossDamageMultiplier));
+
+            if (judge.classDiscriminateActive)
+            {
+                int classBlocks = judge.blockDistribution.GetValueOrDefault(group.DominantClass);
+                dmg = Mathf.FloorToInt(
+                    dmg * Mathf.Max(0f, 1f - judge.classDiscriminatePerBlock * classBlocks)
+                );
+            }
+
+            if (!judge.isShiftBlock && judge.nonShiftPenaltyMultiplier != 1f)
+                dmg = Mathf.FloorToInt(dmg * judge.nonShiftPenaltyMultiplier);
+
             dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
             dmg = Mathf.FloorToInt(dmg * deckBonus);
             result[i] = dmg;
@@ -228,6 +265,9 @@ public class GameManager : MonoBehaviour
         _currentTurn++;
         if (stageIntroUI != null)
             yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
+        drawPhaseTimer.ResetPhaseDuration();
+        blockManager.ResetDiscardLimit();
+        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
         drawPhaseTimer.StartDrawPhase();
     }
 
@@ -284,11 +324,16 @@ public class GameManager : MonoBehaviour
 
     void Settle()
     {
+        // 1. 패시브/턴 modifier가 손패를 정산 전에 변경할 기회 (예: 우측 블록 제거)
+        bossPatternSystem?.ApplyPreResolve(blockManager);
+
+        // 2. 체인 그룹 해석
         var groups = ChainResolver.ResolveChains(blockManager.hand);
 
-        // 전체 그룹 조사
+        // 3. judge 구성
         var judge = new ChainJudge();
         judge.IngestGroups(groups);
+        judge.IngestHand(blockManager.hand);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
@@ -296,7 +341,9 @@ public class GameManager : MonoBehaviour
 
         if (bossPatternSystem != null)
         {
+            bossPatternSystem.PopulatePrevState(judge);
             bossPatternSystem.Inject(judge);
+            bossPatternSystem.SnapshotForNextTurn(judge);
             bossPatternSystem.AdvanceTurn();
         }
 
@@ -348,15 +395,26 @@ public class GameManager : MonoBehaviour
         stageManager.AdvanceToNext();
     }
 
-    int CalcGroupDamage(ChainGroup group)
+    int CalcGroupDamage(ChainGroup group, ChainJudge judge)
     {
-        float chainMul = group.Length switch
+        int idx = group.Length - 1;
+        if (idx < 0 || idx > 2)
+            return 0;
+        if (judge.chainLevelNullified[idx])
+            return 0;
+        if (judge.classNullified.Contains(group.DominantClass))
+            return 0;
+        if (judge.requireAllThreeClasses && judge.classDistribution.Count < 3)
+            return 0;
+
+        float baseMul = group.Length switch
         {
             1 => 1.1f,
             2 => 1.2f,
             3 => 1.3f,
             _ => 1f,
         };
-        return (int)(chainMul * group.Blocks[0].data.attackPower * group.Length);
+        baseMul *= judge.chainLevelMultiplier[idx];
+        return Mathf.FloorToInt(baseMul * group.Blocks[0].data.attackPower * group.Length);
     }
 }

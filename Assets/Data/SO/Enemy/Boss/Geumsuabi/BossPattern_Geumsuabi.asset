@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f77781e8d600d1419f216013adbfe3b, type: 3}
+  m_Name: BossPattern_Geumsuabi
+  m_EditorClassIdentifier: ChainKnights::BossPattern
+  patternName: "\uAE08\uC218\uC544\uBE44"
+  passive:
+  - {fileID: 11400000, guid: c9537b8be8b7fae4ca0a195da5201ca9, type: 2}
+  turnModifiers:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 5b86f811eea592a4a8960a5fcb8a1e63, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: a7bc6f5bc32477d4bb05aae7e73b033e, type: 2}
+  - {fileID: 11400000, guid: 7995068890f0201408147749a45248ad, type: 2}

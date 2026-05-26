@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f77781e8d600d1419f216013adbfe3b, type: 3}
+  m_Name: BossPattern_BlackMage
+  m_EditorClassIdentifier: ChainKnights::BossPattern
+  patternName: "\uD751\uB9C8\uBC95\uC0AC"
+  passive:
+  - {fileID: 11400000, guid: ec0864a98c4425e4c834e236af9b028e, type: 2}
+  turnModifiers:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 423e9e1c19114d44fb3770a00a9bf319, type: 2}
+  - {fileID: 11400000, guid: 8bdb6f0c559fd1c4798c427f12995674, type: 2}
+  - {fileID: 11400000, guid: 5d43eb7da7dfa7843851f01a15173eb7, type: 2}
+  - {fileID: 11400000, guid: 6dcc367eb6f20f840b7af6cf084089c7, type: 2}

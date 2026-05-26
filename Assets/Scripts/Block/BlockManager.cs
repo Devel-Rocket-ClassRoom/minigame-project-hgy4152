@@ -9,7 +9,14 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     int discardLimit = 5;
     int _discardsUsed;
+    int _runtimeDiscardLimit = -1;
     bool _swapPending;
+
+    int EffectiveLimit => _runtimeDiscardLimit >= 0 ? _runtimeDiscardLimit : discardLimit;
+
+    public void SetDiscardLimit(int n) => _runtimeDiscardLimit = n;
+
+    public void ResetDiscardLimit() => _runtimeDiscardLimit = -1;
 
     public event Action OnDrawBlocked;
 
@@ -74,6 +81,8 @@ public class BlockManager : MonoBehaviour
         int idx = hand.IndexOf(block);
         if (idx < 0)
             return;
+        if (_discardsUsed >= EffectiveLimit)
+            return;
 
         hand.RemoveAt(idx);
         Destroy(block.gameObject);
@@ -96,7 +105,7 @@ public class BlockManager : MonoBehaviour
         RefreshAllBlockVisuals();
     }
 
-    public int DiscardsRemaining => Mathf.Max(0, discardLimit - _discardsUsed);
+    public int DiscardsRemaining => Mathf.Max(0, EffectiveLimit - _discardsUsed);
     public int DiscardsUsed => _discardsUsed;
 
     public void ResetDiscardCount() => _discardsUsed = 0;

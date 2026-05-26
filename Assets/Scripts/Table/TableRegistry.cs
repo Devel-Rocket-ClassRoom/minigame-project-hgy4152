@@ -7,7 +7,6 @@ public class TableRegistry : ScriptableObject
     public EnemyTable Enemy;
     public CharacterTable Character;
     public BossTable Boss;
-    public BossStringTable BossString;
 
     private static TableRegistry _instance;
     public static TableRegistry Instance =>

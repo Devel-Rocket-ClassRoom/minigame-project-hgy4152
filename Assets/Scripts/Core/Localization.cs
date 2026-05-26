@@ -18,6 +18,7 @@ public static class Localization
         "DataTables/HeroesStringTable",
         "DataTables/JokerStringTable",
         "DataTables/EnemyStringTable",
+        "DataTables/BossStringTable",
     };
 
     static void EnsureLoaded()

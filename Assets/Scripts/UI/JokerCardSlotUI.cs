@@ -9,7 +9,7 @@ public class JokerCardSlotUI : MonoBehaviour
     Button button;
 
     [SerializeField]
-    InfoPopupUI infoPopup;
+    InfoPopupUI infoPopupPrefab;
 
     JokerCard _card;
 
@@ -44,8 +44,8 @@ public class JokerCardSlotUI : MonoBehaviour
 
     void OnClicked()
     {
-        if (_card == null || infoPopup == null)
+        if (_card == null || infoPopupPrefab == null)
             return;
-        infoPopup.ShowJoker(_card, button.transform as RectTransform);
+        InfoPopupUI.ShowJoker(infoPopupPrefab, _card, button.transform as RectTransform);
     }
 }

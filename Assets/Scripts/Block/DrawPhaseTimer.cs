@@ -1,19 +1,22 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class DrawPhaseTimer : MonoBehaviour
 {
-    const float PhaseDuration = 20f;
+    [SerializeField]
+    float defaultPhaseDuration = 20f;
 
     [SerializeField]
     float drawInterval = 1.5f;
 
+    float _phaseDuration;
     BlockManager blockManager;
 
     void Awake()
     {
         blockManager = GetComponent<BlockManager>();
+        _phaseDuration = defaultPhaseDuration;
     }
 
     public event Action OnPhaseEnded;
@@ -24,7 +27,11 @@ public class DrawPhaseTimer : MonoBehaviour
     public bool IsActive => _phaseCoroutine != null;
 
     public float RemainingRatio =>
-        _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / PhaseDuration) : 0f;
+        _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / _phaseDuration) : 0f;
+
+    public void SetPhaseDuration(float seconds) => _phaseDuration = Mathf.Max(1f, seconds);
+
+    public void ResetPhaseDuration() => _phaseDuration = defaultPhaseDuration;
 
     void Update()
     {
@@ -56,7 +63,7 @@ public class DrawPhaseTimer : MonoBehaviour
 
     IEnumerator DrawPhaseRoutine()
     {
-        _endTime = Time.time + PhaseDuration;
+        _endTime = Time.time + _phaseDuration;
 
         while (Time.time < _endTime)
         {

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4933b97c4c03f2446834276db6bc5b40, type: 3}
-  m_Name: BlackMage
+  m_Name: Gold
   m_EditorClassIdentifier: ChainKnights::EnemyData
-  id: boss_blackmage
+  id: boss_geumsuabi
   rarity: 0
-  enemyName: "\uD751\uB9C8\uBC95\uC0AC"
-  description: "\uC2DC\uAC04\uC744 \uC9C0\uBC30\uD558\uB294 \uB9C8\uBC95\uC0AC \uBCF4\uC2A4"
-  icon: {fileID: 0}
-  hp: 450
-  bossPattern: {fileID: 11400000, guid: 20c9b5775b28e4149ab3fef044446fc9, type: 2}
+  enemyName: "\uAE08\uC218\uC544\uBE44"
+  description: "\uD669\uAE08\uC73C\uB85C \uB2E8\uB828\uB41C \uD5C8\uC218\uC544\uBE44
+    \uBCF4\uC2A4"
+  icon: {fileID: -7092273832628659466, guid: 281726a6776f7ca438fdb6a9f23bf2ff, type: 3}
+  hp: 5000
+  bossPattern: {fileID: 11400000, guid: d83855dae2a4e394ab5ace2d1d205ec1, type: 2}

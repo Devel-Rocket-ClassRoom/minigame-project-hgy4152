@@ -13,9 +13,6 @@ public class CharacterPortraitGroupUI : MonoBehaviour
 
     void Start()
     {
-        if (characterSet == null)
-            characterSet = FindObjectOfType<CharacterSet>();
-
         BindSlots();
     }
 

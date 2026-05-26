@@ -60,9 +60,6 @@ public class BossReadyUI : MonoBehaviour
             }
         }
 
-        Debug.Log(
-            $"[BossReadyUI] InitSaveSlots: saveSlotList.Count={saveSlotList.Count}, swipeArea bound={(saveSlotSwipeArea != null)}"
-        );
         if (saveSlotSwipeArea != null)
         {
             saveSlotSwipeArea.OnSwipeLeft = OnNextSaveSlot;
@@ -70,8 +67,6 @@ public class BossReadyUI : MonoBehaviour
         }
 
         bool hasSlots = saveSlotList.Count > 0;
-        if (saveSlotDisplay != null)
-            saveSlotDisplay.gameObject.SetActive(hasSlots);
         if (emptySlotMessage != null)
             emptySlotMessage.SetActive(!hasSlots);
 
@@ -98,9 +93,6 @@ public class BossReadyUI : MonoBehaviour
 
     private void ShowSaveSlot(int index)
     {
-        Debug.Log(
-            $"[BossReadyUI] ShowSaveSlot(index={index}), listCount={saveSlotList.Count}, displayNull={saveSlotDisplay == null}"
-        );
         if (saveSlotList.Count == 0 || saveSlotDisplay == null)
             return;
         saveSlotIndex = index;

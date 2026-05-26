@@ -21,6 +21,7 @@ public class SaveSlotInfoPanel : MonoBehaviour
 
     public void Show(SaveSlotData data)
     {
+        backdropButton.gameObject.SetActive(true);
         var reg = TableRegistry.Instance;
 
         for (int i = 0; i < characterIcons.Length; i++)
@@ -46,7 +47,11 @@ public class SaveSlotInfoPanel : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Hide() => gameObject.SetActive(false);
+    public void Hide() 
+    { 
+        backdropButton?.gameObject.SetActive(false);
+        gameObject.SetActive(false); 
+    }
 
     static void SetIcon(Image img, Sprite sprite)
     {

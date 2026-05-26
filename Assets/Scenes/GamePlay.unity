@@ -1297,7 +1297,7 @@ MonoBehaviour:
   stageIntroUI: {fileID: 2134137695}
   clearTextObject: {fileID: 140098330}
   modeClearUI: {fileID: 717309953}
-  saveManager: {fileID: 0}
+  saveManager: {fileID: 1567787298}
   saveSlotPickerUI: {fileID: 2010759400}
   confirmDialog: {fileID: 558488645}
   maxTurns: 5
@@ -1391,7 +1391,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBAA8\uD5D8\uBAA8\uB4DC \uD074\uB9AC\uC5B4!"
+  m_text: "\uBAA8\uD5D8\uBAA8\uB4DC \uD074\uB9AC\uC5B4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4968e9f931646d54aa869afb29644306, type: 2}
   m_sharedMaterial: {fileID: 4285205476610671538, guid: 4968e9f931646d54aa869afb29644306, type: 2}
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &225710806
@@ -2484,6 +2484,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29c8a436b0bbc26499187b82ad856c91, type: 3}
+--- !u!1001 &450811772
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 309844604620876428, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_Name
+      value: GameStateMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.39406
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.0389
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 907233179824922220, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0ec83ffe79104fc47b85c7651a2b434f, type: 3}
 --- !u!224 &498533415 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2431569850074169345, guid: 29c8a436b0bbc26499187b82ad856c91, type: 3}
@@ -4755,6 +4812,7 @@ MonoBehaviour:
   panel: {fileID: 1429998183}
   titleText: {fileID: 225710805}
   restartButton: {fileID: 1151181405}
+  exitButton: {fileID: 0}
   characterIcons:
   - {fileID: 2109050953}
   - {fileID: 1418945243}
@@ -11928,6 +11986,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1567787298 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3581093449395326213, guid: 705058e8f16dad54e87801682776678e, type: 3}
+  m_PrefabInstance: {fileID: 846853665}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4724f267bf13c94e9a8c2ab4e5f16f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::SaveManager
 --- !u!1001 &1614761062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12963,8 +13032,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: ChainKnights::InfoPopupUI
   panel: {fileID: 813579943}
   backdropButton: {fileID: 2084357377}
-  nameText: {fileID: 846074906}
-  descText: {fileID: 1617028017}
+  nameText: {fileID: 1133008032}
+  passiveText: {fileID: 1617028017}
+  blockText: {fileID: 1294348139}
   slideDuration: 0.25
 --- !u!224 &1703641217 stripped
 RectTransform:
@@ -16380,3 +16450,4 @@ SceneRoots:
   - {fileID: 9083566363011093034}
   - {fileID: 525524452}
   - {fileID: 846853665}
+  - {fileID: 450811772}

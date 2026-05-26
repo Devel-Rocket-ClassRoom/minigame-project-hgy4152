@@ -12,6 +12,8 @@ public class ModeClearUI : MonoBehaviour
 
     [SerializeField]
     Button restartButton;
+    [SerializeField]
+    Button exitButton;
 
     [SerializeField]
     Image[] characterIcons = new Image[3];
@@ -37,13 +39,21 @@ public class ModeClearUI : MonoBehaviour
             restartButton.onClick.AddListener(() =>
             {
                 if (GameStateMachine.Instance != null)
+                    GameStateMachine.Instance.TransitionTo(GameState.AdventureReady);
+                else
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            });
+        if (exitButton != null)
+            exitButton.onClick.AddListener(() =>
+            {
+                if (GameStateMachine.Instance != null)
                     GameStateMachine.Instance.TransitionTo(GameState.Lobby);
                 else
                     UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             });
     }
 
-    public void Show(GameManager gameManager, Color color, string title = "���� �Ϸ�")
+    public void Show(GameManager gameManager, Color color, string title = "모드 클리어")
     {
         if (titleText != null)
         {

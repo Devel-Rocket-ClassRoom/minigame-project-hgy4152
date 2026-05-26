@@ -23,10 +23,7 @@ public class EnemyController : MonoBehaviour
     RectTransform damageSpawnRoot;
 
     [SerializeField]
-    InfoPopupUI infoPopupPrefab;
-
-    [SerializeField]
-    BossInfoUIPanel bossInfoPanelPrefab;
+    BossInfoUIPanel enemyInfoPanel;
 
     EnemyData _enemyData;
 
@@ -66,11 +63,7 @@ public class EnemyController : MonoBehaviour
     {
         if (_enemyData == null)
             return;
-        var anchor = enemyPortrait.rectTransform;
-        if (_enemyData.bossPattern != null)
-            BossInfoUIPanel.Show(bossInfoPanelPrefab, _enemyData, anchor);
-        else
-            InfoPopupUI.ShowEnemy(infoPopupPrefab, _enemyData, anchor);
+        enemyInfoPanel?.Show(_enemyData);
     }
 
     public void TakeDamage(int amount, Color color)

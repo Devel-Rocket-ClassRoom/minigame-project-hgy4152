@@ -9,7 +9,7 @@ public class CharacterPortraitGroupUI : MonoBehaviour
     CharacterSet characterSet;
 
     [SerializeField]
-    InfoPopupUI infoPopupPrefab;
+    InfoPopupUI infoPopup;
 
     void Start()
     {
@@ -62,7 +62,7 @@ public class CharacterPortraitGroupUI : MonoBehaviour
 
     void OnPortraitClicked(CharacterPortraitUI slot)
     {
-        if (infoPopupPrefab != null && slot.Def != null)
-            InfoPopupUI.ShowCharacter(infoPopupPrefab, slot.Def, slot.ButtonRect);
+        if (infoPopup != null && slot.Def != null)
+            infoPopup.ShowCharacter(slot.Def);
     }
 }

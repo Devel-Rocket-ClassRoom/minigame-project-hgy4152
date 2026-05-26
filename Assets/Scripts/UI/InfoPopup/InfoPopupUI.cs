@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 public class InfoPopupUI : MonoBehaviour
 {
     [SerializeField]
-    RectTransform contentPanel;
+    RectTransform panel;
 
     [SerializeField]
     Button backdropButton;
@@ -14,73 +15,89 @@ public class InfoPopupUI : MonoBehaviour
     TMP_Text nameText;
 
     [SerializeField]
-    TMP_Text descText;
+    TMP_Text passiveText;
+
+    [SerializeField]
+    TMP_Text blockText;
+
+    [SerializeField]
+    float slideDuration = 0.25f;
+
+    Vector2 _shownPos;
+    Vector2 _hiddenPos;
+    Coroutine _slide;
 
     void Awake()
     {
+        _shownPos = panel.anchoredPosition;
+        _hiddenPos = _shownPos + new Vector2(panel.sizeDelta.x, 0);
+        panel.anchoredPosition = _hiddenPos;
+
         if (backdropButton != null)
-            backdropButton.onClick.AddListener(() => Destroy(gameObject));
+        {
+            backdropButton.gameObject.SetActive(false);
+            backdropButton.onClick.AddListener(Hide);
+        }
     }
 
-    public void Init(string displayName, string desc, RectTransform anchor)
+    public void ShowCharacter(CharacterDef def)
     {
         if (nameText != null)
-            nameText.text = displayName;
-        if (descText != null)
-            descText.text = desc;
-
-        if (contentPanel != null)
-            contentPanel.localPosition = contentPanel.parent.InverseTransformPoint(anchor.position);
+            nameText.text = Localization.Get(def.DisplayName);
+        if (passiveText != null)
+            passiveText.text = Localization.Get(((IDisplayable)def).Description);
+        if (blockText != null)
+        {
+            var hasBlock = def.blockData != null;
+            blockText.gameObject.SetActive(hasBlock);
+            if (hasBlock)
+                blockText.text = Localization.Get(def.blockData.description);
+        }
+        Open();
     }
 
-    public static InfoPopupUI ShowCharacter(
-        InfoPopupUI prefab,
-        CharacterDef def,
-        RectTransform anchor
-    )
+    public void ShowJoker(JokerCard card)
     {
-        return Spawn(
-            prefab,
-            anchor,
-            Localization.Get(def.DisplayName),
-            Localization.Get(((IDisplayable)def).Description)
-        );
+        if (nameText != null)
+            nameText.text = Localization.Get(card.cardName);
+        if (passiveText != null)
+            passiveText.text = Localization.Get(card.description);
+        if (blockText != null)
+            blockText.gameObject.SetActive(false);
+        Open();
     }
 
-    public static InfoPopupUI ShowJoker(InfoPopupUI prefab, JokerCard card, RectTransform anchor)
+    public void Hide()
     {
-        return Spawn(
-            prefab,
-            anchor,
-            Localization.Get(card.cardName),
-            Localization.Get(card.description)
-        );
+        if (backdropButton != null)
+            backdropButton.gameObject.SetActive(false);
+        Slide(_shownPos, _hiddenPos);
     }
 
-    public static InfoPopupUI ShowEnemy(InfoPopupUI prefab, EnemyData data, RectTransform anchor)
+    void Open()
     {
-        return Spawn(
-            prefab,
-            anchor,
-            Localization.Get(data.enemyName),
-            Localization.Get(data.description)
-        );
+        if (backdropButton != null)
+            backdropButton.gameObject.SetActive(true);
+        Slide(_hiddenPos, _shownPos);
     }
 
-    static InfoPopupUI Spawn(
-        InfoPopupUI prefab,
-        RectTransform anchor,
-        string displayName,
-        string desc
-    )
+    void Slide(Vector2 from, Vector2 to)
     {
-        if (prefab == null)
-            return null;
-        var canvas = anchor.GetComponentInParent<Canvas>();
-        if (canvas == null)
-            return null;
-        var instance = Instantiate(prefab, canvas.transform);
-        instance.Init(displayName, desc, anchor);
-        return instance;
+        if (_slide != null)
+            StopCoroutine(_slide);
+        _slide = StartCoroutine(SlideRoutine(from, to));
+    }
+
+    IEnumerator SlideRoutine(Vector2 from, Vector2 to)
+    {
+        float elapsed = 0f;
+        while (elapsed < slideDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / slideDuration);
+            panel.anchoredPosition = Vector2.LerpUnclamped(from, to, t);
+            yield return null;
+        }
+        panel.anchoredPosition = to;
     }
 }

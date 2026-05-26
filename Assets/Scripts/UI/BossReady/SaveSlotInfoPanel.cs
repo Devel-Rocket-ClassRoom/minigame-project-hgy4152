@@ -7,9 +7,6 @@ public class SaveSlotInfoPanel : MonoBehaviour
     Button backdropButton;
 
     [SerializeField]
-    Button closeButton;
-
-    [SerializeField]
     Image[] characterIcons = new Image[3];
 
     [SerializeField]
@@ -19,8 +16,6 @@ public class SaveSlotInfoPanel : MonoBehaviour
     {
         if (backdropButton != null)
             backdropButton.onClick.AddListener(Hide);
-        if (closeButton != null)
-            closeButton.onClick.AddListener(Hide);
         gameObject.SetActive(false);
     }
 

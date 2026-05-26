@@ -15,12 +15,6 @@ public class SaveSlotUI : MonoBehaviour
     Image[] jokerIcons = new Image[5];
 
     [SerializeField]
-    Button[] characterButtons = new Button[3];
-
-    [SerializeField]
-    Button[] jokerButtons = new Button[5];
-
-    [SerializeField]
     Button slotButton;
 
     public int SlotIndex { get; private set; }

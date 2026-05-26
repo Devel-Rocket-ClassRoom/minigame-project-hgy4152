@@ -1,4 +1,7 @@
-Id,Name,Desc,Rarity
-ar_hikari,chr_ar_hikari_name,chr_ar_hikari_desc,Common
-pr_beatrice,chr_pr_beatrice_name,chr_pr_beatrice_desc,Common
-wa_reon,chr_wa_reon_name,chr_wa_reon_desc,Common
+Id,Name,Desc,Rarity,BlockName,BlockDesc,BlockRarity
+ar_hikari,chr_ar_hikari_name,chr_ar_hikari_desc,Common,blk_ar1_name,blk_ar1_desc,Common
+pr_beatrice,chr_pr_beatrice_name,chr_pr_beatrice_desc,Common,blk_pr1_name,blk_pr1_desc,Common
+wa_reon,chr_wa_reon_name,chr_wa_reon_desc,Common,blk_wa1_name,blk_wa1_desc,Common
+pa_victor,chr_pa_victor_name,chr_pa_victor_desc,Common,blk_pa1_name,blk_pa1_desc,Common
+hu_raven,chr_hu_raven_name,chr_hu_raven_desc,Common,blk_hu1_name,blk_hu1_desc,Common
+wi_acan,chr_wi_acan_name,chr_wi_acan_desc,Common,blk_wi1_name,blk_wi1_desc,Common

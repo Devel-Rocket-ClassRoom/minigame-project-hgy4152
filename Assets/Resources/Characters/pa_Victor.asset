@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: pa_Victor
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: 
-  classType: 0
-  prefab: {fileID: 0}
+  id: pa_victor
+  classType: 4
+  prefab: {fileID: 1100000000000000003, guid: 69daf017080cfcd4bae3cbe83cfcc9cf, type: 3}
+  blockData: {fileID: 11400000, guid: 06f9c6e7192c3ac41b91edb8e8d521be, type: 2}
   rarity: 0
-  displayName: 
-  description: 
+  displayName: chr_pa_victor_name
+  description: chr_pa_victor_desc

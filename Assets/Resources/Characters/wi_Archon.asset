@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
-  m_Name: hu_Hunter
+  m_Name: wi_Archon
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: hu_hunter
-  classType: 6
-  prefab: {fileID: 3300000000000000003, guid: 192a3b4c5d6e7f88899aabbccddeeff0, type: 3}
-  blockData: {fileID: 0}
+  id: wi_acan
+  classType: 5
+  prefab: {fileID: 2200000000000000003, guid: 66e0bc50dca37754b91736a171418c1c, type: 3}
+  blockData: {fileID: 11400000, guid: 4013d144f96505a418d6e31b504df864, type: 2}
   rarity: 0
-  displayName: chr_hu_hunter_name
-  description: chr_hu_hunter_desc
-  icon: {fileID: 0}
+  displayName: chr_wi_acan_name
+  description: chr_wi_acan_desc

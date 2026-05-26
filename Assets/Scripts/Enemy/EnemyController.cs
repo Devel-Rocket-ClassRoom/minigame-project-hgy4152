@@ -14,10 +14,18 @@ public class EnemyController : MonoBehaviour
     Image enemyPortrait;
 
     [SerializeField]
+    Button enemyPortraitButton;
+
+    [SerializeField]
     FloatingDamageText damageTextPrefab;
 
     [SerializeField]
     RectTransform damageSpawnRoot;
+
+    [SerializeField]
+    BossInfoUIPanel enemyInfoPanel;
+
+    EnemyData _enemyData;
 
     int currentHp;
 
@@ -32,6 +40,8 @@ public class EnemyController : MonoBehaviour
     protected virtual void Awake()
     {
         currentHp = maxHp;
+        if (enemyPortraitButton != null)
+            enemyPortraitButton.onClick.AddListener(OnPortraitClicked);
     }
 
     protected virtual void Start()
@@ -41,11 +51,19 @@ public class EnemyController : MonoBehaviour
 
     public void Init(EnemyData data)
     {
+        _enemyData = data;
         maxHp = data.hp;
         currentHp = data.hp;
         enemySprite.sprite = data.icon;
         enemyPortrait.sprite = data.icon;
         OnHpChanged?.Invoke(currentHp, maxHp);
+    }
+
+    void OnPortraitClicked()
+    {
+        if (_enemyData == null)
+            return;
+        enemyInfoPanel?.Show(_enemyData);
     }
 
     public void TakeDamage(int amount, Color color)

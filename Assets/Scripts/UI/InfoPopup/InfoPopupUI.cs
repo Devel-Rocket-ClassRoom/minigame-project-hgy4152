@@ -1,0 +1,103 @@
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class InfoPopupUI : MonoBehaviour
+{
+    [SerializeField]
+    RectTransform panel;
+
+    [SerializeField]
+    Button backdropButton;
+
+    [SerializeField]
+    TMP_Text nameText;
+
+    [SerializeField]
+    TMP_Text passiveText;
+
+    [SerializeField]
+    TMP_Text blockText;
+
+    [SerializeField]
+    float slideDuration = 0.25f;
+
+    Vector2 _shownPos;
+    Vector2 _hiddenPos;
+    Coroutine _slide;
+
+    void Awake()
+    {
+        _shownPos = panel.anchoredPosition;
+        _hiddenPos = _shownPos + new Vector2(panel.sizeDelta.x, 0);
+        panel.anchoredPosition = _hiddenPos;
+
+        if (backdropButton != null)
+        {
+            backdropButton.gameObject.SetActive(false);
+            backdropButton.onClick.AddListener(Hide);
+        }
+    }
+
+    public void ShowCharacter(CharacterDef def)
+    {
+        if (nameText != null)
+            nameText.text = Localization.Get(def.DisplayName);
+        if (passiveText != null)
+            passiveText.text = Localization.Get(((IDisplayable)def).Description);
+        if (blockText != null)
+        {
+            var hasBlock = def.blockData != null;
+            blockText.gameObject.SetActive(hasBlock);
+            if (hasBlock)
+                blockText.text = Localization.Get(def.blockData.description);
+        }
+        Open();
+    }
+
+    public void ShowJoker(JokerCard card)
+    {
+        if (nameText != null)
+            nameText.text = Localization.Get(card.cardName);
+        if (passiveText != null)
+            passiveText.text = Localization.Get(card.description);
+        if (blockText != null)
+            blockText.gameObject.SetActive(false);
+        Open();
+    }
+
+    public void Hide()
+    {
+        if (backdropButton != null)
+            backdropButton.gameObject.SetActive(false);
+        Slide(_shownPos, _hiddenPos);
+    }
+
+    void Open()
+    {
+        if (backdropButton != null)
+            backdropButton.gameObject.SetActive(true);
+        Slide(_hiddenPos, _shownPos);
+    }
+
+    void Slide(Vector2 from, Vector2 to)
+    {
+        if (_slide != null)
+            StopCoroutine(_slide);
+        _slide = StartCoroutine(SlideRoutine(from, to));
+    }
+
+    IEnumerator SlideRoutine(Vector2 from, Vector2 to)
+    {
+        float elapsed = 0f;
+        while (elapsed < slideDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / slideDuration);
+            panel.anchoredPosition = Vector2.LerpUnclamped(from, to, t);
+            yield return null;
+        }
+        panel.anchoredPosition = to;
+    }
+}

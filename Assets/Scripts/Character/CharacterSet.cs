@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterSet : MonoBehaviour
@@ -27,6 +28,15 @@ public class CharacterSet : MonoBehaviour
 
     public Block CreateBlock(ClassType classType, Transform parent = null) =>
         GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);
+
+    public ClassType[] GetDeployedClassTypes()
+    {
+        var types = new List<ClassType>();
+        foreach (var inst in instances)
+            if (inst != null)
+                types.Add(inst.Type);
+        return types.ToArray();
+    }
 
     public string[] GetCurrentCharacterIds()
     {

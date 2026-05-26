@@ -25,8 +25,6 @@ public class BlockManager : MonoBehaviour
     public List<Block> hand = new();
     public bool IsHandFull => hand.Count >= MaxHandSize;
 
-    static readonly ClassType[] _allTypes = (ClassType[])Enum.GetValues(typeof(ClassType));
-
     public Block DrawBlock()
     {
         if (hand.Count >= MaxHandSize)
@@ -46,7 +44,13 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        ClassType classType = _allTypes[UnityEngine.Random.Range(1, _allTypes.Length)];
+        var deployedTypes = characterSet.GetDeployedClassTypes();
+        if (deployedTypes.Length == 0)
+        {
+            Debug.LogError("[BlockManager] 배포된 캐릭터가 없습니다.");
+            return null;
+        }
+        ClassType classType = deployedTypes[UnityEngine.Random.Range(0, deployedTypes.Length)];
         Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
 
         if (block == null)

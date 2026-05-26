@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a2b3c4d5e6f70819283a4b5c6d7e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
+  anim: {fileID: -8996842795058324294}
   creator: {fileID: 1100000000000000004}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a6981ebfb9179c04a95ceebf2b4a110f, type: 3}
   skill: {fileID: 0}
 --- !u!114 &1100000000000000004
 MonoBehaviour:
@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2b3c4d5e6f708192a3b4c5d6e7f8b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockData: {fileID: 0}
+  blockData: {fileID: 11400000, guid: 06f9c6e7192c3ac41b91edb8e8d521be, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!212 &-7093755809534952005
 SpriteRenderer:

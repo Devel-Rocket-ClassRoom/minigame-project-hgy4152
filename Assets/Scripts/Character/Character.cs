@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
+    [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
     [SerializeField]
     Animator anim;
 

@@ -1,1 +1,40 @@
 Key,Value
+bss_geumsuabi_name,금수아비
+bss_geumsuabi_desc,황금으로 단련된 허수아비. 기초를 경시하는 자에겐 가차없다.
+bss_blackmage_name,흑마법사
+bss_blackmage_desc,시간을 지배하는 마법사. 느린 자는 살아남지 못한다.
+bss_chaoslord_name,혼돈의 군주
+bss_chaoslord_desc,직업 간의 균형을 강요하는 지배자. 편협한 전략은 통하지 않는다.
+pat_geumsuabi_name,금수아비
+pat_blackmage_name,흑마법사
+pat_chaoslord_name,혼돈의 군주
+mod_geumsuabi_p1_name,기본이 중요하다
+mod_geumsuabi_p1_desc,1체인 데미지 50% 감소
+mod_geumsuabi_t2_name,골드메탈
+mod_geumsuabi_t2_desc,정산 직전 가장 오른쪽 블록 1개 무효화
+mod_geumsuabi_t4_name,단단해지기
+mod_geumsuabi_t4_desc,이번 턴 데미지 30% 감소
+mod_geumsuabi_t5_name,골드 러쉬
+mod_geumsuabi_t5_desc,3체인 1개당 보너스 +20%
+mod_blackmage_p1_name,시간 가속
+mod_blackmage_p1_desc,드로우 페이즈 20초 → 14초
+mod_blackmage_t2_name,혼란의 파동
+mod_blackmage_t2_desc,디스카드 5회 제한
+mod_blackmage_t3_name,저주
+mod_blackmage_t3_desc,디스카드 보너스 무효화
+mod_blackmage_t4_name,광폭화
+mod_blackmage_t4_desc,드로우 페이즈 14초 → 8초
+mod_blackmage_t5_name,종말의 운석
+mod_blackmage_t5_desc,이전 턴에 사용한 직업의 그룹 무효화
+mod_chaoslord_p1_name,직업 차별
+mod_chaoslord_p1_desc,한 직업 블록당 받는 데미지 -10% 누적
+mod_chaoslord_t1_name,선전포고
+mod_chaoslord_t1_desc,1체인 무효
+mod_chaoslord_t2_name,균형의 강요
+mod_chaoslord_t2_desc,3종 직업 모두 보유 시만 데미지 발생
+mod_chaoslord_t3_name,체인 봉인
+mod_chaoslord_t3_desc,3체인 무효 (2체인까지만 인정)
+mod_chaoslord_t4_name,혼돈의 도약
+mod_chaoslord_t4_desc,시프트 없이 제출 시 데미지 50% 감소
+mod_chaoslord_t5_name,최후 심판
+mod_chaoslord_t5_desc,가장 오른쪽 조커카드 2장 무효화

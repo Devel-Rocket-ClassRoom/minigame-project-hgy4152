@@ -26,6 +26,7 @@ public class EnemyController : MonoBehaviour
     BossInfoUIPanel enemyInfoPanel;
 
     EnemyData _enemyData;
+    BossData _bossData;
 
     int currentHp;
 
@@ -52,6 +53,18 @@ public class EnemyController : MonoBehaviour
     public void Init(EnemyData data)
     {
         _enemyData = data;
+        _bossData = null;
+        maxHp = data.hp;
+        currentHp = data.hp;
+        enemySprite.sprite = data.icon;
+        enemyPortrait.sprite = data.icon;
+        OnHpChanged?.Invoke(currentHp, maxHp);
+    }
+
+    public void Init(BossData data)
+    {
+        _bossData = data;
+        _enemyData = null;
         maxHp = data.hp;
         currentHp = data.hp;
         enemySprite.sprite = data.icon;
@@ -61,9 +74,10 @@ public class EnemyController : MonoBehaviour
 
     void OnPortraitClicked()
     {
-        if (_enemyData == null)
-            return;
-        enemyInfoPanel?.Show(_enemyData);
+        if (_bossData != null)
+            enemyInfoPanel?.Show(_bossData);
+        else if (_enemyData != null)
+            enemyInfoPanel?.Show(_enemyData);
     }
 
     public void TakeDamage(int amount, Color color)

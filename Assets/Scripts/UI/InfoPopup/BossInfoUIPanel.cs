@@ -42,14 +42,23 @@ public class BossInfoUIPanel : MonoBehaviour
 
     public void Show(EnemyData data)
     {
+        ShowInternal(data.enemyName, data.description, data.bossPattern);
+    }
+
+    public void Show(BossData data)
+    {
+        ShowInternal(data.bossName, data.description, data.bossPattern);
+    }
+
+    private void ShowInternal(string name, string desc, BossPattern bp)
+    {
         if (nameText != null)
-            nameText.text = Localization.Get(data.enemyName);
+            nameText.text = Localization.Get(name);
         if (descText != null)
-            descText.text = Localization.Get(data.description);
+            descText.text = Localization.Get(desc);
 
         if (patternText != null)
         {
-            var bp = data.bossPattern;
             if (bp != null)
             {
                 int passiveCount = bp.passive != null ? bp.passive.Count : 0;

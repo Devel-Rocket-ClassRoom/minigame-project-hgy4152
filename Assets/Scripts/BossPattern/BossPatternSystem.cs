@@ -28,7 +28,7 @@ public class BossPatternSystem : MonoBehaviour
 
     void HandleStageStart(StageManager.StageEntry entry)
     {
-        current = entry.enemyData != null ? entry.enemyData.bossPattern : null;
+        current = entry.bossData?.bossPattern ?? entry.enemyData?.bossPattern;
         turnIndex = 0;
         _prevChainCounts = new int[3];
         _prevClassDist = new Dictionary<ClassType, int>();

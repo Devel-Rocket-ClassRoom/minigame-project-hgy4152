@@ -66,10 +66,11 @@ public class EnemyController : MonoBehaviour
     {
         if (_enemyData == null)
             return;
+        var anchor = enemyPortrait.rectTransform;
         if (_enemyData.bossPattern != null && bossInfoPanel != null)
-            bossInfoPanel.Show(_enemyData);
+            bossInfoPanel.Show(_enemyData, anchor);
         else if (infoPopup != null)
-            infoPopup.ShowEnemy(_enemyData);
+            infoPopup.ShowEnemy(_enemyData, anchor);
     }
 
     public void TakeDamage(int amount, Color color)

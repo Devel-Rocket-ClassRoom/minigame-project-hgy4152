@@ -46,6 +46,6 @@ public class JokerCardSlotUI : MonoBehaviour
     {
         if (_card == null || infoPopup == null)
             return;
-        infoPopup.ShowJoker(_card);
+        infoPopup.ShowJoker(_card, button.transform as RectTransform);
     }
 }

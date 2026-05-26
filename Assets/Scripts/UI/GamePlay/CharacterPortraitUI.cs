@@ -11,6 +11,8 @@ public class CharacterPortraitUI : MonoBehaviour
     Button button;
 
     public CharacterDef Def { get; private set; }
+    public RectTransform ButtonRect =>
+        button != null ? button.transform as RectTransform : transform as RectTransform;
 
     public event Action<CharacterPortraitUI> OnClicked;
 

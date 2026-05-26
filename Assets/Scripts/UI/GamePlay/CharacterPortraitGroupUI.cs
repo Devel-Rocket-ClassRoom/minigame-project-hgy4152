@@ -63,6 +63,6 @@ public class CharacterPortraitGroupUI : MonoBehaviour
     void OnPortraitClicked(CharacterPortraitUI slot)
     {
         if (infoPopup != null && slot.Def != null)
-            infoPopup.ShowCharacter(slot.Def);
+            infoPopup.ShowCharacter(slot.Def, slot.ButtonRect);
     }
 }

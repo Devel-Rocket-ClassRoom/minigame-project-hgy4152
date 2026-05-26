@@ -66,7 +66,7 @@ public class BossInfoUIPanel : MonoBehaviour
                 if (bp.turnModifiers != null)
                     foreach (var m in bp.turnModifiers)
                         if (m != null) turnCount++;
-                patternText.text = $"{bp.patternName}\n패시브: {passiveCount}개 / 턴 모디파이어: {turnCount}개";
+                patternText.text = $"{Localization.Get(bp.patternName)}\n패시브: {passiveCount}개 / 턴 모디파이어: {turnCount}개";
             }
             patternText.gameObject.SetActive(bp != null);
         }

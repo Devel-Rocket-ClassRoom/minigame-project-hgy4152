@@ -12,8 +12,8 @@ public class PatternCardUI : MonoBehaviour
         if (typeLabel != null)
             typeLabel.text = type;
         if (modNameLabel != null)
-            modNameLabel.text = mod != null ? mod.modName : "—";
+            modNameLabel.text = mod != null ? Localization.Get(mod.modName) : "—";
         if (descLabel != null)
-            descLabel.text = mod != null ? mod.description : "";
+            descLabel.text = mod != null ? Localization.Get(mod.description) : "";
     }
 }

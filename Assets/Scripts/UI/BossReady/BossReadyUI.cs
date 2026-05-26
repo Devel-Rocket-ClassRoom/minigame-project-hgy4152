@@ -26,6 +26,12 @@ public class BossReadyUI : MonoBehaviour
     [SerializeField]
     private SaveManager saveManager;
 
+    [SerializeField]
+    SaveSlotInfoPanel saveSlotInfoPanel;
+
+    [SerializeField]
+    GameObject emptySlotMessage;
+
     private int saveSlotIndex = -1;
     private int bossIndex = -1;
 
@@ -54,25 +60,18 @@ public class BossReadyUI : MonoBehaviour
             }
         }
 
-        Debug.Log(
-            $"[BossReadyUI] InitSaveSlots: saveSlotList.Count={saveSlotList.Count}, swipeArea bound={(saveSlotSwipeArea != null)}"
-        );
         if (saveSlotSwipeArea != null)
         {
             saveSlotSwipeArea.OnSwipeLeft = OnNextSaveSlot;
             saveSlotSwipeArea.OnSwipeRight = OnPrevSaveSlot;
         }
 
-        if (saveSlotList.Count > 0)
-        {
-            if (saveSlotDisplay != null)
-                saveSlotDisplay.gameObject.SetActive(true);
+        bool hasSlots = saveSlotList.Count > 0;
+        if (emptySlotMessage != null)
+            emptySlotMessage.SetActive(!hasSlots);
+
+        if (hasSlots)
             ShowSaveSlot(0);
-        }
-        else if (saveSlotDisplay != null)
-        {
-            saveSlotDisplay.gameObject.SetActive(false);
-        }
     }
 
     private void InitBossSlots()
@@ -94,14 +93,13 @@ public class BossReadyUI : MonoBehaviour
 
     private void ShowSaveSlot(int index)
     {
-        Debug.Log(
-            $"[BossReadyUI] ShowSaveSlot(index={index}), listCount={saveSlotList.Count}, displayNull={saveSlotDisplay == null}"
-        );
         if (saveSlotList.Count == 0 || saveSlotDisplay == null)
             return;
         saveSlotIndex = index;
         var entry = saveSlotList[index];
+        saveSlotDisplay.OnInfoRequested -= OnSlotInfoRequested;
         saveSlotDisplay.Setup(entry.slotIndex, entry.data);
+        saveSlotDisplay.OnInfoRequested += OnSlotInfoRequested;
         RefreshStartButton();
     }
 
@@ -156,6 +154,8 @@ public class BossReadyUI : MonoBehaviour
         BossPartyContext.BossId = bossList[bossIndex].id;
         GameStateMachine.Instance.TransitionTo(GameState.Adventure);
     }
+
+    private void OnSlotInfoRequested(SaveSlotData data) => saveSlotInfoPanel?.Show(data);
 
     private void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

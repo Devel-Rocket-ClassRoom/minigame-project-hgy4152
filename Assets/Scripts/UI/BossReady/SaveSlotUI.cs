@@ -20,11 +20,25 @@ public class SaveSlotUI : MonoBehaviour
     [SerializeField]
     Button[] jokerButtons = new Button[5];
 
+    [SerializeField]
+    Button slotButton;
+
     public int SlotIndex { get; private set; }
     public bool HasData { get; private set; }
 
+    SaveSlotData _data;
+
+    public event Action<SaveSlotData> OnInfoRequested;
+
+    void Awake()
+    {
+        if (slotButton != null)
+            slotButton.onClick.AddListener(() => OnInfoRequested?.Invoke(_data));
+    }
+
     public void Setup(int slotIndex, SaveSlotData data)
     {
+        _data = data;
         SlotIndex = slotIndex;
         HasData = true;
 

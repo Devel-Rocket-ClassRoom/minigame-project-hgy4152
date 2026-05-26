@@ -26,6 +26,9 @@ public class BossReadyUI : MonoBehaviour
     [SerializeField]
     private SaveManager saveManager;
 
+    [SerializeField]
+    SaveSlotInfoPanel saveSlotInfoPanel;
+
     private int saveSlotIndex = -1;
     private int bossIndex = -1;
 
@@ -101,7 +104,9 @@ public class BossReadyUI : MonoBehaviour
             return;
         saveSlotIndex = index;
         var entry = saveSlotList[index];
+        saveSlotDisplay.OnInfoRequested -= OnSlotInfoRequested;
         saveSlotDisplay.Setup(entry.slotIndex, entry.data);
+        saveSlotDisplay.OnInfoRequested += OnSlotInfoRequested;
         RefreshStartButton();
     }
 
@@ -156,6 +161,8 @@ public class BossReadyUI : MonoBehaviour
         BossPartyContext.BossId = bossList[bossIndex].id;
         GameStateMachine.Instance.TransitionTo(GameState.Adventure);
     }
+
+    private void OnSlotInfoRequested(SaveSlotData data) => saveSlotInfoPanel?.Show(data);
 
     private void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

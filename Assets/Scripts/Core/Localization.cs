@@ -15,9 +15,9 @@ public static class Localization
 
     static readonly string[] TableNames =
     {
-        "HeroesStringTable",
-        "JokerStringTable",
-        "EnemyStringTable",
+        "DataTables/HeroesStringTable",
+        "DataTables/JokerStringTable",
+        "DataTables/EnemyStringTable",
     };
 
     static void EnsureLoaded()

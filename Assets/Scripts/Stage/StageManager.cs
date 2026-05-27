@@ -52,6 +52,12 @@ public class StageManager : MonoBehaviour
 
     void HandleEnemyDefeated()
     {
+        var entry = stages[currentIndex];
+        if (entry.bossData != null)
+            UnlockManager.OnBossDefeated(entry.bossData.id);
+        else if (entry.enemyData != null)
+            UnlockManager.OnEnemyDefeated(entry.enemyData.id);
+
         if (IsLastStage)
             OnAllStagesCleared?.Invoke();
         else

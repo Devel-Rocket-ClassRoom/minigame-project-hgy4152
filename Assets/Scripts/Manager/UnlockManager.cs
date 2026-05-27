@@ -1,8 +1,135 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
+
 public static class UnlockManager
 {
-    public static bool IsCharacterUnlocked(string id) => true;
+    static readonly string[] DefaultCharacterIds =
+    {
+        "wa_reon",
+        "ar_hikari",
+        "pr_beatrice",
+        "pa_victor",
+        "wi_acan",
+        "hu_raven",
+    };
+    static readonly string[] DefaultJokerIds = { "bs1", "ch1" };
+    const string WarriorId = "wa_reon";
+    const string WarriorJokerId = "cwar1";
+    const string TestLockedCharacterId = "test_locked";
 
-    public static bool IsJokerUnlocked(string id) => true;
+    static HashSet<string> _chars;
+    static HashSet<string> _jokers;
+    static HashSet<string> _enemies;
+    static HashSet<string> _bosses;
+    static bool _loaded;
 
-    public static bool IsEnemyUnlocked(string id) => true;
+    static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
+
+    public static bool IsCharacterUnlocked(string id)
+    {
+        EnsureLoaded();
+        return _chars.Contains(id);
+    }
+
+    public static bool IsJokerUnlocked(string id)
+    {
+        EnsureLoaded();
+        return _jokers.Contains(id);
+    }
+
+    public static bool IsEnemyUnlocked(string id)
+    {
+        EnsureLoaded();
+        return _enemies.Contains(id);
+    }
+
+    public static bool IsBossUnlocked(string id)
+    {
+        EnsureLoaded();
+        return _bosses.Contains(id);
+    }
+
+    public static void OnAdventureClear(string[] partyCharacterIds)
+    {
+        EnsureLoaded();
+        _chars.Add(TestLockedCharacterId);
+        foreach (var id in partyCharacterIds)
+            if (id == WarriorId)
+            {
+                _jokers.Add(WarriorJokerId);
+                break;
+            }
+        Save();
+    }
+
+    public static void OnEnemyDefeated(string enemyId)
+    {
+        if (string.IsNullOrEmpty(enemyId))
+            return;
+        EnsureLoaded();
+        if (_enemies.Add(enemyId))
+            Save();
+    }
+
+    public static void OnBossDefeated(string bossId)
+    {
+        if (string.IsNullOrEmpty(bossId))
+            return;
+        EnsureLoaded();
+        if (_bosses.Add(bossId))
+            Save();
+    }
+
+    public static void ResetAll()
+    {
+        if (File.Exists(SavePath))
+            File.Delete(SavePath);
+        _loaded = false;
+    }
+
+    static void EnsureLoaded()
+    {
+        if (_loaded)
+            return;
+        if (File.Exists(SavePath))
+        {
+            var dto = JsonUtility.FromJson<CodexData>(File.ReadAllText(SavePath));
+            _chars = new HashSet<string>(dto.unlockedCharacterIds ?? Array.Empty<string>());
+            _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
+            _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
+            _bosses = new HashSet<string>(dto.defeatedBossIds ?? Array.Empty<string>());
+        }
+        else
+        {
+            _chars = new HashSet<string>(DefaultCharacterIds);
+            _jokers = new HashSet<string>(DefaultJokerIds);
+            _enemies = new HashSet<string>();
+            _bosses = new HashSet<string>();
+        }
+        _loaded = true;
+    }
+
+    static void Save()
+    {
+        var dto = new CodexData
+        {
+            unlockedCharacterIds = _chars.ToArray(),
+            unlockedJokerIds = _jokers.ToArray(),
+            defeatedEnemyIds = _enemies.ToArray(),
+            defeatedBossIds = _bosses.ToArray(),
+        };
+        File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
+    }
+
+    [Serializable]
+    class CodexData
+    {
+        public string[] unlockedCharacterIds;
+        public string[] unlockedJokerIds;
+        public string[] defeatedEnemyIds;
+        public string[] defeatedBossIds;
+    }
 }

@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
     bool _stageClearPending;
     bool _jokerRewardPending;
+    bool _isAdventureMode;
     int _currentTurn;
 
     public bool IsPaused { get; private set; }
@@ -81,7 +82,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (!string.IsNullOrEmpty(BossPartyContext.BossId))
+        _isAdventureMode = string.IsNullOrEmpty(BossPartyContext.BossId);
+
+        if (!_isAdventureMode)
             InitFromBossContext();
         else if (AdventurePartyContext.PendingCharacterIds != null)
             characterSet.SetCharactersByIds(AdventurePartyContext.PendingCharacterIds);
@@ -283,6 +286,8 @@ public class GameManager : MonoBehaviour
     {
         drawPhaseTimer.StopDrawPhase();
         modeClearUI?.Show(this, Color.green);
+        if (_isAdventureMode)
+            UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
         OpenSaveFlow();
     }
 

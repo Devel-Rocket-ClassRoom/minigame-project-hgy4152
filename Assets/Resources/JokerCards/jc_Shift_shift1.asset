@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_Shift_shift1
   m_EditorClassIdentifier: 
   id: shift1
-  cardName: "\uD0DC\uADF8 \uB9E4\uCE58"
-  description: 
+  cardName: jkr_shift1_name
+  description: jkr_shift1_desc
   icon: {fileID: 0}
   rarity: 1
   unlockConditions: []

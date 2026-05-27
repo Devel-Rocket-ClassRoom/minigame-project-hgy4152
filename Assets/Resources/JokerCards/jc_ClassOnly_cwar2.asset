@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cwar2
   m_EditorClassIdentifier: 
   id: cwar2
-  cardName: "\uC804\uC7A5\uC758 \uC601\uC6C5"
-  description: 
+  cardName: jkr_cwar2_name
+  description: jkr_cwar2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

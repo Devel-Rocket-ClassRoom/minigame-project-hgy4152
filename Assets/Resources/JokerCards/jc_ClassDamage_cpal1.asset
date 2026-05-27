@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassDamage_cpal1
   m_EditorClassIdentifier: 
   id: cpal1
-  cardName: "\uC218\uD638\uC758 \uBE5B"
-  description: 
+  cardName: jkr_cpal1_name
+  description: jkr_cpal1_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions: []

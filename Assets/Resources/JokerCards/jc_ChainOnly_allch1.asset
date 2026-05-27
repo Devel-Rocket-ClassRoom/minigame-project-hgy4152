@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ChainOnly_allch1
   m_EditorClassIdentifier: 
   id: allch1
-  cardName: "\uAE30\uBCF8\uC774 \uC911\uC694\uD558\uB2E4"
-  description: 
+  cardName: jkr_allch1_name
+  description: jkr_allch1_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

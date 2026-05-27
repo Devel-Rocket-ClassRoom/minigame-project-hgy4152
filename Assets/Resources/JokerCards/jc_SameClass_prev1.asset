@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_SameClass_prev1
   m_EditorClassIdentifier: 
   id: prev1
-  cardName: "\uB3D9\uB8CC\uC560"
-  description: 
+  cardName: jkr_prev1_name
+  description: jkr_prev1_desc
   icon: {fileID: 0}
   rarity: 1
   unlockConditions: []

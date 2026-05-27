@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cpal2
   m_EditorClassIdentifier: 
   id: cpal2
-  cardName: "\uC131\uC804 \uD0DC\uC138"
-  description: 
+  cardName: jkr_cpal2_name
+  description: jkr_cpal2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

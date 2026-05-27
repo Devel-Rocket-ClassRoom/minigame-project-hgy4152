@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_SpeedMul_spd1
   m_EditorClassIdentifier: 
   id: spd1
-  cardName: "\uC2E0\uC18D"
-  description: 
+  cardName: jkr_spd1_name
+  description: jkr_spd1_desc
   icon: {fileID: 0}
   rarity: 1
   unlockConditions: []

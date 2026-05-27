@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ChainDouble_dbch13
   m_EditorClassIdentifier: 
   id: dbch13
-  cardName: "\uC9D1\uC911 \uD0C0\uACA9"
-  description: 
+  cardName: jkr_dbch13_name
+  description: jkr_dbch13_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

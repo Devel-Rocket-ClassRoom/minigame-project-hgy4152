@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_chun2
   m_EditorClassIdentifier: 
   id: chun2
-  cardName: "\uBD88\uB9BF \uD30C\uD2F0"
-  description: 
+  cardName: jkr_chun2_name
+  description: jkr_chun2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

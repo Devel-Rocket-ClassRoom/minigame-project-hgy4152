@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_AllChains_trich
   m_EditorClassIdentifier: 
   id: trich
-  cardName: "\uC0AC\uC2AC\uC758 \uCDA4"
-  description: 
+  cardName: jkr_trich_name
+  description: jkr_trich_desc
   icon: {fileID: 0}
   rarity: 2
   unlockConditions: []

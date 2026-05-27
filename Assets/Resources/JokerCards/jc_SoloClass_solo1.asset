@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_SoloClass_solo1
   m_EditorClassIdentifier: 
   id: solo1
-  cardName: "\uC77C\uB2F9\uBC31"
-  description: 
+  cardName: jkr_solo1_name
+  description: jkr_solo1_desc
   icon: {fileID: 0}
   rarity: 1
   unlockConditions: []

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cpri2
   m_EditorClassIdentifier: 
   id: cpri2
-  cardName: "\uD5E4\uBE10\uC988 \uB3C4\uC5B4"
-  description: 
+  cardName: jkr_cpri2_name
+  description: jkr_cpri2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cwiz2
   m_EditorClassIdentifier: 
   id: cwiz2
-  cardName: "\uC778\uD53C\uB2C8\uD2F0"
-  description: 
+  cardName: jkr_cwiz2_name
+  description: jkr_cwiz2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

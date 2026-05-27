@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_carc2
   m_EditorClassIdentifier: 
   id: carc2
-  cardName: "\uD3ED\uD48D\uC758 \uC2DC"
-  description: 
+  cardName: jkr_carc2_name
+  description: jkr_carc2_desc
   icon: {fileID: 0}
   rarity: 0
   unlockConditions:

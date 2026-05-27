@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gold
   m_EditorClassIdentifier: ChainKnights::BossData
   id: boss_geumsuabi
+  enemyType: 2
   rarity: 0
   bossName: bss_geumsuabi_name
   description: bss_geumsuabi_desc

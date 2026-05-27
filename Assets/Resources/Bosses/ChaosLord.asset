@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ChaosLord
   m_EditorClassIdentifier: ChainKnights::BossData
   id: boss_chaoslord
+  enemyType: 2
   rarity: 0
   bossName: bss_chaoslord_name
   description: bss_chaoslord_desc

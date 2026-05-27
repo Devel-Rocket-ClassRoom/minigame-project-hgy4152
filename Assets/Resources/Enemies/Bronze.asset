@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Bronze
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: ch1_s2
+  enemyType: 0
   rarity: 0
   enemyName: enm_ch1_s2_name
   description: enm_ch1_s2_desc
   icon: {fileID: -1442158203069545052, guid: a122f024ff96d134ab51f7fa01b7df8d, type: 3}
   hp: 300
+  bossPattern: {fileID: 0}

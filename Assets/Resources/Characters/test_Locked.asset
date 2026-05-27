@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
+  m_Name: test_Locked
+  m_EditorClassIdentifier: ChainKnights::CharacterDef
+  id: test_locked
+  classType: 1
+  prefab: {fileID: 3059709565305514277, guid: 285d3e1ba7f3b764489ed6694e01143d, type: 3}
+  blockData: {fileID: 11400000, guid: a4760b6928a91cc4c85170b8c68eb767, type: 2}
+  rarity: 0
+  displayName: chr_test_locked_name
+  description: chr_test_locked_desc
+  icon: {fileID: 0}

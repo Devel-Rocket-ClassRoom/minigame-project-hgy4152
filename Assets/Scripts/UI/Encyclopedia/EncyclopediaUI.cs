@@ -71,21 +71,29 @@ public class EncyclopediaUI : MonoBehaviour
 
         if (characterGrid != null && reg.Character != null)
             foreach (var def in reg.Character.All)
-                Instantiate(slotPrefab, characterGrid).Setup(def.prefab.Icon, def.displayName);
+                Instantiate(slotPrefab, characterGrid)
+                    .Setup(
+                        def.prefab.Icon,
+                        def.displayName,
+                        UnlockManager.IsCharacterUnlocked(def.id)
+                    );
 
         if (jokerGrid != null && reg.JokerCard != null)
             foreach (var j in reg.JokerCard.All)
-                Instantiate(slotPrefab, jokerGrid).Setup(j.icon, j.cardName);
+                Instantiate(slotPrefab, jokerGrid)
+                    .Setup(j.icon, j.cardName, UnlockManager.IsJokerUnlocked(j.id));
 
         if (monsterGrid != null)
         {
             if (reg.Enemy != null)
                 foreach (var e in reg.Enemy.All)
-                    Instantiate(slotPrefab, monsterGrid).Setup(e.icon, e.enemyName);
+                    Instantiate(slotPrefab, monsterGrid)
+                        .Setup(e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id));
 
             if (reg.Boss != null)
                 foreach (var b in reg.Boss.All)
-                    Instantiate(slotPrefab, monsterGrid).Setup(b.icon, b.bossName);
+                    Instantiate(slotPrefab, monsterGrid)
+                        .Setup(b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id));
         }
     }
 }

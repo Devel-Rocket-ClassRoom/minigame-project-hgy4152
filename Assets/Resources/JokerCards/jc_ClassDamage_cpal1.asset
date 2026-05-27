@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -15,7 +15,7 @@ MonoBehaviour:
   id: cpal1
   cardName: jkr_cpal1_name
   description: jkr_cpal1_desc
-  icon: {fileID: 0}
+  icon: {fileID: -5623831831721699083, guid: 43c30359d0aeeda4e9fb2c66d04dac62, type: 3}
   rarity: 0
   unlockConditions: []
   targetClass: 4

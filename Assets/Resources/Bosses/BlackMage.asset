@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BlackMage
   m_EditorClassIdentifier: ChainKnights::BossData
   id: boss_blackmage
+  enemyType: 2
   rarity: 0
   bossName: bss_blackmage_name
   description: bss_blackmage_desc

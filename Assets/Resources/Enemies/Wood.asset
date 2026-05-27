@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: ch1_s1
+  enemyType: 0
   rarity: 0
   enemyName: enm_ch1_s1_name
   description: enm_ch1_s1_desc
   icon: {fileID: 5014184027176130527, guid: 150da29abcbb6a5418ca4ab8dc48ad86, type: 3}
   hp: 100
+  bossPattern: {fileID: 0}

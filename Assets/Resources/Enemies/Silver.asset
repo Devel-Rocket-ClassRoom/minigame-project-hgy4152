@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Silver
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: ch1_s3
+  enemyType: 1
   rarity: 0
   enemyName: enm_ch1_s3_name
   description: enm_ch1_s3_desc

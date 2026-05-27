@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Rogue 1
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: Ch2_s1
+  enemyType: 0
   rarity: 0
   enemyName: enm_Ch2_s1_name
   description: enm_Ch2_s1_desc

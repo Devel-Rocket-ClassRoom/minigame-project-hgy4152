@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Scavenger
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: Ch2_s3
+  enemyType: 1
   rarity: 0
   enemyName: enm_Ch2_s3_name
   description: enm_Ch2_s3_desc

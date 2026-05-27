@@ -4,6 +4,7 @@ using UnityEngine;
 public class BossData : ScriptableObject, IDisplayable
 {
     public string id;
+    public EnemyType enemyType;
     public Rarity rarity;
     public string bossName;
     public string description;

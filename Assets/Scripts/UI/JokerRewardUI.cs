@@ -47,6 +47,8 @@ public class JokerRewardUI : MonoBehaviour
             panel.SetActive(false);
         if (tooltipPanel != null)
             tooltipPanel.gameObject.SetActive(false);
+        if (skipButton != null)
+            skipButton.gameObject.SetActive(false);
     }
 
     void Start()
@@ -76,6 +78,7 @@ public class JokerRewardUI : MonoBehaviour
 
         tooltipPanel.gameObject.SetActive(false);
         panel.SetActive(true);
+        skipButton.gameObject.SetActive(true);
     }
 
     void OnCardClicked(int idx)
@@ -164,11 +167,13 @@ public class JokerRewardUI : MonoBehaviour
                 selectFrames[i].enabled = false;
         _selectedIdx = -1;
         panel.SetActive(false);
+        
         FinishReward();
     }
 
     void FinishReward()
     {
+        skipButton.gameObject.SetActive(false);
         gameManager.BeginBattle();
     }
 

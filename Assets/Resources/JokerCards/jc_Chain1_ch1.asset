@@ -17,4 +17,5 @@ MonoBehaviour:
   description: jkr_ch1_desc
   icon: {fileID: -1787453621924679506, guid: 461ca32a40b58e54a945cb4ff9b20704, type: 3}
   rarity: 0
+  unlockConditions: []
   bonusPerGroup: 30

@@ -3,15 +3,21 @@ using UnityEngine;
 
 public enum UnlockConditionType
 {
-    DefeatEnemy,
-    DefeatBoss,
-    ClearAdventure,
-    ClearWithCharacter,
+    AdventureClear,
+    BossModeClear,
+    Chain1Used,
+    Chain2Used,
+    Chain3Used,
+    BlocksDiscarded,
+    UnlockedJokerCount,
+    UnlockedCharacterCount,
+    ClearWithClass,
 }
 
 [Serializable]
 public class UnlockCondition
 {
     public UnlockConditionType type;
-    public string targetId;
+    public int count;
+    public ClassType classType; // ClearWithClass 전용
 }

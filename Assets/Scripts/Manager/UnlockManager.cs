@@ -31,8 +31,15 @@ public static class UnlockManager
     static HashSet<string> _jokers;
     static HashSet<string> _enemies;
     static HashSet<string> _bosses;
-    static bool _adventureCleared;
-    static HashSet<string> _clearedWithChars;
+
+    static int _adventureClearCount;
+    static int _bossModeClearCount;
+    static int _chain1Used;
+    static int _chain2Used;
+    static int _chain3Used;
+    static int _blocksDiscarded;
+    static Dictionary<ClassType, int> _classClearCounts;
+
     static bool _loaded;
 
     static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
@@ -64,9 +71,38 @@ public static class UnlockManager
     public static void OnAdventureClear(string[] partyCharacterIds)
     {
         EnsureLoaded();
-        _adventureCleared = true;
-        foreach (var id in partyCharacterIds)
-            _clearedWithChars.Add(id);
+        _adventureClearCount++;
+        RecordClassClears(partyCharacterIds);
+        CheckAndUnlockAll();
+        Save();
+    }
+
+    public static void OnBossModeClear(string[] partyCharacterIds)
+    {
+        EnsureLoaded();
+        _bossModeClearCount++;
+        RecordClassClears(partyCharacterIds);
+        CheckAndUnlockAll();
+        Save();
+    }
+
+    public static void RecordChainUsed(int chainLength)
+    {
+        EnsureLoaded();
+        if (chainLength == 1)
+            _chain1Used++;
+        else if (chainLength == 2)
+            _chain2Used++;
+        else if (chainLength >= 3)
+            _chain3Used++;
+        CheckAndUnlockAll();
+        Save();
+    }
+
+    public static void RecordBlocksDiscarded(int count)
+    {
+        EnsureLoaded();
+        _blocksDiscarded += count;
         CheckAndUnlockAll();
         Save();
     }
@@ -76,11 +112,11 @@ public static class UnlockManager
         if (string.IsNullOrEmpty(enemyId))
             return;
         EnsureLoaded();
-        if (!_enemies.Add(enemyId))
-            return;
-        OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
-        CheckAndUnlockAll();
-        Save();
+        if (_enemies.Add(enemyId))
+        {
+            Save();
+            OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
+        }
     }
 
     public static void OnBossDefeated(string bossId)
@@ -88,11 +124,11 @@ public static class UnlockManager
         if (string.IsNullOrEmpty(bossId))
             return;
         EnsureLoaded();
-        if (!_bosses.Add(bossId))
-            return;
-        OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
-        CheckAndUnlockAll();
-        Save();
+        if (_bosses.Add(bossId))
+        {
+            Save();
+            OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
+        }
     }
 
     public static void ResetAll()
@@ -100,6 +136,21 @@ public static class UnlockManager
         if (File.Exists(SavePath))
             File.Delete(SavePath);
         _loaded = false;
+    }
+
+    static void RecordClassClears(string[] partyCharacterIds)
+    {
+        var reg = TableRegistry.Instance;
+        if (reg?.Character == null)
+            return;
+        foreach (var id in partyCharacterIds)
+        {
+            var def = reg.Character.Get(id);
+            if (def == null)
+                continue;
+            _classClearCounts.TryGetValue(def.classType, out int cur);
+            _classClearCounts[def.classType] = cur + 1;
+        }
     }
 
     static void CheckAndUnlockAll()
@@ -111,27 +162,21 @@ public static class UnlockManager
         if (reg.Character != null)
             foreach (var def in reg.Character.All)
             {
-                if (def == null || def.unlockConditions.Count == 0)
+                if (def == null || def.unlockConditions.Count == 0 || _chars.Contains(def.id))
                     continue;
-                if (_chars.Contains(def.id))
-                    continue;
-                if (!AllConditionsMet(def.unlockConditions))
-                    continue;
-                if (_chars.Add(def.id))
-                    OnUnlocked?.Invoke(UnlockKind.Character, def.id);
+                if (AllConditionsMet(def.unlockConditions))
+                    if (_chars.Add(def.id))
+                        OnUnlocked?.Invoke(UnlockKind.Character, def.id);
             }
 
         if (reg.JokerCard != null)
             foreach (var card in reg.JokerCard.All)
             {
-                if (card == null || card.unlockConditions.Count == 0)
+                if (card == null || card.unlockConditions.Count == 0 || _jokers.Contains(card.id))
                     continue;
-                if (_jokers.Contains(card.id))
-                    continue;
-                if (!AllConditionsMet(card.unlockConditions))
-                    continue;
-                if (_jokers.Add(card.id))
-                    OnUnlocked?.Invoke(UnlockKind.Joker, card.id);
+                if (AllConditionsMet(card.unlockConditions))
+                    if (_jokers.Add(card.id))
+                        OnUnlocked?.Invoke(UnlockKind.Joker, card.id);
             }
     }
 
@@ -141,16 +186,27 @@ public static class UnlockManager
         {
             bool met = c.type switch
             {
-                UnlockConditionType.DefeatEnemy => _enemies.Contains(c.targetId),
-                UnlockConditionType.DefeatBoss => _bosses.Contains(c.targetId),
-                UnlockConditionType.ClearAdventure => _adventureCleared,
-                UnlockConditionType.ClearWithCharacter => _clearedWithChars.Contains(c.targetId),
+                UnlockConditionType.AdventureClear => _adventureClearCount >= c.count,
+                UnlockConditionType.BossModeClear => _bossModeClearCount >= c.count,
+                UnlockConditionType.Chain1Used => _chain1Used >= c.count,
+                UnlockConditionType.Chain2Used => _chain2Used >= c.count,
+                UnlockConditionType.Chain3Used => _chain3Used >= c.count,
+                UnlockConditionType.BlocksDiscarded => _blocksDiscarded >= c.count,
+                UnlockConditionType.UnlockedJokerCount => _jokers.Count >= c.count,
+                UnlockConditionType.UnlockedCharacterCount => _chars.Count >= c.count,
+                UnlockConditionType.ClearWithClass => GetClassClearCount(c.classType) >= c.count,
                 _ => false,
             };
             if (!met)
                 return false;
         }
         return true;
+    }
+
+    static int GetClassClearCount(ClassType ct)
+    {
+        _classClearCounts.TryGetValue(ct, out int v);
+        return v;
     }
 
     static void EnsureLoaded()
@@ -164,10 +220,16 @@ public static class UnlockManager
             _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
             _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
             _bosses = new HashSet<string>(dto.defeatedBossIds ?? Array.Empty<string>());
-            _adventureCleared = dto.adventureCleared;
-            _clearedWithChars = new HashSet<string>(
-                dto.clearedWithCharacterIds ?? Array.Empty<string>()
-            );
+            _adventureClearCount = dto.adventureClearCount;
+            _bossModeClearCount = dto.bossModeClearCount;
+            _chain1Used = dto.chain1Used;
+            _chain2Used = dto.chain2Used;
+            _chain3Used = dto.chain3Used;
+            _blocksDiscarded = dto.blocksDiscarded;
+            _classClearCounts = new Dictionary<ClassType, int>();
+            if (dto.classClearCounts != null)
+                foreach (var e in dto.classClearCounts)
+                    _classClearCounts[e.classType] = e.count;
         }
         else
         {
@@ -175,8 +237,13 @@ public static class UnlockManager
             _jokers = new HashSet<string>(DefaultJokerIds);
             _enemies = new HashSet<string>();
             _bosses = new HashSet<string>();
-            _adventureCleared = false;
-            _clearedWithChars = new HashSet<string>();
+            _adventureClearCount = 0;
+            _bossModeClearCount = 0;
+            _chain1Used = 0;
+            _chain2Used = 0;
+            _chain3Used = 0;
+            _blocksDiscarded = 0;
+            _classClearCounts = new Dictionary<ClassType, int>();
         }
         _loaded = true;
     }
@@ -189,10 +256,24 @@ public static class UnlockManager
             unlockedJokerIds = _jokers.ToArray(),
             defeatedEnemyIds = _enemies.ToArray(),
             defeatedBossIds = _bosses.ToArray(),
-            adventureCleared = _adventureCleared,
-            clearedWithCharacterIds = _clearedWithChars.ToArray(),
+            adventureClearCount = _adventureClearCount,
+            bossModeClearCount = _bossModeClearCount,
+            chain1Used = _chain1Used,
+            chain2Used = _chain2Used,
+            chain3Used = _chain3Used,
+            blocksDiscarded = _blocksDiscarded,
+            classClearCounts = _classClearCounts
+                .Select(kv => new ClassClearEntry { classType = kv.Key, count = kv.Value })
+                .ToArray(),
         };
         File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
+    }
+
+    [Serializable]
+    class ClassClearEntry
+    {
+        public ClassType classType;
+        public int count;
     }
 
     [Serializable]
@@ -202,7 +283,12 @@ public static class UnlockManager
         public string[] unlockedJokerIds;
         public string[] defeatedEnemyIds;
         public string[] defeatedBossIds;
-        public bool adventureCleared;
-        public string[] clearedWithCharacterIds;
+        public int adventureClearCount;
+        public int bossModeClearCount;
+        public int chain1Used;
+        public int chain2Used;
+        public int chain3Used;
+        public int blocksDiscarded;
+        public ClassClearEntry[] classClearCounts;
     }
 }

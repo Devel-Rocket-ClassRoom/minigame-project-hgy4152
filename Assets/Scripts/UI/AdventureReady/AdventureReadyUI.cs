@@ -67,6 +67,8 @@ public class AdventureReadyUI : MonoBehaviour
         {
             if (def == null)
                 continue;
+            if (!UnlockManager.IsCharacterUnlocked(def.id))
+                continue;
 
             var slotGo = Instantiate(slotPrefab, gridContent);
             var slotUI = slotGo.GetComponent<CharacterSlotUI>();

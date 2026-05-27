@@ -1267,6 +1267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 142566054}
   - component: {fileID: 142566053}
+  - component: {fileID: 142566055}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1318,6 +1319,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &142566055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142566052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe3462e1cc89504cb73b5475f6d2d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::UnlockNotificationSpawner
+  prefab: {fileID: 145468573791455766, guid: 5535acfe5520f714390d5458b60f678c, type: 3}
+  spawnParent: {fileID: 525524452}
 --- !u!224 &201982258 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2975322197738274755, guid: 96ca9bc4f4ce4244988a3a8c3c5219d0, type: 3}

@@ -1,9 +1,13 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnlockNotificationUI : MonoBehaviour
 {
+    [SerializeField]
+    Image iconImage;
+
     [SerializeField]
     TMP_Text nameText;
 
@@ -30,10 +34,12 @@ public class UnlockNotificationUI : MonoBehaviour
         _rect.anchoredPosition = new Vector2(offscreenX, _rect.anchoredPosition.y);
     }
 
-    public IEnumerator Play(string text)
+    public IEnumerator Play(string text, Sprite icon)
     {
         if (nameText != null)
             nameText.text = text;
+        if (iconImage != null)
+            iconImage.sprite = icon;
 
         float y = _rect.anchoredPosition.y;
 

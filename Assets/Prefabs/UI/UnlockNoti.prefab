@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 7652353747905291598}
   - component: {fileID: 4465835799019440314}
   - component: {fileID: 8607238350882597464}
+  - component: {fileID: 145468573791455766}
   m_Layer: 0
   m_Name: UnlockNoti
   m_TagString: Untagged
@@ -289,3 +290,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &145468573791455766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6840553827897231723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5743aff2af381468ea9bce63350a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::UnlockNotificationUI
+  iconImage: {fileID: 5635592604629775216}
+  nameText: {fileID: 2257062767887974158}
+  slideInDuration: 0.3
+  displayDuration: 1.5
+  slideOutDuration: 0.3
+  offscreenX: 400
+  onscreenX: 0

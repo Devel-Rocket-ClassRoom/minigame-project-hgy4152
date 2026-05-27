@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class JokerCard : ScriptableObject, IDisplayable
@@ -7,6 +8,7 @@ public abstract class JokerCard : ScriptableObject, IDisplayable
     public string description;
     public Sprite icon;
     public Rarity rarity;
+    public List<UnlockCondition> unlockConditions = new();
 
     public string Id => id;
     public string DisplayName => cardName;

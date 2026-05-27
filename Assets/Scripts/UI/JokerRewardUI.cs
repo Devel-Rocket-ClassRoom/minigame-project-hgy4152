@@ -35,6 +35,9 @@ public class JokerRewardUI : MonoBehaviour
     [SerializeField]
     CardSwapUI cardSwapUI;
 
+    [SerializeField]
+    Button skipButton;
+
     JokerCard[] _offered = new JokerCard[3];
     int _selectedIdx = -1;
 
@@ -53,6 +56,7 @@ public class JokerRewardUI : MonoBehaviour
             int idx = i;
             cardButtons[i].onClick.AddListener(() => OnCardClicked(idx));
         }
+        skipButton?.onClick.AddListener(Skip);
     }
 
     public void Show()
@@ -150,6 +154,17 @@ public class JokerRewardUI : MonoBehaviour
                 }
             );
         }
+    }
+
+    public void Skip()
+    {
+        tooltipPanel.gameObject.SetActive(false);
+        for (int i = 0; i < selectFrames.Length; i++)
+            if (selectFrames[i] != null)
+                selectFrames[i].enabled = false;
+        _selectedIdx = -1;
+        panel.SetActive(false);
+        FinishReward();
     }
 
     void FinishReward()

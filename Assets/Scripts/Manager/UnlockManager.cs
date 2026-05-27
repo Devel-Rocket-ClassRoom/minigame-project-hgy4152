@@ -15,6 +15,7 @@ public enum UnlockKind
 public static class UnlockManager
 {
     public static event Action<UnlockKind, string> OnUnlocked;
+
     static readonly string[] DefaultCharacterIds =
     {
         "wa_reon",
@@ -25,14 +26,13 @@ public static class UnlockManager
         "hu_raven",
     };
     static readonly string[] DefaultJokerIds = { "bs1", "ch1" };
-    const string WarriorId = "wa_reon";
-    const string WarriorJokerId = "cwar1";
-    const string TestLockedCharacterId = "test_locked";
 
     static HashSet<string> _chars;
     static HashSet<string> _jokers;
     static HashSet<string> _enemies;
     static HashSet<string> _bosses;
+    static bool _adventureCleared;
+    static HashSet<string> _clearedWithChars;
     static bool _loaded;
 
     static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
@@ -64,15 +64,10 @@ public static class UnlockManager
     public static void OnAdventureClear(string[] partyCharacterIds)
     {
         EnsureLoaded();
-        if (_chars.Add(TestLockedCharacterId))
-            OnUnlocked?.Invoke(UnlockKind.Character, TestLockedCharacterId);
+        _adventureCleared = true;
         foreach (var id in partyCharacterIds)
-            if (id == WarriorId)
-            {
-                if (_jokers.Add(WarriorJokerId))
-                    OnUnlocked?.Invoke(UnlockKind.Joker, WarriorJokerId);
-                break;
-            }
+            _clearedWithChars.Add(id);
+        CheckAndUnlockAll();
         Save();
     }
 
@@ -81,11 +76,11 @@ public static class UnlockManager
         if (string.IsNullOrEmpty(enemyId))
             return;
         EnsureLoaded();
-        if (_enemies.Add(enemyId))
-        {
-            Save();
-            OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
-        }
+        if (!_enemies.Add(enemyId))
+            return;
+        OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
+        CheckAndUnlockAll();
+        Save();
     }
 
     public static void OnBossDefeated(string bossId)
@@ -93,11 +88,11 @@ public static class UnlockManager
         if (string.IsNullOrEmpty(bossId))
             return;
         EnsureLoaded();
-        if (_bosses.Add(bossId))
-        {
-            Save();
-            OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
-        }
+        if (!_bosses.Add(bossId))
+            return;
+        OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
+        CheckAndUnlockAll();
+        Save();
     }
 
     public static void ResetAll()
@@ -105,6 +100,57 @@ public static class UnlockManager
         if (File.Exists(SavePath))
             File.Delete(SavePath);
         _loaded = false;
+    }
+
+    static void CheckAndUnlockAll()
+    {
+        var reg = TableRegistry.Instance;
+        if (reg == null)
+            return;
+
+        if (reg.Character != null)
+            foreach (var def in reg.Character.All)
+            {
+                if (def == null || def.unlockConditions.Count == 0)
+                    continue;
+                if (_chars.Contains(def.id))
+                    continue;
+                if (!AllConditionsMet(def.unlockConditions))
+                    continue;
+                if (_chars.Add(def.id))
+                    OnUnlocked?.Invoke(UnlockKind.Character, def.id);
+            }
+
+        if (reg.JokerCard != null)
+            foreach (var card in reg.JokerCard.All)
+            {
+                if (card == null || card.unlockConditions.Count == 0)
+                    continue;
+                if (_jokers.Contains(card.id))
+                    continue;
+                if (!AllConditionsMet(card.unlockConditions))
+                    continue;
+                if (_jokers.Add(card.id))
+                    OnUnlocked?.Invoke(UnlockKind.Joker, card.id);
+            }
+    }
+
+    static bool AllConditionsMet(List<UnlockCondition> conditions)
+    {
+        foreach (var c in conditions)
+        {
+            bool met = c.type switch
+            {
+                UnlockConditionType.DefeatEnemy => _enemies.Contains(c.targetId),
+                UnlockConditionType.DefeatBoss => _bosses.Contains(c.targetId),
+                UnlockConditionType.ClearAdventure => _adventureCleared,
+                UnlockConditionType.ClearWithCharacter => _clearedWithChars.Contains(c.targetId),
+                _ => false,
+            };
+            if (!met)
+                return false;
+        }
+        return true;
     }
 
     static void EnsureLoaded()
@@ -118,6 +164,10 @@ public static class UnlockManager
             _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
             _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
             _bosses = new HashSet<string>(dto.defeatedBossIds ?? Array.Empty<string>());
+            _adventureCleared = dto.adventureCleared;
+            _clearedWithChars = new HashSet<string>(
+                dto.clearedWithCharacterIds ?? Array.Empty<string>()
+            );
         }
         else
         {
@@ -125,6 +175,8 @@ public static class UnlockManager
             _jokers = new HashSet<string>(DefaultJokerIds);
             _enemies = new HashSet<string>();
             _bosses = new HashSet<string>();
+            _adventureCleared = false;
+            _clearedWithChars = new HashSet<string>();
         }
         _loaded = true;
     }
@@ -137,6 +189,8 @@ public static class UnlockManager
             unlockedJokerIds = _jokers.ToArray(),
             defeatedEnemyIds = _enemies.ToArray(),
             defeatedBossIds = _bosses.ToArray(),
+            adventureCleared = _adventureCleared,
+            clearedWithCharacterIds = _clearedWithChars.ToArray(),
         };
         File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
     }
@@ -148,5 +202,7 @@ public static class UnlockManager
         public string[] unlockedJokerIds;
         public string[] defeatedEnemyIds;
         public string[] defeatedBossIds;
+        public bool adventureCleared;
+        public string[] clearedWithCharacterIds;
     }
 }

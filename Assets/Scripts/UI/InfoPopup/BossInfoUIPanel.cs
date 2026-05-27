@@ -42,14 +42,23 @@ public class BossInfoUIPanel : MonoBehaviour
 
     public void Show(EnemyData data)
     {
+        ShowInternal(data.enemyName, data.description, data.bossPattern);
+    }
+
+    public void Show(BossData data)
+    {
+        ShowInternal(data.bossName, data.description, data.bossPattern);
+    }
+
+    private void ShowInternal(string name, string desc, BossPattern bp)
+    {
         if (nameText != null)
-            nameText.text = Localization.Get(data.enemyName);
+            nameText.text = Localization.Get(name);
         if (descText != null)
-            descText.text = Localization.Get(data.description);
+            descText.text = Localization.Get(desc);
 
         if (patternText != null)
         {
-            var bp = data.bossPattern;
             if (bp != null)
             {
                 int passiveCount = bp.passive != null ? bp.passive.Count : 0;
@@ -57,7 +66,7 @@ public class BossInfoUIPanel : MonoBehaviour
                 if (bp.turnModifiers != null)
                     foreach (var m in bp.turnModifiers)
                         if (m != null) turnCount++;
-                patternText.text = $"{bp.patternName}\n패시브: {passiveCount}개 / 턴 모디파이어: {turnCount}개";
+                patternText.text = $"{Localization.Get(bp.patternName)}\n패시브: {passiveCount}개 / 턴 모디파이어: {turnCount}개";
             }
             patternText.gameObject.SetActive(bp != null);
         }

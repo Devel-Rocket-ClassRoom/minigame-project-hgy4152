@@ -10,6 +10,7 @@ public class StageManager : MonoBehaviour
         public int stage;
         public bool isBoss;
         public EnemyData enemyData;
+        public BossData bossData;
     }
 
     [SerializeField]
@@ -42,7 +43,10 @@ public class StageManager : MonoBehaviour
     public void StartStage()
     {
         var entry = stages[currentIndex];
-        enemy.Init(entry.enemyData);
+        if (entry.bossData != null)
+            enemy.Init(entry.bossData);
+        else
+            enemy.Init(entry.enemyData);
         OnStageStart?.Invoke(entry);
     }
 
@@ -54,11 +58,11 @@ public class StageManager : MonoBehaviour
             OnStageClear?.Invoke(stages[currentIndex]);
     }
 
-    public void SetSingleBossStage(EnemyData bossData)
+    public void SetSingleBossStage(BossData bossData)
     {
         stages = new[]
         {
-            new StageEntry { isBoss = true, enemyData = bossData },
+            new StageEntry { isBoss = true, bossData = bossData },
         };
         currentIndex = 0;
     }

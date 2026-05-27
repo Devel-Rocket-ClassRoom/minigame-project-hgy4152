@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
             jokerManager.SetHand(jokerCards);
         }
 
-        if (TableRegistry.Instance?.Enemy.TryGet(BossPartyContext.BossId, out var bossData) == true)
+        if (TableRegistry.Instance?.Boss.TryGet(BossPartyContext.BossId, out var bossData) == true)
             stageManager.SetSingleBossStage(bossData);
 
         BossPartyContext.BossId = null;

@@ -21,7 +21,7 @@ public class BossReadyUI : MonoBehaviour
     public Button backButton;
 
     private readonly List<(int slotIndex, SaveSlotData data)> saveSlotList = new();
-    private readonly List<EnemyData> bossList = new();
+    private readonly List<BossData> bossList = new();
 
     [SerializeField]
     private SaveManager saveManager;
@@ -76,11 +76,11 @@ public class BossReadyUI : MonoBehaviour
 
     private void InitBossSlots()
     {
-        var table = TableRegistry.Instance?.Enemy;
+        var table = TableRegistry.Instance?.Boss;
         if (table != null)
-            foreach (var e in table.All)
-                if (e != null && e.bossPattern != null)
-                    bossList.Add(e);
+            foreach (var b in table.All)
+                if (b != null)
+                    bossList.Add(b);
 
         if (prevBossButton != null)
             prevBossButton.onClick.AddListener(OnPrevBoss);

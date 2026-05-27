@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c823081f35997419cdbb194d8d7885, type: 3}
+  m_Name: Gold
+  m_EditorClassIdentifier: ChainKnights::BossData
+  id: boss_geumsuabi
+  rarity: 0
+  bossName: bss_geumsuabi_name
+  description: bss_geumsuabi_desc
+  icon: {fileID: -7092273832628659466, guid: 281726a6776f7ca438fdb6a9f23bf2ff, type: 3}
+  hp: 5000
+  bossPattern: {fileID: 11400000, guid: d83855dae2a4e394ab5ace2d1d205ec1, type: 2}

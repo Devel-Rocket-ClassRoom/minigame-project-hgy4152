@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc050000000000000000000000000000, type: 3}
+  m_Name: jc_ChainDouble_dbch13
+  m_EditorClassIdentifier: 
+  id: dbch13
+  cardName: jkr_dbch13_name
+  description: jkr_dbch13_desc
+  icon: {fileID: -5808594389484081740, guid: 5558c66776f1cb04a930103e256c8531, type: 3}
+  rarity: 0
+  unlockConditions:
+  - type: 2
+    count: 30
+    classType: 0
+  - type: 4
+    count: 30
+    classType: 0
+  chainA: 1
+  chainB: 3
+  multiplier: 1.2

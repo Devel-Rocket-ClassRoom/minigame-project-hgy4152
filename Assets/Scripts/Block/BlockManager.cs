@@ -11,6 +11,7 @@ public class BlockManager : MonoBehaviour
     int _discardsUsed;
     int _runtimeDiscardLimit = -1;
     bool _swapPending;
+    Dictionary<ClassType, int> _discardsByClass = new();
 
     int EffectiveLimit => _runtimeDiscardLimit >= 0 ? _runtimeDiscardLimit : discardLimit;
 
@@ -84,10 +85,12 @@ public class BlockManager : MonoBehaviour
         if (_discardsUsed >= EffectiveLimit)
             return;
 
+        var cls = block.data.ownerClass;
         hand.RemoveAt(idx);
         Destroy(block.gameObject);
         slots[idx].Clear();
         _discardsUsed++;
+        _discardsByClass[cls] = _discardsByClass.GetValueOrDefault(cls) + 1;
 
         // 오른쪽 블록들을 슬롯 고정 상태에서 왼쪽으로 슬라이드
         for (int i = idx; i < hand.Count; i++)
@@ -107,8 +110,13 @@ public class BlockManager : MonoBehaviour
 
     public int DiscardsRemaining => Mathf.Max(0, EffectiveLimit - _discardsUsed);
     public int DiscardsUsed => _discardsUsed;
+    public IReadOnlyDictionary<ClassType, int> DiscardsByClass => _discardsByClass;
 
-    public void ResetDiscardCount() => _discardsUsed = 0;
+    public void ResetDiscardCount()
+    {
+        _discardsUsed = 0;
+        _discardsByClass.Clear();
+    }
 
     public void RefreshAllBlockVisuals()
     {

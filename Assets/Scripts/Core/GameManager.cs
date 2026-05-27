@@ -178,6 +178,7 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
+        judge.discardsByClass = blockManager.DiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
@@ -221,13 +222,11 @@ public class GameManager : MonoBehaviour
             var group = groups[i];
             var character = characterSet?.GetCharacter(group.DominantClass);
 
-            var groupJudge = new ChainJudge();
-            groupJudge.IngestGroup(group);
             int groupBonus = 0;
             if (jokerManager != null)
                 for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
                     if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
-                        groupBonus += jokerManager.ActiveHand[k].GetBonus(groupJudge);
+                        groupBonus += jokerManager.ActiveHand[k].GetBonus(judge, group);
 
             int dmg = CalcGroupDamage(group, judge);
             dmg -= judge.bossFlatBonus;
@@ -342,6 +341,7 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
+        judge.discardsByClass = blockManager.DiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)

@@ -11,6 +11,7 @@ public class BossPatternSystem : MonoBehaviour
 
     int[] _prevChainCounts = new int[3];
     Dictionary<ClassType, int> _prevClassDist = new();
+    int[] _prevChainSequence;
 
     public BossPattern Current => current;
     public int TurnIndex => turnIndex;
@@ -32,6 +33,7 @@ public class BossPatternSystem : MonoBehaviour
         turnIndex = 0;
         _prevChainCounts = new int[3];
         _prevClassDist = new Dictionary<ClassType, int>();
+        _prevChainSequence = null;
         OnInjected?.Invoke();
     }
 
@@ -87,12 +89,14 @@ public class BossPatternSystem : MonoBehaviour
             judge.prevChainCounts[i] = _prevChainCounts[i];
         foreach (var kv in _prevClassDist)
             judge.prevClassDistribution[kv.Key] = kv.Value;
+        judge.prevChainSequence = _prevChainSequence;
     }
 
     public void SnapshotForNextTurn(ChainJudge judge)
     {
         _prevChainCounts = new[] { judge.chain1Count, judge.chain2Count, judge.chain3Count };
         _prevClassDist = new Dictionary<ClassType, int>(judge.classDistribution);
+        _prevChainSequence = judge.chainSequence;
     }
 
     public void Inject(ChainJudge judge)

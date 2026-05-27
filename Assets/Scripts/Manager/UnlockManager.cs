@@ -25,7 +25,23 @@ public static class UnlockManager
         "wi_acan",
         "hu_raven",
     };
-    static readonly string[] DefaultJokerIds = { "bs1", "ch1" };
+    static readonly string[] DefaultJokerIds =
+    {
+        "cwar1",
+        "cpal1",
+        "cwiz1",
+        "carc1",
+        "chun1",
+        "cpri1",
+        "ch1",
+        "ch2",
+        "ch3",
+        "spd1",
+        "solo1",
+        "prev1",
+        "shift1",
+        "trich",
+    };
 
     static HashSet<string> _chars;
     static HashSet<string> _jokers;

@@ -15,6 +15,7 @@ MonoBehaviour:
   id: cons_c
   cardName: jkr_cons_c_name
   description: jkr_cons_c_desc
-  icon: {fileID: 0}
+  icon: {fileID: -8120339271813346060, guid: 59955dfc2bceaf544ab0816f0c91ac87, type: 3}
   rarity: 0
+  unlockConditions: []
   flatBonus: 15

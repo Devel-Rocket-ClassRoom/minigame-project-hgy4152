@@ -15,7 +15,8 @@ MonoBehaviour:
   id: carc2
   cardName: jkr_carc2_name
   description: jkr_carc2_desc
-  icon: {fileID: 0}
+  icon: {fileID: 2532710148049078403, guid: f6968cb157a449249aecfa3e174bb246, type: 3}
   rarity: 0
+  unlockConditions: []
   minGroups: 2
   bonusPerGroup: 4

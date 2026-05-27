@@ -151,24 +151,38 @@ public class EncyclopediaUI : MonoBehaviour
 
         if (monsterContent != null)
         {
-            if (reg.Enemy != null && reg.Enemy.All.Count > 0)
-            {
-                var p = Instantiate(panelPrefab, monsterContent);
-                p.SetHeader("일반");
-                _monsterPanels["일반"] = p;
-                foreach (var e in reg.Enemy.All)
-                    Instantiate(slotPrefab, p.Grid)
-                        .Setup(e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id));
-            }
+            var byType =
+                new Dictionary<EnemyType, List<(Sprite icon, string nameKey, bool unlocked)>>();
 
-            if (reg.Boss != null && reg.Boss.All.Count > 0)
-            {
-                var p = Instantiate(panelPrefab, monsterContent);
-                p.SetHeader("보스");
-                _monsterPanels["보스"] = p;
+            if (reg.Enemy != null)
+                foreach (var e in reg.Enemy.All)
+                {
+                    if (e == null)
+                        continue;
+                    if (!byType.TryGetValue(e.enemyType, out var list))
+                        byType[e.enemyType] = list = new List<(Sprite, string, bool)>();
+                    list.Add((e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id)));
+                }
+
+            if (reg.Boss != null)
                 foreach (var b in reg.Boss.All)
-                    Instantiate(slotPrefab, p.Grid)
-                        .Setup(b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id));
+                {
+                    if (b == null)
+                        continue;
+                    if (!byType.TryGetValue(b.enemyType, out var list))
+                        byType[b.enemyType] = list = new List<(Sprite, string, bool)>();
+                    list.Add((b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id)));
+                }
+
+            foreach (EnemyType et in Enum.GetValues(typeof(EnemyType)))
+            {
+                if (!byType.TryGetValue(et, out var entries) || entries.Count == 0)
+                    continue;
+                var p = Instantiate(panelPrefab, monsterContent);
+                p.SetHeader(et.ToString());
+                _monsterPanels[et.ToString()] = p;
+                foreach (var (icon, nameKey, unlocked) in entries)
+                    Instantiate(slotPrefab, p.Grid).Setup(icon, nameKey, unlocked);
             }
         }
     }

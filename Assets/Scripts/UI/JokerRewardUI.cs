@@ -184,7 +184,11 @@ public class JokerRewardUI : MonoBehaviour
             { Rarity.Epic, new List<JokerCard>() },
         };
         foreach (var card in allCards)
-            if (card != null && !ownedIds.Contains(card.id))
+            if (
+                card != null
+                && !ownedIds.Contains(card.id)
+                && UnlockManager.IsJokerUnlocked(card.id)
+            )
                 pools[card.rarity].Add(card);
 
         var available = new List<JokerCard>();

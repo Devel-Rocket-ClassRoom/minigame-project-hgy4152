@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: jc_AllChains_trich
   m_EditorClassIdentifier: 
   id: trich
-  cardName: 사슬의 춤
+  cardName: "\uC0AC\uC2AC\uC758 \uCDA4"
   description: 
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 2
   unlockConditions: []
   multiplier: 1.5

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ChainOnly_allch3
   m_EditorClassIdentifier: 
   id: allch3
-  cardName: 무자비
+  cardName: "\uBB34\uC790\uBE44"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 4
     count: 20

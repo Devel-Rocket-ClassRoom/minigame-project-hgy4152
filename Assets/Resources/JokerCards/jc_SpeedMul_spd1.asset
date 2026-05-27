@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_SpeedMul_spd1
   m_EditorClassIdentifier: 
   id: spd1
-  cardName: 신속
+  cardName: "\uC2E0\uC18D"
   description: 
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 1
   unlockConditions: []
   minRatio: 0.7
   multiplier: 1.3

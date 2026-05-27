@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cpri2
   m_EditorClassIdentifier: 
   id: cpri2
-  cardName: 헤븐즈 도어
+  cardName: "\uD5E4\uBE10\uC988 \uB3C4\uC5B4"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 8
     count: 1

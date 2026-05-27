@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ChainOnly_allch1
   m_EditorClassIdentifier: 
   id: allch1
-  cardName: 기본이 중요하다
+  cardName: "\uAE30\uBCF8\uC774 \uC911\uC694\uD558\uB2E4"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 2
     count: 20

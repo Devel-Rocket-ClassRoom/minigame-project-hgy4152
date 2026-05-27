@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: jc_SpeedFlat_spd2
   m_EditorClassIdentifier: 
   id: spd2
-  cardName: 전광석화
+  cardName: "\uC804\uAD11\uC11D\uD654"
   description: 
   icon: {fileID: 0}
   rarity: 2

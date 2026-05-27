@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_carc2
   m_EditorClassIdentifier: 
   id: carc2
-  cardName: 폭풍의 시
+  cardName: "\uD3ED\uD48D\uC758 \uC2DC"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 8
     count: 1

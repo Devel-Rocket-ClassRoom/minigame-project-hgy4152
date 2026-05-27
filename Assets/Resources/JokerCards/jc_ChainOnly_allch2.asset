@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ChainOnly_allch2
   m_EditorClassIdentifier: 
   id: allch2
-  cardName: 양손잡이
+  cardName: "\uC591\uC190\uC7A1\uC774"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 3
     count: 20

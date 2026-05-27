@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_chun2
   m_EditorClassIdentifier: 
   id: chun2
-  cardName: 불릿 파티
+  cardName: "\uBD88\uB9BF \uD30C\uD2F0"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 8
     count: 1

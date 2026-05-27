@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: jc_ChainDamage_ch1
   m_EditorClassIdentifier: 
   id: ch1
-  cardName: 정권 지르기
+  cardName: "\uC815\uAD8C \uC9C0\uB974\uAE30"
   description: 
   icon: {fileID: 0}
   rarity: 0

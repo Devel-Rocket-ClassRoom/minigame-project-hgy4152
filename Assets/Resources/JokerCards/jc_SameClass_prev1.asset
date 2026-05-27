@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: jc_SameClass_prev1
   m_EditorClassIdentifier: 
   id: prev1
-  cardName: 동료애
+  cardName: "\uB3D9\uB8CC\uC560"
   description: 
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 1
   unlockConditions: []
   multiplier: 1.3

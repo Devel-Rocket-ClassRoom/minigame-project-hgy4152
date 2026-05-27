@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: jc_Shift_shift1
   m_EditorClassIdentifier: 
   id: shift1
-  cardName: 태그 매치
+  cardName: "\uD0DC\uADF8 \uB9E4\uCE58"
   description: 
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 1
   unlockConditions: []
   multiplier: 1.3

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ChainDouble_dbch12
   m_EditorClassIdentifier: 
   id: dbch12
-  cardName: 가벼운 손놀림
+  cardName: "\uAC00\uBCBC\uC6B4 \uC190\uB180\uB9BC"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 2
     count: 30

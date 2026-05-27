@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cpal2
   m_EditorClassIdentifier: 
   id: cpal2
-  cardName: 성전 태세
+  cardName: "\uC131\uC804 \uD0DC\uC138"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 8
     count: 1

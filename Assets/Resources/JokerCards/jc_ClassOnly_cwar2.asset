@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: jc_ClassOnly_cwar2
   m_EditorClassIdentifier: 
   id: cwar2
-  cardName: 전장의 영웅
+  cardName: "\uC804\uC7A5\uC758 \uC601\uC6C5"
   description: 
   icon: {fileID: 0}
-  rarity: 1
+  rarity: 0
   unlockConditions:
   - type: 8
     count: 1

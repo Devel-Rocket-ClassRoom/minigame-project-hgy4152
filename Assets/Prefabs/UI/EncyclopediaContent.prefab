@@ -243,6 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3693846306170287710}
   - component: {fileID: 685315871132171089}
+  - component: {fileID: 5764604742101890407}
   m_Layer: 0
   m_Name: EncyclopediaContent
   m_TagString: Untagged
@@ -297,3 +298,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &5764604742101890407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6573728885791846120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a46cf559cd713d449193c9884ab9efa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::EncyclopediaPanelUI
+  headerText: {fileID: 2434107609079793315}
+  grid: {fileID: 6850530260504531269}

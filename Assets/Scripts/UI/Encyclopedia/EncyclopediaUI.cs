@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EncyclopediaUI : MonoBehaviour
@@ -9,15 +10,18 @@ public class EncyclopediaUI : MonoBehaviour
     [SerializeField]
     EncyclopediaSlotUI slotPrefab;
 
-    [Header("Tab Contents")]
     [SerializeField]
-    Transform characterGrid;
+    EncyclopediaPanelUI panelPrefab;
+
+    [Header("Tab Contents (ScrollView Content)")]
+    [SerializeField]
+    Transform characterContent;
 
     [SerializeField]
-    Transform jokerGrid;
+    Transform jokerContent;
 
     [SerializeField]
-    Transform monsterGrid;
+    Transform monsterContent;
 
     [Header("Tab Roots")]
     [SerializeField]
@@ -69,31 +73,84 @@ public class EncyclopediaUI : MonoBehaviour
         if (reg == null)
             return;
 
-        if (characterGrid != null && reg.Character != null)
-            foreach (var def in reg.Character.All)
-                Instantiate(slotPrefab, characterGrid)
-                    .Setup(
-                        def.prefab.Icon,
-                        def.displayName,
-                        UnlockManager.IsCharacterUnlocked(def.id)
-                    );
-
-        if (jokerGrid != null && reg.JokerCard != null)
-            foreach (var j in reg.JokerCard.All)
-                Instantiate(slotPrefab, jokerGrid)
-                    .Setup(j.icon, j.cardName, UnlockManager.IsJokerUnlocked(j.id));
-
-        if (monsterGrid != null)
+        // 캐릭터 탭: ClassType 순서별 panel
+        if (characterContent != null && reg.Character != null)
         {
-            if (reg.Enemy != null)
-                foreach (var e in reg.Enemy.All)
-                    Instantiate(slotPrefab, monsterGrid)
-                        .Setup(e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id));
+            var byClass = new Dictionary<ClassType, List<CharacterDef>>();
+            foreach (var def in reg.Character.All)
+            {
+                if (def == null)
+                    continue;
+                if (!byClass.TryGetValue(def.classType, out var list))
+                    byClass[def.classType] = list = new List<CharacterDef>();
+                list.Add(def);
+            }
 
-            if (reg.Boss != null)
+            foreach (ClassType ct in Enum.GetValues(typeof(ClassType)))
+            {
+                if (ct == ClassType.None)
+                    continue;
+                if (!byClass.TryGetValue(ct, out var defs) || defs.Count == 0)
+                    continue;
+
+                var p = Instantiate(panelPrefab, characterContent);
+                p.SetHeader(ct.ToString());
+                foreach (var def in defs)
+                    Instantiate(slotPrefab, p.Grid)
+                        .Setup(
+                            def.prefab.Icon,
+                            def.displayName,
+                            UnlockManager.IsCharacterUnlocked(def.id)
+                        );
+            }
+        }
+
+        // 조커 탭: Rarity 순서별 panel
+        if (jokerContent != null && reg.JokerCard != null)
+        {
+            var byRarity = new Dictionary<Rarity, List<JokerCard>>();
+            foreach (var j in reg.JokerCard.All)
+            {
+                if (j == null)
+                    continue;
+                if (!byRarity.TryGetValue(j.rarity, out var list))
+                    byRarity[j.rarity] = list = new List<JokerCard>();
+                list.Add(j);
+            }
+
+            foreach (Rarity r in Enum.GetValues(typeof(Rarity)))
+            {
+                if (!byRarity.TryGetValue(r, out var jokers) || jokers.Count == 0)
+                    continue;
+
+                var p = Instantiate(panelPrefab, jokerContent);
+                p.SetHeader(r.ToString());
+                foreach (var j in jokers)
+                    Instantiate(slotPrefab, p.Grid)
+                        .Setup(j.icon, j.cardName, UnlockManager.IsJokerUnlocked(j.id));
+            }
+        }
+
+        // 몬스터 탭: 일반 panel + 보스 panel
+        if (monsterContent != null)
+        {
+            if (reg.Enemy != null && reg.Enemy.All.Count > 0)
+            {
+                var p = Instantiate(panelPrefab, monsterContent);
+                p.SetHeader("일반");
+                foreach (var e in reg.Enemy.All)
+                    Instantiate(slotPrefab, p.Grid)
+                        .Setup(e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id));
+            }
+
+            if (reg.Boss != null && reg.Boss.All.Count > 0)
+            {
+                var p = Instantiate(panelPrefab, monsterContent);
+                p.SetHeader("보스");
                 foreach (var b in reg.Boss.All)
-                    Instantiate(slotPrefab, monsterGrid)
+                    Instantiate(slotPrefab, p.Grid)
                         .Setup(b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id));
+            }
         }
     }
 }

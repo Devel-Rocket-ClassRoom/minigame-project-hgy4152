@@ -4,8 +4,17 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+public enum UnlockKind
+{
+    Character,
+    Joker,
+    Enemy,
+    Boss,
+}
+
 public static class UnlockManager
 {
+    public static event Action<UnlockKind, string> OnUnlocked;
     static readonly string[] DefaultCharacterIds =
     {
         "wa_reon",
@@ -55,11 +64,13 @@ public static class UnlockManager
     public static void OnAdventureClear(string[] partyCharacterIds)
     {
         EnsureLoaded();
-        _chars.Add(TestLockedCharacterId);
+        if (_chars.Add(TestLockedCharacterId))
+            OnUnlocked?.Invoke(UnlockKind.Character, TestLockedCharacterId);
         foreach (var id in partyCharacterIds)
             if (id == WarriorId)
             {
-                _jokers.Add(WarriorJokerId);
+                if (_jokers.Add(WarriorJokerId))
+                    OnUnlocked?.Invoke(UnlockKind.Joker, WarriorJokerId);
                 break;
             }
         Save();
@@ -71,7 +82,10 @@ public static class UnlockManager
             return;
         EnsureLoaded();
         if (_enemies.Add(enemyId))
+        {
             Save();
+            OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
+        }
     }
 
     public static void OnBossDefeated(string bossId)
@@ -80,7 +94,10 @@ public static class UnlockManager
             return;
         EnsureLoaded();
         if (_bosses.Add(bossId))
+        {
             Save();
+            OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
+        }
     }
 
     public static void ResetAll()

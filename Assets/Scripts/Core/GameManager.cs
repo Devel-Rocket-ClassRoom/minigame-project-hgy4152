@@ -310,7 +310,7 @@ public class GameManager : MonoBehaviour
                 else
                     saveManager.Save(slot, draft);
             },
-            onCanceled: () => GameStateMachine.Instance?.TransitionTo(GameState.Lobby)
+            onCanceled: () => { }
         );
     }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class ChainJudge
 {
@@ -33,16 +34,17 @@ public class ChainJudge
     public float classDiscriminatePerBlock = 0.1f; // 자상공격 블록당 감소율
     public Dictionary<ClassType, int> blockDistribution = new(); // 직업별 블록 수
     public Dictionary<ClassType, int> prevClassDistribution = new(); // 이전 턴 직업 분포
+    public int[] chainSequence; // 이번 턴 그룹 길이 배열 (등장 순서)
+    public int[] prevChainSequence; // 이전 턴 그룹 길이 배열
+    public IReadOnlyDictionary<ClassType, int> discardsByClass; // 이번 턴 클래스별 디스카드 수
 
     public void IngestGroups(List<ChainGroup> groups)
     {
+        chainSequence = groups.Select(g => g.Length).ToArray();
         foreach (var g in groups)
         {
             if (previousClass == g.DominantClass)
-            {
-                // 겹쳐서 나오면 false
                 isShiftBlock = false;
-            }
 
             if (g.Length == 1)
                 chain1Count++;

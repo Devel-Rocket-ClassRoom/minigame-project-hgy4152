@@ -33,6 +33,10 @@ public class EncyclopediaUI : MonoBehaviour
     [SerializeField]
     GameObject monsterTab;
 
+    readonly Dictionary<string, EncyclopediaPanelUI> _charPanels = new();
+    readonly Dictionary<string, EncyclopediaPanelUI> _jokerPanels = new();
+    readonly Dictionary<string, EncyclopediaPanelUI> _monsterPanels = new();
+
     void Awake()
     {
         if (panel != null)
@@ -67,13 +71,26 @@ public class EncyclopediaUI : MonoBehaviour
             monsterTab.SetActive(index == 2);
     }
 
+    // Category 버튼 OnClick에서 호출. filter="" 또는 "All" 이면 전체 표시
+    public void FilterCharacter(string filter) => ApplyFilter(_charPanels, filter);
+
+    public void FilterJoker(string filter) => ApplyFilter(_jokerPanels, filter);
+
+    public void FilterMonster(string filter) => ApplyFilter(_monsterPanels, filter);
+
+    static void ApplyFilter(Dictionary<string, EncyclopediaPanelUI> panels, string filter)
+    {
+        bool showAll = string.IsNullOrEmpty(filter) || filter == "All";
+        foreach (var kv in panels)
+            kv.Value.gameObject.SetActive(showAll || kv.Key == filter);
+    }
+
     void PopulateAll()
     {
         var reg = TableRegistry.Instance;
         if (reg == null)
             return;
 
-        // 캐릭터 탭: ClassType 순서별 panel
         if (characterContent != null && reg.Character != null)
         {
             var byClass = new Dictionary<ClassType, List<CharacterDef>>();
@@ -95,6 +112,7 @@ public class EncyclopediaUI : MonoBehaviour
 
                 var p = Instantiate(panelPrefab, characterContent);
                 p.SetHeader(ct.ToString());
+                _charPanels[ct.ToString()] = p;
                 foreach (var def in defs)
                     Instantiate(slotPrefab, p.Grid)
                         .Setup(
@@ -105,7 +123,6 @@ public class EncyclopediaUI : MonoBehaviour
             }
         }
 
-        // 조커 탭: Rarity 순서별 panel
         if (jokerContent != null && reg.JokerCard != null)
         {
             var byRarity = new Dictionary<Rarity, List<JokerCard>>();
@@ -125,19 +142,20 @@ public class EncyclopediaUI : MonoBehaviour
 
                 var p = Instantiate(panelPrefab, jokerContent);
                 p.SetHeader(r.ToString());
+                _jokerPanels[r.ToString()] = p;
                 foreach (var j in jokers)
                     Instantiate(slotPrefab, p.Grid)
                         .Setup(j.icon, j.cardName, UnlockManager.IsJokerUnlocked(j.id));
             }
         }
 
-        // 몬스터 탭: 일반 panel + 보스 panel
         if (monsterContent != null)
         {
             if (reg.Enemy != null && reg.Enemy.All.Count > 0)
             {
                 var p = Instantiate(panelPrefab, monsterContent);
                 p.SetHeader("일반");
+                _monsterPanels["일반"] = p;
                 foreach (var e in reg.Enemy.All)
                     Instantiate(slotPrefab, p.Grid)
                         .Setup(e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id));
@@ -147,6 +165,7 @@ public class EncyclopediaUI : MonoBehaviour
             {
                 var p = Instantiate(panelPrefab, monsterContent);
                 p.SetHeader("보스");
+                _monsterPanels["보스"] = p;
                 foreach (var b in reg.Boss.All)
                     Instantiate(slotPrefab, p.Grid)
                         .Setup(b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id));

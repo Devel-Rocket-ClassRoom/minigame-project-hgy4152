@@ -4812,7 +4812,7 @@ MonoBehaviour:
   panel: {fileID: 1429998183}
   titleText: {fileID: 225710805}
   restartButton: {fileID: 1151181405}
-  exitButton: {fileID: 0}
+  exitButton: {fileID: 1506802128}
   characterIcons:
   - {fileID: 2109050953}
   - {fileID: 1418945243}
@@ -5041,6 +5041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f299b0c01fc1124bb2d68f05eb5e834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawPhaseTimer
+  defaultPhaseDuration: 20
   drawInterval: 0.3
 --- !u!114 &790201221
 MonoBehaviour:
@@ -7659,26 +7660,32 @@ MonoBehaviour:
     stage: 1
     isBoss: 0
     enemyData: {fileID: 11400000, guid: 9bde6b5a7b4acc64aa4c4f7901e7d2ca, type: 2}
+    bossData: {fileID: 0}
   - chapter: 1
     stage: 2
     isBoss: 0
     enemyData: {fileID: 11400000, guid: 2f775456f00c0274b849a5c45e70ac98, type: 2}
+    bossData: {fileID: 0}
   - chapter: 1
     stage: 3
     isBoss: 1
     enemyData: {fileID: 11400000, guid: a6a34dcb16f81b448ab94316185f4bc5, type: 2}
+    bossData: {fileID: 0}
   - chapter: 2
     stage: 1
     isBoss: 0
     enemyData: {fileID: 11400000, guid: 1e29d1867a5790e4c91ffdbc8627fdf8, type: 2}
+    bossData: {fileID: 0}
   - chapter: 2
     stage: 2
     isBoss: 0
     enemyData: {fileID: 11400000, guid: 2c3ac1efee76ce94da87c3957eaca8d5, type: 2}
+    bossData: {fileID: 0}
   - chapter: 2
     stage: 3
     isBoss: 1
     enemyData: {fileID: 11400000, guid: 1237d960b1aecde4994760c42570367d, type: 2}
+    bossData: {fileID: 0}
   enemy: {fileID: 6678341970593504435}
 --- !u!4 &1083830753
 Transform:

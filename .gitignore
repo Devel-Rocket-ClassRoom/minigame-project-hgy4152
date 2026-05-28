@@ -128,3 +128,7 @@ $RECYCLE.BIN/
 # Built Visual Studio Code Extensions
 *.vsix
 .claude/settings.local.json
+
+# Private Assets
+Assets/Imported/
+Assets/Imported.meta

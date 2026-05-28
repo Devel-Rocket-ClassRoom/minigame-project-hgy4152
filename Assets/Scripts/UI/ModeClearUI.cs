@@ -21,16 +21,6 @@ public class ModeClearUI : MonoBehaviour
     [SerializeField]
     JokerCardSlotUI[] jokerSlots = new JokerCardSlotUI[5];
 
-    static readonly ClassType[] DisplayOrder =
-    {
-        ClassType.Warrior,
-        ClassType.Archer,
-        ClassType.Priest,
-        ClassType.Paladin,
-        ClassType.Wizard,
-        ClassType.Hunter,
-    };
-
     void Awake()
     {
         if (panel != null)
@@ -62,10 +52,12 @@ public class ModeClearUI : MonoBehaviour
         }
 
         var charSet = gameManager.CharacterSet;
-        for (int i = 0; i < DisplayOrder.Length; i++)
+        var deployed = charSet?.GetDeployedClassTypes();
+        for (int i = 0; i < characterIcons.Length; i++)
         {
-            var character = charSet?.GetCharacter(DisplayOrder[i]);
-            SetSprite(i < characterIcons.Length ? characterIcons[i] : null, character?.Icon);
+            var character =
+                (deployed != null && i < deployed.Length) ? charSet.GetCharacter(deployed[i]) : null;
+            SetSprite(characterIcons[i], character?.Icon);
         }
 
         var hand = gameManager.JokerManager?.ActiveHand;

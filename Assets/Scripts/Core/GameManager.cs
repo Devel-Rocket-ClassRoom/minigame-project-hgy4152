@@ -260,6 +260,8 @@ public class GameManager : MonoBehaviour
     void HandleStageStart(StageManager.StageEntry entry)
     {
         _currentTurn = 0;
+        blockManager?.ResetStageDiscardCount();
+        characterSet?.NotifyStageStart();
     }
 
     IEnumerator StartTurnRoutine()
@@ -341,6 +343,7 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
+        judge.stageDiscardsUsed = blockManager.StageDiscardsUsed;
         judge.discardsByClass = blockManager.DiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 
@@ -362,8 +365,8 @@ public class GameManager : MonoBehaviour
         {
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
-            character?.PlayAttack();
-            character?.PlaySkillEffect(groups[i].Length, boss.transform.position);
+            character?.PlayAttack(boss.transform.position);
+            character?.PlaySkillEffect(groups[i].Length);
 
             boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);

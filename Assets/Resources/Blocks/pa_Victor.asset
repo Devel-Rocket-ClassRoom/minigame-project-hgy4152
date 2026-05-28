@@ -15,8 +15,8 @@ MonoBehaviour:
   id: pa1
   displayName: blk_pa1_name
   description: blk_pa1_desc
-  icon: {fileID: -3873347269618521061, guid: 28cd013405a3609439fe6cada2b4ebc7, type: 3}
+  icon: {fileID: -336196753105236455, guid: 89f77daa259243841a114a37f9fc8827, type: 3}
   rarity: 0
   attackPower: 10
-  ownerClass: 4
+  ownerClass: 2
   blockColor: {r: 0.2688679, g: 0.4379628, b: 1, a: 1}

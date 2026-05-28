@@ -15,6 +15,7 @@ public class ChainJudge
     public int turnIndex;
     public int discardRemaining;
     public int discardUsed;
+    public int stageDiscardsUsed;
     public int bossMaxHp;
     public int[] prevChainCounts = new int[3];
     public int bossFlatBonus;
@@ -37,6 +38,20 @@ public class ChainJudge
     public int[] chainSequence; // 이번 턴 그룹 길이 배열 (등장 순서)
     public int[] prevChainSequence; // 이전 턴 그룹 길이 배열
     public IReadOnlyDictionary<ClassType, int> discardsByClass; // 이번 턴 클래스별 디스카드 수
+
+    public void ClearDebuffs()
+    {
+        bossFlatBonus = 0;
+        bossDamageMultiplier = 1f;
+        chainLevelMultiplier = new float[] { 1f, 1f, 1f };
+        chainLevelNullified = new bool[3];
+        classNullified.Clear();
+        discardBonusDisabled = false;
+        requireAllThreeClasses = false;
+        skipRightmostJokers = 0;
+        nonShiftPenaltyMultiplier = 1f;
+        classDiscriminateActive = false;
+    }
 
     public void IngestGroups(List<ChainGroup> groups)
     {

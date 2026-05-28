@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
@@ -28,6 +29,11 @@ public class SettingUI : MonoBehaviour
 
     [SerializeField]
     Button quitButton;
+
+    [SerializeField]
+    UnityEvent onQuit;
+
+    public UnityEvent onClose = new UnityEvent();
 
     void Awake()
     {
@@ -66,6 +72,7 @@ public class SettingUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(false);
+        onClose?.Invoke();
     }
 
     void SetBgmVolume(float v)
@@ -94,6 +101,11 @@ public class SettingUI : MonoBehaviour
 
     void QuitGame()
     {
+        if (onQuit != null && onQuit.GetPersistentEventCount() > 0)
+        {
+            onQuit.Invoke();
+            return;
+        }
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

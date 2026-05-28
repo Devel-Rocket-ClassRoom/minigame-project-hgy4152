@@ -15,7 +15,7 @@ MonoBehaviour:
   id: cwar1
   cardName: jkr_cwar1_name
   description: jkr_cwar1_desc
-  icon: {fileID: 0}
+  icon: {fileID: -6578361697218085624, guid: 4ec24a757d38f61429854f4f70ccc5b6, type: 3}
   rarity: 0
   unlockConditions: []
   targetClass: 1

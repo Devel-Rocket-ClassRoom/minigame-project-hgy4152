@@ -32,6 +32,7 @@ public class InfoPopupUI : MonoBehaviour
         _shownPos = panel.anchoredPosition;
         _hiddenPos = _shownPos + new Vector2(panel.sizeDelta.x, 0);
         panel.anchoredPosition = _hiddenPos;
+        panel.gameObject.SetActive(false);
 
         if (backdropButton != null)
         {
@@ -71,24 +72,25 @@ public class InfoPopupUI : MonoBehaviour
     {
         if (backdropButton != null)
             backdropButton.gameObject.SetActive(false);
-        Slide(_shownPos, _hiddenPos);
+        Slide(_shownPos, _hiddenPos, () => panel.gameObject.SetActive(false));
     }
 
     void Open()
     {
+        panel.gameObject.SetActive(true);
         if (backdropButton != null)
             backdropButton.gameObject.SetActive(true);
         Slide(_hiddenPos, _shownPos);
     }
 
-    void Slide(Vector2 from, Vector2 to)
+    void Slide(Vector2 from, Vector2 to, System.Action onComplete = null)
     {
         if (_slide != null)
             StopCoroutine(_slide);
-        _slide = StartCoroutine(SlideRoutine(from, to));
+        _slide = StartCoroutine(SlideRoutine(from, to, onComplete));
     }
 
-    IEnumerator SlideRoutine(Vector2 from, Vector2 to)
+    IEnumerator SlideRoutine(Vector2 from, Vector2 to, System.Action onComplete = null)
     {
         float elapsed = 0f;
         while (elapsed < slideDuration)
@@ -99,5 +101,6 @@ public class InfoPopupUI : MonoBehaviour
             yield return null;
         }
         panel.anchoredPosition = to;
+        onComplete?.Invoke();
     }
 }

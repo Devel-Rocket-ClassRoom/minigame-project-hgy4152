@@ -6,6 +6,6 @@ public class CharacterTable : StringTable<CharacterDef>
     private void OnEnable()
     {
         entries.Clear();
-        entries.AddRange(Resources.LoadAll<CharacterDef>("Characters"));
+        entries.AddRange(Resources.LoadAll<CharacterDef>("Heroes"));
     }
 }

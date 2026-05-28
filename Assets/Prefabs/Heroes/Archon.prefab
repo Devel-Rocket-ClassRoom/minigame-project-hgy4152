@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2200000000000000004}
   - component: {fileID: -8976654236486146734}
   - component: {fileID: 4471972253147321080}
+  - component: {fileID: -677200841826941376}
   m_Layer: 0
   m_Name: Archon
   m_TagString: Untagged
@@ -50,7 +51,7 @@ MonoBehaviour:
   anim: {fileID: 4471972253147321080}
   creator: {fileID: 2200000000000000004}
   icon: {fileID: 21300000, guid: 8268ad7a53ba7f749a1813288a80a5e1, type: 3}
-  skill: {fileID: 0}
+  skill: {fileID: -677200841826941376}
 --- !u!114 &2200000000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +135,7 @@ Animator:
   m_GameObject: {fileID: 2200000000000000001}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ec4e7bd017cdb1c42a7050d145f44b1f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -146,3 +147,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-677200841826941376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd95ed67b2743640a0ab0a627be1e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::Skill_Archon_ThunderBolt
+  effectPrefab: {fileID: 3237406338770730569, guid: dd4218fbf8bcc914cbd8567f881dd336, type: 3}
+  target: {fileID: 0}
+  dropHeight: 8
+  dropDuration: 0.2

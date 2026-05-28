@@ -89,7 +89,7 @@ public class JokerRewardUI : MonoBehaviour
         tooltipPanel.gameObject.SetActive(false);
         panel.SetActive(true);
         skipButton.gameObject.SetActive(true);
-        confirmButton?.gameObject.SetActive(false);
+        confirmButton?.gameObject.SetActive(true);
     }
 
     void OnCardClicked(int idx)
@@ -110,8 +110,6 @@ public class JokerRewardUI : MonoBehaviour
         for (int i = 0; i < selectFrames.Length; i++)
             if (selectFrames[i] != null)
                 selectFrames[i].enabled = i == idx;
-
-        confirmButton?.gameObject.SetActive(true);
 
         tooltipNameText.text = Localization.Get(_offered[idx].cardName);
         tooltipDescText.text = Localization.Get(_offered[idx].description);

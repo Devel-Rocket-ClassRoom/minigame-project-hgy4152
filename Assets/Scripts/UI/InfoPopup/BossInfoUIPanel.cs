@@ -32,6 +32,7 @@ public class BossInfoUIPanel : MonoBehaviour
         _shownPos = panel.anchoredPosition;
         _hiddenPos = _shownPos - new Vector2(panel.sizeDelta.x, 0);
         panel.anchoredPosition = _hiddenPos;
+        panel.gameObject.SetActive(false);
 
         if (backdropButton != null)
         {
@@ -52,6 +53,7 @@ public class BossInfoUIPanel : MonoBehaviour
 
     private void ShowInternal(string name, string desc, BossPattern bp)
     {
+        panel.gameObject.SetActive(true);
         if (nameText != null)
             nameText.text = Localization.Get(name);
         if (descText != null)
@@ -80,17 +82,17 @@ public class BossInfoUIPanel : MonoBehaviour
     {
         if (backdropButton != null)
             backdropButton.gameObject.SetActive(false);
-        Slide(_shownPos, _hiddenPos);
+        Slide(_shownPos, _hiddenPos, () => panel.gameObject.SetActive(false));
     }
 
-    void Slide(Vector2 from, Vector2 to)
+    void Slide(Vector2 from, Vector2 to, System.Action onComplete = null)
     {
         if (_slide != null)
             StopCoroutine(_slide);
-        _slide = StartCoroutine(SlideRoutine(from, to));
+        _slide = StartCoroutine(SlideRoutine(from, to, onComplete));
     }
 
-    IEnumerator SlideRoutine(Vector2 from, Vector2 to)
+    IEnumerator SlideRoutine(Vector2 from, Vector2 to, System.Action onComplete = null)
     {
         float elapsed = 0f;
         while (elapsed < slideDuration)
@@ -101,5 +103,6 @@ public class BossInfoUIPanel : MonoBehaviour
             yield return null;
         }
         panel.anchoredPosition = to;
+        onComplete?.Invoke();
     }
 }

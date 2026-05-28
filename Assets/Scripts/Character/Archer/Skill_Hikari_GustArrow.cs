@@ -40,7 +40,7 @@ public class Skill_Hikari_GustArrow : Skill
     {
         if (effectPrefab == null)
             return;
-        var go = Instantiate(effectPrefab, transform.position, Quaternion.Euler(0, 0, -25f));
+        var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
         StartCoroutine(MoveTo(go, targetPos));
     }

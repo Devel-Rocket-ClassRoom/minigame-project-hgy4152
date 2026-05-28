@@ -5368,6 +5368,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -830
       objectReference: {fileID: 0}
+    - target: {fileID: 949998060517110081, guid: 50311eb72e0efce4dbed83ebbaa0b17c, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1509963939943648843, guid: 50311eb72e0efce4dbed83ebbaa0b17c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1

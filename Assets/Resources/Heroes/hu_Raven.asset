@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: hu_Raven
   m_EditorClassIdentifier: ChainKnights::CharacterDef
   id: hu_raven
-  classType: 6
+  classType: 4
   prefab: {fileID: 3300000000000000003, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
   blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
   rarity: 0
   displayName: chr_hu_raven_name
   description: chr_hu_raven_desc
+  unlockConditions: []

@@ -1,16 +1,13 @@
-using System.Collections;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-
-
     [Header("=== 돌진 이동 ===")]
     [SerializeField]
-    Vector3 chargeMoveTarget;
+    float chargeDuration = 0.3f;
 
     [SerializeField]
-    float chargeDuration = 0.3f;
+    Vector3 chargeStopOffset;
 
     [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
     [SerializeField]
@@ -35,9 +32,18 @@ public abstract class Character : MonoBehaviour
     protected Vector3 _targetPos;
     int _hitEventIndex;
 
-    public void PlayAttack() => anim.SetTrigger("Attack");
+    bool _isDashing;
+    float _dashElapsed;
+    Vector3 _dashStart;
+    Vector3 _dashEnd;
 
-    public virtual void PlaySkillEffect(int chainCount, Vector3 targetPos)
+    public void PlayAttack(Vector3 targetPos)
+    {
+        _targetPos = targetPos;
+        anim.SetTrigger("Attack");
+    }
+
+    public virtual void PlaySkillEffect(int chainCount)
     {
         _chainCount = chainCount;
 
@@ -54,7 +60,6 @@ public abstract class Character : MonoBehaviour
                 break;
         }
 
-        _targetPos = targetPos;
         _hitEventIndex = 0;
     }
 
@@ -79,20 +84,30 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    // Animation Event에서 호출 — chargeMoveTarget(로컬 좌표)으로 부드럽게 이동
-    public void OnChargeStartEvent() => StartCoroutine(ChargeRoutine());
-
-    IEnumerator ChargeRoutine()
+    // Animation Event에서 호출 — _targetPos로 부드럽게 이동
+    // LateUpdate에서 transform을 쓰기 때문에 Idle 호흡 애니메이션(m_PositionCurves)을 덮어쓰는 Animator보다 뒤에서 적용된다
+    public void OnChargeStartEvent()
     {
-        Vector3 start = transform.localPosition;
-        float t = 0f;
-        while (t < chargeDuration)
-        {
-            t += Time.deltaTime;
-            transform.localPosition = Vector3.Lerp(start, chargeMoveTarget, t / chargeDuration);
-            yield return null;
-        }
-        transform.localPosition = chargeMoveTarget;
+        _dashStart = transform.localPosition;
+        _dashEnd =
+            (
+                transform.parent != null
+                    ? transform.parent.InverseTransformPoint(_targetPos)
+                    : _targetPos
+            ) + chargeStopOffset;
+        _dashElapsed = 0f;
+        _isDashing = true;
+    }
+
+    void LateUpdate()
+    {
+        if (!_isDashing)
+            return;
+        _dashElapsed += Time.deltaTime;
+        float t = chargeDuration > 0f ? Mathf.Clamp01(_dashElapsed / chargeDuration) : 1f;
+        transform.localPosition = Vector3.Lerp(_dashStart, _dashEnd, t);
+        if (t >= 1f)
+            _isDashing = false;
     }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;

@@ -18,5 +18,5 @@ MonoBehaviour:
   icon: {fileID: -1049604363375316017, guid: 666146c2ef52d4f4a924c4efd793afc9, type: 3}
   rarity: 0
   attackPower: 10
-  ownerClass: 6
+  ownerClass: 4
   blockColor: {r: 1, g: 0.59355277, b: 0.13679248, a: 1}

@@ -365,8 +365,8 @@ public class GameManager : MonoBehaviour
         {
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
-            character?.PlayAttack();
-            character?.PlaySkillEffect(groups[i].Length, boss.transform.position);
+            character?.PlayAttack(boss.transform.position);
+            character?.PlaySkillEffect(groups[i].Length);
 
             boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);

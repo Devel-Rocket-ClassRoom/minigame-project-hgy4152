@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: pa_Victor
   m_EditorClassIdentifier: ChainKnights::CharacterDef
   id: pa_victor
-  classType: 4
+  classType: 2
   prefab: {fileID: 1100000000000000003, guid: 69daf017080cfcd4bae3cbe83cfcc9cf, type: 3}
   blockData: {fileID: 11400000, guid: 06f9c6e7192c3ac41b91edb8e8d521be, type: 2}
   rarity: 0
   displayName: chr_pa_victor_name
   description: chr_pa_victor_desc
+  unlockConditions: []

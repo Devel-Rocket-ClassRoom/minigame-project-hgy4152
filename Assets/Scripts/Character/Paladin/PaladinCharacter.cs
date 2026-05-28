@@ -20,7 +20,10 @@ public class PaladinCharacter : Character
             judge.ClearDebuffs();
             _stageImmunityUsed = true;
             if (passiveEffectPrefab != null)
-                Instantiate(passiveEffectPrefab, transform.position, Quaternion.identity);
+            {
+                var go = Instantiate(passiveEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(go, 1f);
+            }
         }
         return damage;
     }

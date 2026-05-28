@@ -16,6 +16,7 @@ public class CharacterSet : MonoBehaviour
 
     void Awake()
     {
+        SortDefsByClassType();
         instances = new Character[characterDefs.Length];
         for (int i = 0; i < characterDefs.Length; i++)
         {
@@ -25,6 +26,25 @@ public class CharacterSet : MonoBehaviour
                     : transform;
             instances[i] = Instantiate(characterDefs[i].prefab, parent);
         }
+    }
+
+    void SortDefsByClassType()
+    {
+        if (characterDefs == null)
+            return;
+        System.Array.Sort(
+            characterDefs,
+            (a, b) =>
+            {
+                if (a == null && b == null)
+                    return 0;
+                if (a == null)
+                    return 1;
+                if (b == null)
+                    return -1;
+                return ((int)a.classType).CompareTo((int)b.classType);
+            }
+        );
     }
 
     public Character GetCharacter(ClassType classType)
@@ -78,20 +98,25 @@ public class CharacterSet : MonoBehaviour
                 Destroy(inst.gameObject);
 
         characterDefs = new CharacterDef[ids.Length];
-        instances = new Character[ids.Length];
         for (int i = 0; i < ids.Length; i++)
         {
             if (string.IsNullOrEmpty(ids[i]))
                 continue;
-            var def = reg.Character.Get(ids[i]);
-            if (def == null)
+            characterDefs[i] = reg.Character.Get(ids[i]);
+        }
+
+        SortDefsByClassType();
+
+        instances = new Character[characterDefs.Length];
+        for (int i = 0; i < characterDefs.Length; i++)
+        {
+            if (characterDefs[i] == null)
                 continue;
-            characterDefs[i] = def;
             Transform parent =
                 (heroSlots != null && i < heroSlots.Length && heroSlots[i] != null)
                     ? heroSlots[i]
                     : transform;
-            instances[i] = Instantiate(def.prefab, parent);
+            instances[i] = Instantiate(characterDefs[i].prefab, parent);
         }
     }
 }

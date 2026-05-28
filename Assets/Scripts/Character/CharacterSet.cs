@@ -38,6 +38,15 @@ public class CharacterSet : MonoBehaviour
         return types.ToArray();
     }
 
+    public void NotifyStageStart()
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnStageStart();
+    }
+
     public string[] GetCurrentCharacterIds()
     {
         var ids = new string[characterDefs.Length];

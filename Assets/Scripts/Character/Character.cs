@@ -70,4 +70,6 @@ public abstract class Character : MonoBehaviour
     }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
+
+    public virtual void OnStageStart() { }
 }

@@ -260,6 +260,8 @@ public class GameManager : MonoBehaviour
     void HandleStageStart(StageManager.StageEntry entry)
     {
         _currentTurn = 0;
+        blockManager?.ResetStageDiscardCount();
+        characterSet?.NotifyStageStart();
     }
 
     IEnumerator StartTurnRoutine()
@@ -341,6 +343,7 @@ public class GameManager : MonoBehaviour
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
+        judge.stageDiscardsUsed = blockManager.StageDiscardsUsed;
         judge.discardsByClass = blockManager.DiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 

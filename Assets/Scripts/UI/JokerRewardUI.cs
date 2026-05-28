@@ -38,6 +38,9 @@ public class JokerRewardUI : MonoBehaviour
     [SerializeField]
     Button skipButton;
 
+    [SerializeField]
+    Button confirmButton;
+
     JokerCard[] _offered = new JokerCard[3];
     int _selectedIdx = -1;
 
@@ -49,6 +52,8 @@ public class JokerRewardUI : MonoBehaviour
             tooltipPanel.gameObject.SetActive(false);
         if (skipButton != null)
             skipButton.gameObject.SetActive(false);
+        if (confirmButton != null)
+            confirmButton.gameObject.SetActive(false);
     }
 
     void Start()
@@ -59,6 +64,11 @@ public class JokerRewardUI : MonoBehaviour
             cardButtons[i].onClick.AddListener(() => OnCardClicked(idx));
         }
         skipButton?.onClick.AddListener(Skip);
+        confirmButton?.onClick.AddListener(() =>
+        {
+            if (_selectedIdx >= 0)
+                ConfirmPick(_selectedIdx);
+        });
     }
 
     public void Show()
@@ -79,6 +89,7 @@ public class JokerRewardUI : MonoBehaviour
         tooltipPanel.gameObject.SetActive(false);
         panel.SetActive(true);
         skipButton.gameObject.SetActive(true);
+        confirmButton?.gameObject.SetActive(false);
     }
 
     void OnCardClicked(int idx)
@@ -99,6 +110,8 @@ public class JokerRewardUI : MonoBehaviour
         for (int i = 0; i < selectFrames.Length; i++)
             if (selectFrames[i] != null)
                 selectFrames[i].enabled = i == idx;
+
+        confirmButton?.gameObject.SetActive(true);
 
         tooltipNameText.text = Localization.Get(_offered[idx].cardName);
         tooltipDescText.text = Localization.Get(_offered[idx].description);
@@ -167,13 +180,14 @@ public class JokerRewardUI : MonoBehaviour
                 selectFrames[i].enabled = false;
         _selectedIdx = -1;
         panel.SetActive(false);
-        
+
         FinishReward();
     }
 
     void FinishReward()
     {
         skipButton.gameObject.SetActive(false);
+        confirmButton?.gameObject.SetActive(false);
         gameManager.BeginBattle();
     }
 

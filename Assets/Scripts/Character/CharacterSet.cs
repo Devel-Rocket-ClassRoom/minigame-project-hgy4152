@@ -9,13 +9,22 @@ public class CharacterSet : MonoBehaviour
     [SerializeField]
     protected Transform blockHand;
 
+    [SerializeField]
+    Transform[] heroSlots;
+
     Character[] instances;
 
     void Awake()
     {
         instances = new Character[characterDefs.Length];
         for (int i = 0; i < characterDefs.Length; i++)
-            instances[i] = Instantiate(characterDefs[i].prefab, transform);
+        {
+            Transform parent =
+                (heroSlots != null && i < heroSlots.Length && heroSlots[i] != null)
+                    ? heroSlots[i]
+                    : transform;
+            instances[i] = Instantiate(characterDefs[i].prefab, parent);
+        }
     }
 
     public Character GetCharacter(ClassType classType)
@@ -78,7 +87,11 @@ public class CharacterSet : MonoBehaviour
             if (def == null)
                 continue;
             characterDefs[i] = def;
-            instances[i] = Instantiate(def.prefab, transform);
+            Transform parent =
+                (heroSlots != null && i < heroSlots.Length && heroSlots[i] != null)
+                    ? heroSlots[i]
+                    : transform;
+            instances[i] = Instantiate(def.prefab, parent);
         }
     }
 }

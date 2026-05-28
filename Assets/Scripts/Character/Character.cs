@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
@@ -9,6 +10,9 @@ public abstract class Character : MonoBehaviour
     [Header("=== 돌진 이동 ===")]
     [SerializeField]
     Vector3 chargeMoveTarget;
+
+    [SerializeField]
+    float chargeDuration = 0.3f;
 
     [SerializeField]
     BlockCreator creator;
@@ -73,8 +77,21 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    // Animation Event에서 호출 — chargeMoveTarget(로컬 좌표)으로 이동
-    public void OnChargeMoveEvent() => transform.localPosition = chargeMoveTarget;
+    // Animation Event에서 호출 — chargeMoveTarget(로컬 좌표)으로 부드럽게 이동
+    public void OnChargeStartEvent() => StartCoroutine(ChargeRoutine());
+
+    IEnumerator ChargeRoutine()
+    {
+        Vector3 start = transform.localPosition;
+        float t = 0f;
+        while (t < chargeDuration)
+        {
+            t += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(start, chargeMoveTarget, t / chargeDuration);
+            yield return null;
+        }
+        transform.localPosition = chargeMoveTarget;
+    }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 

@@ -6,6 +6,10 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     Animator anim;
 
+    [Header("=== 돌진 이동 ===")]
+    [SerializeField]
+    Vector3 chargeMoveTarget;
+
     [SerializeField]
     BlockCreator creator;
 
@@ -68,6 +72,9 @@ public abstract class Character : MonoBehaviour
                 break;
         }
     }
+
+    // Animation Event에서 호출 — chargeMoveTarget(로컬 좌표)으로 이동
+    public void OnChargeMoveEvent() => transform.localPosition = chargeMoveTarget;
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 

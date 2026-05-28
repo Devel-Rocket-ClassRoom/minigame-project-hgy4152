@@ -22,4 +22,6 @@ public class GameStateMachine : MonoBehaviour
         CurrentState = state;
         SceneManager.LoadScene((int)state);
     }
+
+    public void TransitionToLobby() => TransitionTo(GameState.Lobby);
 }

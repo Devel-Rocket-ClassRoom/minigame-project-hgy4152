@@ -6,15 +6,14 @@ public class BlockManager : MonoBehaviour
 {
     const int MaxHandSize = 12;
 
-    [SerializeField]
-    int discardLimit = 5;
     int _discardsUsed;
     int _stageDiscardsUsed;
-    int _runtimeDiscardLimit = -1;
+    int _runtimeDiscardLimit = -1; // -1 = 무제한, 0 이상 = 해당 횟수로 제한
     bool _swapPending;
     Dictionary<ClassType, int> _discardsByClass = new();
 
-    int EffectiveLimit => _runtimeDiscardLimit >= 0 ? _runtimeDiscardLimit : discardLimit;
+    bool IsDiscardLimitReached =>
+        _runtimeDiscardLimit >= 0 && _discardsUsed >= _runtimeDiscardLimit;
 
     public void SetDiscardLimit(int n) => _runtimeDiscardLimit = n;
 
@@ -83,7 +82,7 @@ public class BlockManager : MonoBehaviour
         int idx = hand.IndexOf(block);
         if (idx < 0)
             return;
-        if (_discardsUsed >= EffectiveLimit)
+        if (IsDiscardLimitReached)
             return;
 
         var cls = block.data.ownerClass;
@@ -110,7 +109,10 @@ public class BlockManager : MonoBehaviour
         RefreshAllBlockVisuals();
     }
 
-    public int DiscardsRemaining => Mathf.Max(0, EffectiveLimit - _discardsUsed);
+    public int DiscardsRemaining =>
+        _runtimeDiscardLimit >= 0
+            ? Mathf.Max(0, _runtimeDiscardLimit - _discardsUsed)
+            : int.MaxValue;
     public int DiscardsUsed => _discardsUsed;
     public int StageDiscardsUsed => _stageDiscardsUsed;
     public IReadOnlyDictionary<ClassType, int> DiscardsByClass => _discardsByClass;

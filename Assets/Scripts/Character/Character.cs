@@ -3,9 +3,7 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
-    [SerializeField]
-    Animator anim;
+
 
     [Header("=== 돌진 이동 ===")]
     [SerializeField]
@@ -13,6 +11,10 @@ public abstract class Character : MonoBehaviour
 
     [SerializeField]
     float chargeDuration = 0.3f;
+
+    [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
+    [SerializeField]
+    Animator anim;
 
     [SerializeField]
     BlockCreator creator;

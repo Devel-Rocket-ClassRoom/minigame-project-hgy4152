@@ -4,10 +4,10 @@ using UnityEngine;
 public class Skill_Archon_ThunderBolt : Skill
 {
     [SerializeField]
-    float dropHeight = 8f;
+    float dropHeight = 4f;
 
     [SerializeField]
-    float dropDuration = 0.2f;
+    float dropDuration = 0.1f;
 
     void Update()
     {

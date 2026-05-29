@@ -290,6 +290,18 @@ public class GameManager : MonoBehaviour
         OnTurnDamageChanged?.Invoke(0);
         if (stageIntroUI != null)
             yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
+
+        if (stageIntroUI != null && bossPatternSystem != null)
+        {
+            var p = bossPatternSystem.Current;
+            var turnMod =
+                p != null && bossPatternSystem.TurnIndex < p.turnModifiers.Length
+                    ? p.turnModifiers[bossPatternSystem.TurnIndex]
+                    : null;
+            if (turnMod != null)
+                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(turnMod));
+        }
+
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);

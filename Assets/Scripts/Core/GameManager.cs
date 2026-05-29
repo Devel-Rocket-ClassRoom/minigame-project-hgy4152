@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     ConfirmDialogUI confirmDialog;
 
+    [Header("Debug (씬 직접 실행 시)")]
+    [SerializeField]
+    BossData debugBossData;
+
     [SerializeField]
     int maxTurns = 5;
 
@@ -72,8 +76,10 @@ public class GameManager : MonoBehaviour
     const int MaxHandsPerPhase = 5;
 
     public bool IsPaused { get; private set; }
+    public bool IsBossPlay => _isBossPlay;
     public int TurnDamageTotal => _turnDamageTotal;
     public event System.Action<int> OnTurnDamageChanged;
+    public event System.Action<int, int> OnHandPlayCountChanged;
     public CharacterSet CharacterSet => characterSet;
     public JokerManager JokerManager => jokerManager;
 
@@ -111,13 +117,19 @@ public class GameManager : MonoBehaviour
 
         if (!_isAdventureMode)
             InitFromBossContext();
+        else if (debugBossData != null)
+        {
+            _isAdventureMode = false;
+            _isBossPlay = true;
+            stageManager.SetSingleBossStage(debugBossData);
+        }
         else if (AdventurePartyContext.PendingCharacterIds != null)
             characterSet.SetCharactersByIds(AdventurePartyContext.PendingCharacterIds);
 
         if (bossPatternSystem != null)
             bossPatternSystem.AccumulateModifiers = _isBossPlay;
 
-        _jokerRewardPending = true;
+        _jokerRewardPending = !_isBossPlay;
         stageManager.StartStage();
     }
 
@@ -289,6 +301,7 @@ public class GameManager : MonoBehaviour
     {
         _currentTurn = 0;
         _handPlaysThisPhase = 0;
+        OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         blockManager?.ResetStageDiscardCount();
         characterSet?.NotifyStageStart();
     }
@@ -327,6 +340,7 @@ public class GameManager : MonoBehaviour
     // 보스 플레이 모드: 같은 구간 내 연속 핸드 (연출 없이 즉시 채움)
     IEnumerator ContinueBossHandRoutine()
     {
+        OnHandPlayCountChanged?.Invoke(_handPlaysThisPhase + 1, MaxHandsPerPhase);
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
         drawPhaseTimer.ResetPhaseDuration();
@@ -540,6 +554,7 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         drawPhaseTimer.StartDrawPhaseInstant();
     }
 

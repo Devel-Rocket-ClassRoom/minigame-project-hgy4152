@@ -12,6 +12,7 @@ public class ModeClearUI : MonoBehaviour
 
     [SerializeField]
     Button restartButton;
+
     [SerializeField]
     Button exitButton;
 
@@ -25,14 +26,6 @@ public class ModeClearUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(false);
-        if (restartButton != null)
-            restartButton.onClick.AddListener(() =>
-            {
-                if (GameStateMachine.Instance != null)
-                    GameStateMachine.Instance.TransitionTo(GameState.AdventureReady);
-                else
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-            });
         if (exitButton != null)
             exitButton.onClick.AddListener(() =>
             {
@@ -56,7 +49,9 @@ public class ModeClearUI : MonoBehaviour
         for (int i = 0; i < characterIcons.Length; i++)
         {
             var character =
-                (deployed != null && i < deployed.Length) ? charSet.GetCharacter(deployed[i]) : null;
+                (deployed != null && i < deployed.Length)
+                    ? charSet.GetCharacter(deployed[i])
+                    : null;
             SetSprite(characterIcons[i], character?.Icon);
         }
 
@@ -67,6 +62,19 @@ public class ModeClearUI : MonoBehaviour
                 continue;
             var card = (hand != null && i < hand.Length) ? hand[i] : null;
             jokerSlots[i].Refresh(card);
+        }
+
+        if (restartButton != null)
+        {
+            restartButton.onClick.RemoveAllListeners();
+            var target = gameManager.IsBossPlay ? GameState.BossReady : GameState.AdventureReady;
+            restartButton.onClick.AddListener(() =>
+            {
+                if (GameStateMachine.Instance != null)
+                    GameStateMachine.Instance.TransitionTo(target);
+                else
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            });
         }
 
         if (panel != null)

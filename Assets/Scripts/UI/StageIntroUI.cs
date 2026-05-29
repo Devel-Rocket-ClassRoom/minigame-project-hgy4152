@@ -64,6 +64,12 @@ public class StageIntroUI : MonoBehaviour
 
     void HandleStageStart(StageManager.StageEntry entry)
     {
+        if (gameManager.IsBossPlay)
+        {
+            gameManager.OnStageIntroComplete();
+            return;
+        }
+
         gameManager.SetPaused(true);
         introText.text =
             $"{entry.chapter}{Localization.Get("ui_chapter")} {entry.stage}{Localization.Get("ui_stage")}";

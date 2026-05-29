@@ -1208,6 +1208,7 @@ MonoBehaviour:
   saveManager: {fileID: 1567787298}
   saveSlotPickerUI: {fileID: 2010759400}
   confirmDialog: {fileID: 558488645}
+  debugBossData: {fileID: 11400000, guid: 0a8f9fa479e324549b1853ccc7aeca96, type: 2}
   maxTurns: 5
   stageClearDisplayDuration: 1.5
   perGroupDelay: 0.8
@@ -9420,12 +9421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0cc273a0e37304ab4428b9ed71e395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
-  stages:
-  - chapter: 0
-    stage: 0
-    isBoss: 1
-    enemyData: {fileID: 0}
-    bossData: {fileID: 11400000, guid: 0a8f9fa479e324549b1853ccc7aeca96, type: 2}
+  stages: []
   enemy: {fileID: 6678341970593504435}
 --- !u!4 &1083830753
 Transform:
@@ -16591,7 +16587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3432177158952747303, guid: 065f70c2a794fba4f81db1aee3fa675a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 480.3909
+      value: 480.39087
       objectReference: {fileID: 0}
     - target: {fileID: 3432177158952747303, guid: 065f70c2a794fba4f81db1aee3fa675a, type: 3}
       propertyPath: m_AnchoredPosition.y

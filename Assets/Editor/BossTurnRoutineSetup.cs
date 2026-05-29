@@ -24,7 +24,7 @@ public static class BossTurnRoutineSetup
             OpenSceneMode.Single
         );
 
-        var stageIntroGO = FindByName("StageIntro");
+        var stageIntroGO = FindByName("StageIntroUI");
         if (stageIntroGO == null)
         {
             Debug.LogError("[BossTurnRoutineSetup] StageIntro 오브젝트를 찾을 수 없습니다.");

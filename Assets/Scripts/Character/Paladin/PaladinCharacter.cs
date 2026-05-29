@@ -5,9 +5,6 @@ public class PaladinCharacter : Character
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;
 
-    [SerializeField]
-    GameObject passiveEffectPrefab;
-
     bool _stageImmunityUsed;
 
     public override void OnStageStart() => _stageImmunityUsed = false;
@@ -19,10 +16,11 @@ public class PaladinCharacter : Character
         {
             judge.ClearDebuffs();
             _stageImmunityUsed = true;
-            if (passiveEffectPrefab != null)
+            var prefab = (skill as Skill_Victor_HolySlash)?.passiveEffectPrefab;
+            if (prefab != null)
             {
-                var go = Instantiate(passiveEffectPrefab, transform.position, Quaternion.identity);
-                Destroy(go, 1f);
+                var go = Instantiate(prefab, transform.position, Quaternion.identity);
+                Destroy(go, 0.5f);
             }
         }
         return damage;

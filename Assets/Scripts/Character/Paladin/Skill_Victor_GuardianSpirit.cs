@@ -5,6 +5,10 @@ public class Skill_Victor_HolySlash : Skill
     [SerializeField]
     float forwardOffset = 2f;
 
+    [Header("=== Passive - 수호의 혼 ===")]
+    [SerializeField]
+    public GameObject passiveEffectPrefab;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))

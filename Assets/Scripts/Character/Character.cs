@@ -20,7 +20,7 @@ public abstract class Character : MonoBehaviour
     Sprite icon;
 
     [SerializeField]
-    Skill skill;
+    protected Skill skill;
 
     public abstract ClassType Type { get; }
     public abstract Color classColor { get; }
@@ -75,20 +75,23 @@ public abstract class Character : MonoBehaviour
     public void OnChainHitEvent()
     {
         _hitEventIndex++;
-        if (_hitEventIndex > _chainCount || skill == null)
+        if (_hitEventIndex > _chainCount)
             return;
 
-        switch (_hitEventIndex)
+        if (skill != null)
         {
-            case 1:
-                skill.Chain1(_targetPos, scaleFactor);
-                break;
-            case 2:
-                skill.Chain2(_targetPos, scaleFactor);
-                break;
-            case 3:
-                skill.Chain3(_targetPos, scaleFactor);
-                break;
+            switch (_hitEventIndex)
+            {
+                case 1:
+                    skill.Chain1(_targetPos, scaleFactor);
+                    break;
+                case 2:
+                    skill.Chain2(_targetPos, scaleFactor);
+                    break;
+                case 3:
+                    skill.Chain3(_targetPos, scaleFactor);
+                    break;
+            }
         }
 
         int idx = _hitEventIndex - 1;

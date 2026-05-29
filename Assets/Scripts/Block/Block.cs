@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class Block : MonoBehaviour
 {
@@ -104,6 +104,24 @@ public class Block : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
         onComplete?.Invoke();
+    }
+
+    public IEnumerator HighlightPulseRoutine(float scale = 1.2f, float duration = 0.2f)
+    {
+        Vector3 originalScale = _rectTransform.localScale;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float s =
+                t < 0.5f
+                    ? Mathf.SmoothStep(1f, scale, t * 2f)
+                    : Mathf.SmoothStep(scale, 1f, (t - 0.5f) * 2f);
+            _rectTransform.localScale = originalScale * s;
+            yield return null;
+        }
+        _rectTransform.localScale = originalScale;
     }
 
     public void SetChainVisual(int chainCount)

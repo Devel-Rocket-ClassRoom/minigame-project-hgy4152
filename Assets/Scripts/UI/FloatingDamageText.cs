@@ -8,31 +8,53 @@ public class FloatingDamageText : MonoBehaviour
     TMP_Text label;
 
     [SerializeField]
-    float duration = 0.8f;
+    float popDuration = 0.15f;
 
     [SerializeField]
-    float rise = 80f;
+    float fadeDuration = 0.5f;
+    [SerializeField]
+    float startfadeDuration = 0.5f;
+
+    [SerializeField]
+    float peakScale = 1.4f;
+
+    [SerializeField]
+    float spawnRadius = 50f;
 
     public void Show(int amount, Color color)
     {
         label.text = amount.ToString();
-        label.color = color;
-        StartCoroutine(Float());
+        label.color = new Color(color.r, color.g, color.b, 0f);
+        var rect = GetComponent<RectTransform>();
+        rect.anchoredPosition += (Vector2)Random.insideUnitCircle * spawnRadius;
+        StartCoroutine(Stamp());
     }
 
-    IEnumerator Float()
+    IEnumerator Stamp()
     {
         var rect = GetComponent<RectTransform>();
-        Vector2 startPos = rect.anchoredPosition;
-        Color startColor = label.color;
+        Color baseColor = label.color;
 
+        // 팝인: 작게 시작해서 peakScale까지 커지며 나타남
         float elapsed = 0f;
-        while (elapsed < duration)
+        while (elapsed < popDuration)
         {
-            float t = elapsed / duration;
-            float ease = 1f - t * t;
-            rect.anchoredPosition = startPos + new Vector2(0, rise * t);
-            label.color = new Color(startColor.r, startColor.g, startColor.b, ease);
+            float t = elapsed / popDuration;
+            rect.localScale = Vector3.one * Mathf.SmoothStep(0.3f, peakScale, t);
+            label.color = new Color(baseColor.r, baseColor.g, baseColor.b, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(startfadeDuration);
+
+        // 페이드아웃: 수축하면서 사라짐
+        elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            float t = elapsed / fadeDuration;
+            rect.localScale = Vector3.one * Mathf.Lerp(peakScale, 0.8f, t);
+            label.color = new Color(baseColor.r, baseColor.g, baseColor.b, 1f - t);
             elapsed += Time.deltaTime;
             yield return null;
         }

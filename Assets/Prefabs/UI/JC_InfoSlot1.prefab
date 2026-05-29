@@ -252,9 +252,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
     m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Right: 50
+    m_Top: 25
+    m_Bottom: 25
   m_ChildAlignment: 3
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
@@ -681,8 +681,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6749229153371806411}
   m_HandleRect: {fileID: 8387489358715101174}
   m_Direction: 2
-  m_Value: 0.99999905
-  m_Size: 0.68296665
+  m_Value: 0.99999946
+  m_Size: 0.59963334
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

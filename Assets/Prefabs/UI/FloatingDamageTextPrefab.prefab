@@ -50,8 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloatingDamageText
   label: {fileID: 7793955557513728127}
-  duration: 0.8
-  rise: 80
+  popDuration: 0.15
+  fadeDuration: 0.2
+  peakScale: 1.4
+  spawnRadius: 50
 --- !u!1 &7041639092444023278
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,8 +128,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278512639
-  m_fontColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

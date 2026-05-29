@@ -20,7 +20,7 @@ public abstract class Character : MonoBehaviour
     Sprite icon;
 
     [SerializeField]
-    Skill skill;
+    protected Skill skill;
 
     public abstract ClassType Type { get; }
     public abstract Color classColor { get; }
@@ -31,6 +31,8 @@ public abstract class Character : MonoBehaviour
     protected float scaleFactor = 1f;
     protected Vector3 _targetPos;
     int _hitEventIndex;
+    int[] _perHitDamages;
+    EnemyController _target;
 
     bool _isDashing;
     float _dashElapsed;
@@ -43,9 +45,15 @@ public abstract class Character : MonoBehaviour
         anim.SetTrigger("Attack");
     }
 
-    public virtual void PlaySkillEffect(int chainCount)
+    public virtual void PlaySkillEffect(
+        int chainCount,
+        int[] perHitDamages = null,
+        EnemyController target = null
+    )
     {
         _chainCount = chainCount;
+        _perHitDamages = perHitDamages;
+        _target = target;
 
         switch (chainCount)
         {
@@ -67,21 +75,28 @@ public abstract class Character : MonoBehaviour
     public void OnChainHitEvent()
     {
         _hitEventIndex++;
-        if (_hitEventIndex > _chainCount || skill == null)
+        if (_hitEventIndex > _chainCount)
             return;
 
-        switch (_hitEventIndex)
+        if (skill != null)
         {
-            case 1:
-                skill.Chain1(_targetPos, scaleFactor);
-                break;
-            case 2:
-                skill.Chain2(_targetPos, scaleFactor);
-                break;
-            case 3:
-                skill.Chain3(_targetPos, scaleFactor);
-                break;
+            switch (_hitEventIndex)
+            {
+                case 1:
+                    skill.Chain1(_targetPos, scaleFactor);
+                    break;
+                case 2:
+                    skill.Chain2(_targetPos, scaleFactor);
+                    break;
+                case 3:
+                    skill.Chain3(_targetPos, scaleFactor);
+                    break;
+            }
         }
+
+        int idx = _hitEventIndex - 1;
+        if (_target != null && _perHitDamages != null && idx >= 0 && idx < _perHitDamages.Length)
+            _target.TakeDamage(_perHitDamages[idx], classColor);
     }
 
     // Animation Event에서 호출 — _targetPos로 부드럽게 이동

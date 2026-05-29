@@ -54,7 +54,6 @@ MonoBehaviour:
   creator: {fileID: 1100000000000000004}
   icon: {fileID: 21300000, guid: a6981ebfb9179c04a95ceebf2b4a110f, type: 3}
   skill: {fileID: 4955377167753715948}
-  passiveEffectPrefab: {fileID: 2621228466442389088, guid: f94120dfd476b2143a08bc2c1343a21d, type: 3}
 --- !u!114 &1100000000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +164,4 @@ MonoBehaviour:
   effectPrefab: {fileID: 220298222059182948, guid: 1dc4cd560ad80004f88f87978d2506dd, type: 3}
   target: {fileID: 0}
   forwardOffset: 2
+  passiveEffectPrefab: {fileID: 2621228466442389088, guid: f94120dfd476b2143a08bc2c1343a21d, type: 3}

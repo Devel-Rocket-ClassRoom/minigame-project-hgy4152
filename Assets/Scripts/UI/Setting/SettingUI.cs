@@ -30,9 +30,6 @@ public class SettingUI : MonoBehaviour
     [SerializeField]
     Button quitButton;
 
-    [SerializeField]
-    UnityEvent onQuit;
-
     public UnityEvent onClose = new UnityEvent();
 
     void Awake()
@@ -101,9 +98,9 @@ public class SettingUI : MonoBehaviour
 
     void QuitGame()
     {
-        if (onQuit != null && onQuit.GetPersistentEventCount() > 0)
+        if (GameStateMachine.Instance != null)
         {
-            onQuit.Invoke();
+            GameStateMachine.Instance.TransitionToLobby();
             return;
         }
 #if UNITY_EDITOR

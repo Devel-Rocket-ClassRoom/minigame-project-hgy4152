@@ -18,5 +18,6 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
   rarity: 0
   displayName: chr_pr_beatrice_name
+  passiveName: chr_pr_beatrice_passive_name
   description: chr_pr_beatrice_desc
   unlockConditions: []

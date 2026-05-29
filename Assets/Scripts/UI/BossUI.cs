@@ -13,11 +13,18 @@ public class BossUI : MonoBehaviour
     [SerializeField]
     TMP_Text hpText;
 
+    [SerializeField]
+    TMP_Text turnDamageText;
+
     void OnEnable()
     {
         if (boss == null)
             return;
         boss.OnHpChanged += HandleHpChanged;
+
+        var gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+            gm.OnTurnDamageChanged += HandleTurnDamageChanged;
     }
 
     void OnDisable()
@@ -25,6 +32,10 @@ public class BossUI : MonoBehaviour
         if (boss == null)
             return;
         boss.OnHpChanged -= HandleHpChanged;
+
+        var gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+            gm.OnTurnDamageChanged -= HandleTurnDamageChanged;
     }
 
     void HandleHpChanged(int current, int max)
@@ -33,5 +44,11 @@ public class BossUI : MonoBehaviour
             hpSlider.value = (float)current / max;
         if (hpText != null)
             hpText.text = $"{current} / {max}";
+    }
+
+    void HandleTurnDamageChanged(int total)
+    {
+        if (turnDamageText != null)
+            turnDamageText.text = $"이번 턴 누적: {total}";
     }
 }

@@ -55,12 +55,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     float perGroupDelay = 0.4f;
 
+    [SerializeField]
+    float highlightDuration = 0.2f;
+
+    [SerializeField]
+    float highlightScale = 1.2f;
+
     bool _stageClearPending;
     bool _jokerRewardPending;
     bool _isAdventureMode;
     int _currentTurn;
+    int _turnDamageTotal;
 
     public bool IsPaused { get; private set; }
+    public int TurnDamageTotal => _turnDamageTotal;
+    public event System.Action<int> OnTurnDamageChanged;
     public CharacterSet CharacterSet => characterSet;
     public JokerManager JokerManager => jokerManager;
 
@@ -70,6 +79,8 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageClear += HandleStageClear;
         stageManager.OnAllStagesCleared += HandleAllStagesCleared;
         stageManager.OnStageStart += HandleStageStart;
+        if (boss != null)
+            boss.OnDamageTaken += HandleBossDamageTaken;
     }
 
     void OnDisable()
@@ -78,6 +89,14 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageClear -= HandleStageClear;
         stageManager.OnAllStagesCleared -= HandleAllStagesCleared;
         stageManager.OnStageStart -= HandleStageStart;
+        if (boss != null)
+            boss.OnDamageTaken -= HandleBossDamageTaken;
+    }
+
+    void HandleBossDamageTaken(int amount)
+    {
+        _turnDamageTotal += amount;
+        OnTurnDamageChanged?.Invoke(_turnDamageTotal);
     }
 
     void Start()
@@ -267,6 +286,8 @@ public class GameManager : MonoBehaviour
     IEnumerator StartTurnRoutine()
     {
         _currentTurn++;
+        _turnDamageTotal = 0;
+        OnTurnDamageChanged?.Invoke(0);
         if (stageIntroUI != null)
             yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
         drawPhaseTimer.ResetPhaseDuration();
@@ -358,19 +379,38 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PlayGroupSequence(groups, judge));
     }
 
+    static int[] SplitDamageWeighted(int total, int chainLength)
+    {
+        var result = new int[chainLength];
+        int weightSum = chainLength * (chainLength + 1) / 2;
+        int accumulated = 0;
+        for (int i = 0; i < chainLength - 1; i++)
+        {
+            result[i] = Mathf.RoundToInt(total * (i + 1) / (float)weightSum);
+            accumulated += result[i];
+        }
+        result[chainLength - 1] = total - accumulated;
+        return result;
+    }
+
     IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge)
     {
         var damages = CalcDamages(groups, judge);
         for (int i = 0; i < groups.Count; i++)
         {
+            // 블록 강조 펄스
+            foreach (var block in groups[i].Blocks)
+                block.StartCoroutine(block.HighlightPulseRoutine(highlightScale, highlightDuration));
+            yield return new WaitForSeconds(highlightDuration);
+
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
             character?.PlayAttack(boss.transform.position);
-            character?.PlaySkillEffect(groups[i].Length);
+            var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);
+            character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
 
-            boss.TakeDamage(damages[i], character.classColor);
             blockManager.RemoveGroup(groups[i]);
-            yield return new WaitForSeconds(perGroupDelay);
+            yield return new WaitForSeconds(perGroupDelay + 0.25f * (groups[i].Length - 1));
         }
 
         if (_stageClearPending)

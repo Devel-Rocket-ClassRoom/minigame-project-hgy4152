@@ -31,6 +31,8 @@ public abstract class Character : MonoBehaviour
     protected float scaleFactor = 1f;
     protected Vector3 _targetPos;
     int _hitEventIndex;
+    int[] _perHitDamages;
+    EnemyController _target;
 
     bool _isDashing;
     float _dashElapsed;
@@ -43,9 +45,15 @@ public abstract class Character : MonoBehaviour
         anim.SetTrigger("Attack");
     }
 
-    public virtual void PlaySkillEffect(int chainCount)
+    public virtual void PlaySkillEffect(
+        int chainCount,
+        int[] perHitDamages = null,
+        EnemyController target = null
+    )
     {
         _chainCount = chainCount;
+        _perHitDamages = perHitDamages;
+        _target = target;
 
         switch (chainCount)
         {
@@ -82,6 +90,10 @@ public abstract class Character : MonoBehaviour
                 skill.Chain3(_targetPos, scaleFactor);
                 break;
         }
+
+        int idx = _hitEventIndex - 1;
+        if (_target != null && _perHitDamages != null && idx >= 0 && idx < _perHitDamages.Length)
+            _target.TakeDamage(_perHitDamages[idx], classColor);
     }
 
     // Animation Event에서 호출 — _targetPos로 부드럽게 이동

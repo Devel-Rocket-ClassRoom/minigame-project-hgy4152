@@ -64,6 +64,12 @@ public class StageIntroUI : MonoBehaviour
 
     void HandleStageStart(StageManager.StageEntry entry)
     {
+        if (gameManager.IsBossPlay)
+        {
+            gameManager.OnStageIntroComplete();
+            return;
+        }
+
         gameManager.SetPaused(true);
         introText.text =
             $"{entry.chapter}{Localization.Get("ui_chapter")} {entry.stage}{Localization.Get("ui_stage")}";
@@ -95,6 +101,14 @@ public class StageIntroUI : MonoBehaviour
         yield return new WaitForSeconds(bossRoutineDuration);
         if (bossRoutinePanel != null)
             bossRoutinePanel.SetActive(false);
+    }
+
+    public IEnumerator ShowMultipleRoutinesRoutine(
+        System.Collections.Generic.IEnumerable<Modifier> mods
+    )
+    {
+        foreach (var mod in mods)
+            yield return StartCoroutine(ShowBossRoutineRoutine(mod));
     }
 
     public IEnumerator ShowTurnRoutine(int turn, int maxTurns)

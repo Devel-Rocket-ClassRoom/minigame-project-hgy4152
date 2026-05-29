@@ -152,7 +152,7 @@ public class BossReadyUI : MonoBehaviour
             return;
         BossPartyContext.SaveSlotIndex = saveSlotList[saveSlotIndex].slotIndex;
         BossPartyContext.BossId = bossList[bossIndex].id;
-        GameStateMachine.Instance.TransitionTo(GameState.Adventure);
+        GameStateMachine.Instance.TransitionTo(GameState.BossPlay);
     }
 
     private void OnSlotInfoRequested(SaveSlotData data) => saveSlotInfoPanel?.Show(data);

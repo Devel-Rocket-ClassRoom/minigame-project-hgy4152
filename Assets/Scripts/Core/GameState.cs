@@ -5,4 +5,5 @@ public enum GameState
     AdventureReady,
     Adventure,
     BossReady,
+    BossPlay,
 }

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,7 @@ public class DebuffIconBarUI : MonoBehaviour
     GameObject debuffIconPrefab;
 
     [SerializeField]
-    DebuffInfoPopupUI debuffInfoPopup;
+    InfoPopupUI infoPopupUI;
 
     void OnEnable()
     {
@@ -32,16 +30,19 @@ public class DebuffIconBarUI : MonoBehaviour
         foreach (Transform child in iconContainer)
             Destroy(child.gameObject);
 
-        var mods = bossPatternSystem.GetActiveModifiers().ToList();
-        gameObject.SetActive(mods.Count > 0);
+        var mods = new System.Collections.Generic.List<Modifier>(
+            bossPatternSystem.GetActiveModifiers()
+        );
+
+        // 아이콘 컨테이너만 토글 (자신의 GO는 항상 활성 유지해 이벤트 구독 유지)
+        iconContainer.gameObject.SetActive(mods.Count > 0);
 
         foreach (var mod in mods)
         {
-            var captured = mod;
             var icon = Instantiate(debuffIconPrefab, iconContainer);
             icon.GetComponent<Button>()
                 .onClick.AddListener(() =>
-                    debuffInfoPopup.Show(bossPatternSystem.GetActiveModifiers())
+                    infoPopupUI.ShowDebuffs(bossPatternSystem.GetActiveModifiers())
                 );
         }
     }

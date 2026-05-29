@@ -114,6 +114,9 @@ public class GameManager : MonoBehaviour
         else if (AdventurePartyContext.PendingCharacterIds != null)
             characterSet.SetCharactersByIds(AdventurePartyContext.PendingCharacterIds);
 
+        if (bossPatternSystem != null)
+            bossPatternSystem.AccumulateModifiers = _isBossPlay;
+
         _jokerRewardPending = true;
         stageManager.StartStage();
     }
@@ -381,10 +384,27 @@ public class GameManager : MonoBehaviour
             _jokerRewardPending = false;
             jokerRewardUI.Show();
         }
+        else if (_isBossPlay && _currentTurn == 0)
+        {
+            StartCoroutine(BossPassiveIntroRoutine());
+        }
         else
         {
             BeginBattle();
         }
+    }
+
+    IEnumerator BossPassiveIntroRoutine()
+    {
+        if (stageIntroUI != null && bossPatternSystem?.Current != null)
+        {
+            var passives = bossPatternSystem.Current.passive;
+            if (passives != null)
+                foreach (var passive in passives)
+                    if (passive != null)
+                        yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(passive));
+        }
+        BeginBattle();
     }
 
     void Settle()
@@ -481,17 +501,24 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        // 이번 핸드에서 돌파된 모든 구간 수집
         float hpRatio = (float)boss.CurrentHp / boss.MaxHp;
-        int phaseIndex = bossPatternSystem.TurnIndex;
-        bool thresholdCrossed =
-            phaseIndex < pattern.hpThresholds.Length && hpRatio <= pattern.hpThresholds[phaseIndex];
-
-        if (thresholdCrossed)
+        var crossedMods = new System.Collections.Generic.List<Modifier>();
+        while (
+            bossPatternSystem.TurnIndex < pattern.hpThresholds.Length
+            && hpRatio <= pattern.hpThresholds[bossPatternSystem.TurnIndex]
+        )
         {
-            // 구간 돌파 → 다음 구간 시작
-            _handPlaysThisPhase = 0;
+            int idx = bossPatternSystem.TurnIndex;
+            if (idx < pattern.turnModifiers.Length && pattern.turnModifiers[idx] != null)
+                crossedMods.Add(pattern.turnModifiers[idx]);
             bossPatternSystem.AdvanceTurn();
-            StartCoroutine(StartTurnRoutine());
+        }
+
+        if (crossedMods.Count > 0)
+        {
+            _handPlaysThisPhase = 0;
+            StartCoroutine(PhaseTransitionRoutine(crossedMods));
         }
         else
         {
@@ -501,6 +528,19 @@ public class GameManager : MonoBehaviour
             else
                 StartCoroutine(ContinueBossHandRoutine());
         }
+    }
+
+    IEnumerator PhaseTransitionRoutine(System.Collections.Generic.List<Modifier> mods)
+    {
+        if (stageIntroUI != null)
+            yield return StartCoroutine(stageIntroUI.ShowMultipleRoutinesRoutine(mods));
+        // 연출 후 다음 핸드 즉시 시작 (보스 루틴 재표시 없음)
+        _turnDamageTotal = 0;
+        OnTurnDamageChanged?.Invoke(0);
+        drawPhaseTimer.ResetPhaseDuration();
+        blockManager.ResetDiscardLimit();
+        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        drawPhaseTimer.StartDrawPhaseInstant();
     }
 
     IEnumerator ShowStageClear()

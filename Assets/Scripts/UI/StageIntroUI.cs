@@ -97,6 +97,14 @@ public class StageIntroUI : MonoBehaviour
             bossRoutinePanel.SetActive(false);
     }
 
+    public IEnumerator ShowMultipleRoutinesRoutine(
+        System.Collections.Generic.IEnumerable<Modifier> mods
+    )
+    {
+        foreach (var mod in mods)
+            yield return StartCoroutine(ShowBossRoutineRoutine(mod));
+    }
+
     public IEnumerator ShowTurnRoutine(int turn, int maxTurns)
     {
         introText.text = $"TURN {turn} / {maxTurns}";

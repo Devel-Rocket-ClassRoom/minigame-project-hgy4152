@@ -15,6 +15,7 @@ public class BossPatternSystem : MonoBehaviour
 
     public BossPattern Current => current;
     public int TurnIndex => turnIndex;
+    public bool AccumulateModifiers { get; set; }
     public event System.Action OnInjected;
 
     void OnEnable()
@@ -44,11 +45,22 @@ public class BossPatternSystem : MonoBehaviour
         foreach (var m in current.passive)
             if (m != null)
                 yield return m;
-        if (turnIndex < current.turnModifiers.Length)
+
+        if (AccumulateModifiers)
         {
-            var tm = current.turnModifiers[turnIndex];
-            if (tm != null)
-                yield return tm;
+            // BossPlay: 지나온 모든 구간 패턴 누적 유지
+            for (int i = 0; i <= turnIndex && i < current.turnModifiers.Length; i++)
+                if (current.turnModifiers[i] != null)
+                    yield return current.turnModifiers[i];
+        }
+        else
+        {
+            if (turnIndex < current.turnModifiers.Length)
+            {
+                var tm = current.turnModifiers[turnIndex];
+                if (tm != null)
+                    yield return tm;
+            }
         }
     }
 

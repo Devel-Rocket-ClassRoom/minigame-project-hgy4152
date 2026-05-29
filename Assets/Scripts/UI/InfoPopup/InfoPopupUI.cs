@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,16 @@ public class InfoPopupUI : MonoBehaviour
     TMP_Text passiveText;
 
     [SerializeField]
+    TMP_Text passiveTitle;
+
+    [SerializeField]
     TMP_Text blockText;
+
+    [SerializeField]
+    TMP_Text blockTitle;
+
+    [SerializeField]
+    DebuffInfoPopupUI debuffInfoPopup;
 
     [SerializeField]
     float slideDuration = 0.25f;
@@ -43,6 +53,7 @@ public class InfoPopupUI : MonoBehaviour
 
     public void ShowCharacter(CharacterDef def)
     {
+        SetDebuffSectionVisible(false);
         if (nameText != null)
             nameText.text = Localization.Get(def.DisplayName);
         if (passiveText != null)
@@ -59,6 +70,7 @@ public class InfoPopupUI : MonoBehaviour
 
     public void ShowJoker(JokerCard card)
     {
+        SetDebuffSectionVisible(false);
         if (nameText != null)
             nameText.text = Localization.Get(card.cardName);
         if (passiveText != null)
@@ -66,6 +78,30 @@ public class InfoPopupUI : MonoBehaviour
         if (blockText != null)
             blockText.gameObject.SetActive(false);
         Open();
+    }
+
+    public void ShowDebuffs(IEnumerable<Modifier> modifiers)
+    {
+        SetDebuffSectionVisible(true);
+        if (debuffInfoPopup != null)
+            debuffInfoPopup.Populate(modifiers);
+        Open();
+    }
+
+    void SetDebuffSectionVisible(bool show)
+    {
+        if (debuffInfoPopup != null)
+            debuffInfoPopup.gameObject.SetActive(show);
+        if (nameText != null)
+            nameText.gameObject.SetActive(!show);
+        if (passiveText != null)
+            passiveText.gameObject.SetActive(!show);
+        if (passiveTitle != null)
+            passiveTitle.gameObject.SetActive(!show);
+        if (blockText != null)
+            blockText.gameObject.SetActive(!show);
+        if (blockTitle != null)
+            blockTitle.gameObject.SetActive(!show);
     }
 
     public void Hide()

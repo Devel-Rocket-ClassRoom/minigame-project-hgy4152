@@ -37,7 +37,7 @@ public class BossPatternSystem : MonoBehaviour
         OnInjected?.Invoke();
     }
 
-    IEnumerable<Modifier> GetActiveModifiers()
+    public IEnumerable<Modifier> GetActiveModifiers()
     {
         if (current == null)
             yield break;

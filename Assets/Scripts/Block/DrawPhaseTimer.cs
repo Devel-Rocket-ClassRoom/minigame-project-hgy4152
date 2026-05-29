@@ -61,7 +61,7 @@ public class DrawPhaseTimer : MonoBehaviour
         if (_phaseCoroutine != null)
             StopCoroutine(_phaseCoroutine);
         blockManager.ResetDiscardCount();
-        blockManager.DrawUntilFull();
+        blockManager.DrawInstanceFull();
         _phaseCoroutine = StartCoroutine(TimerOnlyRoutine());
     }
 

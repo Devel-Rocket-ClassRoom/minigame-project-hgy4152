@@ -8,6 +8,12 @@ public class Slot : MonoBehaviour
 
     public Block Block { get; private set; }
 
+    public void AddInstance(Block block)
+    {
+        Debug.Log("block");
+        Block = block;
+    }
+
     public void PlaceBlock(Block block, System.Action onArrived = null)
     {
         Block = block;

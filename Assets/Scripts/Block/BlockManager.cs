@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -75,9 +75,52 @@ public class BlockManager : MonoBehaviour
 
         return block;
     }
+    public Block DrawBlockInstance()
+    {
+        if (hand.Count >= MaxHandSize)
+        {
+            if (!_swapPending)
+            {
+                _swapPending = true;
+                OnDrawBlocked?.Invoke();
+            }
+            return null;
+        }
+
+        int slotIndex = hand.Count;
+        if (slots == null || slotIndex >= slots.Count || slots[slotIndex] == null)
+        {
+            Debug.LogError($"[BlockManager] slots[{slotIndex}] is not assigned in the Inspector.");
+            return null;
+        }
+
+        var deployedTypes = characterSet.GetDeployedClassTypes();
+        if (deployedTypes.Length == 0)
+        {
+            Debug.LogError("[BlockManager] 배포된 캐릭터가 없습니다.");
+            return null;
+        }
+        ClassType classType = deployedTypes[UnityEngine.Random.Range(0, deployedTypes.Length)];
+        Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
+
+        if (block == null)
+        {
+            Debug.LogWarning($"[BlockManager] Failed to create block for {classType}.");
+            return null;
+        }
+
+        hand.Add(block);
+        block.OnDiscardRequested = Discard;
+        AssignChainGroup(block);
+        slots[slotIndex].AddInstance(block);
+        RefreshConnectors();
+        RefreshAllBlockVisuals();
+
+        return block;
+    }
 
     public void Discard(Block block)
-    {
+{
         _swapPending = false;
         int idx = hand.IndexOf(block);
         if (idx < 0)
@@ -157,6 +200,11 @@ public class BlockManager : MonoBehaviour
     {
         while (hand.Count < MaxHandSize)
             DrawBlock();
+    }
+    public void DrawInstanceFull()
+    {
+        while (hand.Count < MaxHandSize)
+            DrawBlockInstance();
     }
 
     public void RemoveGroup(ChainGroup group)

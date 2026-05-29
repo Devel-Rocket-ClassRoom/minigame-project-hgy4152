@@ -55,11 +55,11 @@ public class InfoPopupUI : MonoBehaviour
     {
         SetDebuffSectionVisible(false);
 
-        var charName = Localization.Get(def.DisplayName);
         if (nameText != null)
-            nameText.text = charName;
+            nameText.text = Localization.Get(def.DisplayName);
         if (passiveTitle != null)
-            passiveTitle.text = $"{Localization.Get("ui_skill_type_passive")} - {charName}";
+            passiveTitle.text =
+                $"{Localization.Get("ui_skill_type_passive")} - {Localization.Get(def.passiveName)}";
         if (passiveText != null)
             passiveText.text = Localization.Get(((IDisplayable)def).Description);
 
@@ -87,7 +87,7 @@ public class InfoPopupUI : MonoBehaviour
         if (nameText != null)
             nameText.text = cardName;
         if (passiveTitle != null)
-            passiveTitle.text = $"{Localization.Get("ui_skill_type_passive")} - {cardName}";
+            passiveTitle.text = cardName;
         if (passiveText != null)
             passiveText.text = Localization.Get(card.description);
         if (blockTitle != null)

@@ -347,7 +347,8 @@ public class GameManager : MonoBehaviour
         modeClearUI?.Show(this, Color.green);
         if (_isAdventureMode)
             UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
-        OpenSaveFlow();
+        if (!_isBossPlay)
+            OpenSaveFlow();
     }
 
     void OpenSaveFlow()

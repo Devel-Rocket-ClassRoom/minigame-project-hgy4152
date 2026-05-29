@@ -47,9 +47,11 @@ public class BossEffectUI : MonoBehaviour
         {
             if (m == null)
                 continue;
-            sb.AppendLine($"[패시브] {m.modName}");
+            sb.AppendLine(
+                $"[{Localization.Get("ui_label_passive")}] {Localization.Get(m.modName)}"
+            );
             if (!string.IsNullOrEmpty(m.description))
-                sb.AppendLine(m.description);
+                sb.AppendLine(Localization.Get(m.description));
         }
 
         if (system.TurnIndex < p.turnModifiers.Length)
@@ -57,9 +59,11 @@ public class BossEffectUI : MonoBehaviour
             var tm = p.turnModifiers[system.TurnIndex];
             if (tm != null)
             {
-                sb.AppendLine($"[이번 턴] {tm.modName}");
+                sb.AppendLine(
+                    $"[{Localization.Get("ui_label_this_turn")}] {Localization.Get(tm.modName)}"
+                );
                 if (!string.IsNullOrEmpty(tm.description))
-                    sb.AppendLine(tm.description);
+                    sb.AppendLine(Localization.Get(tm.description));
             }
         }
 

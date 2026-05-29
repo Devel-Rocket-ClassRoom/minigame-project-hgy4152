@@ -49,6 +49,6 @@ public class BossUI : MonoBehaviour
     void HandleTurnDamageChanged(int total)
     {
         if (turnDamageText != null)
-            turnDamageText.text = $"이번 턴 누적: {total}";
+            turnDamageText.text = $"{Localization.Get("ui_turn_damage_label")}: {total}";
     }
 }

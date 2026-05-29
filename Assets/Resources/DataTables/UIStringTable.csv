@@ -1,0 +1,14 @@
+Key,Value
+ui_save_slot_label,슬롯
+ui_save_slot_new,저장할 데이터
+ui_save_slot_empty,비어있음
+ui_chapter,챕터
+ui_stage,스테이지
+ui_turn_damage_label,이번 턴 누적
+ui_label_passive,패시브
+ui_label_this_turn,이번 턴
+ui_boss_pattern_info,"패시브: {0}개 / 턴 모디파이어: {1}개"
+ui_unlock_suffix,해금!
+ui_mode_clear,모드 클리어
+ui_game_over,게임 오버
+ui_confirm_overwrite,"슬롯 {0} 덮어쓸까요?"

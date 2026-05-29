@@ -325,7 +325,7 @@ public class GameManager : MonoBehaviour
             {
                 if (saveManager.HasSlot(slot))
                     confirmDialog?.Show(
-                        $"슬롯 {slot + 1} 덮어쓸까요?",
+                        string.Format(Localization.Get("ui_confirm_overwrite"), slot + 1),
                         onYes: () => saveManager.Save(slot, draft),
                         onNo: OpenSaveFlow
                     );
@@ -400,7 +400,9 @@ public class GameManager : MonoBehaviour
         {
             // 블록 강조 펄스
             foreach (var block in groups[i].Blocks)
-                block.StartCoroutine(block.HighlightPulseRoutine(highlightScale, highlightDuration));
+                block.StartCoroutine(
+                    block.HighlightPulseRoutine(highlightScale, highlightDuration)
+                );
             yield return new WaitForSeconds(highlightDuration);
 
             // 애니메이션
@@ -422,7 +424,7 @@ public class GameManager : MonoBehaviour
         else if (boss.IsAlive)
         {
             if (_currentTurn >= maxTurns)
-                modeClearUI?.Show(this, Color.red, "게임 오버");
+                modeClearUI?.Show(this, Color.red, "ui_game_over");
             else
                 StartCoroutine(StartTurnRoutine());
         }

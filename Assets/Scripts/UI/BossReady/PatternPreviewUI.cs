@@ -17,7 +17,7 @@ public class PatternPreviewUI : MonoBehaviour
         foreach (var passive in pattern.passive)
         {
             var card = Instantiate(cardPrefab, cardContainer);
-            card.Setup("패시브", passive);
+            card.Setup(Localization.Get("ui_label_passive"), passive);
         }
 
         for (int i = 0; i < pattern.turnModifiers.Length; i++)

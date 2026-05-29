@@ -37,7 +37,7 @@ public class SaveSlotUI : MonoBehaviour
         HasData = true;
 
         if (slotLabel != null)
-            slotLabel.text = $"슬롯 {slotIndex + 1}";
+            slotLabel.text = $"{Localization.Get("ui_save_slot_label")} {slotIndex + 1}";
 
         if (dateLabel != null)
         {

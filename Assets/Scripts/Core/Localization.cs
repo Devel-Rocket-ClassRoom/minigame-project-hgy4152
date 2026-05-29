@@ -19,6 +19,7 @@ public static class Localization
         "DataTables/JokerStringTable",
         "DataTables/EnemyStringTable",
         "DataTables/BossStringTable",
+        "DataTables/UIStringTable",
     };
 
     static void EnsureLoaded()

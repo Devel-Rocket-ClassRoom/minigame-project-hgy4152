@@ -100,6 +100,7 @@ public class SettingUI : MonoBehaviour
     {
         if (GameStateMachine.Instance != null)
         {
+            Time.timeScale = 1f;
             GameStateMachine.Instance.TransitionToLobby();
             return;
         }

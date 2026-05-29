@@ -14,3 +14,6 @@ ui_game_over,게임 오버
 ui_confirm_overwrite,"슬롯 {0} 덮어쓸까요?"
 ui_skill_type_passive,패시브
 ui_skill_type_block_skill,블럭스킬
+ui_rarity_common,일반
+ui_rarity_rare,희귀
+ui_rarity_epic,에픽

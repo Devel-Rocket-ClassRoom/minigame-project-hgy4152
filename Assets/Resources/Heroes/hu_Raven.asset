@@ -18,5 +18,6 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
   rarity: 0
   displayName: chr_hu_raven_name
+  passiveName: chr_hu_raven_passive_name
   description: chr_hu_raven_desc
   unlockConditions: []

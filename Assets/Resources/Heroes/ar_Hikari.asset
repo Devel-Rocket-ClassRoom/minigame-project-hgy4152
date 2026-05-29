@@ -18,5 +18,6 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: 73f03e127426f2645a83e6dff58c62cb, type: 2}
   rarity: 0
   displayName: chr_ar_hikari_name
+  passiveName: chr_ar_hikari_passive_name
   description: chr_ar_hikari_desc
   icon: {fileID: 0}

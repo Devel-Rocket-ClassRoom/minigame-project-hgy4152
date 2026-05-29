@@ -6,20 +6,26 @@ blk_pr1_desc,빛의 힘으로 적들을 심판한다.
 blk_wa1_name,성검 소환
 blk_wa1_desc,"성검 ""엑스칼리버""를 소환해서 공격한다."
 chr_ar_hikari_name,히카리
-chr_ar_hikari_desc,
+chr_ar_hikari_passive_name,질풍의 일격
+chr_ar_hikari_desc, 적들을 공격할 시 바람의 힘을 담아 적 최대 체력의 5% 만큼 추가피해를 준다.
 chr_pr_beatrice_name,베아트리스
-chr_pr_beatrice_desc,
+chr_pr_beatrice_passive_name,심판의 의지
+chr_pr_beatrice_desc, 신의 힘을 빌어서 능력치를 강화한다. 버려진 블럭 당 데미지 1% 증가
 chr_wa_reon_name,레온
-chr_wa_reon_desc,
-blk_pa1_name,수호의 정령
-blk_pa1_desc,
+chr_wa_reon_passive_name,여신의 축복
+chr_wa_reon_desc, 성검의 선택받은 용사. 여신의 축복이 함께한다. 3체인 데미지 30% 증가
+blk_pa1_name, 홀리 스트라이크
+blk_pa1_desc, 적을 향해 돌진하여 강력한 신성 피해를 입힌다.
 blk_hu1_name,슬러그 샷
-blk_hu1_desc,
+blk_hu1_desc, 강력한 화력을 지닌 총알을 발사한다.
 blk_wi1_name,번개 강타
-blk_wi1_desc,
+blk_wi1_desc, 번개를 소환해 적에게 강력한 피해를 준다.
 chr_pa_victor_name,빅터
-chr_pa_victor_desc,
+chr_pa_victor_passive_name,수호의 정령
+chr_pa_victor_desc, 자신의 블럭 20개를 희생할 시 수호의 힘을 빌어 1턴간 모든 디버프를 무효화 한다. (스테이지 당 1회)
 chr_hu_raven_name,레이븐
-chr_hu_raven_desc,
+chr_hu_raven_passive_name,정조준
+chr_hu_raven_desc, 적을 정조준 하여 3번째 공격마다 데미지가 50% 증가한다.(다음 스테이지에서 초기화)
 chr_wi_acan_name,아칸
-chr_wi_acan_desc,
+chr_wi_acan_passive_name,마나 축적
+chr_wi_acan_desc, 마나의 힘을 축적해 공격을 할 때마다 데미지가 10%증가한다.(다음 스테이지에서 초기화)

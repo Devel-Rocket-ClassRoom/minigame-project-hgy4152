@@ -57,7 +57,7 @@ public class UnlockNotificationSpawner : MonoBehaviour
         if (string.IsNullOrEmpty(nameKey))
             return null;
 
-        return $"{Localization.Get(nameKey)} 해금!";
+        return $"{Localization.Get(nameKey)} {Localization.Get("ui_unlock_suffix")}";
     }
 
     Sprite ResolveIcon(UnlockKind kind, string id)

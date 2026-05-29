@@ -10,6 +10,7 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public BlockData blockData;
     public Rarity rarity;
     public string displayName;
+    public string passiveName;
     public string description;
     public List<UnlockCondition> unlockConditions = new();
     public string Id => id;

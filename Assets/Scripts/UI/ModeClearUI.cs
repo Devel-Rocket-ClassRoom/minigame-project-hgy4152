@@ -43,11 +43,11 @@ public class ModeClearUI : MonoBehaviour
             });
     }
 
-    public void Show(GameManager gameManager, Color color, string title = "모드 클리어")
+    public void Show(GameManager gameManager, Color color, string titleKey = "ui_mode_clear")
     {
         if (titleText != null)
         {
-            titleText.text = title;
+            titleText.text = Localization.Get(titleKey);
             titleText.color = color;
         }
 

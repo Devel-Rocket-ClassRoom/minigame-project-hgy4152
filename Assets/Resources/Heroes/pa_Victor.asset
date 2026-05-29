@@ -18,5 +18,6 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: 06f9c6e7192c3ac41b91edb8e8d521be, type: 2}
   rarity: 0
   displayName: chr_pa_victor_name
+  passiveName: chr_pa_victor_passive_name
   description: chr_pa_victor_desc
   unlockConditions: []

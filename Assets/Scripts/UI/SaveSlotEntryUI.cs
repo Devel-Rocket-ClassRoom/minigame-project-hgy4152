@@ -22,7 +22,10 @@ public class SaveSlotEntryUI : MonoBehaviour
     public void Refresh(int slotIndex, SaveSlotData data, TableRegistry reg)
     {
         if (slotLabel != null)
-            slotLabel.text = slotIndex < 0 ? "저장할 데이터" : $"슬롯 {slotIndex + 1}";
+            slotLabel.text =
+                slotIndex < 0
+                    ? Localization.Get("ui_save_slot_new")
+                    : $"{Localization.Get("ui_save_slot_label")} {slotIndex + 1}";
 
         bool isEmpty = data == null;
         if (emptyOverlay != null)
@@ -31,7 +34,7 @@ public class SaveSlotEntryUI : MonoBehaviour
         if (isEmpty)
         {
             if (dateText != null)
-                dateText.text = "비어있음";
+                dateText.text = Localization.Get("ui_save_slot_empty");
             ClearIcons(characterIcons);
             ClearIcons(jokerIcons);
             return;

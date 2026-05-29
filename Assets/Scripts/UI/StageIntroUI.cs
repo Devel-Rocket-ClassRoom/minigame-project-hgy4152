@@ -50,10 +50,11 @@ public class StageIntroUI : MonoBehaviour
     void HandleStageStart(StageManager.StageEntry entry)
     {
         gameManager.SetPaused(true);
-        introText.text = $"{entry.chapter}챕터 {entry.stage}스테이지";
+        introText.text =
+            $"{entry.chapter}{Localization.Get("ui_chapter")} {entry.stage}{Localization.Get("ui_stage")}";
 
-        chapterText.text = $"{entry.chapter} 챕터";
-        stageText.text = $"{entry.stage} 스테이지";
+        chapterText.text = $"{entry.chapter} {Localization.Get("ui_chapter")}";
+        stageText.text = $"{entry.stage} {Localization.Get("ui_stage")}";
 
         panel.SetActive(true);
         StartCoroutine(IntroRoutine());

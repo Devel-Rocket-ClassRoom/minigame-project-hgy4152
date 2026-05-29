@@ -18,9 +18,9 @@ public class BossSlotUI : MonoBehaviour
             portrait.sprite = boss.icon;
 
         if (bossNameLabel != null)
-            bossNameLabel.text = boss.bossName;
+            bossNameLabel.text = Localization.Get(boss.bossName);
 
         if (rarityLabel != null)
-            rarityLabel.text = boss.rarity.ToString();
+            rarityLabel.text = Localization.Get($"ui_rarity_{boss.rarity.ToString().ToLower()}");
     }
 }

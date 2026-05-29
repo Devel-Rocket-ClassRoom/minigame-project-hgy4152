@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageIntroUI : MonoBehaviour
 {
@@ -20,10 +21,22 @@ public class StageIntroUI : MonoBehaviour
     TMP_Text chapterText;
 
     [SerializeField]
+    GameObject bossRoutinePanel;
+
+    [SerializeField]
+    TMP_Text bossRoutineNameText;
+
+    [SerializeField]
+    TMP_Text bossRoutineDescText;
+
+    [SerializeField]
     float introDuration = 2f;
 
     [SerializeField]
     float turnDisplayDuration = 1f;
+
+    [SerializeField]
+    float bossRoutineDuration = 1.5f;
 
     [SerializeField]
     StageManager stageManager;
@@ -45,6 +58,8 @@ public class StageIntroUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(false);
+        if (bossRoutinePanel != null)
+            bossRoutinePanel.SetActive(false);
     }
 
     void HandleStageStart(StageManager.StageEntry entry)
@@ -65,6 +80,21 @@ public class StageIntroUI : MonoBehaviour
         yield return new WaitForSeconds(introDuration);
         panel.SetActive(false);
         gameManager.OnStageIntroComplete();
+    }
+
+    public IEnumerator ShowBossRoutineRoutine(Modifier mod)
+    {
+        if (mod == null)
+            yield break;
+        if (bossRoutineNameText != null)
+            bossRoutineNameText.text = Localization.Get(mod.modName);
+        if (bossRoutineDescText != null)
+            bossRoutineDescText.text = Localization.Get(mod.description);
+        if (bossRoutinePanel != null)
+            bossRoutinePanel.SetActive(true);
+        yield return new WaitForSeconds(bossRoutineDuration);
+        if (bossRoutinePanel != null)
+            bossRoutinePanel.SetActive(false);
     }
 
     public IEnumerator ShowTurnRoutine(int turn, int maxTurns)

@@ -19,7 +19,13 @@ public class InfoPopupUI : MonoBehaviour
     TMP_Text passiveText;
 
     [SerializeField]
+    TMP_Text passiveTitle;
+
+    [SerializeField]
     TMP_Text blockText;
+
+    [SerializeField]
+    TMP_Text blockTitle;
 
     [SerializeField]
     DebuffInfoPopupUI debuffInfoPopup;
@@ -90,8 +96,12 @@ public class InfoPopupUI : MonoBehaviour
             nameText.gameObject.SetActive(!show);
         if (passiveText != null)
             passiveText.gameObject.SetActive(!show);
+        if (passiveTitle != null)
+            passiveTitle.gameObject.SetActive(!show);
         if (blockText != null)
             blockText.gameObject.SetActive(!show);
+        if (blockTitle != null)
+            blockTitle.gameObject.SetActive(!show);
     }
 
     public void Hide()

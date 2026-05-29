@@ -83,11 +83,10 @@ public class InfoPopupUI : MonoBehaviour
     {
         SetDebuffSectionVisible(false);
 
-        var cardName = Localization.Get(card.cardName);
         if (nameText != null)
-            nameText.text = cardName;
+            nameText.text = Localization.Get(card.cardName);
         if (passiveTitle != null)
-            passiveTitle.text = cardName;
+            passiveTitle.gameObject.SetActive(false);
         if (passiveText != null)
             passiveText.text = Localization.Get(card.description);
         if (blockTitle != null)

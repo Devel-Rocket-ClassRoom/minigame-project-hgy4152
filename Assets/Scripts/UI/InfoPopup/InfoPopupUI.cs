@@ -54,15 +54,26 @@ public class InfoPopupUI : MonoBehaviour
     public void ShowCharacter(CharacterDef def)
     {
         SetDebuffSectionVisible(false);
+
+        var charName = Localization.Get(def.DisplayName);
         if (nameText != null)
-            nameText.text = Localization.Get(def.DisplayName);
+            nameText.text = charName;
+        if (passiveTitle != null)
+            passiveTitle.text = $"{Localization.Get("ui_skill_type_passive")} - {charName}";
         if (passiveText != null)
             passiveText.text = Localization.Get(((IDisplayable)def).Description);
+
+        var hasBlock = def.blockData != null;
+        if (blockTitle != null)
+            blockTitle.gameObject.SetActive(hasBlock);
         if (blockText != null)
-        {
-            var hasBlock = def.blockData != null;
             blockText.gameObject.SetActive(hasBlock);
-            if (hasBlock)
+        if (hasBlock)
+        {
+            if (blockTitle != null)
+                blockTitle.text =
+                    $"{Localization.Get("ui_skill_type_block_skill")} - {Localization.Get(def.blockData.displayName)}";
+            if (blockText != null)
                 blockText.text = Localization.Get(def.blockData.description);
         }
         Open();
@@ -71,10 +82,16 @@ public class InfoPopupUI : MonoBehaviour
     public void ShowJoker(JokerCard card)
     {
         SetDebuffSectionVisible(false);
+
+        var cardName = Localization.Get(card.cardName);
         if (nameText != null)
-            nameText.text = Localization.Get(card.cardName);
+            nameText.text = cardName;
+        if (passiveTitle != null)
+            passiveTitle.text = $"{Localization.Get("ui_skill_type_passive")} - {cardName}";
         if (passiveText != null)
             passiveText.text = Localization.Get(card.description);
+        if (blockTitle != null)
+            blockTitle.gameObject.SetActive(false);
         if (blockText != null)
             blockText.gameObject.SetActive(false);
         Open();

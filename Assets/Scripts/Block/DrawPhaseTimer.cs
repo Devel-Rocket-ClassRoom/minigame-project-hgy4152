@@ -55,6 +55,24 @@ public class DrawPhaseTimer : MonoBehaviour
         _phaseCoroutine = null;
     }
 
+    // 보스 플레이 모드: 블록을 즉시 채운 뒤 타이머만 시작
+    public void StartDrawPhaseInstant()
+    {
+        if (_phaseCoroutine != null)
+            StopCoroutine(_phaseCoroutine);
+        blockManager.ResetDiscardCount();
+        blockManager.DrawUntilFull();
+        _phaseCoroutine = StartCoroutine(TimerOnlyRoutine());
+    }
+
+    IEnumerator TimerOnlyRoutine()
+    {
+        _endTime = Time.time + _phaseDuration;
+        yield return new WaitForSeconds(_phaseDuration);
+        _phaseCoroutine = null;
+        EndPhase();
+    }
+
     public void PlayHandNow()
     {
         StopDrawPhase();

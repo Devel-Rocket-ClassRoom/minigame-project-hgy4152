@@ -64,8 +64,12 @@ public class GameManager : MonoBehaviour
     bool _stageClearPending;
     bool _jokerRewardPending;
     bool _isAdventureMode;
+    bool _isBossPlay;
     int _currentTurn;
     int _turnDamageTotal;
+    int _handPlaysThisPhase;
+
+    const int MaxHandsPerPhase = 5;
 
     public bool IsPaused { get; private set; }
     public int TurnDamageTotal => _turnDamageTotal;
@@ -102,6 +106,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _isAdventureMode = string.IsNullOrEmpty(BossPartyContext.BossId);
+        _isBossPlay =
+            !_isAdventureMode && GameStateMachine.Instance?.CurrentState == GameState.BossPlay;
 
         if (!_isAdventureMode)
             InitFromBossContext();
@@ -279,6 +285,7 @@ public class GameManager : MonoBehaviour
     void HandleStageStart(StageManager.StageEntry entry)
     {
         _currentTurn = 0;
+        _handPlaysThisPhase = 0;
         blockManager?.ResetStageDiscardCount();
         characterSet?.NotifyStageStart();
     }
@@ -288,7 +295,9 @@ public class GameManager : MonoBehaviour
         _currentTurn++;
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
-        if (stageIntroUI != null)
+
+        // 어드벤처/기존 보스 모드: TURN n / maxTurns 표시
+        if (!_isBossPlay && stageIntroUI != null)
             yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
 
         if (stageIntroUI != null && bossPatternSystem != null)
@@ -305,7 +314,23 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
-        drawPhaseTimer.StartDrawPhase();
+
+        if (_isBossPlay)
+            drawPhaseTimer.StartDrawPhaseInstant();
+        else
+            drawPhaseTimer.StartDrawPhase();
+    }
+
+    // 보스 플레이 모드: 같은 구간 내 연속 핸드 (연출 없이 즉시 채움)
+    IEnumerator ContinueBossHandRoutine()
+    {
+        _turnDamageTotal = 0;
+        OnTurnDamageChanged?.Invoke(0);
+        drawPhaseTimer.ResetPhaseDuration();
+        blockManager.ResetDiscardLimit();
+        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        drawPhaseTimer.StartDrawPhaseInstant();
+        yield break;
     }
 
     void HandleStageClear(StageManager.StageEntry entry)
@@ -385,7 +410,9 @@ public class GameManager : MonoBehaviour
             bossPatternSystem.PopulatePrevState(judge);
             bossPatternSystem.Inject(judge);
             bossPatternSystem.SnapshotForNextTurn(judge);
-            bossPatternSystem.AdvanceTurn();
+            // 보스 플레이 모드는 HP 구간 돌파 시 PlayGroupSequence에서 AdvanceTurn 호출
+            if (!_isBossPlay)
+                bossPatternSystem.AdvanceTurn();
         }
 
         StartCoroutine(PlayGroupSequence(groups, judge));
@@ -435,10 +462,43 @@ public class GameManager : MonoBehaviour
         }
         else if (boss.IsAlive)
         {
-            if (_currentTurn >= maxTurns)
+            if (_isBossPlay)
+                HandleBossPlayHandResult();
+            else if (_currentTurn >= maxTurns)
                 modeClearUI?.Show(this, Color.red, "ui_game_over");
             else
                 StartCoroutine(StartTurnRoutine());
+        }
+    }
+
+    void HandleBossPlayHandResult()
+    {
+        var pattern = bossPatternSystem?.Current;
+        if (pattern == null || pattern.hpThresholds == null || pattern.hpThresholds.Length == 0)
+        {
+            StartCoroutine(ContinueBossHandRoutine());
+            return;
+        }
+
+        float hpRatio = (float)boss.CurrentHp / boss.MaxHp;
+        int phaseIndex = bossPatternSystem.TurnIndex;
+        bool thresholdCrossed =
+            phaseIndex < pattern.hpThresholds.Length && hpRatio <= pattern.hpThresholds[phaseIndex];
+
+        if (thresholdCrossed)
+        {
+            // 구간 돌파 → 다음 구간 시작
+            _handPlaysThisPhase = 0;
+            bossPatternSystem.AdvanceTurn();
+            StartCoroutine(StartTurnRoutine());
+        }
+        else
+        {
+            _handPlaysThisPhase++;
+            if (_handPlaysThisPhase >= MaxHandsPerPhase)
+                modeClearUI?.Show(this, Color.red, "ui_game_over");
+            else
+                StartCoroutine(ContinueBossHandRoutine());
         }
     }
 

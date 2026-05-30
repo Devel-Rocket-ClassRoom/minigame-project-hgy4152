@@ -15,7 +15,7 @@ MonoBehaviour:
   id: hu1
   displayName: blk_hu1_name
   description: blk_hu1_desc
-  icon: {fileID: -1049604363375316017, guid: 666146c2ef52d4f4a924c4efd793afc9, type: 3}
+  icon: {fileID: 3910253540287811718, guid: 9fca05c7d476f5242a1c652ea6ff4f11, type: 3}
   rarity: 0
   attackPower: 10
   ownerClass: 4

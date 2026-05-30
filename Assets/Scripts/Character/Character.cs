@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
@@ -34,14 +35,26 @@ public abstract class Character : MonoBehaviour
     int[] _perHitDamages;
     EnemyController _target;
 
-    bool _isDashing;
-    float _dashElapsed;
-    Vector3 _dashStart;
-    Vector3 _dashEnd;
+    protected Vector3 _idlePos;
+
+    void Start()
+    {
+        _idlePos = transform.localPosition;
+        StartBreathing();
+    }
+
+    protected void StartBreathing()
+    {
+        transform
+            .DOLocalMoveY(_idlePos.y + 0.03f, 0.5f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
 
     public void PlayAttack(Vector3 targetPos)
     {
         _targetPos = targetPos;
+        DOTween.Kill(transform);
         anim.SetTrigger("Attack");
     }
 
@@ -99,30 +112,25 @@ public abstract class Character : MonoBehaviour
             _target.TakeDamage(_perHitDamages[idx], classColor);
     }
 
-    // Animation Event에서 호출 — _targetPos로 부드럽게 이동
-    // LateUpdate에서 transform을 쓰기 때문에 Idle 호흡 애니메이션(m_PositionCurves)을 덮어쓰는 Animator보다 뒤에서 적용된다
+    // Animation Event에서 호출 — _targetPos로 DOTween으로 이동 후 원위치 복귀
     public void OnChargeStartEvent()
     {
-        _dashStart = transform.localPosition;
-        _dashEnd =
+        Vector3 dashEnd =
             (
                 transform.parent != null
                     ? transform.parent.InverseTransformPoint(_targetPos)
                     : _targetPos
             ) + chargeStopOffset;
-        _dashElapsed = 0f;
-        _isDashing = true;
-    }
 
-    void LateUpdate()
-    {
-        if (!_isDashing)
-            return;
-        _dashElapsed += Time.deltaTime;
-        float t = chargeDuration > 0f ? Mathf.Clamp01(_dashElapsed / chargeDuration) : 1f;
-        transform.localPosition = Vector3.Lerp(_dashStart, _dashEnd, t);
-        if (t >= 1f)
-            _isDashing = false;
+        transform
+            .DOLocalMove(dashEnd, chargeDuration)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+                transform
+                    .DOLocalMove(_idlePos, chargeDuration * 0.5f)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(StartBreathing)
+            );
     }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;

@@ -1,9 +1,37 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PaladinCharacter : Character
 {
+    [SerializeField]
+    float chargeDuration = 0.3f;
+
+    [SerializeField]
+    Vector3 chargeStopOffset;
+
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;
+
+    public void OnChargeStartEvent()
+    {
+        Vector3 dashEnd =
+            (
+                transform.parent != null
+                    ? transform.parent.InverseTransformPoint(_targetPos)
+                    : _targetPos
+            ) + chargeStopOffset;
+        dashEnd.y = _idlePos.y;
+
+        transform
+            .DOLocalMove(dashEnd, chargeDuration)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+                transform
+                    .DOLocalMove(_idlePos, chargeDuration * 0.5f)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(StartBreathing)
+            );
+    }
 
     bool _stageImmunityUsed;
 

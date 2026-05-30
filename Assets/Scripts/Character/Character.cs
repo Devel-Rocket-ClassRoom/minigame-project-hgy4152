@@ -3,13 +3,6 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [Header("=== 돌진 이동 ===")]
-    [SerializeField]
-    float chargeDuration = 0.3f;
-
-    [SerializeField]
-    Vector3 chargeStopOffset;
-
     [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
     [SerializeField]
     Animator anim;
@@ -31,7 +24,7 @@ public abstract class Character : MonoBehaviour
     protected int _chainCount;
     protected float scaleFactor = 1f;
     protected Vector3 _targetPos;
-    int _hitEventIndex;
+    protected int _hitEventIndex;
     int[] _perHitDamages;
     EnemyController _target;
 
@@ -85,7 +78,7 @@ public abstract class Character : MonoBehaviour
     }
 
     // Animation Event에서 호출 — hit 순번에 맞는 Chain 메소드 실행
-    public void OnChainHitEvent()
+    public virtual void OnChainHitEvent()
     {
         _hitEventIndex++;
         if (_hitEventIndex > _chainCount)
@@ -110,27 +103,6 @@ public abstract class Character : MonoBehaviour
         int idx = _hitEventIndex - 1;
         if (_target != null && _perHitDamages != null && idx >= 0 && idx < _perHitDamages.Length)
             _target.TakeDamage(_perHitDamages[idx], classColor);
-    }
-
-    // Animation Event에서 호출 — _targetPos로 DOTween으로 이동 후 원위치 복귀
-    public void OnChargeStartEvent()
-    {
-        Vector3 dashEnd =
-            (
-                transform.parent != null
-                    ? transform.parent.InverseTransformPoint(_targetPos)
-                    : _targetPos
-            ) + chargeStopOffset;
-
-        transform
-            .DOLocalMove(dashEnd, chargeDuration)
-            .SetEase(Ease.OutQuad)
-            .OnComplete(() =>
-                transform
-                    .DOLocalMove(_idlePos, chargeDuration * 0.5f)
-                    .SetEase(Ease.InOutSine)
-                    .OnComplete(StartBreathing)
-            );
     }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;

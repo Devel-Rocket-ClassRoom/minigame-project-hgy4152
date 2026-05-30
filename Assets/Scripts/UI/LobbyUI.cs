@@ -8,10 +8,30 @@ public class LobbyUI : MonoBehaviour
     [SerializeField]
     EncyclopediaUI encyclopediaUI;
 
-    public void OnAdventureClicked() =>
-        GameStateMachine.Instance.TransitionTo(GameState.AdventureReady);
+    [SerializeField]
+    LobbyTransitionEffect transitionEffect;
 
-    public void OnBossModeClicked() => GameStateMachine.Instance.TransitionTo(GameState.BossReady);
+    [SerializeField]
+    RectTransform adventureButton;
+
+    [SerializeField]
+    RectTransform bossModeButton;
+
+    public void OnAdventureClicked()
+    {
+        if (transitionEffect != null)
+            transitionEffect.Play(adventureButton, GameState.AdventureReady);
+        else
+            GameStateMachine.Instance.TransitionTo(GameState.AdventureReady);
+    }
+
+    public void OnBossModeClicked()
+    {
+        if (transitionEffect != null)
+            transitionEffect.Play(bossModeButton, GameState.BossReady);
+        else
+            GameStateMachine.Instance.TransitionTo(GameState.BossReady);
+    }
 
     public void OnSettingClicked()
     {

@@ -1208,6 +1208,7 @@ MonoBehaviour:
   saveManager: {fileID: 1567787298}
   saveSlotPickerUI: {fileID: 2010759400}
   confirmDialog: {fileID: 558488645}
+  debugBossData: {fileID: 0}
   maxTurns: 5
   stageClearDisplayDuration: 1.5
   perGroupDelay: 0.8
@@ -16037,7 +16038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3432177158952747303, guid: 065f70c2a794fba4f81db1aee3fa675a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 480.3909
+      value: 480.39087
       objectReference: {fileID: 0}
     - target: {fileID: 3432177158952747303, guid: 065f70c2a794fba4f81db1aee3fa675a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -17401,9 +17402,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSet
   characterDefs:
-  - {fileID: 11400000, guid: 2d3f5ea1a2ed7354085f21ad8ba6e4e6, type: 2}
-  - {fileID: 11400000, guid: 1581195a95883dd41ab9c8918d8300c5, type: 2}
-  - {fileID: 11400000, guid: 4ac2093cab3a8494b9c3e4ffa9ca6c4c, type: 2}
+  - {fileID: 11400000, guid: 91cb2823a48610042bb1e99daa0df188, type: 2}
+  - {fileID: 11400000, guid: 0a6983fa42b58c742bd36551fc366ba8, type: 2}
+  - {fileID: 11400000, guid: 50852183176f5a9498f994721da270ea, type: 2}
   blockHand: {fileID: 2022750320}
   heroSlots:
   - {fileID: 969158368}

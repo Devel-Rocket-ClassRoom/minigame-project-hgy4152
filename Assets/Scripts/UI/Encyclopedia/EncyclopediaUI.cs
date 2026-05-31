@@ -13,6 +13,15 @@ public class EncyclopediaUI : MonoBehaviour
     [SerializeField]
     EncyclopediaPanelUI panelPrefab;
 
+    [SerializeField]
+    InfoPopupUI infoPopup;
+
+    [SerializeField]
+    UnityEngine.UI.Image backgroundImage;
+
+    [SerializeField]
+    GameObject backgroundIcon;
+
     [Header("Tab Contents (ScrollView Content)")]
     [SerializeField]
     Transform characterContent;
@@ -52,13 +61,23 @@ public class EncyclopediaUI : MonoBehaviour
     {
         if (panel != null)
             panel.SetActive(true);
+        if (backgroundImage != null)
+            backgroundImage.enabled = true;
+        if (backgroundIcon != null)
+            backgroundIcon.SetActive(true);
         ShowTab(0);
     }
 
     public void Close()
     {
+        if (infoPopup != null)
+            infoPopup.HideImmediate();
         if (panel != null)
             panel.SetActive(false);
+        if (backgroundImage != null)
+            backgroundImage.enabled = false;
+        if (backgroundIcon != null)
+            backgroundIcon.SetActive(false);
     }
 
     public void ShowTab(int index)
@@ -114,12 +133,17 @@ public class EncyclopediaUI : MonoBehaviour
                 p.SetHeader(ct.ToString());
                 _charPanels[ct.ToString()] = p;
                 foreach (var def in defs)
+                {
+                    bool unlocked = UnlockManager.IsCharacterUnlocked(def.id);
+                    var captured = def;
+                    Action onClick =
+                        infoPopup == null ? null
+                        : unlocked ? () => infoPopup.ShowCharacter(captured)
+                        : () =>
+                            infoPopup.ShowLocked(captured.unlockConditions, captured.prefab.Icon);
                     Instantiate(slotPrefab, p.Grid)
-                        .Setup(
-                            def.prefab.Icon,
-                            def.displayName,
-                            UnlockManager.IsCharacterUnlocked(def.id)
-                        );
+                        .Setup(def.prefab.Icon, def.displayName, unlocked, onClick);
+                }
             }
         }
 
@@ -144,15 +168,25 @@ public class EncyclopediaUI : MonoBehaviour
                 p.SetHeader(r.ToString());
                 _jokerPanels[r.ToString()] = p;
                 foreach (var j in jokers)
-                    Instantiate(slotPrefab, p.Grid)
-                        .Setup(j.icon, j.cardName, UnlockManager.IsJokerUnlocked(j.id));
+                {
+                    bool unlocked = UnlockManager.IsJokerUnlocked(j.id);
+                    var captured = j;
+                    Action onClick =
+                        infoPopup == null ? null
+                        : unlocked ? () => infoPopup.ShowJoker(captured)
+                        : () => infoPopup.ShowLocked(captured.unlockConditions, captured.icon);
+                    Instantiate(slotPrefab, p.Grid).Setup(j.icon, j.cardName, unlocked, onClick);
+                }
             }
         }
 
         if (monsterContent != null)
         {
             var byType =
-                new Dictionary<EnemyType, List<(Sprite icon, string nameKey, bool unlocked)>>();
+                new Dictionary<
+                    EnemyType,
+                    List<(Sprite icon, string nameKey, bool unlocked, Action onClick)>
+                >();
 
             if (reg.Enemy != null)
                 foreach (var e in reg.Enemy.All)
@@ -160,8 +194,19 @@ public class EncyclopediaUI : MonoBehaviour
                     if (e == null)
                         continue;
                     if (!byType.TryGetValue(e.enemyType, out var list))
-                        byType[e.enemyType] = list = new List<(Sprite, string, bool)>();
-                    list.Add((e.icon, e.enemyName, UnlockManager.IsEnemyUnlocked(e.id)));
+                        byType[e.enemyType] = list = new List<(Sprite, string, bool, Action)>();
+                    bool unlocked = UnlockManager.IsEnemyUnlocked(e.id);
+                    var captured = e;
+                    list.Add(
+                        (
+                            e.icon,
+                            e.enemyName,
+                            unlocked,
+                            unlocked && infoPopup != null
+                                ? () => infoPopup.ShowEnemy(captured)
+                                : null
+                        )
+                    );
                 }
 
             if (reg.Boss != null)
@@ -170,8 +215,19 @@ public class EncyclopediaUI : MonoBehaviour
                     if (b == null)
                         continue;
                     if (!byType.TryGetValue(b.enemyType, out var list))
-                        byType[b.enemyType] = list = new List<(Sprite, string, bool)>();
-                    list.Add((b.icon, b.bossName, UnlockManager.IsBossUnlocked(b.id)));
+                        byType[b.enemyType] = list = new List<(Sprite, string, bool, Action)>();
+                    bool unlocked = UnlockManager.IsBossUnlocked(b.id);
+                    var captured = b;
+                    list.Add(
+                        (
+                            b.icon,
+                            b.bossName,
+                            unlocked,
+                            unlocked && infoPopup != null
+                                ? () => infoPopup.ShowEnemy(captured)
+                                : null
+                        )
+                    );
                 }
 
             foreach (EnemyType et in Enum.GetValues(typeof(EnemyType)))
@@ -181,8 +237,8 @@ public class EncyclopediaUI : MonoBehaviour
                 var p = Instantiate(panelPrefab, monsterContent);
                 p.SetHeader(et.ToString());
                 _monsterPanels[et.ToString()] = p;
-                foreach (var (icon, nameKey, unlocked) in entries)
-                    Instantiate(slotPrefab, p.Grid).Setup(icon, nameKey, unlocked);
+                foreach (var (icon, nameKey, unlocked, onClick) in entries)
+                    Instantiate(slotPrefab, p.Grid).Setup(icon, nameKey, unlocked, onClick);
             }
         }
     }

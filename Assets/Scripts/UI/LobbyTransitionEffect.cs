@@ -82,21 +82,18 @@ public class LobbyTransitionEffect : MonoBehaviour
             // t=0.3f   : 페이드 시작
             .Append(
                 DOTween.Sequence()
-                    .Insert(0f, characterRoot.DOMoveX(
-                            charWorldStart.x + characterFlyOffset.x,
-                            phase3Duration)
-                        .SetEase(Ease.OutQuad))
                     .Insert(0f, DOTween.To(
                             () => 0f,
                             t => {
+                                float easedT = t * (2f - t); // OutQuad
                                 // Y: y = 2(-xp)^(-1-(1/xp)), xp: -0.05 → -5 매핑
                                 float xp = Mathf.Lerp(-0.05f, -5f, t);
                                 float yFormula = 2f * Mathf.Pow(-xp, -1f - 1f / xp);
-                                var p = characterRoot.position;
-                                p.y = charWorldStart.y
-                                    + characterFlyOffset.y * t
-                                    + characterArcHeight * (yFormula / 2f);
-                                characterRoot.position = p;
+                                characterRoot.position = new Vector3(
+                                    charWorldStart.x + characterFlyOffset.x * easedT,
+                                    charWorldStart.y + characterFlyOffset.y * t + characterArcHeight * (yFormula / 2f),
+                                    charWorldStart.z
+                                );
                             },
                             1f,
                             phase3Duration)

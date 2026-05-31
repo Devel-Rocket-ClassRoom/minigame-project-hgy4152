@@ -13,7 +13,19 @@ ui_mode_clear,모드 클리어
 ui_game_over,게임 오버
 ui_confirm_overwrite,"슬롯 {0} 덮어쓸까요?"
 ui_skill_type_passive,패시브
-ui_skill_type_block_skill,블럭스킬
+ui_skill_type_block_skill,블럭 스킬
+ui_info_effect,효과
+ui_info_turn_skill,턴 스킬
+ui_info_turn_suffix,턴
+ui_unlock_cond_adventureclear,모험 {0}회 클리어
+ui_unlock_cond_bossmodeclear,보스 모드 {0}회 클리어
+ui_unlock_cond_chain1used,1연쇄 {0}회 달성
+ui_unlock_cond_chain2used,2연쇄 {0}회 달성
+ui_unlock_cond_chain3used,3연쇄 {0}회 달성
+ui_unlock_cond_blocksdiscarded,블럭 {0}회 버리기
+ui_unlock_cond_unlockedjokercount,조커 {0}개 해금
+ui_unlock_cond_unlockedcharactercount,영웅 {0}명 해금
+ui_unlock_cond_clearwithclass,{0} {1}회 클리어
 ui_rarity_common,일반
 ui_rarity_rare,희귀
 ui_rarity_epic,에픽

@@ -22,7 +22,7 @@ public class BossUI : MonoBehaviour
             return;
         boss.OnHpChanged += HandleHpChanged;
 
-        var gm = FindObjectOfType<GameManager>();
+        var gm = FindAnyObjectByType<GameManager>();
         if (gm != null)
             gm.OnTurnDamageChanged += HandleTurnDamageChanged;
     }
@@ -33,7 +33,7 @@ public class BossUI : MonoBehaviour
             return;
         boss.OnHpChanged -= HandleHpChanged;
 
-        var gm = FindObjectOfType<GameManager>();
+        var gm = FindAnyObjectByType<GameManager>();
         if (gm != null)
             gm.OnTurnDamageChanged -= HandleTurnDamageChanged;
     }

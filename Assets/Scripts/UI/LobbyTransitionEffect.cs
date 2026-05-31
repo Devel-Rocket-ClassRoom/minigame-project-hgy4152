@@ -30,7 +30,8 @@ public class LobbyTransitionEffect : MonoBehaviour
     [SerializeField] float characterShakeAmount = 15f;
     [SerializeField] Vector2 arcPeakOffset = new Vector2(-80f, 250f);
     [SerializeField] Vector2 arcEndOffset = new Vector2(-300f, -200f);
-    [SerializeField] Vector2 characterFlyOffset = new Vector2(-150f, 100f);
+    [SerializeField] float characterFlyTargetX = 0f;
+    [SerializeField] float characterFlyOffsetY = 100f;
     [SerializeField] float characterArcHeight = 80f;
     [SerializeField] float characterFlyRotation = 60f;
 
@@ -83,7 +84,7 @@ public class LobbyTransitionEffect : MonoBehaviour
             .Append(
                 DOTween.Sequence()
                     .Insert(0f, characterRoot.DOMoveX(
-                            charWorldStart.x + characterFlyOffset.x,
+                            charWorldStart.x - characterFlyTargetX,
                             phase3Duration)
                         .SetEase(Ease.OutQuad))
                     .Insert(0f, DOTween.To(
@@ -94,7 +95,7 @@ public class LobbyTransitionEffect : MonoBehaviour
                                 float yFormula = 2f * Mathf.Pow(-xp, -1f - 1f / xp);
                                 var p = characterRoot.position;
                                 p.y = charWorldStart.y
-                                    + characterFlyOffset.y * t
+                                    + characterFlyOffsetY * t
                                     + characterArcHeight * (yFormula / 2f);
                                 characterRoot.position = p;
                             },

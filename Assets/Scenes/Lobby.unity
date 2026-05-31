@@ -3324,13 +3324,14 @@ MonoBehaviour:
   phase1Duration: 0.6
   phase2Duration: 1.2
   phase3Duration: 0.8
-  fadeDuration: 0.7
+  fadeDuration: 0.9
   buttonShakeStrength: 14
   characterShakeAmount: 15
-  arcPeakOffset: {x: -80, y: 250}
-  arcEndOffset: {x: -300, y: -200}
-  characterFlyOffset: {x: -150, y: 30}
-  characterArcHeight: 80
+  arcPeakOffset: {x: -80, y: 800}
+  arcEndOffset: {x: -700, y: -200}
+  characterFlyTargetX: 500
+  characterFlyOffsetY: 120
+  characterArcHeight: 200
   characterFlyRotation: 30
 --- !u!1 &1283976557
 GameObject:

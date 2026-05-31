@@ -30,7 +30,8 @@ public class LobbyTransitionEffect : MonoBehaviour
     [SerializeField] float characterShakeAmount = 15f;
     [SerializeField] Vector2 arcPeakOffset = new Vector2(-80f, 250f);
     [SerializeField] Vector2 arcEndOffset = new Vector2(-300f, -200f);
-    [SerializeField] Vector2 characterFlyOffset = new Vector2(-150f, 100f);
+    [SerializeField] float characterFlyTargetX = 0f;
+    [SerializeField] float characterFlyOffsetY = 100f;
     [SerializeField] float characterArcHeight = 80f;
     [SerializeField] float characterFlyRotation = 60f;
 
@@ -82,18 +83,21 @@ public class LobbyTransitionEffect : MonoBehaviour
             // t=0.3f   : 페이드 시작
             .Append(
                 DOTween.Sequence()
+                    .Insert(0f, characterRoot.DOMoveX(
+                            charWorldStart.x - characterFlyTargetX,
+                            phase3Duration)
+                        .SetEase(Ease.OutQuad))
                     .Insert(0f, DOTween.To(
                             () => 0f,
                             t => {
-                                float easedT = t * (2f - t); // OutQuad
                                 // Y: y = 2(-xp)^(-1-(1/xp)), xp: -0.05 → -5 매핑
                                 float xp = Mathf.Lerp(-0.05f, -5f, t);
                                 float yFormula = 2f * Mathf.Pow(-xp, -1f - 1f / xp);
-                                characterRoot.position = new Vector3(
-                                    charWorldStart.x + characterFlyOffset.x * easedT,
-                                    charWorldStart.y + characterFlyOffset.y * t + characterArcHeight * (yFormula / 2f),
-                                    charWorldStart.z
-                                );
+                                var p = characterRoot.position;
+                                p.y = charWorldStart.y
+                                    + characterFlyOffsetY * t
+                                    + characterArcHeight * (yFormula / 2f);
+                                characterRoot.position = p;
                             },
                             1f,
                             phase3Duration)

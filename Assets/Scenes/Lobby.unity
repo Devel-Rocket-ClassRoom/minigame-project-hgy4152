@@ -3167,7 +3167,8 @@ MonoBehaviour:
   arcPeakOffset: {x: -80, y: 800}
   arcEndOffset: {x: -700, y: -200}
   characterFlyTargetX: 500
-  characterArcHeight: 200
+  characterArcHeight: 220
+  characterLandingYOffset: 100
   characterFlyRotation: 30
 --- !u!1 &1283976557
 GameObject:

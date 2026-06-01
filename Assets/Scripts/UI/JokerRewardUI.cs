@@ -48,6 +48,9 @@ public class JokerRewardUI : MonoBehaviour
     Button swapConfirmButton;
 
     [SerializeField]
+    Button cancelButton;
+
+    [SerializeField]
     JokerCardHandUI jokerHandUI;
 
     JokerCard[] _offered = new JokerCard[3];
@@ -82,6 +85,7 @@ public class JokerRewardUI : MonoBehaviour
                 ConfirmPick(_selectedIdx);
         });
         swapConfirmButton?.onClick.AddListener(ConfirmSwap);
+        cancelButton?.onClick.AddListener(CancelSwap);
     }
 
     public void Show()
@@ -180,6 +184,25 @@ public class JokerRewardUI : MonoBehaviour
             swapPromptPanel?.SetActive(true);
             jokerHandUI?.EnterSwapMode();
         }
+    }
+
+    void CancelSwap()
+    {
+        jokerHandUI?.ExitSwapMode();
+        swapPromptPanel?.SetActive(false);
+        _pendingSwapCard = null;
+
+        for (int i = 0; i < 3; i++)
+        {
+            bool valid = i < _offered.Length && _offered[i] != null;
+            cardButtons[i].gameObject.SetActive(valid);
+            if (selectFrames[i] != null)
+                selectFrames[i].enabled = false;
+        }
+        tooltipPanel.gameObject.SetActive(false);
+        panel.SetActive(true);
+        skipButton.gameObject.SetActive(true);
+        confirmButton?.gameObject.SetActive(true);
     }
 
     void ConfirmSwap()

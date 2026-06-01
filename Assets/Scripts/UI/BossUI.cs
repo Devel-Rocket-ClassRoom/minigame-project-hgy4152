@@ -49,6 +49,6 @@ public class BossUI : MonoBehaviour
     void HandleTurnDamageChanged(int total)
     {
         if (turnDamageText != null)
-            turnDamageText.text = $"{Localization.Get("ui_turn_damage_label")}: {total}";
+            turnDamageText.text = $"{total} damage!!";
     }
 }

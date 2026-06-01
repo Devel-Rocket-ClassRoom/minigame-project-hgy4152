@@ -32,6 +32,7 @@ public class LobbyTransitionEffect : MonoBehaviour
     [SerializeField] Vector2 arcEndOffset = new Vector2(-300f, -200f);
     [SerializeField] float characterFlyTargetX = 0f;
     [SerializeField] float characterArcHeight = 80f;
+    [SerializeField] float characterLandingYOffset = 50f;
     [SerializeField] float characterFlyRotation = 60f;
 
     bool _isPlaying;
@@ -75,11 +76,6 @@ public class LobbyTransitionEffect : MonoBehaviour
                     })
             )
             // Phase 3: 포물선 날아가기 + 캐릭터 날아가기 + 페이드
-            // t=0      : 캐릭터 Y 이동 + 회전 시작
-            // t=0.1f   : 캐릭터 X 이동 시작
-            // t=0.2f   : 버튼 arcPeak 상승 시작
-            // t=0.2f + phase3Duration*0.4f : 버튼 arcEnd 낙하
-            // t=0.3f   : 페이드 시작
             .Append(
                 DOTween.Sequence()
                     .Insert(0f, characterRoot.DOMoveX(
@@ -89,7 +85,7 @@ public class LobbyTransitionEffect : MonoBehaviour
                     .Insert(0f, DOTween.To(
                             () => 0f,
                             t => {
-                                float arc = characterArcHeight * 4f * t * (1f - t);
+                                float arc = characterArcHeight * 4f * t * (1f - t) + characterLandingYOffset * t;
                                 var p = characterRoot.position;
                                 p.y = charWorldStart.y + arc;
                                 characterRoot.position = p;

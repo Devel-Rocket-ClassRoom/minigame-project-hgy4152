@@ -69,6 +69,8 @@ public class JokerRewardUI : MonoBehaviour
             confirmButton.gameObject.SetActive(false);
         if (swapPromptPanel != null)
             swapPromptPanel.SetActive(false);
+        if (cancelButton != null)
+            cancelButton.gameObject.SetActive(false);
     }
 
     void Start()
@@ -182,6 +184,7 @@ public class JokerRewardUI : MonoBehaviour
                 swapNewCardImage.sprite = card.icon;
             }
             swapPromptPanel?.SetActive(true);
+            cancelButton?.gameObject.SetActive(true);
             jokerHandUI?.EnterSwapMode();
         }
     }
@@ -190,6 +193,7 @@ public class JokerRewardUI : MonoBehaviour
     {
         jokerHandUI?.ExitSwapMode();
         swapPromptPanel?.SetActive(false);
+        cancelButton?.gameObject.SetActive(false);
         _pendingSwapCard = null;
 
         for (int i = 0; i < 3; i++)
@@ -213,6 +217,7 @@ public class JokerRewardUI : MonoBehaviour
         int selectedSlot = jokerHandUI.SelectedSlotIndex;
         jokerHandUI.ExitSwapMode();
         swapPromptPanel?.SetActive(false);
+        cancelButton?.gameObject.SetActive(false);
 
         jokerManager.SetCard(selectedSlot, _pendingSwapCard);
         _pendingSwapCard = null;

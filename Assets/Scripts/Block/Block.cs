@@ -176,6 +176,8 @@ public class Block : MonoBehaviour
         spriteGO.transform.SetParent(transform, false);
         var img = spriteGO.AddComponent<Image>();
         Stretch(img.rectTransform);
+        img.rectTransform.offsetMin = new Vector2(10, 10);
+        img.rectTransform.offsetMax = new Vector2(-10, -10);
         return img;
     }
 

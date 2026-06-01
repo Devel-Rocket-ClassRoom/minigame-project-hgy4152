@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 0}
   chainGroupId: -1
+  backgroundSprite: {fileID: 21300000, guid: ff996b4f2744d48d1b844bf2fe4f9204, type: 3}
 --- !u!114 &-7263277020916753052
 MonoBehaviour:
   m_ObjectHideFlags: 0

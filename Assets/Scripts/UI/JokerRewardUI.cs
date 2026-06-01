@@ -33,16 +33,26 @@ public class JokerRewardUI : MonoBehaviour
     GameManager gameManager;
 
     [SerializeField]
-    CardSwapUI cardSwapUI;
-
-    [SerializeField]
     Button skipButton;
 
     [SerializeField]
     Button confirmButton;
 
+    [SerializeField]
+    GameObject swapPromptPanel;
+
+    [SerializeField]
+    Image swapNewCardImage;
+
+    [SerializeField]
+    Button swapConfirmButton;
+
+    [SerializeField]
+    JokerCardHandUI jokerHandUI;
+
     JokerCard[] _offered = new JokerCard[3];
     int _selectedIdx = -1;
+    JokerCard _pendingSwapCard;
 
     void Awake()
     {
@@ -54,6 +64,8 @@ public class JokerRewardUI : MonoBehaviour
             skipButton.gameObject.SetActive(false);
         if (confirmButton != null)
             confirmButton.gameObject.SetActive(false);
+        if (swapPromptPanel != null)
+            swapPromptPanel.SetActive(false);
     }
 
     void Start()
@@ -69,6 +81,7 @@ public class JokerRewardUI : MonoBehaviour
             if (_selectedIdx >= 0)
                 ConfirmPick(_selectedIdx);
         });
+        swapConfirmButton?.onClick.AddListener(ConfirmSwap);
     }
 
     public void Show()
@@ -158,16 +171,29 @@ public class JokerRewardUI : MonoBehaviour
         }
         else
         {
-            cardSwapUI.Show(
-                jokerManager.ActiveHand,
-                card,
-                pickedSlot =>
-                {
-                    jokerManager.SetCard(pickedSlot, card);
-                    FinishReward();
-                }
-            );
+            _pendingSwapCard = card;
+            if (swapNewCardImage != null)
+            {
+                swapNewCardImage.enabled = true;
+                swapNewCardImage.sprite = card.icon;
+            }
+            swapPromptPanel?.SetActive(true);
+            jokerHandUI?.EnterSwapMode();
         }
+    }
+
+    void ConfirmSwap()
+    {
+        if (jokerHandUI == null || jokerHandUI.SelectedSlotIndex < 0)
+            return;
+
+        int selectedSlot = jokerHandUI.SelectedSlotIndex;
+        jokerHandUI.ExitSwapMode();
+        swapPromptPanel?.SetActive(false);
+
+        jokerManager.SetCard(selectedSlot, _pendingSwapCard);
+        _pendingSwapCard = null;
+        FinishReward();
     }
 
     public void Skip()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,12 @@ public class JokerCardSlotUI : MonoBehaviour
     [SerializeField]
     InfoPopupUI infoPopup;
 
+    [SerializeField]
+    Image selectHighlight;
+
     JokerCard _card;
+    bool _swapMode;
+    Action<JokerCardSlotUI> _swapClickCallback;
 
     void Awake()
     {
@@ -20,6 +26,8 @@ public class JokerCardSlotUI : MonoBehaviour
             button = GetComponent<Button>();
         if (button != null)
             button.onClick.AddListener(OnClicked);
+        if (selectHighlight != null)
+            selectHighlight.enabled = false;
     }
 
     public void Refresh(JokerCard card)
@@ -42,8 +50,37 @@ public class JokerCardSlotUI : MonoBehaviour
         icon.sprite = card.icon;
     }
 
+    public void EnterSwapMode(Action<JokerCardSlotUI> onClicked)
+    {
+        _swapMode = true;
+        _swapClickCallback = onClicked;
+        if (selectHighlight != null)
+            selectHighlight.enabled = false;
+    }
+
+    public void ExitSwapMode()
+    {
+        _swapMode = false;
+        _swapClickCallback = null;
+        if (selectHighlight != null)
+            selectHighlight.enabled = false;
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (selectHighlight != null)
+            selectHighlight.enabled = selected;
+    }
+
     void OnClicked()
     {
+        if (_swapMode)
+        {
+            _swapClickCallback?.Invoke(this);
+            if (_card != null && infoPopup != null)
+                infoPopup.ShowJoker(_card);
+            return;
+        }
         if (_card == null || infoPopup == null)
             return;
         infoPopup.ShowJoker(_card);

@@ -1,8 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SaveSlotInfoPanel : MonoBehaviour
 {
+    [SerializeField]
+    TMP_Text titleText;
+
     [SerializeField]
     Button backdropButton;
 
@@ -19,8 +23,10 @@ public class SaveSlotInfoPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Show(SaveSlotData data)
+    public void Show(SaveSlotData data, string title)
     {
+        if (titleText != null)
+            titleText.text = title;
         backdropButton.gameObject.SetActive(true);
         var reg = TableRegistry.Instance;
 
@@ -47,10 +53,10 @@ public class SaveSlotInfoPanel : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Hide() 
-    { 
+    public void Hide()
+    {
         backdropButton?.gameObject.SetActive(false);
-        gameObject.SetActive(false); 
+        gameObject.SetActive(false);
     }
 
     static void SetIcon(Image img, Sprite sprite)

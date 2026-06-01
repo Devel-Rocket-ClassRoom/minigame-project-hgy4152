@@ -155,7 +155,12 @@ public class BossReadyUI : MonoBehaviour
         GameStateMachine.Instance.TransitionTo(GameState.BossPlay);
     }
 
-    private void OnSlotInfoRequested(SaveSlotData data) => saveSlotInfoPanel?.Show(data);
+    private void OnSlotInfoRequested(SaveSlotData data)
+    {
+        var entry = saveSlotList[saveSlotIndex];
+        var title = $"{Localization.Get("ui_save_slot_label")} {entry.slotIndex + 1}";
+        saveSlotInfoPanel?.Show(data, title);
+    }
 
     private void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);
 }

@@ -27,7 +27,7 @@ public class JokerCardSlotUI : MonoBehaviour
         if (button != null)
             button.onClick.AddListener(OnClicked);
         if (selectHighlight != null)
-            selectHighlight.enabled = false;
+            selectHighlight.gameObject.SetActive(false);
     }
 
     public void Refresh(JokerCard card)
@@ -55,7 +55,7 @@ public class JokerCardSlotUI : MonoBehaviour
         _swapMode = true;
         _swapClickCallback = onClicked;
         if (selectHighlight != null)
-            selectHighlight.enabled = false;
+            selectHighlight.gameObject.SetActive(false);
     }
 
     public void ExitSwapMode()
@@ -63,13 +63,13 @@ public class JokerCardSlotUI : MonoBehaviour
         _swapMode = false;
         _swapClickCallback = null;
         if (selectHighlight != null)
-            selectHighlight.enabled = false;
+            selectHighlight.gameObject.SetActive(false);
     }
 
     public void SetSelected(bool selected)
     {
         if (selectHighlight != null)
-            selectHighlight.enabled = selected;
+            selectHighlight.gameObject.SetActive(selected);
     }
 
     void OnClicked()

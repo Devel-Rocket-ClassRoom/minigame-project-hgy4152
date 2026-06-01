@@ -28,6 +28,9 @@ public class EnemyController : MonoBehaviour
     EnemyData _enemyData;
     BossData _bossData;
 
+    Canvas _canvas;
+    Camera _uiCamera;
+
     int currentHp;
 
     public int CurrentHp => currentHp;
@@ -43,6 +46,39 @@ public class EnemyController : MonoBehaviour
         currentHp = maxHp;
         if (enemyPortraitButton != null)
             enemyPortraitButton.onClick.AddListener(OnPortraitClicked);
+
+        if (damageSpawnRoot != null)
+        {
+            _canvas = damageSpawnRoot.GetComponentInParent<Canvas>();
+            if (_canvas != null)
+                _uiCamera =
+                    _canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                        ? null
+                        : _canvas.worldCamera;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (enemySprite == null || damageSpawnRoot == null || _canvas == null)
+            return;
+
+        Bounds bounds = enemySprite.bounds;
+        Vector3 worldTop = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
+
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(_uiCamera, worldTop);
+
+        if (
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)damageSpawnRoot.parent,
+                screenPoint,
+                _uiCamera,
+                out Vector2 localPoint
+            )
+        )
+        {
+            damageSpawnRoot.localPosition = localPoint;
+        }
     }
 
     protected virtual void Start()

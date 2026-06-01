@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     ConfirmDialogUI confirmDialog;
 
+    [SerializeField]
+    GameObject totalDmgObject;
+
     [Header("Debug (씬 직접 실행 시)")]
     [SerializeField]
     BossData debugBossData;
@@ -107,6 +110,9 @@ public class GameManager : MonoBehaviour
     {
         _turnDamageTotal += amount;
         OnTurnDamageChanged?.Invoke(_turnDamageTotal);
+
+        if (totalDmgObject != null && !totalDmgObject.activeSelf)
+            totalDmgObject.SetActive(true);
     }
 
     void Start()
@@ -311,6 +317,7 @@ public class GameManager : MonoBehaviour
         _currentTurn++;
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
+        totalDmgObject?.SetActive(false);
 
         // 어드벤처/기존 보스 모드: TURN n / maxTurns 표시
         if (!_isBossPlay && stageIntroUI != null)
@@ -343,6 +350,7 @@ public class GameManager : MonoBehaviour
         OnHandPlayCountChanged?.Invoke(_handPlaysThisPhase + 1, MaxHandsPerPhase);
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
+        totalDmgObject?.SetActive(false);
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
@@ -551,6 +559,7 @@ public class GameManager : MonoBehaviour
         // 연출 후 다음 핸드 즉시 시작 (보스 루틴 재표시 없음)
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
+        totalDmgObject?.SetActive(false);
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);

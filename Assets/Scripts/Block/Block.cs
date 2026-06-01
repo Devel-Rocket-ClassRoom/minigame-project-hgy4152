@@ -160,6 +160,7 @@ public class Block : MonoBehaviour
         bgGO.transform.localScale = Vector3.one * 1.1f;
         var img = bgGO.AddComponent<Image>();
         img.sprite = _whiteSprite;
+        Stretch(img.rectTransform);
         return img;
     }
 
@@ -167,6 +168,16 @@ public class Block : MonoBehaviour
     {
         var spriteGO = new GameObject("SpriteImage");
         spriteGO.transform.SetParent(transform, false);
-        return spriteGO.AddComponent<Image>();
+        var img = spriteGO.AddComponent<Image>();
+        Stretch(img.rectTransform);
+        return img;
+    }
+
+    static void Stretch(RectTransform rt)
+    {
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
     }
 }

@@ -8,6 +8,9 @@ public class Block : MonoBehaviour
     public BlockData data;
     public int chainGroupId = -1;
 
+    [SerializeField]
+    Sprite backgroundSprite;
+
     Image _sprite;
     Image _background;
 
@@ -147,19 +150,22 @@ public class Block : MonoBehaviour
 
     Image CreateBackground()
     {
-        if (_whiteSprite == null)
+        if (backgroundSprite == null)
         {
-            var tex = new Texture2D(1, 1);
-            tex.SetPixel(0, 0, Color.white);
-            tex.Apply();
-            _whiteSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 1f);
+            if (_whiteSprite == null)
+            {
+                var tex = new Texture2D(1, 1);
+                tex.SetPixel(0, 0, Color.white);
+                tex.Apply();
+                _whiteSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 1f);
+            }
         }
 
         var bgGO = new GameObject("Background");
         bgGO.transform.SetParent(transform, false);
         bgGO.transform.localScale = Vector3.one * 1.1f;
         var img = bgGO.AddComponent<Image>();
-        img.sprite = _whiteSprite;
+        img.sprite = backgroundSprite != null ? backgroundSprite : _whiteSprite;
         Stretch(img.rectTransform);
         return img;
     }

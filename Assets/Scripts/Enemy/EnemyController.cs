@@ -60,24 +60,47 @@ public class EnemyController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (enemySprite == null || damageSpawnRoot == null || _canvas == null)
+        if (_canvas == null)
             return;
 
-        Bounds bounds = enemySprite.bounds;
-        Vector3 worldTop = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
-
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(_uiCamera, worldTop);
-
-        if (
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)damageSpawnRoot.parent,
-                screenPoint,
-                _uiCamera,
-                out Vector2 localPoint
-            )
-        )
+        if (enemySprite != null && damageSpawnRoot != null)
         {
-            damageSpawnRoot.localPosition = localPoint;
+            Bounds bounds = enemySprite.bounds;
+            Vector3 worldTop = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
+
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(_uiCamera, worldTop);
+
+            if (
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    (RectTransform)damageSpawnRoot.parent,
+                    screenPoint,
+                    _uiCamera,
+                    out Vector2 localPoint
+                )
+            )
+            {
+                damageSpawnRoot.localPosition = localPoint;
+            }
+        }
+
+        if (enemyPortraitButton != null)
+        {
+            Vector2 btnScreenPoint = RectTransformUtility.WorldToScreenPoint(
+                _uiCamera,
+                transform.position
+            );
+
+            if (
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    (RectTransform)enemyPortraitButton.transform.parent,
+                    btnScreenPoint,
+                    _uiCamera,
+                    out Vector2 btnLocalPoint
+                )
+            )
+            {
+                ((RectTransform)enemyPortraitButton.transform).localPosition = btnLocalPoint;
+            }
         }
     }
 

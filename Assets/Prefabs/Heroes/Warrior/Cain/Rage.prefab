@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7844308067073258085}
   - component: {fileID: 513761314888045390}
   m_Layer: 0
-  m_Name: ani_saint01_01 1
+  m_Name: Rage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.5, y: -0.5, z: 0}
-  m_LocalScale: {x: 10, y: 5, z: 5}
+  m_LocalScale: {x: 4, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7225935242262425049}
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 843860d25c1d9e04ca67de73deabfea7, type: 3}
-  m_Color: {r: 0.9056604, g: 0.40583837, b: 0.40583837, a: 1}
+  m_Color: {r: 0.9433962, g: 0.20914915, b: 0.20914915, a: 1}
   m_FlipX: 0
   m_FlipY: 1
   m_DrawMode: 0
@@ -129,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1816924701639204131, guid: 521707e813e379047847a2c27030e631, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1816924701639204131, guid: 521707e813e379047847a2c27030e631, type: 3}
       propertyPath: m_LocalScale.y
@@ -141,11 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1816924701639204131, guid: 521707e813e379047847a2c27030e631, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.236
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 1816924701639204131, guid: 521707e813e379047847a2c27030e631, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.62
+      value: -0.496
       objectReference: {fileID: 0}
     - target: {fileID: 1816924701639204131, guid: 521707e813e379047847a2c27030e631, type: 3}
       propertyPath: m_LocalPosition.z

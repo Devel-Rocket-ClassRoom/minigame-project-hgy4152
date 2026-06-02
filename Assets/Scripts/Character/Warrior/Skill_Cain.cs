@@ -1,13 +1,36 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class Skill_Cain : Skill
 {
     [SerializeField]
-    float spawnHeight = 8f;
+    float windupDuration = 0.12f;
 
     [SerializeField]
-    float slamDuration = 0.2f;
+    float arcHeight = 1.5f;
+
+    [SerializeField]
+    float slamDuration = 0.3f;
+
+    [SerializeField]
+    float returnDuration = 0.18f;
+
+    [SerializeField]
+    [Range(0.1f, 0.9f)]
+    float arcPeakRatio = 0.35f;
+
+    [SerializeField]
+    float effectAnimSpeed = 1f;
+
+    [SerializeField]
+    float effectYOffset = 0f;
+
+    Character _character;
+    GameObject _currentEffect;
+    Coroutine _slamCoroutine;
+
+    void Awake() => _character = GetComponent<Character>();
 
     void Update()
     {
@@ -15,55 +38,81 @@ public class Skill_Cain : Skill
             Chain1(testPos, 1f);
 
         if (Input.GetKeyDown(KeyCode.W))
-        {
             Chain1(testPos, 1.5f);
-            Chain2(testPos, 1.5f);
-        }
 
         if (Input.GetKeyDown(KeyCode.E))
-        {
             Chain1(testPos, 2f);
-            Chain2(testPos, 2f);
-            Chain3(testPos, 2f);
-        }
     }
 
-    // 체인별 크기가 다른 강력한 내려찍기
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        Slam(targetPos, scaleFactor * 0.8f);
+        Slam(targetPos, scaleFactor);
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
         Slam(targetPos, scaleFactor);
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        Slam(targetPos, scaleFactor * 1.3f);
+        Slam(targetPos, scaleFactor);
 
     void Slam(Vector3 targetPos, float scale)
     {
-        if (effectPrefab == null)
-            return;
-        Vector3 startPos = targetPos + new Vector3(0, spawnHeight, 0);
-        var go = Instantiate(effectPrefab, startPos, Quaternion.identity);
-        go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(Fall(go, startPos, targetPos));
+        if (_slamCoroutine != null)
+            StopCoroutine(_slamCoroutine);
+        DOTween.Kill(transform);
+        _slamCoroutine = StartCoroutine(SlamRoutine(targetPos, scale));
     }
 
-    IEnumerator Fall(GameObject go, Vector3 start, Vector3 target)
+    IEnumerator SlamRoutine(Vector3 targetPos, float scale)
     {
+        yield return new WaitForSeconds(windupDuration);
+
+        Vector3 startLocal = transform.localPosition;
+        Vector3 targetLocal =
+            transform.parent != null
+                ? transform.parent.InverseTransformPoint(targetPos)
+                : targetPos;
+
         float t = 0f;
         while (t < slamDuration)
         {
             t += Time.deltaTime;
-            if (go == null)
-                yield break;
-            float ratio = t / slamDuration;
-            go.transform.position = Vector3.Lerp(start, target, ratio * ratio);
+            float r = Mathf.Clamp01(t / slamDuration);
+            float x = Mathf.Lerp(startLocal.x, targetLocal.x, r);
+            float y = Mathf.Lerp(startLocal.y, targetLocal.y, r) + 4f * arcHeight * r * (1f - r);
+            transform.localPosition = new Vector3(x, y, startLocal.z);
             yield return null;
         }
-        if (go != null)
+        transform.localPosition = new Vector3(targetLocal.x, targetLocal.y, startLocal.z);
+
+        SpawnImpactEffect(targetPos, scale);
+
+        _slamCoroutine = null;
+        transform
+            .DOLocalMove(_character.IdlePos, returnDuration)
+            .SetTarget(transform)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(_character.StartBreathing);
+    }
+
+    void SpawnImpactEffect(Vector3 pos, float scale)
+    {
+        if (_currentEffect != null)
+            Destroy(_currentEffect);
+
+        if (effectPrefab == null)
+            return;
+
+        var go = Instantiate(effectPrefab, pos + Vector3.up * effectYOffset, Quaternion.identity);
+        Vector3 s = go.transform.localScale;
+        go.transform.localScale = new Vector3(s.x * scale, s.y, s.z);
+        _currentEffect = go;
+
+        var anim = go.GetComponent<Animator>();
+        if (anim != null)
         {
-            go.transform.position = target;
-            Destroy(go, 0.4f);
+            anim.speed = effectAnimSpeed;
+            var clips = anim.runtimeAnimatorController?.animationClips;
+            if (clips != null && clips.Length > 0)
+                Destroy(go, clips[0].length / effectAnimSpeed);
         }
     }
 }

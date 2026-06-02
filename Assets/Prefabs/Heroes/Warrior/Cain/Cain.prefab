@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7980691594592354729
 Transform:
   m_ObjectHideFlags: 0
@@ -124,11 +124,6 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  windupDuration: 0.12
-  jumpHeight: 0.8
-  jumpUpDuration: 0.15
-  slamDownDuration: 0.12
-  returnDuration: 0.18
 --- !u!114 &6254940156344584533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65570dc820e6fa4a92975a077fd40c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::Skill_Cain_PrimalRage
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 1231669734998555890, guid: 3316ad5103bc7bd418be6dc2b892b22b, type: 3}
   target: {fileID: 0}
-  spawnHeight: 8
+  windupDuration: 0.12
+  arcHeight: 3
   slamDuration: 0.2
+  returnDuration: 0.18
+  arcPeakRatio: 0.444
+  effectAnimSpeed: 1.5
+  effectYOffset: 2.5

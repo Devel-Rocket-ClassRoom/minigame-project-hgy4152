@@ -1,12 +1,19 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ArcherCharacter : Character
+public class HikariCharacter : Character
 {
-    [SerializeField] float jumpHeight = 0.5f;
-    [SerializeField] float jumpUpDuration = 0.333f;
-    [SerializeField] float holdPerChain = 0.067f;
-    [SerializeField] float attackAnimDuration = 0.7f;
+    [SerializeField]
+    float jumpHeight = 0.5f;
+
+    [SerializeField]
+    float jumpUpDuration = 0.333f;
+
+    [SerializeField]
+    float holdPerChain = 0.067f;
+
+    [SerializeField]
+    float attackAnimDuration = 0.7f;
 
     public override ClassType Type => ClassType.Archer;
     public override Color classColor => Color.yellow;
@@ -23,12 +30,13 @@ public class ArcherCharacter : Character
 
     void StartJump()
     {
-        float peakY        = _idlePos.y + jumpHeight;
+        float peakY = _idlePos.y + jumpHeight;
         float holdDuration = (_chainCount - 1) * holdPerChain;
-        float lastChainT   = jumpUpDuration + holdDuration;
+        float lastChainT = jumpUpDuration + holdDuration;
         float fallDuration = attackAnimDuration - lastChainT;
 
-        DOTween.Sequence()
+        DOTween
+            .Sequence()
             .Append(transform.DOLocalMoveY(peakY, jumpUpDuration).SetEase(Ease.OutQuad))
             .AppendInterval(holdDuration)
             .Append(transform.DOLocalMoveY(_idlePos.y, fallDuration).SetEase(Ease.InQuad))

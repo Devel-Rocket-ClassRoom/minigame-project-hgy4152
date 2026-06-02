@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2560381821772715435}
   - component: {fileID: 7016182996810529888}
-  - component: {fileID: 4972757418016788864}
   - component: {fileID: 5598690412530539374}
   - component: {fileID: 995628499764311731}
   m_Layer: 0
@@ -94,22 +93,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
---- !u!114 &4972757418016788864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938667083484446728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd6999a00fdb84f4f9748e74f7483486, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ArcherCharacter
-  anim: {fileID: 995628499764311731}
-  creator: {fileID: 5598690412530539374}
-  icon: {fileID: 0}
-  skill: {fileID: 0}
 --- !u!114 &5598690412530539374
 MonoBehaviour:
   m_ObjectHideFlags: 0

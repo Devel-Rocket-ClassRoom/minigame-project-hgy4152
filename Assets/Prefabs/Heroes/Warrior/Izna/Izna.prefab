@@ -125,16 +125,6 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  chain1DashFrac: 0.55
-  chain1Duration: 0.14
-  chain2Height: 0.45
-  chain2XOffset: -0.35
-  chain2Duration: 0.24
-  chain3Height: 0.65
-  chain3UpDuration: 0.14
-  chain3SpinDuration: 0.12
-  chain3DownDuration: 0.13
-  returnDuration: 0.18
 --- !u!114 &4673518779030969003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,10 +137,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6657ad26c638e44485a1baef6a978a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::Skill_Izna_Ilseom
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 8679838621801300080, guid: 9a3607c0a1590d7499d2d876b5cc2f74, type: 3}
   target: {fileID: 0}
   moveDuration: 0.12
-  spawnOffset: 10
+  effectTargetOffset: {x: -1, y: 0, z: 0}
+  chain2EffectAngleOffset: 30
+  chain3EffectPrefab: {fileID: 2044710218291175980, guid: 6f238e7f5b82644439c8082a706e5a8e, type: 3}
+  chain1DashFrac: 1.5
+  chain1Duration: 0.14
+  chain2Height: 5
+  chain2XOffset: -5
+  chain2Duration: 0.5
+  chain3Height: 0.65
+  chain3UpDuration: 0.14
+  chain3SpinDuration: 0.12
+  chain3DownDuration: 0.13
+  returnDuration: 0.18
 --- !u!1 &7804364261563468322
 GameObject:
   m_ObjectHideFlags: 0

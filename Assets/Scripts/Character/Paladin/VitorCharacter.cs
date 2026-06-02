@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class PaladinCharacter : Character
+public class VitorCharacter : Character
 {
     [SerializeField]
     float chargeDuration = 0.3f;

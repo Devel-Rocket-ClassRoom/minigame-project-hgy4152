@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   blockData: {fileID: 11400000, guid: b3c4d5e6f7a2b3c4d5e6f7a2b3c4d5e6, type: 2}
   rarity: 1
-  displayName: "린"
-  passiveName: "급급여율령"
-  description:
+  displayName: chr_pr_rin_name
+  passiveName: chr_pr_rin_passive_name
+  description: chr_pr_rin_desc
   unlockConditions: []

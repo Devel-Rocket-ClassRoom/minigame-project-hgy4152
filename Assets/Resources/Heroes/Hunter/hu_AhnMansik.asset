@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   blockData: {fileID: 11400000, guid: c4d5e6f7a2b3c4d5e6f7a2b3c4d5e6f7, type: 2}
   rarity: 1
-  displayName: "안만식"
-  passiveName: "명령 불복종"
-  description:
+  displayName: chr_hu_ahnmansik_name
+  passiveName: chr_hu_ahnmansik_passive_name
+  description: chr_hu_ahnmansik_desc
   unlockConditions: []

@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 8766581628870014122, guid: 7e9df6f4c69428b40bff214fd438d2a3, type: 3}
   blockData: {fileID: 11400000, guid: 05f2430a6d0dca342886a8f1907824b4, type: 2}
   rarity: 1
-  displayName: "\uAE00\uB80C"
-  passiveName: "\uC559\uAC1A\uC74C"
-  description: 
+  displayName: chr_pa_glen_name
+  passiveName: chr_pa_glen_passive_name
+  description: chr_pa_glen_desc
   unlockConditions: []

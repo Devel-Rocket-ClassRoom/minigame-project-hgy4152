@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   blockData: {fileID: 11400000, guid: f7a2b3c4d5e6f7a2b3c4d5e6f7a2b3c4, type: 2}
   rarity: 1
-  displayName: "야슈톨라"
-  passiveName: "더블 캐스팅"
-  description:
+  displayName: chr_wi_yshtolla_name
+  passiveName: chr_wi_yshtolla_passive_name
+  description: chr_wi_yshtolla_desc
   unlockConditions: []

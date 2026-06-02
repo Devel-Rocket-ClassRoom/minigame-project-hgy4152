@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   blockData: {fileID: 11400000, guid: d5e6f7a2b3c4d5e6f7a2b3c4d5e6f7a2, type: 2}
   rarity: 1
-  displayName: "MK.Q"
-  passiveName: "아티피셜 에이전트"
-  description:
+  displayName: chr_hu_mkq_name
+  passiveName: chr_hu_mkq_passive_name
+  description: chr_hu_mkq_desc
   unlockConditions: []

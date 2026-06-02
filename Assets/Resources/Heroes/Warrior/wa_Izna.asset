@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
+  m_Name: wa_Izna
+  m_EditorClassIdentifier: ChainKnights::CharacterDef
+  id: wa3
+  classType: 1
+  prefab: {fileID: 122657247261990061, guid: cb7df1ab590533a4297c90740c74db1e, type: 3}
+  blockData: {fileID: 11400000, guid: 646edc133bf02914f9d46e3f0030b41e, type: 2}
+  rarity: 1
+  displayName: Izna
+  passiveName: "\uC5F0\uACA9"
+  description: 
+  unlockConditions: []

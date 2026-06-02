@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
+  m_Name: wa_Cain
+  m_EditorClassIdentifier: ChainKnights::CharacterDef
+  id: wa2
+  classType: 1
+  prefab: {fileID: 4536077614581840676, guid: c48e8712de853c941bcdd093410e6be6, type: 3}
+  blockData: {fileID: 11400000, guid: d07ce2aef9163bc46b45dee82caa498a, type: 2}
+  rarity: 1
+  displayName: Cain
+  passiveName: "\uD3ED\uC8FC"
+  description: 
+  unlockConditions: []

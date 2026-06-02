@@ -15,7 +15,7 @@ MonoBehaviour:
   id: pr_selmu
   classType: 5
   prefab: {fileID: 0}
-  blockData: {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
+  blockData: {fileID: 11400000, guid: a2b3c4d5e6f7a2b3c4d5e6f7a2b3c4d5, type: 2}
   rarity: 1
   displayName: "셀뮤"
   passiveName: "성소"

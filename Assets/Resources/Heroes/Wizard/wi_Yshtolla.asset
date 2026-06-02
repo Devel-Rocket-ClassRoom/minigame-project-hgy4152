@@ -15,7 +15,7 @@ MonoBehaviour:
   id: wi_yshtolla
   classType: 6
   prefab: {fileID: 0}
-  blockData: {fileID: 11400000, guid: 4013d144f96505a418d6e31b504df864, type: 2}
+  blockData: {fileID: 11400000, guid: f7a2b3c4d5e6f7a2b3c4d5e6f7a2b3c4, type: 2}
   rarity: 1
   displayName: "야슈톨라"
   passiveName: "더블 캐스팅"

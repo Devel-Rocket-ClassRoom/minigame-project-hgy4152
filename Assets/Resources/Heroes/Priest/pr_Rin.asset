@@ -15,7 +15,7 @@ MonoBehaviour:
   id: pr_rin
   classType: 5
   prefab: {fileID: 0}
-  blockData: {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
+  blockData: {fileID: 11400000, guid: b3c4d5e6f7a2b3c4d5e6f7a2b3c4d5e6, type: 2}
   rarity: 1
   displayName: "린"
   passiveName: "급급여율령"

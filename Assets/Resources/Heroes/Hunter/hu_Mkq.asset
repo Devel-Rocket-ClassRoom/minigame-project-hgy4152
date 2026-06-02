@@ -15,7 +15,7 @@ MonoBehaviour:
   id: hu_mkq
   classType: 4
   prefab: {fileID: 0}
-  blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
+  blockData: {fileID: 11400000, guid: d5e6f7a2b3c4d5e6f7a2b3c4d5e6f7a2, type: 2}
   rarity: 1
   displayName: "MK.Q"
   passiveName: "아티피셜 에이전트"

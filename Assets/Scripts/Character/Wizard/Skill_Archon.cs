@@ -1,25 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Hikari_GustArrow : Skill
+public class Skill_Archon : Skill
 {
     [SerializeField]
-    float moveDuration = 0.2f;
+    float dropHeight = 4f;
+
+    [SerializeField]
+    float dropDuration = 0.1f;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
+        if (Input.GetKeyDown(KeyCode.H))
             Chain1(testPos, 1f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             Chain1(testPos, 1.5f);
             Chain2(testPos, 1.5f);
         }
-
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             Chain1(testPos, 2f);
             Chain2(testPos, 2f);
@@ -28,39 +27,39 @@ public class Skill_Hikari_GustArrow : Skill
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        Thunder(targetPos, scaleFactor);
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        Thunder(targetPos, scaleFactor);
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        Thunder(targetPos, scaleFactor);
 
-    void GustArrow(Vector3 targetPos, float scale)
+    void Thunder(Vector3 targetPos, float scale)
     {
         if (effectPrefab == null)
             return;
-        var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+        Vector3 start = targetPos + new Vector3(0, dropHeight, 0);
+        var go = Instantiate(effectPrefab, start, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(MoveTo(go, targetPos));
+        StartCoroutine(Drop(go, start, targetPos));
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 targetPos)
+    IEnumerator Drop(GameObject go, Vector3 start, Vector3 target)
     {
-        Vector3 start = go.transform.position;
         float t = 0f;
-        while (t < moveDuration)
+        while (t < dropDuration)
         {
             t += Time.deltaTime;
             if (go == null)
                 yield break;
-            go.transform.position = Vector3.Lerp(start, targetPos, t / moveDuration);
+            go.transform.position = Vector3.Lerp(start, target, t / dropDuration);
             yield return null;
         }
         if (go != null)
-            go.transform.position = targetPos;
-
-        yield return null;
-        Destroy(go);
+        {
+            go.transform.position = target;
+            Destroy(go, 0.5f);
+        }
     }
 }

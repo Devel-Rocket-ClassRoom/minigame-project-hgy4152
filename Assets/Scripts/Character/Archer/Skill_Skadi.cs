@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Skadi_GlacialArrow : Skill
+public class Skill_Skadi : Skill
 {
     [SerializeField]
     float moveDuration = 0.18f;

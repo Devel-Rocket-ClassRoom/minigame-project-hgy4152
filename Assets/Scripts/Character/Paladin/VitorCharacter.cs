@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(PaladinCreator))]
+[RequireComponent(typeof(Skill_Victor))]
 public class VitorCharacter : Character
 {
     [SerializeField]
@@ -44,7 +46,7 @@ public class VitorCharacter : Character
         {
             judge.ClearDebuffs();
             _stageImmunityUsed = true;
-            var prefab = (skill as Skill_Victor_HolySlash)?.passiveEffectPrefab;
+            var prefab = (skill as Skill_Victor)?.passiveEffectPrefab;
             if (prefab != null)
             {
                 var go = Instantiate(prefab, transform.position, Quaternion.identity);

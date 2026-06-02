@@ -1,26 +1,32 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Cain_PrimalRage : Skill
+public class Skill_Tirion : Skill
 {
     [SerializeField]
-    float spawnHeight = 8f;
+    GameObject stormEffectPrefab;
 
     [SerializeField]
-    float slamDuration = 0.2f;
+    float spawnHeight = 10f;
+
+    [SerializeField]
+    float fallDuration = 0.2f;
+
+    [SerializeField]
+    float stormDelay = 0.15f;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.J))
             Chain1(testPos, 1f);
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             Chain1(testPos, 1.5f);
             Chain2(testPos, 1.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             Chain1(testPos, 2f);
             Chain2(testPos, 2f);
@@ -28,17 +34,18 @@ public class Skill_Cain_PrimalRage : Skill
         }
     }
 
-    // 체인별 크기가 다른 강력한 내려찍기
+    // 1·2체인: 망치 낙하
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        Slam(targetPos, scaleFactor * 0.8f);
+        DropHammer(targetPos, scaleFactor);
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        Slam(targetPos, scaleFactor);
+        DropHammer(targetPos, scaleFactor);
 
+    // 3체인: 망치 낙하 후 신성폭풍
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        Slam(targetPos, scaleFactor * 1.3f);
+        StartCoroutine(LightsVerdict(targetPos, scaleFactor));
 
-    void Slam(Vector3 targetPos, float scale)
+    void DropHammer(Vector3 targetPos, float scale)
     {
         if (effectPrefab == null)
             return;
@@ -51,12 +58,12 @@ public class Skill_Cain_PrimalRage : Skill
     IEnumerator Fall(GameObject go, Vector3 start, Vector3 target)
     {
         float t = 0f;
-        while (t < slamDuration)
+        while (t < fallDuration)
         {
             t += Time.deltaTime;
             if (go == null)
                 yield break;
-            float ratio = t / slamDuration;
+            float ratio = t / fallDuration;
             go.transform.position = Vector3.Lerp(start, target, ratio * ratio);
             yield return null;
         }
@@ -64,6 +71,19 @@ public class Skill_Cain_PrimalRage : Skill
         {
             go.transform.position = target;
             Destroy(go, 0.4f);
+        }
+    }
+
+    IEnumerator LightsVerdict(Vector3 targetPos, float scaleFactor)
+    {
+        DropHammer(targetPos, scaleFactor);
+        yield return new WaitForSeconds(fallDuration + stormDelay);
+
+        if (stormEffectPrefab != null)
+        {
+            var storm = Instantiate(stormEffectPrefab, targetPos, Quaternion.identity);
+            storm.transform.localScale = Vector3.one * scaleFactor * 1.5f;
+            Destroy(storm, 0.8f);
         }
     }
 }

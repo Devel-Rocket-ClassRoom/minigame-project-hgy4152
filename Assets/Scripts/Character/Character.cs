@@ -4,13 +4,6 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
-    [SerializeField]
-    BlockCreator creator;
-
-    [SerializeField]
-    Sprite icon;
-
     [SerializeField]
     protected Skill skill;
 
@@ -20,8 +13,8 @@ public abstract class Character : MonoBehaviour
 
     public abstract ClassType Type { get; }
     public abstract Color classColor { get; }
-    public BlockCreator Creator => creator;
-    public Sprite Icon => icon;
+    public BlockCreator Creator { get; private set; }
+    public Sprite Icon => GetComponent<SpriteRenderer>().sprite;
 
     protected int _chainCount;
     protected float scaleFactor = 1f;
@@ -32,6 +25,12 @@ public abstract class Character : MonoBehaviour
     Coroutine _hitCoroutine;
 
     protected Vector3 _idlePos;
+
+    void Awake()
+    {
+        skill = GetComponent<Skill>();
+        Creator = GetComponent<BlockCreator>();
+    }
 
     void Start()
     {

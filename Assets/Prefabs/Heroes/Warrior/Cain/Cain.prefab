@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7980691594592354729}
   - component: {fileID: 7191930341488098817}
   - component: {fileID: 7170459436319363533}
-  - component: {fileID: 5730406719011434763}
   - component: {fileID: 4536077614581840676}
   - component: {fileID: 6254940156344584533}
   m_Layer: 0
@@ -109,28 +108,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WarriorCreator
   blockData: {fileID: 0}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
---- !u!95 &5730406719011434763
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4031338080895624230}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4536077614581840676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,10 +120,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1148d3c3f70e7df4992ab3aa8490c2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::CainCharacter
-  anim: {fileID: 0}
   creator: {fileID: 0}
   icon: {fileID: 0}
   skill: {fileID: 0}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
   windupDuration: 0.12
   jumpHeight: 0.8
   jumpUpDuration: 0.15

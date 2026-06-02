@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Skill_Victor_HolySlash : Skill
+public class Skill_Victor : Skill
 {
     [SerializeField]
     float forwardOffset = 2f;

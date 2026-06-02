@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(ArcherCreator))]
+[RequireComponent(typeof(Skill_Hikari))]
 public class HikariCharacter : Character
 {
     [SerializeField]

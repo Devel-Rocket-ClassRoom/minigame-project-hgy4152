@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PriestCreator))]
+[RequireComponent(typeof(Skill_Beatrice))]
 public class BeatriceCharacter : Character
 {
     public override ClassType Type => ClassType.Priest;

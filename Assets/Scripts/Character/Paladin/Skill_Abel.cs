@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Abel_RestPrayer : Skill
+public class Skill_Abel : Skill
 {
     [SerializeField]
     GameObject chargeEffectPrefab;

@@ -1,21 +1,25 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Raven_BulletShot : Skill
+public class Skill_Hikari : Skill
 {
     [SerializeField]
-    float moveDuration = 0.25f;
+    float moveDuration = 0.2f;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.A))
+        {
             Chain1(testPos, 1f);
-        if (Input.GetKeyDown(KeyCode.I))
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
         {
             Chain1(testPos, 1.5f);
             Chain2(testPos, 1.5f);
         }
-        if (Input.GetKeyDown(KeyCode.O))
+
+        if (Input.GetKeyDown(KeyCode.D))
         {
             Chain1(testPos, 2f);
             Chain2(testPos, 2f);
@@ -24,38 +28,39 @@ public class Skill_Raven_BulletShot : Skill
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        Shoot(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor);
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        Shoot(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor);
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        Shoot(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor);
 
-    void Shoot(Vector3 targetPos, float scale)
+    void GustArrow(Vector3 targetPos, float scale)
     {
         if (effectPrefab == null)
             return;
-        Vector3 start = transform.position;
-        Vector3 dir = (targetPos - start).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        var go = Instantiate(effectPrefab, start, Quaternion.Euler(0, 0, angle));
+        var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(MoveTo(go, start, targetPos));
+        StartCoroutine(MoveTo(go, targetPos));
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 start, Vector3 target)
+    IEnumerator MoveTo(GameObject go, Vector3 targetPos)
     {
+        Vector3 start = go.transform.position;
         float t = 0f;
         while (t < moveDuration)
         {
             t += Time.deltaTime;
             if (go == null)
                 yield break;
-            go.transform.position = Vector3.Lerp(start, target, t / moveDuration);
+            go.transform.position = Vector3.Lerp(start, targetPos, t / moveDuration);
             yield return null;
         }
         if (go != null)
-            Destroy(go);
+            go.transform.position = targetPos;
+
+        yield return null;
+        Destroy(go);
     }
 }

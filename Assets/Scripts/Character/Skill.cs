@@ -11,4 +11,6 @@ public abstract class Skill : MonoBehaviour
     public abstract void Chain1(Vector3 targetPos, float scaleFactor);
     public abstract void Chain2(Vector3 targetPos, float scaleFactor);
     public abstract void Chain3(Vector3 targetPos, float scaleFactor);
+
+    public override string ToString() => GetType().Name;
 }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2678377652167271812}
   - component: {fileID: 2321885932259647283}
   - component: {fileID: 6958316044460643392}
-  - component: {fileID: 527706163117221803}
   - component: {fileID: 8766581628870014122}
   - component: {fileID: 6543520622609807899}
   m_Layer: 0
@@ -110,28 +109,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &527706163117221803
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7128670891389879524}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8766581628870014122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,10 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cd716ea80d86942b520d2eaf665b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::AbelCharacter
-  anim: {fileID: 0}
   creator: {fileID: 0}
   icon: {fileID: 0}
   skill: {fileID: 0}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
   chargeDuration: 0.3
   chargeStopOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &6543520622609807899

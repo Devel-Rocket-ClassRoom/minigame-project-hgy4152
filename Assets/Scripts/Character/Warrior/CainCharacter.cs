@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(WarriorCreator))]
+[RequireComponent(typeof(Skill_Cain))]
 public class CainCharacter : Character
 {
     [Header("=== 체인 이동 ===")]

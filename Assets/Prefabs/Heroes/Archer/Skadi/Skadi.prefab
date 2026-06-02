@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 5001583850424985170}
   - component: {fileID: 6251634180056629254}
   - component: {fileID: 793359012085939989}
-  - component: {fileID: 3070124520016828377}
   - component: {fileID: 599632863282659553}
   - component: {fileID: 8311676560468832102}
   m_Layer: 0
@@ -201,28 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArcherCreator
   blockData: {fileID: 0}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
---- !u!95 &3070124520016828377
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8300552277529496078}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &599632863282659553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,10 +212,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f4426c3221fa84382ff8ed32554494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::SkadiCharacter
-  anim: {fileID: 0}
   creator: {fileID: 0}
   icon: {fileID: 0}
   skill: {fileID: 0}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
   jumpHeight: 0.5
   jumpUpDuration: 0.333
   holdPerChain: 0.067

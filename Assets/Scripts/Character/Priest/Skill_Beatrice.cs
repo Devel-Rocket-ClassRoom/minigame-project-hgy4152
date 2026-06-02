@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Skill_Beatrice_Judgement : Skill
+public class Skill_Beatrice : Skill
 {
     void Update()
     {

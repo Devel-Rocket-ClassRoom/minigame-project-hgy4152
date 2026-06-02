@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Faimon_BlazeArrow : Skill
+public class Skill_Faimon : Skill
 {
     [SerializeField]
     GameObject bigEffectPrefab;

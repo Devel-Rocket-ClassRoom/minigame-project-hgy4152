@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(PaladinCreator))]
+[RequireComponent(typeof(Skill_Tirion))]
 public class TirionCharacter : Character
 {
     [SerializeField]

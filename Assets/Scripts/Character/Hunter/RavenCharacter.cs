@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(HunterCreator))]
+[RequireComponent(typeof(Skill_Raven))]
 public class RavenCharacter : Character
 {
     [SerializeField]

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(WizardCreator))]
+[RequireComponent(typeof(Skill_Archon))]
 public class ArchonCharacter : Character
 {
     public override ClassType Type => ClassType.Wizard;

@@ -1,6 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(PaladinCreator))]
+[RequireComponent(typeof(Skill_Abel))]
 public class AbelCharacter : Character
 {
     [SerializeField]

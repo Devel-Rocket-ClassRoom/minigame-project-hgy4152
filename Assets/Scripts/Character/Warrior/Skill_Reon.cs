@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Skill_Reon_Excalibur : Skill
+public class Skill_Reon : Skill
 {
     [SerializeField]
     float spawnOffset = 12f;

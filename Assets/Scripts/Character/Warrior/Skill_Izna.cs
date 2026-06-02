@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Izna_Ilseom : Skill
+public class Skill_Izna : Skill
 {
     [SerializeField]
     float moveDuration = 0.12f;

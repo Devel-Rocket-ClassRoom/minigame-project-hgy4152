@@ -123,4 +123,12 @@ public abstract class Character : MonoBehaviour
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 
     public virtual void OnStageStart() { }
+
+    public virtual void OnAnyGroupDamageApplied(int rawDamage, int finalDamage) { }
+
+    public virtual void OnTurnProcessed(bool wasThisCharacterUsed) { }
+
+    public virtual void OnAfterGroupPlayed(CharacterSet characterSet, ChainGroup group) { }
+
+    public virtual int GetBonusAttackCount(ChainJudge judge, ChainGroup group) => 0;
 }

@@ -38,6 +38,7 @@ public class ChainJudge
     public int[] chainSequence; // 이번 턴 그룹 길이 배열 (등장 순서)
     public int[] prevChainSequence; // 이전 턴 그룹 길이 배열
     public IReadOnlyDictionary<ClassType, int> discardsByClass; // 이번 턴 클래스별 디스카드 수
+    public Dictionary<ClassType, int[]> chainCountByClass = new(); // [0]=1체인 [1]=2체인 [2]=3체인
 
     public void ClearDebuffs()
     {
@@ -71,6 +72,7 @@ public class ChainJudge
             classDistribution[g.DominantClass] =
                 classDistribution.GetValueOrDefault(g.DominantClass) + 1;
 
+            IngestChainCountByClass(g);
             previousClass = g.DominantClass;
         }
     }
@@ -86,6 +88,15 @@ public class ChainJudge
 
         classDistribution[g.DominantClass] =
             classDistribution.GetValueOrDefault(g.DominantClass) + 1;
+
+        IngestChainCountByClass(g);
+    }
+
+    void IngestChainCountByClass(ChainGroup g)
+    {
+        if (!chainCountByClass.ContainsKey(g.DominantClass))
+            chainCountByClass[g.DominantClass] = new int[3];
+        chainCountByClass[g.DominantClass][g.Length - 1]++;
     }
 
     public void IngestHand(System.Collections.Generic.List<Block> hand)

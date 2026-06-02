@@ -1,19 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_Tirion : Skill
+public class Skill_AhnMansik : Skill
 {
     [SerializeField]
-    GameObject stormEffectPrefab;
-
-    [SerializeField]
-    float spawnHeight = 10f;
+    float spawnHeight = 6f;
 
     [SerializeField]
     float fallDuration = 0.2f;
 
     [SerializeField]
-    float stormDelay = 0.15f;
+    float grenadeInterval = 0.12f;
 
     void Update()
     {
@@ -34,25 +31,34 @@ public class Skill_Tirion : Skill
         }
     }
 
-    // 1·2체인: 망치 낙하
+    // 1체인: 수류탄 1개
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        DropHammer(targetPos, scaleFactor);
+        StartCoroutine(ThrowGrenades(targetPos, scaleFactor, 1));
 
+    // 2체인: 수류탄 2개
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        DropHammer(targetPos, scaleFactor);
+        StartCoroutine(ThrowGrenades(targetPos, scaleFactor, 2));
 
-    // 3체인: 망치 낙하 후 신성폭풍
+    // 3체인: 수류탄 3개
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(LightsVerdict(targetPos, scaleFactor));
+        StartCoroutine(ThrowGrenades(targetPos, scaleFactor, 3));
 
-    void DropHammer(Vector3 targetPos, float scale)
+    IEnumerator ThrowGrenades(Vector3 targetPos, float scaleFactor, int count)
     {
         if (effectPrefab == null)
-            return;
-        Vector3 startPos = targetPos + new Vector3(0, spawnHeight, 0);
-        var go = Instantiate(effectPrefab, startPos, Quaternion.identity);
-        go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(Fall(go, startPos, targetPos));
+            yield break;
+
+        for (int i = 0; i < count; i++)
+        {
+            float offsetX = (i - (count - 1) * 0.5f) * 0.4f;
+            Vector3 spawnPos = targetPos + new Vector3(offsetX, spawnHeight, 0f);
+            var go = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
+            go.transform.localScale = Vector3.one * scaleFactor;
+            StartCoroutine(Fall(go, spawnPos, targetPos + new Vector3(offsetX, 0f, 0f)));
+
+            if (i < count - 1)
+                yield return new WaitForSeconds(grenadeInterval);
+        }
     }
 
     IEnumerator Fall(GameObject go, Vector3 start, Vector3 target)
@@ -71,19 +77,6 @@ public class Skill_Tirion : Skill
         {
             go.transform.position = target;
             Destroy(go, 0.4f);
-        }
-    }
-
-    IEnumerator LightsVerdict(Vector3 targetPos, float scaleFactor)
-    {
-        DropHammer(targetPos, scaleFactor);
-        yield return new WaitForSeconds(fallDuration + stormDelay);
-
-        if (stormEffectPrefab != null)
-        {
-            var storm = Instantiate(stormEffectPrefab, targetPos, Quaternion.identity);
-            storm.transform.localScale = Vector3.one * scaleFactor * 1.5f;
-            Destroy(storm, 0.8f);
         }
     }
 }

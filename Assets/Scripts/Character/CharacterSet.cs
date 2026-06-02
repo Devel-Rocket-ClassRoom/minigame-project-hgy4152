@@ -76,6 +76,33 @@ public class CharacterSet : MonoBehaviour
                 c.OnStageStart();
     }
 
+    public void NotifyAnyGroupDamage(int rawDamage, int finalDamage)
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnAnyGroupDamageApplied(rawDamage, finalDamage);
+    }
+
+    public void NotifyTurnProcessed(ClassType usedClass)
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnTurnProcessed(c.Type == usedClass);
+    }
+
+    public void NotifyAfterGroupPlayed(ChainGroup group)
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnAfterGroupPlayed(this, group);
+    }
+
     public string[] GetCurrentCharacterIds()
     {
         var ids = new string[characterDefs.Length];

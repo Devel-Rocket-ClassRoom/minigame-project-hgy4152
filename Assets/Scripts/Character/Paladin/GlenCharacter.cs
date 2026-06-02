@@ -2,8 +2,8 @@ using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(PaladinCreator))]
-[RequireComponent(typeof(Skill_Tirion))]
-public class TirionCharacter : Character
+[RequireComponent(typeof(Skill_Abel))]
+public class GlenCharacter : Character
 {
     [SerializeField]
     float chargeDuration = 0.3f;
@@ -35,18 +35,12 @@ public class TirionCharacter : Character
             );
     }
 
-    int _accumulatedBonus;
-
-    public override void OnStageStart() => _accumulatedBonus = 0;
-
-    // 참회하는 빛: 데미지 감소 패널티가 있을 때 손실분의 30%를 누적하여 반환
+    // 앙갚음: 활성 디버프 1개당 데미지 +10%
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {
-        if (judge.bossDamageMultiplier < 1f)
-        {
-            int lost = Mathf.RoundToInt(damage * (1f - judge.bossDamageMultiplier));
-            _accumulatedBonus += Mathf.RoundToInt(lost * 0.3f);
-        }
-        return damage + _accumulatedBonus;
+        int debuffCount = judge.activeModifiers.Count;
+        if (debuffCount <= 0)
+            return damage;
+        return Mathf.RoundToInt(damage * (1f + debuffCount * 0.1f));
     }
 }

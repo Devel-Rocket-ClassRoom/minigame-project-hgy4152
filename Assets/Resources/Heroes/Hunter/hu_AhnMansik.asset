@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
-  m_Name: pa_Glen
+  m_Name: hu_AhnMansik
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: pa2
-  classType: 2
-  prefab: {fileID: 8766581628870014122, guid: 7e9df6f4c69428b40bff214fd438d2a3, type: 3}
-  blockData: {fileID: 11400000, guid: 05f2430a6d0dca342886a8f1907824b4, type: 2}
+  id: hu_ahnmansik
+  classType: 4
+  prefab: {fileID: 0}
+  blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
   rarity: 1
-  displayName: "\uAE00\uB80C"
-  passiveName: "\uC559\uAC1A\uC74C"
-  description: 
+  displayName: "안만식"
+  passiveName: "명령 불복종"
+  description:
   unlockConditions: []

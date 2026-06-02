@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skill_CaptainJjongle : Skill
+public class Skill_CaptainJG : Skill
 {
     [SerializeField]
     float spawnOffsetX = 3f;

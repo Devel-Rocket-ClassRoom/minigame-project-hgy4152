@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PaladinCreator))]
-[RequireComponent(typeof(Skill_CaptainJjongle))]
-public class CaptainJjongleCharacter : Character
+[RequireComponent(typeof(Skill_CaptainJG))]
+public class CaptainJGCharacter : Character
 {
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;

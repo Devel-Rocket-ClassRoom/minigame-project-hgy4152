@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2946795799636456164
+--- !u!1 &1073157319377490448
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1986235054358364690}
-  - component: {fileID: 2876064692654847250}
+  - component: {fileID: 7490162246218791499}
+  - component: {fileID: 8165030959497515981}
   m_Layer: 0
-  m_Name: ha_s6_11_0
+  m_Name: ha_limited_gg_may_6_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1986235054358364690
+--- !u!4 &7490162246218791499
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2946795799636456164}
+  m_GameObject: {fileID: 1073157319377490448}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.10194119, w: 0.99479043}
-  m_LocalPosition: {x: 0.94313, y: 0.07719, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.584, y: 0.195, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 267226125336014151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -11.702}
---- !u!212 &2876064692654847250
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &8165030959497515981
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2946795799636456164}
+  m_GameObject: {fileID: 1073157319377490448}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8183121990993272837, guid: 18aceadd550997b42aaac0a55c23f53b, type: 3}
+  m_Sprite: {fileID: -3964968889390966680, guid: 919db50c427a5a149b659121eb337abc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.68, y: 1.68}
+  m_Size: {x: 0.76, y: 0.76}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -105,12 +105,12 @@ GameObject:
   - component: {fileID: 2865252548518548272}
   - component: {fileID: 2266537575224868906}
   m_Layer: 0
-  m_Name: Tirion
+  m_Name: CaptainJG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &267226125336014151
 Transform:
   m_ObjectHideFlags: 0
@@ -124,7 +124,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1986235054358364690}
+  - {fileID: 7490162246218791499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &142019817846733416
@@ -174,9 +174,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2510650145262376612, guid: bef8658e7fb61eb468ebc3be850a65bf, type: 3}
+  m_Sprite: {fileID: -6630683995465743882, guid: 4170f3e1bb64e814fb7167556237997d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -214,10 +214,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: ChainKnights::Skill_Tirion
   effectPrefab: {fileID: 0}
   target: {fileID: 0}
-  stormEffectPrefab: {fileID: 0}
-  spawnHeight: 10
-  fallDuration: 0.2
-  stormDelay: 0.15
+  spawnOffsetX: 3
+  spawnYMin: 1
+  spawnYMax: 3
+  unitSpawnInterval: 0.2
+  unitTravelDuration: 0.3
+  unitSprites:
+  - {fileID: -2546564384622281129, guid: 9e5b9934b70ad5c489448b12318e5579, type: 3}
+  - {fileID: -7369569677580712331, guid: 015897e9bf1985a41a1d2a8254f612d7, type: 3}
+  - {fileID: -2370076036064838449, guid: 01b8c401ff03e9848adfd4656a61595b, type: 3}
+  - {fileID: -3101694050197708467, guid: 9df7f7ad51306ed46bd3ee7fb65444c5, type: 3}
+  - {fileID: 4072233559912843123, guid: 80a5099be5c246346b391578d8a4eab7, type: 3}
+  hitEffectPrefab: {fileID: 4873479580030643389, guid: 939ba1a6a36ef9748a7525496ad78563, type: 3}
 --- !u!114 &2266537575224868906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,5 +242,3 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  chargeDuration: 0.3
-  chargeStopOffset: {x: 0, y: 0, z: 0}

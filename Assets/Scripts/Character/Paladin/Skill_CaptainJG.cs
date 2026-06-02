@@ -7,10 +7,22 @@ public class Skill_CaptainJG : Skill
     float spawnOffsetX = 3f;
 
     [SerializeField]
+    float spawnYMin = 1f;
+
+    [SerializeField]
+    float spawnYMax = 3f;
+
+    [SerializeField]
     float unitSpawnInterval = 0.1f;
 
     [SerializeField]
     float unitTravelDuration = 0.25f;
+
+    [SerializeField]
+    Sprite[] unitSprites;
+
+    [SerializeField]
+    GameObject hitEffectPrefab;
 
     void Update()
     {
@@ -45,33 +57,71 @@ public class Skill_CaptainJG : Skill
 
     IEnumerator SpawnUnits(Vector3 targetPos, float scaleFactor, int count)
     {
-        if (effectPrefab == null)
+        bool hasSprites = unitSprites != null && unitSprites.Length > 0;
+        if (effectPrefab == null && !hasSprites)
             yield break;
+
+        GameObject hitEffect =
+            hitEffectPrefab != null
+                ? Instantiate(hitEffectPrefab, targetPos, Quaternion.identity)
+                : null;
+
+        int[] remaining = { count };
 
         for (int i = 0; i < count; i++)
         {
-            float side = (i % 2 == 0) ? -1f : 1f;
-            Vector3 spawnPos = targetPos + new Vector3(side * spawnOffsetX, 0f, 0f);
-            var go = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
-            go.transform.localScale = Vector3.one * scaleFactor;
-            StartCoroutine(MoveUnit(go, spawnPos, targetPos));
+            float randX = Random.Range(-spawnOffsetX, spawnOffsetX);
+            float randY = Random.Range(spawnYMin, spawnYMax);
+            Vector3 spawnPos = targetPos + new Vector3(randX, randY, 0f);
+
+            GameObject go;
+            if (effectPrefab != null)
+            {
+                go = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
+            }
+            else
+            {
+                go = new GameObject("Unit");
+                go.transform.position = spawnPos;
+                go.AddComponent<SpriteRenderer>();
+            }
+            if (hasSprites)
+            {
+                var sr = go.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.sprite = unitSprites[Random.Range(0, unitSprites.Length)];
+            }
+
+            StartCoroutine(
+                MoveUnit(
+                    go,
+                    spawnPos,
+                    targetPos,
+                    () =>
+                    {
+                        if (--remaining[0] <= 0 && hitEffect != null)
+                            Destroy(hitEffect);
+                    }
+                )
+            );
 
             yield return new WaitForSeconds(unitSpawnInterval);
         }
     }
 
-    IEnumerator MoveUnit(GameObject go, Vector3 from, Vector3 to)
+    IEnumerator MoveUnit(GameObject go, Vector3 from, Vector3 to, System.Action onDone)
     {
         float t = 0f;
         while (t < unitTravelDuration)
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
-            go.transform.position = Vector3.Lerp(from, to, t / unitTravelDuration);
+                break;
+            go.transform.position = Vector3.Lerp(from, to, Mathf.Clamp01(t / unitTravelDuration));
             yield return null;
         }
         if (go != null)
-            Destroy(go, 0.3f);
+            Destroy(go);
+        onDone?.Invoke();
     }
 }

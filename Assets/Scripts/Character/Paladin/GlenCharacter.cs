@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(PaladinCreator))]
-[RequireComponent(typeof(Skill_Abel))]
+[RequireComponent(typeof(Skill_Glen))]
 public class GlenCharacter : Character
 {
     [SerializeField]
@@ -35,10 +35,13 @@ public class GlenCharacter : Character
             );
     }
 
+    Skill_Glen GlenSkill => skill as Skill_Glen;
+
     // 앙갚음: 활성 디버프 1개당 데미지 +10%
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {
         int debuffCount = judge.activeModifiers.Count;
+        GlenSkill?.SetPassiveActive(debuffCount > 0);
         if (debuffCount <= 0)
             return damage;
         return Mathf.RoundToInt(damage * (1f + debuffCount * 0.1f));

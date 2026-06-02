@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField]
     protected Skill skill;
 
     [Header("=== 타격 타이밍 (공격 시작 후 초) ===")]

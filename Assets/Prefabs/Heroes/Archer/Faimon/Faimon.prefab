@@ -102,6 +102,8 @@ GameObject:
   - component: {fileID: 2250272013891873362}
   - component: {fileID: 1502343100641207682}
   - component: {fileID: 6275930107858149413}
+  - component: {fileID: 6381528412217755905}
+  - component: {fileID: 3040541403797364076}
   m_Layer: 0
   m_Name: Faimon
   m_TagString: Untagged
@@ -196,5 +198,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherCreator
-  blockData: {fileID: 0}
+  blockData: {fileID: 11400000, guid: eff8081b797839a469a62bc573669785, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
+--- !u!114 &6381528412217755905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584956399619309879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b3791823c0a2a4ebc67b763c67439b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::Skill_Faimon
+  effectPrefab: {fileID: 0}
+  target: {fileID: 0}
+  bigEffectPrefab: {fileID: 0}
+  moveDuration: 0.18
+  bigArrowDelay: 0.15
+--- !u!114 &3040541403797364076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584956399619309879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b07772bfc7f274d85cadf0b7c25d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::FaimonCharacter
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
+  jumpHeight: 0.5
+  jumpUpDuration: 0.333
+  holdPerChain: 0.067
+  attackAnimDuration: 0.7

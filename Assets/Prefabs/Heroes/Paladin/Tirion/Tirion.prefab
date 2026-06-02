@@ -100,8 +100,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 267226125336014151}
-  - component: {fileID: 3579573414754560855}
   - component: {fileID: 142019817846733416}
+  - component: {fileID: 3622831010606110790}
+  - component: {fileID: 2865252548518548272}
+  - component: {fileID: 2266537575224868906}
   m_Layer: 0
   m_Name: Tirion
   m_TagString: Untagged
@@ -125,20 +127,6 @@ Transform:
   - {fileID: 1986235054358364690}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3579573414754560855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5194693676886455207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2b3c4d5e6f708192a3b4c5d6e7f8b9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockData: {fileID: 0}
-  blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!212 &142019817846733416
 SpriteRenderer:
   serializedVersion: 2
@@ -198,3 +186,53 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3622831010606110790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5194693676886455207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b3c4d5e6f708192a3b4c5d6e7f8b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::PaladinCreator
+  blockData: {fileID: 11400000, guid: 3d5b6026f2fbae14b902ac2407529ec3, type: 2}
+  blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
+--- !u!114 &2865252548518548272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5194693676886455207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dec05d4e897aa488a1069d365c8f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::Skill_Tirion
+  effectPrefab: {fileID: 0}
+  target: {fileID: 0}
+  stormEffectPrefab: {fileID: 0}
+  spawnHeight: 10
+  fallDuration: 0.2
+  stormDelay: 0.15
+--- !u!114 &2266537575224868906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5194693676886455207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e6fb71089680d4689dc0c02da7d470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::TirionCharacter
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
+  chargeDuration: 0.3
+  chargeStopOffset: {x: 0, y: 0, z: 0}

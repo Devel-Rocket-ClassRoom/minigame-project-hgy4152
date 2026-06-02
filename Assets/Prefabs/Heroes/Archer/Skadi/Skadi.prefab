@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherCreator
-  blockData: {fileID: 0}
+  blockData: {fileID: 11400000, guid: 6474f382c20787b41b3dc8d39aa206b6, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!114 &599632863282659553
 MonoBehaviour:
@@ -212,9 +212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f4426c3221fa84382ff8ed32554494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::SkadiCharacter
-  creator: {fileID: 0}
-  icon: {fileID: 0}
-  skill: {fileID: 0}
   hitTimings:
   - 0.15
   - 0.35

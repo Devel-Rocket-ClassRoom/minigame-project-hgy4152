@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WarriorCreator
-  blockData: {fileID: 0}
+  blockData: {fileID: 11400000, guid: d07ce2aef9163bc46b45dee82caa498a, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!114 &4536077614581840676
 MonoBehaviour:
@@ -120,9 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1148d3c3f70e7df4992ab3aa8490c2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::CainCharacter
-  creator: {fileID: 0}
-  icon: {fileID: 0}
-  skill: {fileID: 0}
   hitTimings:
   - 0.15
   - 0.35

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2b3c4d5e6f708192a3b4c5d6e7f8b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockData: {fileID: 0}
+  blockData: {fileID: 11400000, guid: 05f2430a6d0dca342886a8f1907824b4, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!212 &6958316044460643392
 SpriteRenderer:
@@ -121,9 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cd716ea80d86942b520d2eaf665b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::AbelCharacter
-  creator: {fileID: 0}
-  icon: {fileID: 0}
-  skill: {fileID: 0}
   hitTimings:
   - 0.15
   - 0.35

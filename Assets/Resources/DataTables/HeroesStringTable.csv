@@ -29,3 +29,33 @@ chr_hu_raven_desc, 적을 정조준 하여 3번째 공격마다 데미지가 50%
 chr_wi_acan_name,아칸
 chr_wi_acan_passive_name,마나 축적
 chr_wi_acan_desc, 마나의 힘을 축적해 공격을 할 때마다 데미지가 10%증가한다.(다음 스테이지에서 초기화)
+blk_wa2_name,일섬
+blk_wa2_desc, 빠른 연속 베기로 적을 공격한다.
+blk_wa3_name,원초의 분노
+blk_wa3_desc, 무기를 내려찍어 적 발밑에 폭발을 일으킨다.
+blk_pa2_name,안식기도
+blk_pa2_desc, 신성한 폭발로 적에게 피해를 입힌다.
+blk_pa3_name,빛의 선고
+blk_pa3_desc, 하늘에서 신성한 망치를 소환해 적을 강타한다.
+blk_ar2_name,글레이셜 애로우
+blk_ar2_desc, 동상 효과가 담긴 화살을 발사한다.
+blk_ar3_name,블레이즈 애로우
+blk_ar3_desc, 화염이 담긴 화살을 발사한다.
+chr_wa_izna_name,이즈나
+chr_wa_izna_passive_name,연격
+chr_wa_izna_desc, 1체인·2체인·3체인이 모두 있을 때 데미지가 40% 증가한다.
+chr_wa_cain_name,카인
+chr_wa_cain_passive_name,폭주
+chr_wa_cain_desc, 3체인 그룹이 3개 이상일 때 데미지가 50% 증가한다.
+chr_pa_abel_name,아벨
+chr_pa_abel_passive_name,고행의 발걸음
+chr_pa_abel_desc, 활성 디버프 1개당 파티원 데미지가 10% 증가한다.
+chr_pa_tirion_name,티리온
+chr_pa_tirion_passive_name,참회하는 빛
+chr_pa_tirion_desc, 데미지 감소 패널티가 적용될 때 손실분의 30%를 누적하여 추가 피해로 반환한다.
+chr_ar_skadi_name,스카디
+chr_ar_skadi_passive_name,혹한의 후예
+chr_ar_skadi_desc, 공격 시 동상 1중첩(최대 5). 타격마다 중첩 1 소모 후 적 최대 체력의 5% 추가피해를 입힌다.
+chr_ar_faimon_name,파이몬
+chr_ar_faimon_passive_name,볼케닉 소울
+chr_ar_faimon_desc, 공격 시 화상 1중첩. 5중첩 시 적 최대 체력의 10% 추가피해를 입히고 중첩을 초기화한다.

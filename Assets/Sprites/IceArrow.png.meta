@@ -1,10 +1,12 @@
 fileFormatVersion: 2
-guid: 01b8c401ff03e9848adfd4656a61595b
+guid: 2c12a3a4207fc994ea493358a5b5a2b7
+labels:
+- UnityAI
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2370076036064838449
-    second: ar_1_3_0
+      213: -727653709556135468
+    second: IceArrow_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +39,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,12 +48,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 800
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ar_1_3_0
+      name: IceArrow_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 58
-        height: 64
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fcc70b3076ccb1fd0800000000000000
-      internalID: -2370076036064838449
+      spriteID: 4d949627ecad6e5f0800000000000000
+      internalID: -727653709556135468
       vertices: []
       indices: 
       edges: []
@@ -138,7 +140,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +150,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ar_1_3_0: -2370076036064838449
+      IceArrow_0: -727653709556135468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

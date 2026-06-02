@@ -32,35 +32,31 @@ public class Skill_Faimon : Skill
     }
 
     // 1·2체인: 불화살 발사
-    public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        FireArrow(targetPos, scaleFactor);
+    public override void Chain1(Vector3 targetPos, float scaleFactor) => FireArrow(targetPos);
 
-    public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        FireArrow(targetPos, scaleFactor);
+    public override void Chain2(Vector3 targetPos, float scaleFactor) => FireArrow(targetPos);
 
     // 3체인: 불화살 + 점프 후 새 형상의 큰 불 발사
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
         StartCoroutine(BlazeArrow(targetPos, scaleFactor));
 
-    void FireArrow(Vector3 targetPos, float scale)
+    void FireArrow(Vector3 targetPos)
     {
         if (effectPrefab == null)
             return;
         var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
-        go.transform.localScale = Vector3.one * scale;
         StartCoroutine(MoveTo(go, targetPos));
     }
 
     IEnumerator BlazeArrow(Vector3 targetPos, float scaleFactor)
     {
-        FireArrow(targetPos, scaleFactor);
+        FireArrow(targetPos);
 
         yield return new WaitForSeconds(bigArrowDelay);
 
         if (bigEffectPrefab != null)
         {
-            var big = Instantiate(bigEffectPrefab, transform.position, Quaternion.identity);
-            big.transform.localScale = Vector3.one * scaleFactor * 1.5f;
+            var big = Instantiate(bigEffectPrefab, transform.position, Quaternion.Euler(0, 180, 0));
             StartCoroutine(MoveTo(big, targetPos));
         }
     }
@@ -80,7 +76,7 @@ public class Skill_Faimon : Skill
         if (go != null)
         {
             go.transform.position = targetPos;
-            Destroy(go, 0.1f);
+            Destroy(go);
         }
     }
 }

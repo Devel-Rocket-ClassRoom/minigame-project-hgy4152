@@ -212,9 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b3791823c0a2a4ebc67b763c67439b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::Skill_Faimon
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 3644675890560864917, guid: b47b1225f6bdb6146a1ed9e5491509fb, type: 3}
   target: {fileID: 0}
-  bigEffectPrefab: {fileID: 0}
+  bigEffectPrefab: {fileID: 2901310265740978877, guid: 66df9871fa502304d9f99c6e9fa9b605, type: 3}
   moveDuration: 0.18
   bigArrowDelay: 0.15
 --- !u!114 &3040541403797364076

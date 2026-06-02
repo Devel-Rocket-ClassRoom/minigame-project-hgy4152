@@ -14,6 +14,7 @@ public abstract class Character : MonoBehaviour
     public abstract Color classColor { get; }
     public BlockCreator Creator { get; private set; }
     public Sprite Icon => GetComponent<SpriteRenderer>().sprite;
+    public Vector3 IdlePos => _idlePos;
 
     protected int _chainCount;
     protected float scaleFactor = 1f;
@@ -43,7 +44,7 @@ public abstract class Character : MonoBehaviour
             StopCoroutine(_hitCoroutine);
     }
 
-    protected void StartBreathing()
+    public void StartBreathing()
     {
         transform
             .DOLocalMoveY(_idlePos.y + 0.03f, 0.5f)

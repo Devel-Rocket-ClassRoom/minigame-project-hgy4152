@@ -1,12 +1,10 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     [Header("=== 캐릭터 프리펩 제작 시 필수요소 ===")]
-    [SerializeField]
-    Animator anim;
-
     [SerializeField]
     BlockCreator creator;
 
@@ -15,6 +13,10 @@ public abstract class Character : MonoBehaviour
 
     [SerializeField]
     protected Skill skill;
+
+    [Header("=== 타격 타이밍 (공격 시작 후 초) ===")]
+    [SerializeField]
+    float[] hitTimings = { 0.15f, 0.35f, 0.55f };
 
     public abstract ClassType Type { get; }
     public abstract Color classColor { get; }
@@ -27,6 +29,7 @@ public abstract class Character : MonoBehaviour
     protected int _hitEventIndex;
     int[] _perHitDamages;
     EnemyController _target;
+    Coroutine _hitCoroutine;
 
     protected Vector3 _idlePos;
 
@@ -34,6 +37,12 @@ public abstract class Character : MonoBehaviour
     {
         _idlePos = transform.localPosition;
         StartBreathing();
+    }
+
+    void OnDisable()
+    {
+        if (_hitCoroutine != null)
+            StopCoroutine(_hitCoroutine);
     }
 
     protected void StartBreathing()
@@ -48,7 +57,6 @@ public abstract class Character : MonoBehaviour
     {
         _targetPos = targetPos;
         DOTween.Kill(transform);
-        anim.SetTrigger("Attack");
     }
 
     public virtual void PlaySkillEffect(
@@ -60,24 +68,32 @@ public abstract class Character : MonoBehaviour
         _chainCount = chainCount;
         _perHitDamages = perHitDamages;
         _target = target;
-
-        switch (chainCount)
-        {
-            case 1:
-                scaleFactor = 1f;
-                break;
-            case 2:
-                scaleFactor = 1.5f;
-                break;
-            case 3:
-                scaleFactor = 2f;
-                break;
-        }
-
         _hitEventIndex = 0;
+
+        scaleFactor = chainCount switch
+        {
+            1 => 1f,
+            2 => 1.5f,
+            _ => 2f,
+        };
+
+        if (_hitCoroutine != null)
+            StopCoroutine(_hitCoroutine);
+        _hitCoroutine = StartCoroutine(RunHitTimings());
     }
 
-    // Animation Event에서 호출 — hit 순번에 맞는 Chain 메소드 실행
+    IEnumerator RunHitTimings()
+    {
+        float prev = 0f;
+        int count = Mathf.Min(_chainCount, hitTimings.Length);
+        for (int i = 0; i < count; i++)
+        {
+            yield return new WaitForSeconds(hitTimings[i] - prev);
+            prev = hitTimings[i];
+            OnChainHitEvent();
+        }
+    }
+
     public virtual void OnChainHitEvent()
     {
         _hitEventIndex++;

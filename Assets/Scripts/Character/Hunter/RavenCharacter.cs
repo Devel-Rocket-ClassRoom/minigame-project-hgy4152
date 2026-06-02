@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HunterCharacter : Character
+public class RavenCharacter : Character
 {
     [SerializeField]
     float recoilAngle = 7.261f;

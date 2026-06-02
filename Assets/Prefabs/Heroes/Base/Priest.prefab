@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4606489868378666229}
   - component: {fileID: 2335075217446940567}
-  - component: {fileID: 599271511147300192}
   - component: {fileID: 3990032338686259886}
   - component: {fileID: 2140388815789277146}
   m_Layer: 0
@@ -94,22 +93,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
---- !u!114 &599271511147300192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411667373156260801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0788566c51977b4f87572e9dd643fc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PriestCharacter
-  anim: {fileID: 2140388815789277146}
-  creator: {fileID: 3990032338686259886}
-  icon: {fileID: 0}
-  skill: {fileID: 0}
 --- !u!114 &3990032338686259886
 MonoBehaviour:
   m_ObjectHideFlags: 0

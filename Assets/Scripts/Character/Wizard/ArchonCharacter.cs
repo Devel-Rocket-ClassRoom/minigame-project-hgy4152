@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WizardCharacter : Character
+public class ArchonCharacter : Character
 {
     public override ClassType Type => ClassType.Wizard;
     public override Color classColor => Color.blue;

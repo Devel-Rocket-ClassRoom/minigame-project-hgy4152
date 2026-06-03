@@ -491,6 +491,7 @@ public class GameManager : MonoBehaviour
 
             // 애니메이션
             var character = characterSet?.GetCharacter(groups[i].DominantClass);
+            characterSet?.NotifyAnyGroupAttackStart(groups[i], boss);
             character?.PlayAttack(boss.transform.position);
             var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);
             character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
@@ -509,6 +510,8 @@ public class GameManager : MonoBehaviour
             blockManager.RemoveGroup(groups[i]);
             yield return new WaitForSeconds(perGroupDelay + 0.25f * (groups[i].Length - 1));
         }
+
+        characterSet?.NotifyTurnSequenceEnd();
 
         if (_stageClearPending)
         {

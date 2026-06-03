@@ -103,6 +103,24 @@ public class CharacterSet : MonoBehaviour
                 c.OnAfterGroupPlayed(this, group);
     }
 
+    public void NotifyTurnSequenceEnd()
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnTurnSequenceEnd();
+    }
+
+    public void NotifyAnyGroupAttackStart(ChainGroup group, EnemyController target)
+    {
+        if (instances == null)
+            return;
+        foreach (var c in instances)
+            if (c != null)
+                c.OnAnyGroupAttackStart(group, target);
+    }
+
     public string[] GetCurrentCharacterIds()
     {
         var ids = new string[characterDefs.Length];

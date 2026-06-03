@@ -5,3 +5,11 @@ wa_reon,chr_wa_reon_name,chr_wa_reon_desc,Common,blk_wa1_name,blk_wa1_desc,Commo
 pa_victor,chr_pa_victor_name,chr_pa_victor_desc,Common,blk_pa1_name,blk_pa1_desc,Common
 hu_raven,chr_hu_raven_name,chr_hu_raven_desc,Common,blk_hu1_name,blk_hu1_desc,Common
 wi_acan,chr_wi_acan_name,chr_wi_acan_desc,Common,blk_wi1_name,blk_wi1_desc,Common
+pa2,chr_pa_glen_name,chr_pa_glen_desc,Rare,blk_pa2_name,blk_pa2_desc,Rare
+pa3,chr_pa_captainjg_name,chr_pa_captainjg_desc,Rare,blk_pa3_name,blk_pa3_desc,Rare
+pr_selmu,chr_pr_selmu_name,chr_pr_selmu_desc,Rare,blk_pr2_name,blk_pr2_desc,Rare
+pr_rin,chr_pr_rin_name,chr_pr_rin_desc,Rare,blk_pr3_name,blk_pr3_desc,Rare
+hu_ahnmansik,chr_hu_ahnmansik_name,chr_hu_ahnmansik_desc,Rare,blk_hu2_name,blk_hu2_desc,Rare
+hu_mkq,chr_hu_mkq_name,chr_hu_mkq_desc,Rare,blk_hu3_name,blk_hu3_desc,Rare
+wi_zyum,chr_wi_zyum_name,chr_wi_zyum_desc,Rare,blk_wi2_name,blk_wi2_desc,Rare
+wi_yshtolla,chr_wi_yshtolla_name,chr_wi_yshtolla_desc,Rare,blk_wi3_name,blk_wi3_desc,Rare

@@ -232,8 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912000e2425cb834a8294e29932b1c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::Skill_Skadi_GlacialArrow
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 3519306106265263880, guid: eaa6bb5c6621c3742834bda03e1d610a, type: 3}
   target: {fileID: 0}
   moveDuration: 0.18
-  spiralOffset: 0.4
+  spiralOffset: 1
   bigArrowDelay: 0.12
+  impactEffectPrefab: {fileID: 4132116037470417519, guid: e4efa212a452bbd48b6f8db808d99ec1, type: 3}
+  impactOffsetY: 3

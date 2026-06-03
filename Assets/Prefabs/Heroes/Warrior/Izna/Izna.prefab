@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7984495919178817060
 Transform:
   m_ObjectHideFlags: 0
@@ -143,14 +143,19 @@ MonoBehaviour:
   effectTargetOffset: {x: -1, y: 0, z: 0}
   chain2EffectAngleOffset: 30
   chain3EffectPrefab: {fileID: 2044710218291175980, guid: 6f238e7f5b82644439c8082a706e5a8e, type: 3}
+  chain3HitEffect1: {fileID: 1231669734998555890, guid: 4588fa6cfe0dedf46bb8d7c7538cae42, type: 3}
+  chain3HitEffect1Speed: 2
+  chain3HitEffect2: {fileID: 7953678322084195818, guid: 2ee3ad03f6b60e744a55582e8c584e17, type: 3}
+  chain3HitEffect2Speed: 2
+  chain3HitEffect2Delay: 0.25
   chain1DashFrac: 1.5
   chain1Duration: 0.14
   chain2Height: 5
   chain2XOffset: -5
   chain2Duration: 0.5
   chain3Height: 0.65
-  chain3UpDuration: 0.14
-  chain3SpinDuration: 0.12
+  chain3UpDuration: 0.2
+  chain3SpinDuration: 0.25
   chain3DownDuration: 0.13
   returnDuration: 0.18
 --- !u!1 &7804364261563468322

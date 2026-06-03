@@ -12,6 +12,12 @@ public class Skill_Skadi : Skill
     [SerializeField]
     float bigArrowDelay = 0.12f;
 
+    [SerializeField]
+    GameObject impactEffectPrefab;
+
+    [SerializeField]
+    float impactOffsetY = 0f;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -33,41 +39,49 @@ public class Skill_Skadi : Skill
 
     // 1체인: 1발 직선 발사
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        FireArrow(targetPos, scaleFactor, Vector3.zero);
+        FireArrow(targetPos, Vector3.zero);
 
     // 2체인: 2발 나선형 발사
     public override void Chain2(Vector3 targetPos, float scaleFactor)
     {
-        FireArrow(targetPos, scaleFactor, new Vector3(0, spiralOffset, 0));
-        FireArrow(targetPos, scaleFactor, new Vector3(0, -spiralOffset, 0));
+        FireArrow(targetPos, new Vector3(0, spiralOffset, 0));
+        FireArrow(targetPos, new Vector3(0, -spiralOffset, 0));
     }
 
     // 3체인: 나선 2발 + 기를 모아 큰 화살 1발
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
         StartCoroutine(GlacialArrow(targetPos, scaleFactor));
 
-    void FireArrow(Vector3 targetPos, float scale, Vector3 spawnOffset)
+    void FireArrow(Vector3 targetPos, Vector3 spawnOffset)
     {
         if (effectPrefab == null)
             return;
         var go = Instantiate(effectPrefab, transform.position + spawnOffset, Quaternion.identity);
-        go.transform.localScale = Vector3.one * scale;
         StartCoroutine(MoveTo(go, targetPos));
     }
 
     IEnumerator GlacialArrow(Vector3 targetPos, float scaleFactor)
     {
-        FireArrow(targetPos, scaleFactor, new Vector3(0, spiralOffset, 0));
-        FireArrow(targetPos, scaleFactor, new Vector3(0, -spiralOffset, 0));
+        FireArrow(targetPos, new Vector3(0, spiralOffset, 0));
+        FireArrow(targetPos, new Vector3(0, -spiralOffset, 0));
 
         yield return new WaitForSeconds(bigArrowDelay);
 
-        // 큰 화살
-        if (effectPrefab == null)
+        if (impactEffectPrefab == null)
             yield break;
-        var big = Instantiate(effectPrefab, transform.position, Quaternion.identity);
-        big.transform.localScale = Vector3.one * scaleFactor * 1.5f;
-        StartCoroutine(MoveTo(big, targetPos));
+        var impact = Instantiate(
+            impactEffectPrefab,
+            targetPos + new Vector3(0, impactOffsetY, 0),
+            Quaternion.identity
+        );
+        impact.transform.localScale = Vector3.one * scaleFactor;
+        var animator = impact.GetComponent<Animator>();
+        if (animator != null && animator.runtimeAnimatorController != null)
+        {
+            var clips = animator.runtimeAnimatorController.animationClips;
+            if (clips.Length > 0)
+                Destroy(impact, clips[0].length);
+        }
     }
 
     IEnumerator MoveTo(GameObject go, Vector3 targetPos)

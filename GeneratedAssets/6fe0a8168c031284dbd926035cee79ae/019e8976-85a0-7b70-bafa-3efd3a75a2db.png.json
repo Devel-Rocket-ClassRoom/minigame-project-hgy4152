@@ -1,0 +1,38 @@
+{
+    "asset": "6fe0a8168c031284dbd926035cee79ae",
+    "fileName": "019e8976-85a0-7b70-bafa-3efd3a75a2db.png",
+    "prompt": "Phoenix bird dashing forward in a charging attack pose, wings tucked back, fire trails behind, majestic flame effects, 82x82 pixel art style, matching the provided reference style, vibrant orange and red colors, 16-bit retro aesthetic, transparent background.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 7,
+                "doodle": [],
+                "label": "Image",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "c0be072676ac78440a4b30a4d454e18a",
+                "unlabeledIndex": -1
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

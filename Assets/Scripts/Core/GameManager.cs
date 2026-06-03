@@ -290,9 +290,11 @@ public class GameManager : MonoBehaviour
             if (!judge.isShiftBlock && judge.nonShiftPenaltyMultiplier != 1f)
                 dmg = Mathf.FloorToInt(dmg * judge.nonShiftPenaltyMultiplier);
 
+            int rawDmg = dmg;
             dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
             dmg = Mathf.FloorToInt(dmg * deckBonus);
             result[i] = dmg;
+            characterSet?.NotifyAnyGroupDamage(rawDmg, dmg);
         }
         return result;
     }
@@ -492,6 +494,17 @@ public class GameManager : MonoBehaviour
             character?.PlayAttack(boss.transform.position);
             var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);
             character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
+
+            characterSet?.NotifyTurnProcessed(groups[i].DominantClass);
+            characterSet?.NotifyAfterGroupPlayed(groups[i]);
+
+            int bonusCount = character?.GetBonusAttackCount(judge, groups[i]) ?? 0;
+            for (int b = 0; b < bonusCount; b++)
+            {
+                yield return new WaitForSeconds(0.2f);
+                int bonusDmg = damages[i] / Mathf.Max(1, bonusCount);
+                character?.PlaySkillEffect(1, new[] { bonusDmg }, boss);
+            }
 
             blockManager.RemoveGroup(groups[i]);
             yield return new WaitForSeconds(perGroupDelay + 0.25f * (groups[i].Length - 1));

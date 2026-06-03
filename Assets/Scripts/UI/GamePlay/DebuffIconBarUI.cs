@@ -7,13 +7,16 @@ public class DebuffIconBarUI : MonoBehaviour
     BossPatternSystem bossPatternSystem;
 
     [SerializeField]
+    StageManager stageManager;
+
+    [SerializeField]
     Transform iconContainer;
 
     [SerializeField]
     GameObject debuffIconPrefab;
 
     [SerializeField]
-    InfoPopupUI infoPopupUI;
+    BossInfoUIPanel bossInfoUIPanel;
 
     void OnEnable()
     {
@@ -23,6 +26,17 @@ public class DebuffIconBarUI : MonoBehaviour
     void OnDisable()
     {
         bossPatternSystem.OnInjected -= Refresh;
+    }
+
+    void ShowBossInfo()
+    {
+        if (bossInfoUIPanel == null)
+            return;
+        var entry = stageManager.Current;
+        if (entry.bossData != null)
+            bossInfoUIPanel.Show(entry.bossData);
+        else if (entry.enemyData != null)
+            bossInfoUIPanel.Show(entry.enemyData);
     }
 
     void Refresh()
@@ -40,10 +54,7 @@ public class DebuffIconBarUI : MonoBehaviour
         foreach (var mod in mods)
         {
             var icon = Instantiate(debuffIconPrefab, iconContainer);
-            icon.GetComponent<Button>()
-                .onClick.AddListener(() =>
-                    infoPopupUI.ShowDebuffs(bossPatternSystem.GetActiveModifiers())
-                );
+            icon.GetComponent<Button>().onClick.AddListener(ShowBossInfo);
         }
     }
 }

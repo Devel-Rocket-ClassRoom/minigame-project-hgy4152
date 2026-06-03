@@ -21,6 +21,9 @@ public class BossInfoUIPanel : MonoBehaviour
     TMP_Text patternText;
 
     [SerializeField]
+    TMP_Text debuffText;
+
+    [SerializeField]
     float slideDuration = 0.25f;
 
     Vector2 _shownPos;
@@ -67,15 +70,61 @@ public class BossInfoUIPanel : MonoBehaviour
                 int turnCount = 0;
                 if (bp.turnModifiers != null)
                     foreach (var m in bp.turnModifiers)
-                        if (m != null) turnCount++;
-                patternText.text = $"{Localization.Get(bp.patternName)}\n{string.Format(Localization.Get("ui_boss_pattern_info"), passiveCount, turnCount)}";
+                        if (m != null)
+                            turnCount++;
+                patternText.text =
+                    $"{Localization.Get(bp.patternName)}\n{string.Format(Localization.Get("ui_boss_pattern_info"), passiveCount, turnCount)}";
             }
             patternText.gameObject.SetActive(bp != null);
+        }
+
+        if (debuffText != null)
+        {
+            if (bp != null)
+                debuffText.text = BuildDebuffText(bp);
+            debuffText.gameObject.SetActive(bp != null);
         }
 
         if (backdropButton != null)
             backdropButton.gameObject.SetActive(true);
         Slide(_hiddenPos, _shownPos);
+    }
+
+    static string BuildDebuffText(BossPattern bp)
+    {
+        var sb = new System.Text.StringBuilder();
+
+        string passiveLabel = Localization.Get("ui_label_passive");
+        string turnLabel = Localization.Get("ui_label_turn");
+
+        if (bp.passive != null)
+        {
+            foreach (var m in bp.passive)
+            {
+                if (m == null)
+                    continue;
+                if (sb.Length > 0)
+                    sb.AppendLine();
+                sb.AppendLine($"[{passiveLabel}] {Localization.Get(m.modName)}");
+                sb.Append(Localization.Get(m.description));
+            }
+        }
+
+        if (bp.turnModifiers != null)
+        {
+            for (int i = 0; i < bp.turnModifiers.Length; i++)
+            {
+                var m = bp.turnModifiers[i];
+                if (m == null)
+                    continue;
+                if (sb.Length > 0)
+                    sb.AppendLine();
+                sb.AppendLine($"[{turnLabel} {i + 1}] {Localization.Get(m.modName)}");
+                sb.Append(Localization.Get(m.description));
+            }
+        }
+
+        return sb.ToString();
     }
 
     public void Hide()

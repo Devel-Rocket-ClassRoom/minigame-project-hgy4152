@@ -75,6 +75,7 @@ public class BlockManager : MonoBehaviour
 
         return block;
     }
+
     public Block DrawBlockInstance()
     {
         if (hand.Count >= MaxHandSize)
@@ -120,7 +121,7 @@ public class BlockManager : MonoBehaviour
     }
 
     public void Discard(Block block)
-{
+    {
         _swapPending = false;
         int idx = hand.IndexOf(block);
         if (idx < 0)
@@ -199,12 +200,15 @@ public class BlockManager : MonoBehaviour
     public void DrawUntilFull()
     {
         while (hand.Count < MaxHandSize)
-            DrawBlock();
+            if (DrawBlock() == null)
+                break;
     }
+
     public void DrawInstanceFull()
     {
         while (hand.Count < MaxHandSize)
-            DrawBlockInstance();
+            if (DrawBlockInstance() == null)
+                break;
     }
 
     public void RemoveGroup(ChainGroup group)

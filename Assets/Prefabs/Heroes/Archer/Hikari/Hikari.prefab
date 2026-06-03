@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 183bce3ec6fe2ca4a91e57b5171b2de4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -107,10 +107,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6999a00fdb84f4f9748e74f7483486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherCharacter
-  anim: {fileID: 995628499764311731}
-  creator: {fileID: 5598690412530539374}
-  icon: {fileID: 21300000, guid: 183bce3ec6fe2ca4a91e57b5171b2de4, type: 3}
-  skill: {fileID: 9041249986455009890}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
+  jumpHeight: 0.5
+  jumpUpDuration: 0.333
+  holdPerChain: 0.067
+  attackAnimDuration: 0.7
 --- !u!114 &5598690412530539374
 MonoBehaviour:
   m_ObjectHideFlags: 0

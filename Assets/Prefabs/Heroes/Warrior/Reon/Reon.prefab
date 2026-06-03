@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 1520551423f5c474d833b254dcfe7d1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -107,10 +107,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd52ad397e615447abcf0708ba727c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WarriorCharacter
-  anim: {fileID: 1441075468376229531}
-  creator: {fileID: 6437507022374874377}
-  icon: {fileID: 21300000, guid: 1520551423f5c474d833b254dcfe7d1a, type: 3}
-  skill: {fileID: 5477197007614495793}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
+  chain1Height: 0.35
+  chain1XFrac: 0.12
+  chain1Duration: 0.28
+  chain2Height: 0.2
+  chain2XFrac: 0.3
+  chain2Duration: 0.28
+  slamHeight: 0.6
+  slamUpDuration: 0.2
+  slamDownDuration: 0.15
+  returnDuration: 0.18
 --- !u!114 &6437507022374874377
 MonoBehaviour:
   m_ObjectHideFlags: 0

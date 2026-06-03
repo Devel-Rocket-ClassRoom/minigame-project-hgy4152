@@ -15,7 +15,7 @@ MonoBehaviour:
   id: wi2
   displayName: blk_wi2_name
   description: blk_wi2_desc
-  icon: {fileID: 0}
+  icon: {fileID: 2512036609757917972, guid: dae6d8ca215f78d4c8c1033a07741d73, type: 3}
   rarity: 1
   attackPower: 10
   ownerClass: 6

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2184447947805875099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.02, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -878492087045980040, guid: c4e17dbdad5355242968135d2077bf4d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -126,8 +126,8 @@ MonoBehaviour:
   grenadeSprite: {fileID: -1074647826448248100, guid: 97f30fbace1ee564ab411d893fd1f866, type: 3}
   throwDuration: 0.4
   grenadeInterval: 0.12
-  arcHeightMin: 2
-  arcHeightMax: 5
+  arcHeightMin: 1
+  arcHeightMax: 3
 --- !u!114 &3655147297096611984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8011172961649472047, guid: 7cc61c1eba6ab324c92766d8c8a388cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

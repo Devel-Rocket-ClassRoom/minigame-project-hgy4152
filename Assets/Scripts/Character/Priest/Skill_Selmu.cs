@@ -9,7 +9,18 @@ public class Skill_Selmu : Skill
     [SerializeField]
     GameObject totemEffectPrefab;
 
+    [SerializeField]
+    float totemBackOffset = 1f;
+
+    [SerializeField]
+    GameObject consumeEffectPrefab;
+
     GameObject _activeTotem;
+
+    void Start()
+    {
+        SpawnTotemBehind();
+    }
 
     void Update()
     {
@@ -45,8 +56,26 @@ public class Skill_Selmu : Skill
             return;
         var go = Instantiate(effectPrefab, targetPos, Quaternion.identity);
         go.transform.localScale = Vector3.one * scaleFactor;
-        Destroy(go, explosionDuration);
+        DestroyAfterAnimation(go, explosionDuration);
     }
+
+    void DestroyAfterAnimation(GameObject go, float fallback)
+    {
+        var anim = go.GetComponentInChildren<Animator>();
+        if (anim != null && anim.runtimeAnimatorController != null)
+        {
+            var clips = anim.runtimeAnimatorController.animationClips;
+            if (clips.Length > 0)
+            {
+                Destroy(go, clips[0].length);
+                return;
+            }
+        }
+        Destroy(go, fallback);
+    }
+
+    public void SpawnTotemBehind() =>
+        SpawnTotem(transform.position + new Vector3(-totemBackOffset, 0f, 0f));
 
     public void SpawnTotem(Vector3 position)
     {
@@ -62,5 +91,24 @@ public class Skill_Selmu : Skill
     {
         if (_activeTotem != null)
             _activeTotem.SetActive(active);
+        SetPassivePSActive(active);
+    }
+
+    public void SetPassivePSActive(bool active)
+    {
+        if (_activeTotem == null)
+            return;
+        var ps = _activeTotem.GetComponentInChildren<ParticleSystem>();
+        if (ps != null)
+            ps.gameObject.SetActive(active);
+    }
+
+    public void PlayConsumeEffect(Vector3 targetPos, float scaleFactor)
+    {
+        if (consumeEffectPrefab == null)
+            return;
+        var go = Instantiate(consumeEffectPrefab, targetPos, Quaternion.identity);
+        go.transform.localScale = Vector3.one * scaleFactor;
+        DestroyAfterAnimation(go, 0.5f);
     }
 }

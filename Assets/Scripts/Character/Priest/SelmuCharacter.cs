@@ -17,7 +17,7 @@ public class SelmuCharacter : Character
     public override void OnStageStart()
     {
         _accumulatedBonus = 0;
-        SelmuSkill?.SpawnTotem(transform.position);
+        SelmuSkill?.SpawnTotemBehind();
     }
 
     // 성소: 파티원 피해 감소분의 일정 비율 누적
@@ -35,7 +35,8 @@ public class SelmuCharacter : Character
     {
         int bonus = _accumulatedBonus;
         _accumulatedBonus = 0;
-        SelmuSkill?.SetTotemActive(false);
+        SelmuSkill?.SetPassivePSActive(false);
+        SelmuSkill?.PlayConsumeEffect(_targetPos, scaleFactor);
         return damage + bonus;
     }
 }

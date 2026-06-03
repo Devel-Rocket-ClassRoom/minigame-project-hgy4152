@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: ChainKnights::CharacterDef
   id: pr_selmu
   classType: 5
-  prefab: {fileID: 0}
+  prefab: {fileID: 3331789133659326685, guid: e345b836ff299754c833d6b95043d2cf, type: 3}
   blockData: {fileID: 11400000, guid: a2b3c4d5e6f7a2b3c4d5e6f7a2b3c4d5, type: 2}
   rarity: 1
   displayName: chr_pr_selmu_name

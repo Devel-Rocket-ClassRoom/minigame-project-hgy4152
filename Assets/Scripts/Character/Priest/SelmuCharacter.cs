@@ -8,6 +8,8 @@ public class SelmuCharacter : Character
     float accumulationRatio = 0.3f;
 
     int _accumulatedBonus;
+    bool _thresholdReached;
+    bool _pendingConsume;
 
     Skill_Selmu SelmuSkill => skill as Skill_Selmu;
 
@@ -17,26 +19,48 @@ public class SelmuCharacter : Character
     public override void OnStageStart()
     {
         _accumulatedBonus = 0;
+        _thresholdReached = false;
+        _pendingConsume = false;
         SelmuSkill?.SpawnTotemBehind();
     }
 
-    // 성소: 파티원 피해 감소분의 일정 비율 누적
+    // 핸드 플레이 공격마다 누적 (CalcDamages 단계에서 호출)
     public override void OnAnyGroupDamageApplied(int rawDamage, int finalDamage)
     {
-        int reduced = rawDamage - finalDamage;
-        if (reduced > 0)
-            _accumulatedBonus += Mathf.RoundToInt(reduced * accumulationRatio);
+        if (_pendingConsume)
+            return;
 
-        SelmuSkill?.SetTotemActive(_accumulatedBonus > 0);
+        _accumulatedBonus += Mathf.RoundToInt(finalDamage * accumulationRatio);
+        SelmuSkill?.PlayAccumulationPS();
+
+        if (!_thresholdReached && _accumulatedBonus >= 1000)
+        {
+            _thresholdReached = true;
+            SelmuSkill?.SetThresholdEffectActive(true);
+        }
     }
 
-    // 자신 블럭 사용 시 누적 보너스 소비
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
+    // 턴 시퀀스 종료: 1000 이상이면 다음 턴 소비 대기로 이관
+    public override void OnTurnSequenceEnd()
     {
-        int bonus = _accumulatedBonus;
+        if (_thresholdReached)
+        {
+            _pendingConsume = true;
+            _thresholdReached = false;
+        }
+    }
+
+    // 다음 턴 첫 공격 시 소비
+    public override void OnAnyGroupAttackStart(ChainGroup group, EnemyController target)
+    {
+        if (!_pendingConsume)
+            return;
+
+        _pendingConsume = false;
+        int damage = _accumulatedBonus;
         _accumulatedBonus = 0;
-        SelmuSkill?.SetPassivePSActive(false);
-        SelmuSkill?.PlayConsumeEffect(_targetPos, scaleFactor);
-        return damage + bonus;
+        SelmuSkill?.SetThresholdEffectActive(false);
+        SelmuSkill?.PlayConsumeEffect(target.transform.position, 1f);
+        target.TakeDamage(damage, classColor);
     }
 }

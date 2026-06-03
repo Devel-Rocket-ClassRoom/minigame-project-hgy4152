@@ -49,10 +49,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b25c57dd256eee4e832f7c0a695d0fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 4471972253147321080}
-  creator: {fileID: 2200000000000000004}
-  icon: {fileID: 21300000, guid: 8268ad7a53ba7f749a1813288a80a5e1, type: 3}
-  skill: {fileID: -677200841826941376}
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
 --- !u!114 &2200000000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 8268ad7a53ba7f749a1813288a80a5e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -243,7 +243,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7859172089955894966, guid: 8eadf6a5ff974e24387f54edf0689784, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

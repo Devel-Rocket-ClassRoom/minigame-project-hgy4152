@@ -131,4 +131,8 @@ public abstract class Character : MonoBehaviour
     public virtual void OnAfterGroupPlayed(CharacterSet characterSet, ChainGroup group) { }
 
     public virtual int GetBonusAttackCount(ChainJudge judge, ChainGroup group) => 0;
+
+    public virtual void OnTurnSequenceEnd() { }
+
+    public virtual void OnAnyGroupAttackStart(ChainGroup group, EnemyController target) { }
 }

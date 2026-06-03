@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: ChainKnights::CharacterDef
   id: wi_zyum
   classType: 6
-  prefab: {fileID: 0}
+  prefab: {fileID: 7689006509562128344, guid: c56d058e3e3b7ed419604fb04e74917a, type: 3}
   blockData: {fileID: 11400000, guid: e6f7a2b3c4d5e6f7a2b3c4d5e6f7a2b3, type: 2}
   rarity: 1
   displayName: chr_wi_zyum_name

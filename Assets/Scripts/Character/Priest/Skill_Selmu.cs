@@ -83,24 +83,30 @@ public class Skill_Selmu : Skill
             return;
         if (_activeTotem != null)
             Destroy(_activeTotem);
-        _activeTotem = Instantiate(totemEffectPrefab, position, Quaternion.identity);
-        _activeTotem.SetActive(false);
+
+        _activeTotem = Instantiate(
+            totemEffectPrefab,
+            position,
+            totemEffectPrefab.transform.rotation
+        );
     }
 
-    public void SetTotemActive(bool active)
-    {
-        if (_activeTotem != null)
-            _activeTotem.SetActive(active);
-        SetPassivePSActive(active);
-    }
-
-    public void SetPassivePSActive(bool active)
+    public void PlayAccumulationPS()
     {
         if (_activeTotem == null)
             return;
-        var ps = _activeTotem.GetComponentInChildren<ParticleSystem>();
-        if (ps != null)
-            ps.gameObject.SetActive(active);
+        var psList = _activeTotem.GetComponentsInChildren<ParticleSystem>(true);
+        if (psList.Length > 0)
+            psList[0].Play();
+    }
+
+    public void SetThresholdEffectActive(bool active)
+    {
+        if (_activeTotem == null)
+            return;
+        var psList = _activeTotem.GetComponentsInChildren<ParticleSystem>(true);
+        if (psList.Length > 1)
+            psList[1].gameObject.SetActive(active);
     }
 
     public void PlayConsumeEffect(Vector3 targetPos, float scaleFactor)

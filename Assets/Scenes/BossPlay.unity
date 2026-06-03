@@ -2624,9 +2624,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::DebuffIconBarUI
   bossPatternSystem: {fileID: 8296404970221016779}
+  stageManager: {fileID: 1083830752}
   iconContainer: {fileID: 2085069219}
   debuffIconPrefab: {fileID: 4732170514584371774, guid: b2cca8e37d462d84fa06dacee0e783a8, type: 3}
-  infoPopupUI: {fileID: 0}
+  bossInfoUIPanel: {fileID: 1935961600}
 --- !u!1001 &322444660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14697,7 +14698,6 @@ GameObject:
   - component: {fileID: 1573341812}
   - component: {fileID: 1573341811}
   - component: {fileID: 1573341810}
-  - component: {fileID: 1573341809}
   m_Layer: 0
   m_Name: BossInfo
   m_TagString: Untagged
@@ -14729,20 +14729,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 0}
   m_Pivot: {x: 0, y: 0.5}
---- !u!114 &1573341809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1573341807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!114 &1573341810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17225,6 +17211,7 @@ MonoBehaviour:
   nameText: {fileID: 832452913}
   descText: {fileID: 147173332}
   patternText: {fileID: 512523009}
+  debuffText: {fileID: 512523009}
   slideDuration: 0.25
 --- !u!1 &1963256228 stripped
 GameObject:

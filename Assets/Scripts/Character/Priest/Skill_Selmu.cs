@@ -95,17 +95,18 @@ public class Skill_Selmu : Skill
     {
         if (_activeTotem == null)
             return;
-        var ps = _activeTotem.GetComponentInChildren<ParticleSystem>();
-        if (ps != null)
-            ps.Play();
+        var psList = _activeTotem.GetComponentsInChildren<ParticleSystem>(true);
+        if (psList.Length > 0)
+            psList[0].Play();
     }
 
-    // Totem 프리팹의 두 번째 자식(index 1)이 이펙트 오브젝트라고 가정
     public void SetThresholdEffectActive(bool active)
     {
-        if (_activeTotem == null || _activeTotem.transform.childCount < 2)
+        if (_activeTotem == null)
             return;
-        _activeTotem.transform.GetChild(1).gameObject.SetActive(active);
+        var psList = _activeTotem.GetComponentsInChildren<ParticleSystem>(true);
+        if (psList.Length > 1)
+            psList[1].gameObject.SetActive(active);
     }
 
     public void PlayConsumeEffect(Vector3 targetPos, float scaleFactor)

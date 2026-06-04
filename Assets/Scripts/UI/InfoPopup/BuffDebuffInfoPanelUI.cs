@@ -76,9 +76,12 @@ public class BuffDebuffInfoPanelUI : MonoBehaviour
         foreach (var e in entries)
         {
             var slot = Instantiate(slotPrefab, slotContainer);
-            var img = slot.GetComponentInChildren<Image>();
-            if (img != null && e.icon != null)
-                img.sprite = e.icon;
+            var iconImg = slot.transform.Find("Icon")?.GetComponent<Image>();
+            if (iconImg != null && e.icon != null)
+            {
+                iconImg.sprite = e.icon;
+                iconImg.preserveAspect = true;
+            }
             var texts = slot.GetComponentsInChildren<TMP_Text>();
             if (texts.Length >= 1)
                 texts[0].text = e.name;

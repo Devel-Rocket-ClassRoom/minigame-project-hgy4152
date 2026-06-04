@@ -20,4 +20,6 @@ MonoBehaviour:
   displayName: Izna
   passiveName: "\uC5F0\uACA9"
   description: 
+  passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 13c035a6820ee40139858ef1f949e854, type: 3}
   unlockConditions: []

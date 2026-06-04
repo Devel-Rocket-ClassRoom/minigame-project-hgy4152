@@ -21,6 +21,7 @@ MonoBehaviour:
   passiveName: chr_pr_selmu_passive_name
   description: chr_pr_selmu_desc
   passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 14af2fb1a8d8049eda552914a02ff5d3, type: 3}
   unlockConditions:
   - type: 0
     count: 1

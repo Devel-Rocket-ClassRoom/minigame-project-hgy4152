@@ -102,11 +102,8 @@ public class Skill_Reon : Skill
         _character.TryReturnAfterChain(DestroyActiveEffects);
     }
 
-    // Chain1 완료 위치에서 chain2 이어서 실행
     IEnumerator Chain2Routine(Vector3 targetPos, float scaleFactor)
     {
-        yield return StartCoroutine(Chain1Routine(targetPos, scaleFactor));
-
         Vector3 idlePos = _character.IdlePos;
         Vector3 targetLocal =
             transform.parent != null
@@ -138,11 +135,8 @@ public class Skill_Reon : Skill
         _character.TryReturnAfterChain(DestroyActiveEffects);
     }
 
-    // Chain2 완료 위치에서 슬램 후 idle 복귀
     IEnumerator Chain3Routine(Vector3 targetPos, float scaleFactor)
     {
-        yield return StartCoroutine(Chain2Routine(targetPos, scaleFactor));
-
         Vector3 idlePos = _character.IdlePos;
         Vector3 targetLocal =
             transform.parent != null
@@ -178,6 +172,8 @@ public class Skill_Reon : Skill
                 _character.StartBreathing();
                 DestroyActiveEffects();
             });
+
+        yield return null;
     }
 
     IEnumerator MoveTo(GameObject go, Vector3 start, Vector3 target, Vector3 hitPos)

@@ -11,6 +11,7 @@ public class ZyumCharacter : Character
 
     public override ClassType Type => ClassType.Wizard;
     public override Color classColor => Color.magenta;
+    protected override bool IsSingleCast => true;
 
     // 전장의 악귀: 파티 내 위자드가 3체인 최다 사용 시 체인 수 비례 추가 데미지
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)

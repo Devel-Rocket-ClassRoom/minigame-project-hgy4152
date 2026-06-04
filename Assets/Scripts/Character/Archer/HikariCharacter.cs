@@ -17,7 +17,7 @@ public class HikariCharacter : Character
     public override ClassType Type => ClassType.Archer;
     public override Color classColor => Color.yellow;
 
-    public void StartJump()
+    public void StartJump(System.Action onPeak = null)
     {
         DOTween.Kill(transform);
         DOTween
@@ -28,6 +28,7 @@ public class HikariCharacter : Character
                     .DOLocalMoveY(_idlePos.y + jumpHeight, jumpUpDuration)
                     .SetEase(Ease.OutQuad)
             )
+            .AppendCallback(() => onPeak?.Invoke())
             .Append(transform.DOLocalMoveY(_idlePos.y, jumpDownDuration).SetEase(Ease.InQuad))
             .OnComplete(StartBreathing);
     }

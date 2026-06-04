@@ -10,9 +10,6 @@ public class Skill_AhnMansik : Skill
     float throwDuration = 0.4f;
 
     [SerializeField]
-    float grenadeInterval = 0.12f;
-
-    [SerializeField]
     float arcHeightMin = 2f;
 
     [SerializeField]
@@ -37,49 +34,20 @@ public class Skill_AhnMansik : Skill
         }
     }
 
-    // 1체인: 수류탄 1개
-    public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(ThrowGrenades(targetPos, 1));
+    public override void Chain1(Vector3 targetPos, float scaleFactor) => ThrowGrenade(targetPos);
 
-    // 2체인: 수류탄 2개
-    public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(ThrowGrenades(targetPos, 2));
+    public override void Chain2(Vector3 targetPos, float scaleFactor) => ThrowGrenade(targetPos);
 
-    // 3체인: 수류탄 3개
-    public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(ThrowGrenades(targetPos, 3));
+    public override void Chain3(Vector3 targetPos, float scaleFactor) => ThrowGrenade(targetPos);
 
-    IEnumerator ThrowGrenades(Vector3 targetPos, int count)
+    void ThrowGrenade(Vector3 targetPos)
     {
-        float[] arcHeights = new float[count];
-        arcHeights[0] = Random.Range(arcHeightMin, arcHeightMax);
-        for (int i = 1; i < count; i++)
-        {
-            float h;
-            int attempts = 0;
-            do
-            {
-                h = Random.Range(arcHeightMin, arcHeightMax);
-                attempts++;
-            } while (Mathf.Abs(h - arcHeights[i - 1]) < 0.5f && attempts < 100);
-            arcHeights[i] = h;
-        }
-
-        for (int i = 0; i < count; i++)
-        {
-            float offsetX = (i - (count - 1) * 0.5f) * 0.4f;
-            Vector3 landPos = targetPos + new Vector3(offsetX, 0f, 0f);
-
-            var go = new GameObject("Grenade");
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = grenadeSprite;
-            go.transform.position = transform.position;
-
-            StartCoroutine(Throw(go, transform.position, landPos, arcHeights[i]));
-
-            if (i < count - 1)
-                yield return new WaitForSeconds(grenadeInterval);
-        }
+        float arcHeight = Random.Range(arcHeightMin, arcHeightMax);
+        var go = new GameObject("Grenade");
+        var sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = grenadeSprite;
+        go.transform.position = transform.position;
+        StartCoroutine(Throw(go, transform.position, targetPos, arcHeight));
     }
 
     IEnumerator Throw(GameObject go, Vector3 start, Vector3 target, float arcHeight)

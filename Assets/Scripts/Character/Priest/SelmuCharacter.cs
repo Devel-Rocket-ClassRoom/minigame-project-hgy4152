@@ -15,6 +15,7 @@ public class SelmuCharacter : Character
 
     public override ClassType Type => ClassType.Priest;
     public override Color classColor => Color.green;
+    protected override bool IsSingleCast => true;
 
     public override void OnStageStart()
     {

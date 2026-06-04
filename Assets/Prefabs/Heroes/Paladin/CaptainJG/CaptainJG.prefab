@@ -225,7 +225,7 @@ MonoBehaviour:
   - {fileID: -2370076036064838449, guid: 01b8c401ff03e9848adfd4656a61595b, type: 3}
   - {fileID: -3101694050197708467, guid: 9df7f7ad51306ed46bd3ee7fb65444c5, type: 3}
   - {fileID: 4072233559912843123, guid: 80a5099be5c246346b391578d8a4eab7, type: 3}
-  hitEffectPrefab: {fileID: 4873479580030643389, guid: 939ba1a6a36ef9748a7525496ad78563, type: 3}
+  hitEffectPrefab: {fileID: 4873479580030643389, guid: 6bd2531acf049314281b7ba578611074, type: 3}
 --- !u!114 &2266537575224868906
 MonoBehaviour:
   m_ObjectHideFlags: 0

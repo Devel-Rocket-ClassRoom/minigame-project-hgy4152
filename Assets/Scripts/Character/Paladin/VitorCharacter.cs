@@ -13,6 +13,7 @@ public class VitorCharacter : Character
 
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;
+    protected override bool IsSingleCast => true;
 
     public void OnChargeStartEvent(Vector3 targetPos, System.Action onArrival = null)
     {

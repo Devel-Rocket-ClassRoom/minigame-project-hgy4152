@@ -132,5 +132,4 @@ $RECYCLE.BIN/
 # Private Assets
 Assets/Imported/
 Assets/Imported.meta
-# DOTween — 환경마다 reimport
-Assets/Plugins/Demigiant/
+

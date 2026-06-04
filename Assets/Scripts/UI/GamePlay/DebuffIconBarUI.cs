@@ -54,6 +54,8 @@ public class DebuffIconBarUI : MonoBehaviour
         foreach (var mod in mods)
         {
             var icon = Instantiate(debuffIconPrefab, iconContainer);
+            if (mod.icon != null)
+                icon.GetComponent<Image>().sprite = mod.icon;
             icon.GetComponent<Button>().onClick.AddListener(ShowBossInfo);
         }
     }

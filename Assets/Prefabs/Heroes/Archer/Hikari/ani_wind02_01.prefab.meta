@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Heroes/Archer/Hikari/ani_wind03_01.prefab.meta
+guid: 46a722cd18896364fb58f7a966a6cc28
+========
 guid: 57532d6de25055240a4ddb17492a8d3b
+>>>>>>>> origin/main:Assets/Prefabs/Heroes/Archer/Hikari/ani_wind02_01.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

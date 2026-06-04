@@ -20,4 +20,8 @@ MonoBehaviour:
   displayName: chr_hu_ahnmansik_name
   passiveName: chr_hu_ahnmansik_passive_name
   description: chr_hu_ahnmansik_desc
-  unlockConditions: []
+  passiveIcon: {fileID: 0}
+  unlockConditions:
+  - type: 0
+    count: 1
+    classType: 4

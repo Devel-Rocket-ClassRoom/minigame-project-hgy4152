@@ -111,7 +111,7 @@ MonoBehaviour:
   - 0.35
   - 0.55
   jumpHeight: 1.5
-  jumpUpDuration: 0.333
+  jumpUpDuration: 0.1
   jumpDownDuration: 0.2
 --- !u!114 &5598690412530539374
 MonoBehaviour:
@@ -139,9 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dc9c83073f2564888b3c0de93c94ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherSkill
-  effectPrefab: {fileID: 5184314635075901654, guid: 0efc2abc80869a246b0d93bc4ea5c128, type: 3}
+  effectPrefab: {fileID: 5184314635075901654, guid: 57532d6de25055240a4ddb17492a8d3b, type: 3}
   target: {fileID: 0}
   moveDuration: 0.3
-  shotInterval: 0.25
   hitEffectPrefab: {fileID: 5539557390619183453, guid: ae4320c8e3905834ba075acc1ab8f4d2, type: 3}
-  chain3HitEffectPrefab: {fileID: 2099767672069559533, guid: 46a722cd18896364fb58f7a966a6cc28, type: 3}
+  chain3HitEffectPrefab: {fileID: 2099767672069559533, guid: ea569f01a7ce84143bcfb611316c41b1, type: 3}

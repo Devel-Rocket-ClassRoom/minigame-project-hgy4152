@@ -5,6 +5,7 @@ public abstract class Modifier : ScriptableObject, IIdentifiable
     public string id;
     public string modName;
     public string description;
+    public Sprite icon;
 
     public string Id => id;
 

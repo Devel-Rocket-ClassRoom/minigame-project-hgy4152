@@ -24,7 +24,10 @@ public class CharacterPortraitUI : MonoBehaviour
     {
         Def = def;
         if (portrait != null)
+        {
             portrait.sprite = icon;
+            portrait.preserveAspect = true;
+        }
         gameObject.SetActive(def != null);
     }
 }

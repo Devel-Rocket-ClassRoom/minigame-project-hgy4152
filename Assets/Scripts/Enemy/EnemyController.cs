@@ -117,6 +117,7 @@ public class EnemyController : MonoBehaviour
         currentHp = data.hp;
         enemySprite.sprite = data.icon;
         enemyPortrait.sprite = data.icon;
+        enemyPortrait.preserveAspect = true;
         OnHpChanged?.Invoke(currentHp, maxHp);
     }
 
@@ -128,6 +129,7 @@ public class EnemyController : MonoBehaviour
         currentHp = data.hp;
         enemySprite.sprite = data.icon;
         enemyPortrait.sprite = data.icon;
+        enemyPortrait.preserveAspect = true;
         OnHpChanged?.Invoke(currentHp, maxHp);
     }
 

@@ -39,7 +39,10 @@ public class UnlockNotificationUI : MonoBehaviour
         if (nameText != null)
             nameText.text = text;
         if (iconImage != null)
+        {
             iconImage.sprite = icon;
+            iconImage.preserveAspect = true;
+        }
 
         float y = _rect.anchoredPosition.y;
 

@@ -48,6 +48,7 @@ public class JokerCardSlotUI : MonoBehaviour
 
         icon.enabled = true;
         icon.sprite = card.icon;
+        icon.preserveAspect = true;
     }
 
     public void EnterSwapMode(Action<JokerCardSlotUI> onClicked)

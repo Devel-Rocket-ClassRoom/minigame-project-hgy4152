@@ -94,7 +94,10 @@ public class InfoPopupUI : MonoBehaviour
                 lockDescText.gameObject.SetActive(false);
 
             if (infoIconImage != null)
+            {
                 infoIconImage.sprite = def.prefab.Icon;
+                infoIconImage.preserveAspect = true;
+            }
             SetText(titleNameText, Localization.Get(def.displayName));
             SetText(descText, Localization.Get(def.description));
 
@@ -133,7 +136,10 @@ public class InfoPopupUI : MonoBehaviour
                 lockDescText.gameObject.SetActive(false);
 
             if (infoIconImage != null)
+            {
                 infoIconImage.sprite = card.icon;
+                infoIconImage.preserveAspect = true;
+            }
             SetText(titleNameText, Localization.Get(card.cardName));
             SetText(descText, Localization.Get(card.description));
 
@@ -170,7 +176,10 @@ public class InfoPopupUI : MonoBehaviour
             SetSubPanel(subPanel2, subTitle2Text, subDesc2Text, false);
 
             if (infoIconImage != null)
+            {
                 infoIconImage.sprite = icon;
+                infoIconImage.preserveAspect = true;
+            }
             if (lockInfoPanel != null)
                 lockInfoPanel.SetActive(true);
             if (lockDescText != null)
@@ -215,7 +224,10 @@ public class InfoPopupUI : MonoBehaviour
                 lockDescText.gameObject.SetActive(false);
 
             if (infoIconImage != null)
+            {
                 infoIconImage.sprite = icon;
+                infoIconImage.preserveAspect = true;
+            }
             SetText(titleNameText, Localization.Get(nameKey));
             SetText(descText, Localization.Get(descKey));
 

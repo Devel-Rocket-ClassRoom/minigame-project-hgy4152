@@ -1,10 +1,40 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class Skill_Raven : Skill
 {
     [SerializeField]
     float moveDuration = 0.25f;
+
+    [SerializeField]
+    Transform muzzle;
+
+    [SerializeField]
+    float muzzleFlashOffsetX;
+
+    [SerializeField]
+    float bulletSpread = 0.4f;
+
+    [Header("=== 반동 ===")]
+    [SerializeField]
+    float recoilAngle = 7.261f;
+
+    [SerializeField]
+    float recoilDuration = 0.08f;
+
+    [SerializeField]
+    float returnDuration = 0.18f;
+
+    [SerializeField]
+    GameObject muzzleFlashPrefab;
+
+    [SerializeField]
+    GameObject hitEffectPrefab;
+
+    Character _character;
+
+    void Awake() => _character = GetComponent<Character>();
 
     void Update()
     {
@@ -26,19 +56,41 @@ public class Skill_Raven : Skill
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
         Shoot(targetPos, scaleFactor);
 
-    public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        Shoot(targetPos, scaleFactor);
+    public override void Chain2(Vector3 targetPos, float scaleFactor)
+    {
+        Shoot(targetPos + Vector3.up * bulletSpread * 0.5f, scaleFactor);
+        Shoot(targetPos - Vector3.up * bulletSpread * 0.5f, scaleFactor);
+    }
 
-    public override void Chain3(Vector3 targetPos, float scaleFactor) =>
+    public override void Chain3(Vector3 targetPos, float scaleFactor)
+    {
+        Shoot(targetPos + Vector3.up * bulletSpread, scaleFactor);
         Shoot(targetPos, scaleFactor);
+        Shoot(targetPos - Vector3.up * bulletSpread, scaleFactor);
+    }
 
     void Shoot(Vector3 targetPos, float scale)
     {
         if (effectPrefab == null)
             return;
-        Vector3 start = transform.position;
+
+        DOTween.Kill(transform);
+        transform.localRotation = Quaternion.identity;
+        DOTween
+            .Sequence()
+            .SetTarget(transform)
+            .Append(
+                transform
+                    .DOLocalRotate(new Vector3(0, 0, recoilAngle), recoilDuration)
+                    .SetEase(Ease.OutQuad)
+            )
+            .Append(transform.DOLocalRotate(Vector3.zero, returnDuration).SetEase(Ease.InOutSine))
+            .OnComplete(_character.StartBreathing);
+
+        Vector3 start = muzzle != null ? muzzle.position : transform.position;
         Vector3 dir = (targetPos - start).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        SpawnParticleEffect(muzzleFlashPrefab, start + new Vector3(muzzleFlashOffsetX, 0f, 0f));
         var go = Instantiate(effectPrefab, start, Quaternion.Euler(0, 0, angle));
         go.transform.localScale = Vector3.one * scale;
         StartCoroutine(MoveTo(go, start, targetPos));
@@ -56,6 +108,18 @@ public class Skill_Raven : Skill
             yield return null;
         }
         if (go != null)
+        {
+            SpawnParticleEffect(hitEffectPrefab, target);
             Destroy(go);
+        }
+    }
+
+    void SpawnParticleEffect(GameObject prefab, Vector3 pos)
+    {
+        if (prefab == null)
+            return;
+        var fx = Instantiate(prefab, pos, Quaternion.identity);
+        var ps = fx.GetComponent<ParticleSystem>();
+        Destroy(fx, ps != null ? ps.main.duration + 1f : 2f);
     }
 }

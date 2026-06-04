@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2073849028864188580}
   - component: {fileID: 3059709565305514277}
   - component: {fileID: 6437507022374874377}
-  - component: {fileID: 1441075468376229531}
   - component: {fileID: 5477197007614495793}
   m_Layer: 0
   m_Name: Reon
@@ -111,15 +110,6 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  chain1Height: 0.35
-  chain1XFrac: 0.12
-  chain1Duration: 0.28
-  chain2Height: 0.2
-  chain2XFrac: 0.3
-  chain2Duration: 0.28
-  slamHeight: 0.6
-  slamUpDuration: 0.2
-  slamDownDuration: 0.15
   returnDuration: 0.18
 --- !u!114 &6437507022374874377
 MonoBehaviour:
@@ -135,28 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WarriorCreator
   blockData: {fileID: 11400000, guid: a4760b6928a91cc4c85170b8c68eb767, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
---- !u!95 &1441075468376229531
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8269467986108667068}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b59a7f1864eb9014791c6d63280e2cb0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5477197007614495793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +138,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WarriorSkill
   effectPrefab: {fileID: 5085636098222641073, guid: 30136f9e7f57a8c4abded64e562a3a40, type: 3}
-  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
+  target: {fileID: 0}
   spawnOffset: 12
   moveDuration: 0.15
+  hitEffectPrefab: {fileID: 5753659792777063172, guid: 313204e72692444499e557f14535d68b, type: 3}
+  chain1Height: 1
+  chain1XFrac: 0.12
+  chain1Duration: 0.28
+  chain2Height: 1
+  chain2XFrac: 0.3
+  chain2Duration: 0.28
+  slamHeight: 1
+  slamUpDuration: 0.2
+  slamDownDuration: 0.15
+  returnDuration: 0.5

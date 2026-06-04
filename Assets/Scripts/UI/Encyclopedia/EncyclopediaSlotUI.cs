@@ -19,6 +19,7 @@ public class EncyclopediaSlotUI : MonoBehaviour
         if (iconImage != null)
         {
             iconImage.sprite = icon;
+            iconImage.preserveAspect = true;
             iconImage.color = isUnlocked ? Color.white : lockedIconTint;
         }
         if (nameText != null)

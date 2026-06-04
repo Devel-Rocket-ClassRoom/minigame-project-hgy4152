@@ -15,7 +15,10 @@ public class BossSlotUI : MonoBehaviour
         Def = boss;
 
         if (portrait != null && boss.icon != null)
+        {
             portrait.sprite = boss.icon;
+            portrait.preserveAspect = true;
+        }
 
         if (bossNameLabel != null)
             bossNameLabel.text = Localization.Get(boss.bossName);

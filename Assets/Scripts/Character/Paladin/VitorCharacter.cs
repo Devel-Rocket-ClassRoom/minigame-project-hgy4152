@@ -14,25 +14,27 @@ public class VitorCharacter : Character
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;
 
-    public void OnChargeStartEvent()
+    public void OnChargeStartEvent(Vector3 targetPos, System.Action onArrival = null)
     {
         Vector3 dashEnd =
             (
                 transform.parent != null
-                    ? transform.parent.InverseTransformPoint(_targetPos)
-                    : _targetPos
+                    ? transform.parent.InverseTransformPoint(targetPos)
+                    : targetPos
             ) + chargeStopOffset;
         dashEnd.y = _idlePos.y;
 
         transform
             .DOLocalMove(dashEnd, chargeDuration)
-            .SetEase(Ease.OutQuad)
+            .SetEase(Ease.InQuart)
             .OnComplete(() =>
+            {
+                onArrival?.Invoke();
                 transform
                     .DOLocalMove(_idlePos, chargeDuration * 0.5f)
                     .SetEase(Ease.InOutSine)
-                    .OnComplete(StartBreathing)
-            );
+                    .OnComplete(StartBreathing);
+            });
     }
 
     bool _stageImmunityUsed;

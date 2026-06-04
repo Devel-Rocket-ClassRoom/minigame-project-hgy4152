@@ -74,7 +74,10 @@ public class SaveSlotEntryUI : MonoBehaviour
             return;
         img.enabled = sprite != null;
         if (sprite != null)
+        {
             img.sprite = sprite;
+            img.preserveAspect = true;
+        }
     }
 
     static void ClearIcons(Image[] icons)

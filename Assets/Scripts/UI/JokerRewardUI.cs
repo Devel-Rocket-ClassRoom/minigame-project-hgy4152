@@ -102,7 +102,10 @@ public class JokerRewardUI : MonoBehaviour
             if (selectFrames[i] != null)
                 selectFrames[i].enabled = false;
             if (valid)
+            {
                 cardImage[i].sprite = _offered[i].icon;
+                cardImage[i].preserveAspect = true;
+            }
         }
 
         tooltipPanel.gameObject.SetActive(false);
@@ -182,6 +185,7 @@ public class JokerRewardUI : MonoBehaviour
             {
                 swapNewCardImage.enabled = true;
                 swapNewCardImage.sprite = card.icon;
+                swapNewCardImage.preserveAspect = true;
             }
             swapPromptPanel?.SetActive(true);
             cancelButton?.gameObject.SetActive(true);

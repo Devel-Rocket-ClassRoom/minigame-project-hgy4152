@@ -153,6 +153,7 @@ public class AdventureReadyUI : MonoBehaviour
             if (i < currentParty.Count)
             {
                 partyPortraits[i].sprite = currentParty[i].prefab.Icon;
+                partyPortraits[i].preserveAspect = true;
                 partyPortraits[i].gameObject.SetActive(true);
                 if (partyNames != null && i < partyNames.Length && partyNames[i] != null)
                 {

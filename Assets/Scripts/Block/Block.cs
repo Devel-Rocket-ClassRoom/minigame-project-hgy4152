@@ -144,7 +144,10 @@ public class Block : MonoBehaviour
         EnsureInitialized();
         data = blockData;
         if (blockData.icon != null)
+        {
             _sprite.sprite = blockData.icon;
+            _sprite.preserveAspect = true;
+        }
         _background.color = blockData.blockColor;
     }
 
@@ -166,6 +169,7 @@ public class Block : MonoBehaviour
         bgGO.transform.localScale = Vector3.one * 1.1f;
         var img = bgGO.AddComponent<Image>();
         img.sprite = backgroundSprite != null ? backgroundSprite : _whiteSprite;
+        img.preserveAspect = true;
         Stretch(img.rectTransform);
         return img;
     }

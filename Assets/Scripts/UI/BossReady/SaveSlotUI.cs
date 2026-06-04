@@ -78,6 +78,9 @@ public class SaveSlotUI : MonoBehaviour
             return;
         img.enabled = sprite != null;
         if (sprite != null)
+        {
             img.sprite = sprite;
+            img.preserveAspect = true;
+        }
     }
 }

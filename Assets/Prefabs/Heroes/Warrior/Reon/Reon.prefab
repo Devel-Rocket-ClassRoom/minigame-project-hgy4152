@@ -110,15 +110,6 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  chain1Height: 0.35
-  chain1XFrac: 0.12
-  chain1Duration: 0.28
-  chain2Height: 0.2
-  chain2XFrac: 0.3
-  chain2Duration: 0.28
-  slamHeight: 0.6
-  slamUpDuration: 0.2
-  slamDownDuration: 0.15
   returnDuration: 0.18
 --- !u!114 &6437507022374874377
 MonoBehaviour:
@@ -147,6 +138,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WarriorSkill
   effectPrefab: {fileID: 5085636098222641073, guid: 30136f9e7f57a8c4abded64e562a3a40, type: 3}
-  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
+  target: {fileID: 0}
   spawnOffset: 12
   moveDuration: 0.15
+  hitEffectPrefab: {fileID: 5753659792777063172, guid: 313204e72692444499e557f14535d68b, type: 3}
+  chain1Height: 1
+  chain1XFrac: 0.12
+  chain1Duration: 0.28
+  chain2Height: 1
+  chain2XFrac: 0.3
+  chain2Duration: 0.28
+  slamHeight: 1
+  slamUpDuration: 0.2
+  slamDownDuration: 0.15
+  returnDuration: 0.5

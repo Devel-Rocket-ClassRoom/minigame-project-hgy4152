@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7016182996810529888}
   - component: {fileID: 4972757418016788864}
   - component: {fileID: 5598690412530539374}
-  - component: {fileID: 995628499764311731}
   - component: {fileID: 9041249986455009890}
   m_Layer: 0
   m_Name: Hikari
@@ -111,10 +110,9 @@ MonoBehaviour:
   - 0.15
   - 0.35
   - 0.55
-  jumpHeight: 0.5
+  jumpHeight: 1.5
   jumpUpDuration: 0.333
-  holdPerChain: 0.067
-  attackAnimDuration: 0.7
+  jumpDownDuration: 0.2
 --- !u!114 &5598690412530539374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,28 +127,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArcherCreator
   blockData: {fileID: 11400000, guid: 73f03e127426f2645a83e6dff58c62cb, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
---- !u!95 &995628499764311731
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938667083484446728}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: abd316f1588b56747adfedc633b5ab79, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &9041249986455009890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dc9c83073f2564888b3c0de93c94ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherSkill
-  effectPrefab: {fileID: 4176732619518356672, guid: 7c42660ab7d10c444a9f4fd982f4ace6, type: 3}
-  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
-  moveDuration: 0.2
+  effectPrefab: {fileID: 5184314635075901654, guid: 0efc2abc80869a246b0d93bc4ea5c128, type: 3}
+  target: {fileID: 0}
+  moveDuration: 0.3
+  shotInterval: 0.25
+  hitEffectPrefab: {fileID: 5539557390619183453, guid: ae4320c8e3905834ba075acc1ab8f4d2, type: 3}
+  chain3HitEffectPrefab: {fileID: 2099767672069559533, guid: 46a722cd18896364fb58f7a966a6cc28, type: 3}

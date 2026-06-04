@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class CharacterSlotUI : MonoBehaviour
 {
@@ -23,7 +23,10 @@ public class CharacterSlotUI : MonoBehaviour
         IsInParty = isInParty;
 
         if (portrait != null && def.prefab != null && def.prefab.Icon != null)
+        {
             portrait.sprite = def.prefab.Icon;
+            portrait.preserveAspect = true;
+        }
 
         UpdateVisuals(false);
     }
@@ -41,10 +44,14 @@ public class CharacterSlotUI : MonoBehaviour
         bool showDeployed = IsInParty && !isSelected;
         bool showRemove = IsInParty && isSelected;
 
-        if (maskOverlay != null) maskOverlay.SetActive(showMask);
-        if (deployButton != null) deployButton.SetActive(showDeploy);
-        if (deployedLabel != null) deployedLabel.SetActive(showDeployed);
-        if (removeButton != null) removeButton.SetActive(showRemove);
+        if (maskOverlay != null)
+            maskOverlay.SetActive(showMask);
+        if (deployButton != null)
+            deployButton.SetActive(showDeploy);
+        if (deployedLabel != null)
+            deployedLabel.SetActive(showDeployed);
+        if (removeButton != null)
+            removeButton.SetActive(showRemove);
     }
 
     public void OnClick() => OnSelected?.Invoke(this);

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2335075217446940567}
   - component: {fileID: 599271511147300192}
   - component: {fileID: 3990032338686259886}
-  - component: {fileID: 2140388815789277146}
   - component: {fileID: -4092750051759250212}
   m_Layer: 0
   m_Name: Beatrice
@@ -125,28 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PriestCreator
   blockData: {fileID: 11400000, guid: 789a5a696606f7d4588df370183f7491, type: 2}
   blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
---- !u!95 &2140388815789277146
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411667373156260801}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b3c374bc9bcccf148ac491db7270d8bc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &-4092750051759250212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,5 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4865daa8bd129c94a9f0d3b47a45231d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PriestSkill
-  effectPrefab: {fileID: 6183797451724450189, guid: 96002f8a12232e54da2335f5d9f8e56a, type: 3}
-  target: {fileID: 6811879577970000027, guid: cc6a357ad3a99c244bd26bd35e3c3214, type: 3}
+  effectPrefab: {fileID: 1268354273595110117, guid: a1e2102633c0dea478e72d79a04e0333, type: 3}
+  target: {fileID: 0}
+  effectPivotOffset: {x: 0, y: 0.5, z: 0}

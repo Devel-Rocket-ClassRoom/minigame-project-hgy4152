@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Heroes/Hunter/Raven/Ef_22_normal_p.prefab.meta
+guid: ea569f01a7ce84143bcfb611316c41b1
+========
 guid: 46a722cd18896364fb58f7a966a6cc28
+>>>>>>>> origin/main:Assets/Prefabs/Heroes/Archer/Hikari/ani_wind03_01.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

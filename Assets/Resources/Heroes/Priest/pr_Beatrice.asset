@@ -20,6 +20,6 @@ MonoBehaviour:
   displayName: chr_pr_beatrice_name
   passiveName: chr_pr_beatrice_passive_name
   description: chr_pr_beatrice_desc
-  passiveIcon: {fileID: 21300000, guid: dbd15bac1c5494db9913d4a7e299931e, type: 3}
-  buffIcon: {fileID: 0}
+  passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: dbd15bac1c5494db9913d4a7e299931e, type: 3}
   unlockConditions: []

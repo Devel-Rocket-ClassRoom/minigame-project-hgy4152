@@ -20,6 +20,6 @@ MonoBehaviour:
   displayName: chr_wa_reon_name
   passiveName: chr_wa_reon_passive_name
   description: chr_wa_reon_desc
-  passiveIcon: {fileID: 21300000, guid: 5eec0cf9e8ff94ee38a599e54bdc32b6, type: 3}
-  buffIcon: {fileID: 0}
+  passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 5eec0cf9e8ff94ee38a599e54bdc32b6, type: 3}
   unlockConditions: []

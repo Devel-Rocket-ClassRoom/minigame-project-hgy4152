@@ -20,6 +20,6 @@ MonoBehaviour:
   displayName: chr_wi_acan_name
   passiveName: chr_wi_acan_passive_name
   description: chr_wi_acan_desc
-  passiveIcon: {fileID: 21300000, guid: 516af4deac0b04177992ca278089feba, type: 3}
-  buffIcon: {fileID: 0}
+  passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 516af4deac0b04177992ca278089feba, type: 3}
   unlockConditions: []

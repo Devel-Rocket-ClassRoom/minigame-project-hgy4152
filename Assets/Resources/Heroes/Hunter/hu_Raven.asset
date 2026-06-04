@@ -20,6 +20,6 @@ MonoBehaviour:
   displayName: chr_hu_raven_name
   passiveName: chr_hu_raven_passive_name
   description: chr_hu_raven_desc
-  passiveIcon: {fileID: 21300000, guid: cee2be1bdc4064b01b976ebeec31a532, type: 3}
-  buffIcon: {fileID: 0}
+  passiveIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: cee2be1bdc4064b01b976ebeec31a532, type: 3}
   unlockConditions: []

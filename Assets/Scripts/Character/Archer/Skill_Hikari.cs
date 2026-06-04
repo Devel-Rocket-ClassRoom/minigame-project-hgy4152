@@ -7,9 +7,6 @@ public class Skill_Hikari : Skill
     float moveDuration = 0.2f;
 
     [SerializeField]
-    float shotInterval = 0.25f;
-
-    [SerializeField]
     GameObject hitEffectPrefab;
 
     [SerializeField]
@@ -30,24 +27,13 @@ public class Skill_Hikari : Skill
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(FireSequence(targetPos, scaleFactor, hitEffectPrefab, 1));
+        _character?.StartJump(() => GustArrow(targetPos, scaleFactor, hitEffectPrefab));
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(FireSequence(targetPos, scaleFactor, hitEffectPrefab, 2));
+        _character?.StartJump(() => GustArrow(targetPos, scaleFactor, hitEffectPrefab));
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(FireSequence(targetPos, scaleFactor, chain3HitEffectPrefab, 3));
-
-    IEnumerator FireSequence(Vector3 targetPos, float scale, GameObject hitPrefab, int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            _character?.StartJump();
-            GustArrow(targetPos, scale, hitPrefab);
-            if (i < count - 1)
-                yield return new WaitForSeconds(shotInterval);
-        }
-    }
+        _character?.StartJump(() => GustArrow(targetPos, scaleFactor, chain3HitEffectPrefab));
 
     void GustArrow(Vector3 targetPos, float scale, GameObject hitPrefab)
     {

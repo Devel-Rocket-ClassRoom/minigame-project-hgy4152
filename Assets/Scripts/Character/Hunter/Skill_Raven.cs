@@ -6,6 +6,15 @@ public class Skill_Raven : Skill
     [SerializeField]
     float moveDuration = 0.25f;
 
+    [SerializeField]
+    Transform muzzle;
+
+    [SerializeField]
+    GameObject muzzleFlashPrefab;
+
+    [SerializeField]
+    GameObject hitEffectPrefab;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.U))
@@ -36,9 +45,10 @@ public class Skill_Raven : Skill
     {
         if (effectPrefab == null)
             return;
-        Vector3 start = transform.position;
+        Vector3 start = muzzle != null ? muzzle.position : transform.position;
         Vector3 dir = (targetPos - start).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        SpawnParticleEffect(muzzleFlashPrefab, start);
         var go = Instantiate(effectPrefab, start, Quaternion.Euler(0, 0, angle));
         go.transform.localScale = Vector3.one * scale;
         StartCoroutine(MoveTo(go, start, targetPos));
@@ -56,6 +66,18 @@ public class Skill_Raven : Skill
             yield return null;
         }
         if (go != null)
+        {
+            SpawnParticleEffect(hitEffectPrefab, target);
             Destroy(go);
+        }
+    }
+
+    void SpawnParticleEffect(GameObject prefab, Vector3 pos)
+    {
+        if (prefab == null)
+            return;
+        var fx = Instantiate(prefab, pos, Quaternion.identity);
+        var ps = fx.GetComponent<ParticleSystem>();
+        Destroy(fx, ps != null ? ps.main.duration + 1f : 2f);
     }
 }

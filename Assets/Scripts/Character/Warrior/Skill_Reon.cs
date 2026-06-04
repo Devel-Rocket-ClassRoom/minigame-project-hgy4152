@@ -10,6 +10,9 @@ public class Skill_Reon : Skill
     [SerializeField]
     float moveDuration = 0.15f;
 
+    [SerializeField]
+    GameObject hitEffectPrefab;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -83,7 +86,17 @@ public class Skill_Reon : Skill
         if (go != null)
         {
             go.transform.position = target;
+            SpawnParticleEffect(hitEffectPrefab, target);
             Destroy(go, 0.5f);
         }
+    }
+
+    void SpawnParticleEffect(GameObject prefab, Vector3 pos)
+    {
+        if (prefab == null)
+            return;
+        var fx = Instantiate(prefab, pos, Quaternion.identity);
+        var ps = fx.GetComponent<ParticleSystem>();
+        Destroy(fx, ps != null ? ps.main.duration + 1f : 2f);
     }
 }

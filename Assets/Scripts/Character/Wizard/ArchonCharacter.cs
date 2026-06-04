@@ -8,6 +8,7 @@ public class ArchonCharacter : Character
     public override Color classColor => Color.blue;
 
     int _stageGroupCounter;
+    public int StackCount => _stageGroupCounter;
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 

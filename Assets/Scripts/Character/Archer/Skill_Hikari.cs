@@ -6,6 +6,12 @@ public class Skill_Hikari : Skill
     [SerializeField]
     float moveDuration = 0.2f;
 
+    [SerializeField]
+    GameObject hitEffectPrefab;
+
+    [SerializeField]
+    GameObject chain3HitEffectPrefab;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -28,24 +34,24 @@ public class Skill_Hikari : Skill
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor, hitEffectPrefab);
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor, hitEffectPrefab);
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor);
+        GustArrow(targetPos, scaleFactor, chain3HitEffectPrefab);
 
-    void GustArrow(Vector3 targetPos, float scale)
+    void GustArrow(Vector3 targetPos, float scale, GameObject hitPrefab)
     {
         if (effectPrefab == null)
             return;
         var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(MoveTo(go, targetPos));
+        StartCoroutine(MoveTo(go, targetPos, hitPrefab));
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 targetPos)
+    IEnumerator MoveTo(GameObject go, Vector3 targetPos, GameObject hitPrefab)
     {
         Vector3 start = go.transform.position;
         float t = 0f;
@@ -58,9 +64,28 @@ public class Skill_Hikari : Skill
             yield return null;
         }
         if (go != null)
+        {
             go.transform.position = targetPos;
+            SpawnAnimEffect(hitPrefab, targetPos);
+            Destroy(go);
+        }
+    }
 
-        yield return null;
-        Destroy(go);
+    void SpawnAnimEffect(GameObject prefab, Vector3 pos)
+    {
+        if (prefab == null)
+            return;
+        var fx = Instantiate(prefab, pos, Quaternion.identity);
+        var anim = fx.GetComponent<Animator>();
+        if (anim != null && anim.runtimeAnimatorController != null)
+        {
+            var clips = anim.runtimeAnimatorController.animationClips;
+            if (clips.Length > 0)
+            {
+                Destroy(fx, clips[0].length);
+                return;
+            }
+        }
+        Destroy(fx, 1f);
     }
 }

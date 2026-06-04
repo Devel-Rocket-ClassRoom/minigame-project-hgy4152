@@ -4,62 +4,65 @@ using UnityEngine;
 public class Skill_Archon : Skill
 {
     [SerializeField]
-    float dropHeight = 4f;
+    float hitYOffset = 0f;
 
     [SerializeField]
-    float dropDuration = 0.1f;
+    float scaleYCorrection = 0f;
+
+    ArchonCharacter _archon;
+
+    void Awake() => _archon = GetComponent<ArchonCharacter>();
+
+    float ScaleFromStack()
+    {
+        int stack = _archon != null ? _archon.StackCount : 0;
+        if (stack >= 10)
+            return 2f;
+        if (stack >= 5)
+            return 1.5f;
+        return 1f;
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
-            Chain1(testPos, 1f);
+            Thunder(testPos, 1f);
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Chain1(testPos, 1.5f);
-            Chain2(testPos, 1.5f);
+            Thunder(testPos, 1.5f);
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            Chain1(testPos, 2f);
-            Chain2(testPos, 2f);
-            Chain3(testPos, 2f);
+            Thunder(testPos, 2f);
         }
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        Thunder(targetPos, scaleFactor);
+        Thunder(targetPos, ScaleFromStack());
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        Thunder(targetPos, scaleFactor);
+        Thunder(targetPos, ScaleFromStack());
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        Thunder(targetPos, scaleFactor);
+        Thunder(targetPos, ScaleFromStack());
 
     void Thunder(Vector3 targetPos, float scale)
     {
         if (effectPrefab == null)
             return;
-        Vector3 start = targetPos + new Vector3(0, dropHeight, 0);
-        var go = Instantiate(effectPrefab, start, Quaternion.identity);
+        targetPos.y += hitYOffset - (scale - 1f) * scaleYCorrection;
+        var go = Instantiate(effectPrefab, targetPos, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(Drop(go, start, targetPos));
-    }
-
-    IEnumerator Drop(GameObject go, Vector3 start, Vector3 target)
-    {
-        float t = 0f;
-        while (t < dropDuration)
+        var anim = go.GetComponent<Animator>();
+        if (anim != null && anim.runtimeAnimatorController != null)
         {
-            t += Time.deltaTime;
-            if (go == null)
-                yield break;
-            go.transform.position = Vector3.Lerp(start, target, t / dropDuration);
-            yield return null;
+            var clips = anim.runtimeAnimatorController.animationClips;
+            if (clips.Length > 0)
+            {
+                Destroy(go, clips[0].length);
+                return;
+            }
         }
-        if (go != null)
-        {
-            go.transform.position = target;
-            Destroy(go, 0.5f);
-        }
+        Destroy(go, 1f);
     }
 }

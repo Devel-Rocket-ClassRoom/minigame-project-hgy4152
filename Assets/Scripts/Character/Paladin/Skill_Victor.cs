@@ -3,11 +3,15 @@ using UnityEngine;
 public class Skill_Victor : Skill
 {
     [SerializeField]
-    float forwardOffset = 2f;
+    GameObject hitEffectPrefab;
 
     [Header("=== Passive - 수호의 혼 ===")]
     [SerializeField]
     public GameObject passiveEffectPrefab;
+
+    VitorCharacter _character;
+
+    void Awake() => _character = GetComponent<VitorCharacter>();
 
     void Update()
     {
@@ -26,19 +30,28 @@ public class Skill_Victor : Skill
         }
     }
 
-    public override void Chain1(Vector3 targetPos, float scaleFactor) => Slash(scaleFactor);
+    public override void Chain1(Vector3 targetPos, float scaleFactor) =>
+        Slash(targetPos, scaleFactor);
 
-    public override void Chain2(Vector3 targetPos, float scaleFactor) => Slash(scaleFactor);
+    public override void Chain2(Vector3 targetPos, float scaleFactor) =>
+        Slash(targetPos, scaleFactor);
 
-    public override void Chain3(Vector3 targetPos, float scaleFactor) => Slash(scaleFactor);
+    public override void Chain3(Vector3 targetPos, float scaleFactor) =>
+        Slash(targetPos, scaleFactor);
 
-    void Slash(float scale)
+    void Slash(Vector3 targetPos, float scale)
     {
-        if (effectPrefab == null)
-            return;
-        Vector3 spawnPos = transform.position + new Vector3(forwardOffset, 0, 0);
-        var go = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
-        go.transform.localScale = Vector3.one * scale;
-        Destroy(go, 0.5f);
+        _character?.OnChargeStartEvent(
+            targetPos,
+            () =>
+            {
+                if (hitEffectPrefab != null)
+                {
+                    var hit = Instantiate(hitEffectPrefab, targetPos, Quaternion.identity);
+                    hit.transform.localScale = Vector3.one * scale;
+                    Destroy(hit, 0.5f);
+                }
+            }
+        );
     }
 }

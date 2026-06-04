@@ -9,39 +9,26 @@ public class HikariCharacter : Character
     float jumpHeight = 0.5f;
 
     [SerializeField]
-    float jumpUpDuration = 0.333f;
+    float jumpUpDuration = 0.15f;
 
     [SerializeField]
-    float holdPerChain = 0.067f;
-
-    [SerializeField]
-    float attackAnimDuration = 0.7f;
+    float jumpDownDuration = 0.2f;
 
     public override ClassType Type => ClassType.Archer;
     public override Color classColor => Color.yellow;
 
-    public override void PlaySkillEffect(
-        int chainCount,
-        int[] perHitDamages = null,
-        EnemyController target = null
-    )
+    public void StartJump()
     {
-        base.PlaySkillEffect(chainCount, perHitDamages, target);
-        StartJump();
-    }
-
-    void StartJump()
-    {
-        float peakY = _idlePos.y + jumpHeight;
-        float holdDuration = (_chainCount - 1) * holdPerChain;
-        float lastChainT = jumpUpDuration + holdDuration;
-        float fallDuration = attackAnimDuration - lastChainT;
-
+        DOTween.Kill(transform);
         DOTween
             .Sequence()
-            .Append(transform.DOLocalMoveY(peakY, jumpUpDuration).SetEase(Ease.OutQuad))
-            .AppendInterval(holdDuration)
-            .Append(transform.DOLocalMoveY(_idlePos.y, fallDuration).SetEase(Ease.InQuad))
+            .SetTarget(transform)
+            .Append(
+                transform
+                    .DOLocalMoveY(_idlePos.y + jumpHeight, jumpUpDuration)
+                    .SetEase(Ease.OutQuad)
+            )
+            .Append(transform.DOLocalMoveY(_idlePos.y, jumpDownDuration).SetEase(Ease.InQuad))
             .OnComplete(StartBreathing);
     }
 

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3300000000000000002}
+  - component: {fileID: -1872203549941665125}
   - component: {fileID: 3300000000000000003}
   - component: {fileID: 3300000000000000004}
-  - component: {fileID: -1872203549941665125}
   - component: {fileID: -6370630260090511421}
   m_Layer: 0
   m_Name: Raven
@@ -36,39 +36,6 @@ Transform:
   - {fileID: 783965507572178476}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3300000000000000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3300000000000000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e6f708192a3b4cd5e6f7889aabbccd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitTimings:
-  - 0.15
-  - 0.35
-  - 0.55
-  recoilAngle: 7.261
-  recoilDuration: 0.08
-  returnDuration: 0.18
---- !u!114 &3300000000000000004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3300000000000000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6f708192a3b4c5de6f7889aabbccdde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
-  blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!212 &-1872203549941665125
 SpriteRenderer:
   serializedVersion: 2
@@ -128,6 +95,36 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3300000000000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6f708192a3b4cd5e6f7889aabbccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitTimings:
+  - 0.15
+  - 0.35
+  - 0.55
+--- !u!114 &3300000000000000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f708192a3b4c5de6f7889aabbccdde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
+  blockPrefab: {fileID: 11400000, guid: c55ce3110505f5b4c9dc55899c3a2dbb, type: 3}
 --- !u!114 &-6370630260090511421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,12 +137,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d8b8d3df56aeb46ad4b2a533e2dcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::Skill_Raven_BulletShot
-  effectPrefab: {fileID: 9059335617877847738, guid: 7cb13749bbd95474d9972839780990b0, type: 3}
+  effectPrefab: {fileID: 7706805859713912824, guid: 23b567475c4b7454486dd959ef9c2d99, type: 3}
   target: {fileID: 0}
   moveDuration: 0.25
-  muzzle: {fileID: 0}
-  muzzleFlashPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 0}
+  muzzle: {fileID: 783965507572178476}
+  muzzleFlashOffsetX: 1
+  bulletSpread: 0.6
+  recoilAngle: 7.261
+  recoilDuration: 0.08
+  returnDuration: 0.18
+  muzzleFlashPrefab: {fileID: 228055588126798342, guid: 34714da87f3917746b89ca7fe1d326f1, type: 3}
+  hitEffectPrefab: {fileID: 3595050849691560609, guid: ea569f01a7ce84143bcfb611316c41b1, type: 3}
 --- !u!1 &3946167652533260807
 GameObject:
   m_ObjectHideFlags: 0

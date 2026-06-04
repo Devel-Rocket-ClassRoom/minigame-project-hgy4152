@@ -7,40 +7,47 @@ public class Skill_Hikari : Skill
     float moveDuration = 0.2f;
 
     [SerializeField]
+    float shotInterval = 0.25f;
+
+    [SerializeField]
     GameObject hitEffectPrefab;
 
     [SerializeField]
     GameObject chain3HitEffectPrefab;
 
+    HikariCharacter _character;
+
+    void Awake() => _character = GetComponent<HikariCharacter>();
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
-        {
             Chain1(testPos, 1f);
-        }
-
         if (Input.GetKeyDown(KeyCode.S))
-        {
-            Chain1(testPos, 1.5f);
             Chain2(testPos, 1.5f);
-        }
-
         if (Input.GetKeyDown(KeyCode.D))
-        {
-            Chain1(testPos, 2f);
-            Chain2(testPos, 2f);
             Chain3(testPos, 2f);
-        }
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor, hitEffectPrefab);
+        StartCoroutine(FireSequence(targetPos, scaleFactor, hitEffectPrefab, 1));
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor, hitEffectPrefab);
+        StartCoroutine(FireSequence(targetPos, scaleFactor, hitEffectPrefab, 2));
 
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        GustArrow(targetPos, scaleFactor, chain3HitEffectPrefab);
+        StartCoroutine(FireSequence(targetPos, scaleFactor, chain3HitEffectPrefab, 3));
+
+    IEnumerator FireSequence(Vector3 targetPos, float scale, GameObject hitPrefab, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _character?.StartJump();
+            GustArrow(targetPos, scale, hitPrefab);
+            if (i < count - 1)
+                yield return new WaitForSeconds(shotInterval);
+        }
+    }
 
     void GustArrow(Vector3 targetPos, float scale, GameObject hitPrefab)
     {

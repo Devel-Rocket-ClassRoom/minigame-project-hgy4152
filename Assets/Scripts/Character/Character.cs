@@ -81,8 +81,19 @@ public abstract class Character : MonoBehaviour
         _hitCoroutine = StartCoroutine(RunHitTimings());
     }
 
+    protected virtual bool IsSingleCast => false;
+
     IEnumerator RunHitTimings()
     {
+        if (IsSingleCast && _chainCount > 1 && _perHitDamages != null)
+        {
+            int total = 0;
+            foreach (int d in _perHitDamages)
+                total += d;
+            _perHitDamages = new int[] { total };
+            _chainCount = 1;
+        }
+
         float prev = 0f;
         int count = Mathf.Min(_chainCount, hitTimings.Length);
         for (int i = 0; i < count; i++)

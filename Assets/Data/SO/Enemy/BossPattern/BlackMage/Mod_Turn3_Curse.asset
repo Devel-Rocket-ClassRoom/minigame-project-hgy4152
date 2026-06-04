@@ -15,3 +15,4 @@ MonoBehaviour:
   id: mod_blackmage_t3
   modName: mod_blackmage_t3_name
   description: mod_blackmage_t3_desc
+  icon: {fileID: 21300000, guid: 695cc9732b5a047dbb7c9b9aa28950a0, type: 3}

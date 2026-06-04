@@ -20,4 +20,8 @@ MonoBehaviour:
   displayName: chr_pr_selmu_name
   passiveName: chr_pr_selmu_passive_name
   description: chr_pr_selmu_desc
-  unlockConditions: []
+  passiveIcon: {fileID: 0}
+  unlockConditions:
+  - type: 0
+    count: 1
+    classType: 5

@@ -20,4 +20,8 @@ MonoBehaviour:
   displayName: Skadi
   passiveName: "\uD639\uD55C\uC758 \uD6C4\uC608"
   description: 
-  unlockConditions: []
+  passiveIcon: {fileID: 0}
+  unlockConditions:
+  - type: 0
+    count: 1
+    classType: 3

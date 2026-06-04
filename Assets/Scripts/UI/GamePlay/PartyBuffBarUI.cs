@@ -5,9 +5,6 @@ using UnityEngine.UI;
 public class PartyBuffBarUI : MonoBehaviour
 {
     [SerializeField]
-    JokerManager jokerManager;
-
-    [SerializeField]
     BossPatternSystem bossPatternSystem;
 
     [SerializeField]
@@ -65,21 +62,7 @@ public class PartyBuffBarUI : MonoBehaviour
             }
         }
 
-        // 2. 조커카드 버프
-        if (jokerManager != null)
-        {
-            foreach (var card in jokerManager.ActiveHand)
-            {
-                if (card == null)
-                    continue;
-                var icon = Instantiate(buffIconPrefab, iconContainer);
-                if (card.icon != null)
-                    icon.GetComponent<Image>().sprite = card.icon;
-                icon.GetComponent<Button>().onClick.AddListener(ShowPanel);
-            }
-        }
-
-        // 3. 보스 모디파이어 디버프
+        // 2. 보스 모디파이어 디버프
         if (bossPatternSystem != null)
         {
             foreach (var mod in bossPatternSystem.GetActiveModifiers())
@@ -120,24 +103,6 @@ public class PartyBuffBarUI : MonoBehaviour
                         icon = def.passiveIcon,
                         name = Localization.Get(def.passiveName),
                         desc = Localization.Get(def.description),
-                    }
-                );
-            }
-        }
-
-        // 조커카드
-        if (jokerManager != null)
-        {
-            foreach (var card in jokerManager.ActiveHand)
-            {
-                if (card == null)
-                    continue;
-                entries.Add(
-                    new BuffDebuffEntry
-                    {
-                        icon = card.icon,
-                        name = Localization.Get(card.cardName),
-                        desc = Localization.Get(card.description),
                     }
                 );
             }

@@ -53,11 +53,10 @@ public class PartyBuffBarUI : MonoBehaviour
                 if (string.IsNullOrEmpty(id))
                     continue;
                 var def = reg.Character.Get(id);
-                if (def == null)
+                if (def == null || def.buffIcon == null)
                     continue;
                 var icon = Instantiate(buffIconPrefab, iconContainer);
-                if (def.passiveIcon != null)
-                    icon.GetComponent<Image>().sprite = def.passiveIcon;
+                icon.GetComponent<Image>().sprite = def.buffIcon;
                 icon.GetComponent<Button>().onClick.AddListener(ShowPanel);
             }
         }
@@ -95,12 +94,12 @@ public class PartyBuffBarUI : MonoBehaviour
                 if (string.IsNullOrEmpty(id))
                     continue;
                 var def = reg.Character.Get(id);
-                if (def == null)
+                if (def == null || def.buffIcon == null)
                     continue;
                 entries.Add(
                     new BuffDebuffEntry
                     {
-                        icon = def.passiveIcon,
+                        icon = def.buffIcon,
                         name = Localization.Get(def.passiveName),
                         desc = Localization.Get(def.description),
                     }

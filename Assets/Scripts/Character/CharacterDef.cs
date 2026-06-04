@@ -12,6 +12,7 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public string displayName;
     public string passiveName;
     public string description;
+    public Sprite passiveIcon;
     public List<UnlockCondition> unlockConditions = new();
     public string Id => id;
     public string DisplayName => displayName;

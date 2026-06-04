@@ -477,17 +477,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6370630260090511421, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+      propertyPath: muzzle
+      value: 
+      objectReference: {fileID: 1843551997}
+    - target: {fileID: -6370630260090511421, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 42461629}
+    - target: {fileID: -6370630260090511421, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+      propertyPath: effectPrefab
+      value: 
+      objectReference: {fileID: 7706805859713912824, guid: 23b567475c4b7454486dd959ef9c2d99, type: 3}
+    - target: {fileID: -6370630260090511421, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+      propertyPath: hitEffectPrefab
+      value: 
+      objectReference: {fileID: 3595050849691560609, guid: ea569f01a7ce84143bcfb611316c41b1, type: 3}
+    - target: {fileID: -6370630260090511421, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+      propertyPath: muzzleFlashPrefab
+      value: 
+      objectReference: {fileID: 228055588126798342, guid: 34714da87f3917746b89ca7fe1d326f1, type: 3}
     - target: {fileID: 3300000000000000001, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
       propertyPath: m_Name
       value: Raven
       objectReference: {fileID: 0}
     - target: {fileID: 3300000000000000002, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.04972
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 3300000000000000002, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.31936
+      value: -0.38
       objectReference: {fileID: 0}
     - target: {fileID: 3300000000000000002, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -521,8 +541,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8606897464282066618, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -588,6 +607,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 257f83b2037a9674cb965814bede9feb, type: 3}
+--- !u!4 &1843551997 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 783965507572178476, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
+  m_PrefabInstance: {fileID: 1090073805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

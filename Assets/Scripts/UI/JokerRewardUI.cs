@@ -9,22 +9,7 @@ public class JokerRewardUI : MonoBehaviour
     GameObject panel;
 
     [SerializeField]
-    Button[] cardButtons = new Button[3];
-
-    [SerializeField]
-    Image[] selectFrames = new Image[3];
-
-    [SerializeField]
-    Image[] cardImage = new Image[3];
-
-    [SerializeField]
-    RectTransform tooltipPanel;
-
-    [SerializeField]
-    TMP_Text tooltipNameText;
-
-    [SerializeField]
-    TMP_Text tooltipDescText;
+    GameObject[] cardButtonObjects = new GameObject[3];
 
     [SerializeField]
     JokerManager jokerManager;
@@ -53,16 +38,41 @@ public class JokerRewardUI : MonoBehaviour
     [SerializeField]
     JokerCardHandUI jokerHandUI;
 
+    Button[] _buttons;
+    Image[] _selectFrames;
+    Image[] _cardImages;
+    GameObject[] _tooltipPanels;
+    TMP_Text[] _nameTexts;
+    TMP_Text[] _descTexts;
+
     JokerCard[] _offered = new JokerCard[3];
     int _selectedIdx = -1;
     JokerCard _pendingSwapCard;
 
     void Awake()
     {
+        _buttons = new Button[cardButtonObjects.Length];
+        _selectFrames = new Image[cardButtonObjects.Length];
+        _cardImages = new Image[cardButtonObjects.Length];
+        _tooltipPanels = new GameObject[cardButtonObjects.Length];
+        _nameTexts = new TMP_Text[cardButtonObjects.Length];
+        _descTexts = new TMP_Text[cardButtonObjects.Length];
+
+        for (int i = 0; i < cardButtonObjects.Length; i++)
+        {
+            var root = cardButtonObjects[i].transform;
+            _buttons[i] = root.GetComponent<Button>();
+            _selectFrames[i] = root.GetComponent<Image>();
+            _cardImages[i] = root.GetChild(0).GetComponent<Image>();
+            var tp = root.GetChild(1);
+            _tooltipPanels[i] = tp.gameObject;
+            _nameTexts[i] = tp.GetChild(0).GetComponent<TMP_Text>();
+            _descTexts[i] = tp.GetChild(1).GetComponent<TMP_Text>();
+            _tooltipPanels[i].SetActive(false);
+        }
+
         if (panel != null)
             panel.SetActive(false);
-        if (tooltipPanel != null)
-            tooltipPanel.gameObject.SetActive(false);
         if (skipButton != null)
             skipButton.gameObject.SetActive(false);
         if (confirmButton != null)
@@ -75,10 +85,10 @@ public class JokerRewardUI : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < cardButtons.Length; i++)
+        for (int i = 0; i < _buttons.Length; i++)
         {
             int idx = i;
-            cardButtons[i].onClick.AddListener(() => OnCardClicked(idx));
+            _buttons[i].onClick.AddListener(() => OnCardClicked(idx));
         }
         skipButton?.onClick.AddListener(Skip);
         confirmButton?.onClick.AddListener(() =>
@@ -98,17 +108,17 @@ public class JokerRewardUI : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             bool valid = i < _offered.Length && _offered[i] != null;
-            cardButtons[i].gameObject.SetActive(valid);
-            if (selectFrames[i] != null)
-                selectFrames[i].enabled = false;
+            cardButtonObjects[i].SetActive(valid);
+            if (_selectFrames[i] != null)
+                _selectFrames[i].enabled = false;
             if (valid)
             {
-                cardImage[i].sprite = _offered[i].icon;
-                cardImage[i].preserveAspect = true;
+                _cardImages[i].sprite = _offered[i].icon;
+                _cardImages[i].preserveAspect = true;
             }
         }
 
-        tooltipPanel.gameObject.SetActive(false);
+        HideAllTooltips();
         panel.SetActive(true);
         skipButton.gameObject.SetActive(true);
         confirmButton?.gameObject.SetActive(true);
@@ -129,40 +139,31 @@ public class JokerRewardUI : MonoBehaviour
 
     void ShowSelection(int idx)
     {
-        for (int i = 0; i < selectFrames.Length; i++)
-            if (selectFrames[i] != null)
-                selectFrames[i].enabled = i == idx;
+        for (int i = 0; i < _selectFrames.Length; i++)
+            if (_selectFrames[i] != null)
+                _selectFrames[i].enabled = i == idx;
 
-        tooltipNameText.text = Localization.Get(_offered[idx].cardName);
-        tooltipDescText.text = Localization.Get(_offered[idx].description);
-        PositionTooltip(idx);
-        tooltipPanel.gameObject.SetActive(true);
+        _nameTexts[idx].text = Localization.Get(_offered[idx].cardName);
+        _descTexts[idx].text = Localization.Get(_offered[idx].description);
+        _tooltipPanels[idx].SetActive(true);
+        for (int i = 0; i < _tooltipPanels.Length; i++)
+            if (i != idx) _tooltipPanels[i].SetActive(false);
     }
 
-    void PositionTooltip(int idx)
+    void HideAllTooltips()
     {
-        var btnRect = cardButtons[idx].GetComponent<RectTransform>();
-        float width = cardImage[idx].GetComponent<RectTransform>().rect.width;
-        float centerPos = cardButtons[cardButtons.Length / 2]
-            .GetComponent<RectTransform>()
-            .localPosition.x;
-
-        bool isRight = btnRect.localPosition.x > centerPos;
-        float offsetX = isRight ? width : -width;
-
-        // 버튼 월드 좌표 → 툴팁 패널 부모 로컬 좌표로 변환
-        Vector2 btnInParent = tooltipPanel.parent.InverseTransformPoint(btnRect.position);
-        tooltipPanel.localPosition = btnInParent + new Vector2(offsetX, 0);
+        foreach (var tp in _tooltipPanels)
+            tp.SetActive(false);
     }
 
     void ConfirmPick(int idx)
     {
         JokerCard card = idx < _offered.Length ? _offered[idx] : null;
 
-        tooltipPanel.gameObject.SetActive(false);
-        for (int i = 0; i < selectFrames.Length; i++)
-            if (selectFrames[i] != null)
-                selectFrames[i].enabled = false;
+        HideAllTooltips();
+        for (int i = 0; i < _selectFrames.Length; i++)
+            if (_selectFrames[i] != null)
+                _selectFrames[i].enabled = false;
         _selectedIdx = -1;
         panel.SetActive(false);
 
@@ -203,11 +204,11 @@ public class JokerRewardUI : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             bool valid = i < _offered.Length && _offered[i] != null;
-            cardButtons[i].gameObject.SetActive(valid);
-            if (selectFrames[i] != null)
-                selectFrames[i].enabled = false;
+            cardButtonObjects[i].SetActive(valid);
+            if (_selectFrames[i] != null)
+                _selectFrames[i].enabled = false;
         }
-        tooltipPanel.gameObject.SetActive(false);
+        HideAllTooltips();
         panel.SetActive(true);
         skipButton.gameObject.SetActive(true);
         confirmButton?.gameObject.SetActive(true);
@@ -230,10 +231,10 @@ public class JokerRewardUI : MonoBehaviour
 
     public void Skip()
     {
-        tooltipPanel.gameObject.SetActive(false);
-        for (int i = 0; i < selectFrames.Length; i++)
-            if (selectFrames[i] != null)
-                selectFrames[i].enabled = false;
+        HideAllTooltips();
+        for (int i = 0; i < _selectFrames.Length; i++)
+            if (_selectFrames[i] != null)
+                _selectFrames[i].enabled = false;
         _selectedIdx = -1;
         panel.SetActive(false);
 

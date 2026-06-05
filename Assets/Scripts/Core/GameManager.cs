@@ -632,9 +632,8 @@ public class GameManager : MonoBehaviour
 
         float baseMul = group.Length switch
         {
-            1 => 1.1f,
-            2 => 1.2f,
-            3 => 1.3f,
+            2 => 1.1f,
+            3 => 1.2f,
             _ => 1f,
         };
         baseMul *= judge.chainLevelMultiplier[idx];

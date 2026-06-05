@@ -289,7 +289,7 @@ public static class BuffDebuffSetup
         tmp.fontSize = size;
         tmp.fontStyle = style;
         tmp.color = color;
-        tmp.enableWordWrapping = true;
+        tmp.textWrappingMode = TextWrappingModes.Normal;
     }
 }
 #endif

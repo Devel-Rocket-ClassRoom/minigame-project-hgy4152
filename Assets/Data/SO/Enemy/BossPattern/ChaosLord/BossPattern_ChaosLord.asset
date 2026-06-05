@@ -17,8 +17,13 @@ MonoBehaviour:
   passive:
   - {fileID: 11400000, guid: a1d28b3cbbf9bfa468a4587a5f42f277, type: 2}
   phaseModifiers:
-  - {fileID: 11400000, guid: 0feee669d7f5ca243bfb4d1238e1ccb0, type: 2}
-  - {fileID: 11400000, guid: 9ba7828d8ace8b743bd51bf3d17ad108, type: 2}
-  - {fileID: 11400000, guid: df8d8a7ea940a5b44bb2bb1d0a3bbb9e, type: 2}
-  - {fileID: 11400000, guid: 98e17da74ab1f9148abde1ef953fc1b8, type: 2}
-  - {fileID: 11400000, guid: cd6de4596edd6a54babbe17723c7b35e, type: 2}
+  - {fileID: 11400000, guid: 6b56bc705a842684c99a22d491e5ebc5, type: 2}
+  - {fileID: 11400000, guid: 6392cbaa2ec779c439784c55a45dc7d2, type: 2}
+  - {fileID: 11400000, guid: 5dd49745cab073141ae62df8d3f5cd40, type: 2}
+  - {fileID: 11400000, guid: 8b2907a1e9c689d4e883c4cfa3f35f2b, type: 2}
+  - {fileID: 11400000, guid: 9fb59a7a1fac61e4a8e75f1605298043, type: 2}
+  hpThresholds:
+  - 0.75
+  - 0.5
+  - 0.25
+  - 0

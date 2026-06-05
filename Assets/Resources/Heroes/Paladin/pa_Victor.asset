@@ -19,6 +19,7 @@ MonoBehaviour:
   rarity: 0
   displayName: chr_pa1_name
   charDescription: chr_pa1_char_desc
+  attackPower: 5
   passiveName: chr_pa1_passive_name
   description: chr_pa1_passive_desc
   passiveIcon: {fileID: 0}

@@ -580,11 +580,15 @@ public class GameManager : MonoBehaviour
         {
             // 보스 말풍선 대사
             if (bossSpeechBubbleUI != null && !string.IsNullOrEmpty(mod.dialogueKey))
-                yield return StartCoroutine(bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey)));
+                yield return StartCoroutine(
+                    bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey))
+                );
 
             // 이펙트 + 플로팅 텍스트 + 아이콘 갱신
             if (phaseEffectSpawner != null && mod.effectPrefab != null)
-                yield return StartCoroutine(phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName)));
+                yield return StartCoroutine(
+                    phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName))
+                );
             else if (stageIntroUI != null)
                 yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
         }
@@ -634,6 +638,7 @@ public class GameManager : MonoBehaviour
             _ => 1f,
         };
         baseMul *= judge.chainLevelMultiplier[idx];
-        return Mathf.FloorToInt(baseMul * group.Blocks[0].data.attackPower * group.Length);
+        int ap = characterSet?.GetDef(group.DominantClass)?.attackPower ?? 10;
+        return Mathf.FloorToInt(baseMul * ap * group.Length);
     }
 }

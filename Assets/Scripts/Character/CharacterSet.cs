@@ -55,6 +55,14 @@ public class CharacterSet : MonoBehaviour
         return null;
     }
 
+    public CharacterDef GetDef(ClassType classType)
+    {
+        foreach (var d in characterDefs)
+            if (d != null && d.classType == classType)
+                return d;
+        return null;
+    }
+
     public Block CreateBlock(ClassType classType, Transform parent = null) =>
         GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);
 

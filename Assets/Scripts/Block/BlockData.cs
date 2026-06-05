@@ -9,7 +9,7 @@ public class BlockData : ScriptableObject, IDisplayable
     public ClassType ownerClass;
     public Color blockColor = Color.white;
 
-    public string Id => id;
+    public string Id => ownerClass.ToString();
     public string DisplayName => displayName;
     string IDisplayable.Description => description;
 }

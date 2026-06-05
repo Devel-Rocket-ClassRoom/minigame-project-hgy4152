@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour
     StageIntroUI stageIntroUI;
 
     [SerializeField]
+    BossSpeechBubbleUI bossSpeechBubbleUI;
+
+    [SerializeField]
+    PhaseEffectSpawner phaseEffectSpawner;
+
+    [SerializeField]
     GameObject clearTextObject;
 
     [SerializeField]
@@ -328,17 +334,17 @@ public class GameManager : MonoBehaviour
         if (stageIntroUI != null && bossPatternSystem != null)
         {
             var p = bossPatternSystem.Current;
-            var turnMod =
-                p != null && bossPatternSystem.TurnIndex < p.turnModifiers.Length
-                    ? p.turnModifiers[bossPatternSystem.TurnIndex]
+            var phaseMod =
+                p != null && bossPatternSystem.PhaseIndex < p.phaseModifiers.Length
+                    ? p.phaseModifiers[bossPatternSystem.PhaseIndex]
                     : null;
-            if (turnMod != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(turnMod));
+            if (phaseMod != null)
+                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(phaseMod));
         }
 
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
-        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
 
         if (_isBossPlay)
             drawPhaseTimer.StartDrawPhaseInstant();
@@ -355,7 +361,7 @@ public class GameManager : MonoBehaviour
         totalDmgObject?.SetActive(false);
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
-        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
         drawPhaseTimer.StartDrawPhaseInstant();
         yield break;
     }
@@ -455,9 +461,9 @@ public class GameManager : MonoBehaviour
             bossPatternSystem.PopulatePrevState(judge);
             bossPatternSystem.Inject(judge);
             bossPatternSystem.SnapshotForNextTurn(judge);
-            // 보스 플레이 모드는 HP 구간 돌파 시 PlayGroupSequence에서 AdvanceTurn 호출
+            // 보스 플레이 모드는 HP 구간 돌파 시 PlayGroupSequence에서 AdvancePhase 호출
             if (!_isBossPlay)
-                bossPatternSystem.AdvanceTurn();
+                bossPatternSystem.AdvancePhase();
         }
 
         StartCoroutine(PlayGroupSequence(groups, judge));
@@ -543,14 +549,14 @@ public class GameManager : MonoBehaviour
         float hpRatio = (float)boss.CurrentHp / boss.MaxHp;
         var crossedMods = new System.Collections.Generic.List<Modifier>();
         while (
-            bossPatternSystem.TurnIndex < pattern.hpThresholds.Length
-            && hpRatio <= pattern.hpThresholds[bossPatternSystem.TurnIndex]
+            bossPatternSystem.PhaseIndex < pattern.hpThresholds.Length
+            && hpRatio <= pattern.hpThresholds[bossPatternSystem.PhaseIndex]
         )
         {
-            int idx = bossPatternSystem.TurnIndex;
-            if (idx < pattern.turnModifiers.Length && pattern.turnModifiers[idx] != null)
-                crossedMods.Add(pattern.turnModifiers[idx]);
-            bossPatternSystem.AdvanceTurn();
+            int idx = bossPatternSystem.PhaseIndex;
+            if (idx < pattern.phaseModifiers.Length && pattern.phaseModifiers[idx] != null)
+                crossedMods.Add(pattern.phaseModifiers[idx]);
+            bossPatternSystem.AdvancePhase();
         }
 
         if (crossedMods.Count > 0)
@@ -570,15 +576,25 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PhaseTransitionRoutine(System.Collections.Generic.List<Modifier> mods)
     {
-        if (stageIntroUI != null)
-            yield return StartCoroutine(stageIntroUI.ShowMultipleRoutinesRoutine(mods));
-        // 연출 후 다음 핸드 즉시 시작 (보스 루틴 재표시 없음)
+        foreach (var mod in mods)
+        {
+            // 보스 말풍선 대사
+            if (bossSpeechBubbleUI != null && !string.IsNullOrEmpty(mod.dialogueKey))
+                yield return StartCoroutine(bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey)));
+
+            // 이펙트 + 플로팅 텍스트 + 아이콘 갱신
+            if (phaseEffectSpawner != null && mod.effectPrefab != null)
+                yield return StartCoroutine(phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName)));
+            else if (stageIntroUI != null)
+                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
+        }
+
         _turnDamageTotal = 0;
         OnTurnDamageChanged?.Invoke(0);
         totalDmgObject?.SetActive(false);
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
-        bossPatternSystem?.ApplyTurnStart(blockManager, drawPhaseTimer);
+        bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         drawPhaseTimer.StartDrawPhaseInstant();
     }

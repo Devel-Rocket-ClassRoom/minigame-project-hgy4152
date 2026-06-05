@@ -6,6 +6,8 @@ public abstract class Modifier : ScriptableObject, IIdentifiable
     public string modName;
     public string description;
     public Sprite icon;
+    public string dialogueKey;
+    public GameObject effectPrefab;
 
     public string Id => id;
 

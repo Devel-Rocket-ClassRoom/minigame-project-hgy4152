@@ -68,8 +68,8 @@ public class BossInfoUIPanel : MonoBehaviour
             {
                 int passiveCount = bp.passive != null ? bp.passive.Count : 0;
                 int turnCount = 0;
-                if (bp.turnModifiers != null)
-                    foreach (var m in bp.turnModifiers)
+                if (bp.phaseModifiers != null)
+                    foreach (var m in bp.phaseModifiers)
                         if (m != null)
                             turnCount++;
                 patternText.text =
@@ -110,11 +110,11 @@ public class BossInfoUIPanel : MonoBehaviour
             }
         }
 
-        if (bp.turnModifiers != null)
+        if (bp.phaseModifiers != null)
         {
-            for (int i = 0; i < bp.turnModifiers.Length; i++)
+            for (int i = 0; i < bp.phaseModifiers.Length; i++)
             {
-                var m = bp.turnModifiers[i];
+                var m = bp.phaseModifiers[i];
                 if (m == null)
                     continue;
                 if (sb.Length > 0)

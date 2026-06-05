@@ -7,14 +7,14 @@ public class BossPatternSystem : MonoBehaviour
     StageManager stageManager;
 
     BossPattern current;
-    int turnIndex;
+    int phaseIndex;
 
     int[] _prevChainCounts = new int[3];
     Dictionary<ClassType, int> _prevClassDist = new();
     int[] _prevChainSequence;
 
     public BossPattern Current => current;
-    public int TurnIndex => turnIndex;
+    public int PhaseIndex => phaseIndex;
     public bool AccumulateModifiers { get; set; }
     public event System.Action OnInjected;
 
@@ -31,7 +31,7 @@ public class BossPatternSystem : MonoBehaviour
     void HandleStageStart(StageManager.StageEntry entry)
     {
         current = entry.bossData?.bossPattern ?? entry.enemyData?.bossPattern;
-        turnIndex = 0;
+        phaseIndex = 0;
         _prevChainCounts = new int[3];
         _prevClassDist = new Dictionary<ClassType, int>();
         _prevChainSequence = null;
@@ -49,15 +49,15 @@ public class BossPatternSystem : MonoBehaviour
         if (AccumulateModifiers)
         {
             // BossPlay: 지나온 모든 구간 패턴 누적 유지
-            for (int i = 0; i <= turnIndex && i < current.turnModifiers.Length; i++)
-                if (current.turnModifiers[i] != null)
-                    yield return current.turnModifiers[i];
+            for (int i = 0; i <= phaseIndex && i < current.phaseModifiers.Length; i++)
+                if (current.phaseModifiers[i] != null)
+                    yield return current.phaseModifiers[i];
         }
         else
         {
-            if (turnIndex < current.turnModifiers.Length)
+            if (phaseIndex < current.phaseModifiers.Length)
             {
-                var tm = current.turnModifiers[turnIndex];
+                var tm = current.phaseModifiers[phaseIndex];
                 if (tm != null)
                     yield return tm;
             }
@@ -68,7 +68,7 @@ public class BossPatternSystem : MonoBehaviour
     {
         judge.activeModifiers.Clear();
         judge.bossPattern = current;
-        judge.turnIndex = turnIndex;
+        judge.phaseIndex = phaseIndex;
         if (current == null)
             return;
 
@@ -87,7 +87,7 @@ public class BossPatternSystem : MonoBehaviour
             m.PreResolve(blockMgr);
     }
 
-    public void ApplyTurnStart(BlockManager blockMgr, DrawPhaseTimer dpt)
+    public void ApplyPhaseStart(BlockManager blockMgr, DrawPhaseTimer dpt)
     {
         if (current == null)
             return;
@@ -117,5 +117,5 @@ public class BossPatternSystem : MonoBehaviour
         OnInjected?.Invoke();
     }
 
-    public void AdvanceTurn() => turnIndex++;
+    public void AdvancePhase() => phaseIndex++;
 }

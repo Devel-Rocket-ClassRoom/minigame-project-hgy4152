@@ -17,8 +17,12 @@ public class LobbyUI : MonoBehaviour
     [SerializeField]
     RectTransform bossModeButton;
 
+    [SerializeField]
+    GameObject inputBlocker;
+
     public void OnAdventureClicked()
     {
+        inputBlocker?.SetActive(true);
         if (transitionEffect != null)
             transitionEffect.Play(adventureButton, GameState.AdventureReady);
         else
@@ -27,6 +31,7 @@ public class LobbyUI : MonoBehaviour
 
     public void OnBossModeClicked()
     {
+        inputBlocker?.SetActive(true);
         if (transitionEffect != null)
             transitionEffect.Play(bossModeButton, GameState.BossReady);
         else

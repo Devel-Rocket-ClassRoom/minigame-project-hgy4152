@@ -22,4 +22,7 @@ MonoBehaviour:
   description: 
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: 13c035a6820ee40139858ef1f949e854, type: 3}
-  unlockConditions: []
+  unlockConditions:
+  - type: 0
+    count: 1
+    classType: 1

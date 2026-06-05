@@ -30,6 +30,9 @@ public class BossReadyUI : MonoBehaviour
     SaveSlotInfoPanel saveSlotInfoPanel;
 
     [SerializeField]
+    GameObject saveSlotInfoPanelBackdrop;
+
+    [SerializeField]
     GameObject emptySlotMessage;
 
     private int saveSlotIndex = -1;
@@ -43,6 +46,9 @@ public class BossReadyUI : MonoBehaviour
             backButton.onClick.AddListener(OnBackClicked);
 
         patternPreview?.Hide();
+
+        if (saveSlotInfoPanel != null)
+            saveSlotInfoPanel.onHide = () => saveSlotInfoPanelBackdrop?.SetActive(false);
 
         InitSaveSlots();
         InitBossSlots();
@@ -159,7 +165,14 @@ public class BossReadyUI : MonoBehaviour
     {
         var entry = saveSlotList[saveSlotIndex];
         var title = $"{Localization.Get("ui_save_slot_label")} {entry.slotIndex + 1}";
+        saveSlotInfoPanelBackdrop?.SetActive(true);
         saveSlotInfoPanel?.Show(data, title);
+    }
+
+    public void OnSaveSlotInfoPanelHide()
+    {
+        saveSlotInfoPanel?.Hide();
+        saveSlotInfoPanelBackdrop?.SetActive(false);
     }
 
     private void OnBackClicked() => GameStateMachine.Instance.TransitionTo(GameState.Lobby);

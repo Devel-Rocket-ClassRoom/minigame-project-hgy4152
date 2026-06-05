@@ -227,7 +227,10 @@ public static class UnlockManager
             _chars = new HashSet<string>(dto.unlockedCharacterIds ?? Array.Empty<string>());
             _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
             _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
-            _bosses = new HashSet<string>(dto.defeatedBossIds ?? Array.Empty<string>());
+            _bosses = new HashSet<string>(
+                MigrateBossIds(dto.defeatedBossIds ?? Array.Empty<string>())
+            );
+            MigrateCharIds(_chars);
             _adventureClearCount = dto.adventureClearCount;
             _bossModeClearCount = dto.bossModeClearCount;
             _chain1Used = dto.chain1Used;
@@ -254,6 +257,45 @@ public static class UnlockManager
             _classClearCounts = new Dictionary<ClassType, int>();
         }
         _loaded = true;
+    }
+
+    static readonly Dictionary<string, string> CharIdMigration = new()
+    {
+        { "wa_reon", "wa1" },
+        { "wa3", "wa2" },
+        { "ar_hikari", "ar1" },
+        { "ar3", "ar2" },
+        { "hu_raven", "hu1" },
+        { "hu_ahnmansik", "hu2" },
+        { "pa_victor", "pa1" },
+        { "pa3", "pa2" },
+        { "wi_acan", "wi1" },
+        { "wi_zyum", "wi2" },
+        { "pr_beatrice", "pr1" },
+        { "pr_selmu", "pr2" },
+    };
+
+    static readonly Dictionary<string, string> BossIdMigration = new()
+    {
+        { "boss_geumsuabi", "bss1" },
+        { "boss_blackmage", "bss2" },
+        { "boss_chaoslord", "bss3" },
+    };
+
+    static void MigrateCharIds(HashSet<string> ids)
+    {
+        var old = new List<string>(ids.Where(id => CharIdMigration.ContainsKey(id)));
+        foreach (var o in old)
+        {
+            ids.Remove(o);
+            ids.Add(CharIdMigration[o]);
+        }
+    }
+
+    static IEnumerable<string> MigrateBossIds(string[] ids)
+    {
+        foreach (var id in ids)
+            yield return BossIdMigration.TryGetValue(id, out var newId) ? newId : id;
     }
 
     static void Save()

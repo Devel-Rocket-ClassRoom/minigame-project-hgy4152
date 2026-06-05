@@ -58,6 +58,9 @@ public class CharacterSet : MonoBehaviour
     public Character[] GetInstances() =>
         System.Array.FindAll(instances, c => c != null);
 
+    public Character GetInstanceAt(int index) =>
+        (instances != null && index >= 0 && index < instances.Length) ? instances[index] : null;
+
     public CharacterDef GetDef(ClassType classType)
     {
         foreach (var d in characterDefs)

@@ -12129,7 +12129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1300216155
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17354,7 +17354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd49611d35826b4da78f13bfb7cedcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChainKnights::PartyBuffBarUI
-  jokerManager: {fileID: 650838004}
   bossPatternSystem: {fileID: 8296404970221016779}
   characterSet: {fileID: 2144645886}
   iconContainer: {fileID: 1997168437}

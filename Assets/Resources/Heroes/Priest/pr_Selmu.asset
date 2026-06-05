@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: pr_Selmu
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: pr_selmu
+  id: pr2
   classType: 5
   prefab: {fileID: 3331789133659326685, guid: e345b836ff299754c833d6b95043d2cf, type: 3}
   blockData: {fileID: 11400000, guid: a2b3c4d5e6f7a2b3c4d5e6f7a2b3c4d5, type: 2}
   rarity: 1
-  displayName: chr_pr_selmu_name
-  charDescription: chr_pr_selmu_char_desc
-  passiveName: chr_pr_selmu_passive_name
-  description: chr_pr_selmu_passive_desc
+  displayName: chr_pr2_name
+  charDescription: chr_pr2_char_desc
+  passiveName: chr_pr2_passive_name
+  description: chr_pr2_passive_desc
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: 14af2fb1a8d8049eda552914a02ff5d3, type: 3}
   unlockConditions:

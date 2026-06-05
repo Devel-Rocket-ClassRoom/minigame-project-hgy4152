@@ -7,7 +7,6 @@ public class BlockData : ScriptableObject, IDisplayable
     public string displayName;
     public string description;
     public Sprite icon;
-    public Rarity rarity;
     public int attackPower = 10;
     public ClassType ownerClass;
     public Color blockColor = Color.white;

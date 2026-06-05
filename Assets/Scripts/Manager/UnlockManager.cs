@@ -16,15 +16,7 @@ public static class UnlockManager
 {
     public static event Action<UnlockKind, string> OnUnlocked;
 
-    static readonly string[] DefaultCharacterIds =
-    {
-        "wa_reon",
-        "ar_hikari",
-        "pr_beatrice",
-        "pa_victor",
-        "wi_acan",
-        "hu_raven",
-    };
+    static readonly string[] DefaultCharacterIds = { "wa1", "ar1", "pr1", "pa1", "wi1", "hu1" };
     static readonly string[] DefaultJokerIds =
     {
         "cwar1",

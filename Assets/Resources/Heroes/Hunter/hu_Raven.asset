@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: hu_Raven
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: hu_raven
+  id: hu1
   classType: 4
   prefab: {fileID: 3300000000000000003, guid: 9d0ace8738367184eafe2964679cdf1f, type: 3}
   blockData: {fileID: 11400000, guid: 7bb5cb077a3836444987cc7cd4d59e6c, type: 2}
   rarity: 0
-  displayName: chr_hu_raven_name
-  charDescription: chr_hu_raven_char_desc
-  passiveName: chr_hu_raven_passive_name
-  description: chr_hu_raven_passive_desc
+  displayName: chr_hu1_name
+  charDescription: chr_hu1_char_desc
+  passiveName: chr_hu1_passive_name
+  description: chr_hu1_passive_desc
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: cee2be1bdc4064b01b976ebeec31a532, type: 3}
   unlockConditions: []

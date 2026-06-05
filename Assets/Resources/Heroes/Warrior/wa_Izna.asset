@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: wa_Izna
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: wa_izna
+  id: wa2
   classType: 1
   prefab: {fileID: 122657247261990061, guid: cb7df1ab590533a4297c90740c74db1e, type: 3}
   blockData: {fileID: 11400000, guid: 646edc133bf02914f9d46e3f0030b41e, type: 2}
   rarity: 1
-  displayName: chr_wa_izna_name
-  charDescription: chr_wa_izna_char_desc
-  passiveName: chr_wa_izna_passive_name
-  description: chr_wa_izna_passive_desc
+  displayName: chr_wa2_name
+  charDescription: chr_wa2_char_desc
+  passiveName: chr_wa2_passive_name
+  description: chr_wa2_passive_desc
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: 13c035a6820ee40139858ef1f949e854, type: 3}
   unlockConditions:

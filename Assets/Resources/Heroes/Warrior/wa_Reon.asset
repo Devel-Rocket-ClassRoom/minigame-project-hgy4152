@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: wa_Reon
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: wa_reon
+  id: wa1
   classType: 1
   prefab: {fileID: 3059709565305514277, guid: 285d3e1ba7f3b764489ed6694e01143d, type: 3}
   blockData: {fileID: 11400000, guid: a4760b6928a91cc4c85170b8c68eb767, type: 2}
   rarity: 0
-  displayName: chr_wa_reon_name
-  charDescription: chr_wa_reon_char_desc
-  passiveName: chr_wa_reon_passive_name
-  description: chr_wa_reon_passive_desc
+  displayName: chr_wa1_name
+  charDescription: chr_wa1_char_desc
+  passiveName: chr_wa1_passive_name
+  description: chr_wa1_passive_desc
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: 5eec0cf9e8ff94ee38a599e54bdc32b6, type: 3}
   unlockConditions: []

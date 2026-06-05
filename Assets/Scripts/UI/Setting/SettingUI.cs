@@ -98,7 +98,10 @@ public class SettingUI : MonoBehaviour
 
     void QuitGame()
     {
-        if (GameStateMachine.Instance != null)
+        if (
+            GameStateMachine.Instance != null
+            && GameStateMachine.Instance.CurrentState != GameState.Lobby
+        )
         {
             Time.timeScale = 1f;
             GameStateMachine.Instance.TransitionToLobby();

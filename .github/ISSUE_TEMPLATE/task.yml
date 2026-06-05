@@ -1,6 +1,6 @@
 name: 🗂️ 작업 이슈
 description: 기능 구현, 시스템 작업 등 일반 태스크
-title: "[Part] "
+title: "[PartN] "
 body:
   - type: textarea
     id: goal

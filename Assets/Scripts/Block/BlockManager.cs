@@ -250,7 +250,7 @@ public class BlockManager : MonoBehaviour
 
         Block cur = hand[i];
         Block prev = hand[i - 1];
-        if (prev.data.ownerClass != cur.data.ownerClass)
+        if (prev.owner != cur.owner)
         {
             cur.chainGroupId = prev.chainGroupId + 1;
             return;

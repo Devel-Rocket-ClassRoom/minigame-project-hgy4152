@@ -502,7 +502,7 @@ public class GameManager : MonoBehaviour
             var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);
             character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
 
-            characterSet?.NotifyTurnProcessed(groups[i].DominantClass);
+            characterSet?.NotifyTurnProcessed(groups[i].DominantCharacter);
             characterSet?.NotifyAfterGroupPlayed(groups[i]);
 
             int bonusCount = character?.GetBonusAttackCount(judge, groups[i]) ?? 0;
@@ -637,7 +637,7 @@ public class GameManager : MonoBehaviour
             _ => 1f,
         };
         baseMul *= judge.chainLevelMultiplier[idx];
-        int ap = characterSet?.GetDef(group.DominantClass)?.attackPower ?? 10;
+        int ap = characterSet?.GetDef(group.DominantCharacter)?.attackPower ?? 10;
         return Mathf.FloorToInt(baseMul * ap * group.Length);
     }
 }

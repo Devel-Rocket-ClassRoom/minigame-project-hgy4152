@@ -69,6 +69,14 @@ public class CharacterSet : MonoBehaviour
         return null;
     }
 
+    public CharacterDef GetDef(Character character)
+    {
+        for (int i = 0; i < instances.Length; i++)
+            if (instances[i] == character)
+                return characterDefs[i];
+        return null;
+    }
+
     public ClassType[] GetDeployedClassTypes()
     {
         var types = new List<ClassType>();
@@ -96,13 +104,13 @@ public class CharacterSet : MonoBehaviour
                 c.OnAnyGroupDamageApplied(rawDamage, finalDamage);
     }
 
-    public void NotifyTurnProcessed(ClassType usedClass)
+    public void NotifyTurnProcessed(Character usedCharacter)
     {
         if (instances == null)
             return;
         foreach (var c in instances)
             if (c != null)
-                c.OnTurnProcessed(c.Type == usedClass);
+                c.OnTurnProcessed(c == usedCharacter);
     }
 
     public void NotifyAfterGroupPlayed(ChainGroup group)

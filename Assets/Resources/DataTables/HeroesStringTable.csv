@@ -1,73 +1,73 @@
 Key,Value
 chr_pa_victor_name,빅터
-chr_pa_victor_char_desc,
+chr_pa_victor_char_desc, 사슬기사단 제 4부대장. 생긴 것과 다르게 따뜻한 마음씨를 지녔다.
 chr_pa_victor_passive_name,수호의 정령
 chr_pa_victor_passive_desc, 자신의 블럭 20개를 희생할 시 수호의 힘을 빌어 1턴간 모든 디버프를 무효화 한다. (스테이지 당 1회)
 blk_pa1_name, 홀리 스트라이크
 blk_pa1_desc, 적을 향해 돌진하여 강력한 신성 피해를 입힌다.
 chr_pa_captainjg_name,캡틴JG
-chr_pa_captainjg_char_desc,
+chr_pa_captainjg_char_desc, 파도부대의 선장. 바다의 주인을 해치우고 사슬 해역을 영역으로 삼은 해적이다. 하지만 직접 싸우는 모습은 그 누구도 본 적이 없다. 
 chr_pa_captainjg_passive_name,파도부대 선장
 chr_pa_captainjg_passive_desc, 3체인 공격 시 무작위 다른 파티원이 1체인 공격을 발동한다.
 blk_pa3_name,파도부대 집결!
 blk_pa3_desc, 파도부대원들이 나와서 함께 공격한다. 체인에 따라 인원수가 늘어난다.
 chr_wa_reon_name,레온
-chr_wa_reon_char_desc,
+chr_wa_reon_char_desc, 성검 엑스칼리버의 선택받은 용사. 여신의 축복이 함께한다. 
 chr_wa_reon_passive_name,여신의 축복
-chr_wa_reon_passive_desc, 성검의 선택받은 용사. 여신의 축복이 함께한다. 3체인 데미지 30% 증가
+chr_wa_reon_passive_desc, 자신의 3체인 데미지 30% 증가
 blk_wa1_name,성검 소환
-blk_wa1_desc,"성검 ""엑스칼리버""를 소환해서 공격한다."
+blk_wa1_desc,성검 "엑스칼리버"를 소환해서 공격한다.
 chr_wa_izna_name,이즈나
-chr_wa_izna_char_desc,
+chr_wa_izna_char_desc, 동방출신의 검사. 그녀가 지나간 자리엔 달빛만이 머무른다고 전해진다.
 chr_wa_izna_passive_name,연격
-chr_wa_izna_passive_desc, 1체인·2체인·3체인이 모두 있을 때 데미지가 40% 증가한다.
+chr_wa_izna_passive_desc, 자신의 1체인·2체인·3체인이 모두 있을 때 데미지가 40% 증가한다.
 blk_wa2_name,일섬
 blk_wa2_desc, 빠른 연속 베기로 적을 공격한다.
 chr_ar_hikari_name,히카리
-chr_ar_hikari_char_desc,
+chr_ar_hikari_char_desc, 동방출신의 궁사. 강력한 바람의 힘을 다룰 수 있는 비술사이기도 하다
 chr_ar_hikari_passive_name,질풍의 일격
-chr_ar_hikari_passive_desc, 적들을 공격할 시 바람의 힘을 담아 적 최대 체력의 5% 만큼 추가피해를 준다.
+chr_ar_hikari_passive_desc, 자신의 3체인 공격 시 바람의 힘을 담아 적 최대 체력의 5% 만큼 추가피해를 준다.
 blk_ar1_name,돌풍 화살
 blk_ar1_desc,바람의 힘을 담은 화살을 발사한다.
 chr_ar_skadi_name,스카디
-chr_ar_skadi_char_desc,
+chr_ar_skadi_char_desc, 서리부족의 후예로 강력한 냉기의 힘을 구사한다. 하지만 추운걸 싫어해서 부족을 떠나고 싶어한다.
 chr_ar_skadi_passive_name,혹한의 후예
-chr_ar_skadi_passive_desc, 공격 시 동상 1중첩(최대 5). 타격마다 중첩 1 소모 후 적 최대 체력의 5% 추가피해를 입힌다.
+chr_ar_skadi_passive_desc, 공격 시 동상 1중첩(최대 5). 아군이 공격 시 중첩 1 소모 후 적 최대 체력의 5% 추가피해를 입힌다.
 blk_ar2_name,글레이셜 애로우
 blk_ar2_desc, 동상 효과가 담긴 화살을 발사한다.
 chr_hu_raven_name,레이븐
-chr_hu_raven_char_desc,
+chr_hu_raven_char_desc, 돈만 주면 뭐든지 처리해주는 청부업자. 타겟에 단 3발의 상흔만 남기는 것으로 유명하다.
 chr_hu_raven_passive_name,정조준
-chr_hu_raven_passive_desc, 적을 정조준 하여 3번째 공격마다 데미지가 50% 증가한다.(다음 스테이지에서 초기화)
+chr_hu_raven_passive_desc, 적을 정조준 하여 자신의 3번째 공격마다 데미지가 50% 증가한다.(다음 스테이지에서 초기화)
 blk_hu1_name,슬러그 샷
 blk_hu1_desc, 강력한 화력을 지닌 총알을 발사한다.
 chr_hu_ahnmansik_name,안만식
-chr_hu_ahnmansik_char_desc,
+chr_hu_ahnmansik_char_desc, 체인컴퍼니 소속의 직원. 하극상으로 유명하다. 들리는 소문에 따르면 상사 방에 불을 지른적도 있다고 한다.
 chr_hu_ahnmansik_passive_name,명령 불복종
 chr_hu_ahnmansik_passive_desc, 1체인 사용 시 33% 확률로 3체인이 발동된다. 3체인 사용 시 33% 확률로 1체인이 발동된다.
 blk_hu2_name,네거티브 봄
 blk_hu2_desc, 수류탄을 투척하여 적에게 피해를 입힌다. 체인에 따라 투척 수가 증가한다.
 chr_wi_acan_name,아칸
-chr_wi_acan_char_desc,
+chr_wi_acan_char_desc, 번개의 힘을 다루는 떠돌이 마법사. 여행 중에 레온을 만나 함께 모험을 다니고 있다.
 chr_wi_acan_passive_name,마나 축적
-chr_wi_acan_passive_desc, 마나의 힘을 축적해 공격을 할 때마다 데미지가 10%증가한다.(다음 스테이지에서 초기화)
+chr_wi_acan_passive_desc, 마나의 힘을 축적해 자신이 공격을 할 때마다 데미지가 10%증가한다.(다음 스테이지에서 초기화)
 blk_wi1_name,번개 강타
 blk_wi1_desc, 번개를 소환해 적에게 강력한 피해를 준다.
 chr_wi_zyum_name,쥬므
-chr_wi_zyum_char_desc,
+chr_wi_zyum_char_desc, 피에 굶주린 전투마법사. 전장이 열리는 곳이면 어떤 곳이든 찾아간다. 적의 피를 항상 뒤집어쓰고 있어서 "적마도사"라는 이명으로 불린다.
 chr_wi_zyum_passive_name,전장의 악귀
-chr_wi_zyum_passive_desc, 파티 내 3체인을 가장 많이 사용한 상태일 때 3체인 횟수에 비례한 추가 데미지를 입힌다.
+chr_wi_zyum_passive_desc, 파티 내 3체인을 가장 많이 사용한 상태일 때 자신의 3체인 사용 시 추가 데미지(3체인 데미지의 25%)를 입힌다.
 blk_wi2_name,작열화
 blk_wi2_desc, 적 위치에 폭발을 일으켜 피해를 입힌다.
 chr_pr_beatrice_name,베아트리스
-chr_pr_beatrice_char_desc,
+chr_pr_beatrice_char_desc, 사슬교 수녀출신의 성직자이다. 모종의 이유로 수도 교회에서 출타를 했다. 소문에 따르면 은밀한 임무를 지시받았다고...
 chr_pr_beatrice_passive_name,심판의 의지
-chr_pr_beatrice_passive_desc, 신의 힘을 빌어서 능력치를 강화한다. 버려진 블럭 당 데미지 1% 증가
+chr_pr_beatrice_passive_desc, 신의 힘을 빌어서 능력치를 강화한다. 버려진 자신의 블럭 당 파티의 데미지 1% 증가
 blk_pr1_name,심판의 빛
 blk_pr1_desc,빛의 힘으로 적들을 심판한다.
 chr_pr_selmu_name,셀뮤
-chr_pr_selmu_char_desc,
+chr_pr_selmu_char_desc, 성직자 출신의 용병이다. 파티원 때문에 닳고 닳아 흑화했지만 여전히 그녀의 빛은 따뜻하게 빛난다.
 chr_pr_selmu_passive_name,성소
-chr_pr_selmu_passive_desc, 파티원의 감소된 딜량의 30%를 누적한다. 자신의 블럭 사용 시 누적량을 추가 데미지로 환원한다.
+chr_pr_selmu_passive_desc, 디버프에 의해 감소된 파티원들의 데미지 감소량의 30%를 누적한다. 자신의 블럭 사용 시 누적량을 추가 데미지로 환원한다.(최대 1000)
 blk_pr2_name,참담한 마음
-blk_pr2_desc, 폭발로 적에게 피해를 입힌다.
+blk_pr2_desc, 성력을 폭발시켜 적에게 피해를 입힌다.

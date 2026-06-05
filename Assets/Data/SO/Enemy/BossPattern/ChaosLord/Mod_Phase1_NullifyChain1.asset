@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_chaoslord_t1
   modName: mod_chaoslord_t1_name
   description: mod_chaoslord_t1_desc
+  dialogueKey: mod_chaoslord_t1_dialogue
   icon: {fileID: 21300000, guid: a051a723e69914b44b02412e386f0325, type: 3}
   chainLength: 1

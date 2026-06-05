@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_chaoslord_t5
   modName: mod_chaoslord_t5_name
   description: mod_chaoslord_t5_desc
+  dialogueKey: mod_chaoslord_t5_dialogue
   icon: {fileID: 21300000, guid: 07848c5e8b212424c8c4008eb69f1db1, type: 3}
   count: 2

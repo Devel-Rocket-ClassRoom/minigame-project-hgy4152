@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_chaoslord_t3
   modName: mod_chaoslord_t3_name
   description: mod_chaoslord_t3_desc
+  dialogueKey: mod_chaoslord_t3_dialogue
   icon: {fileID: 21300000, guid: 01976252770024713a92ffbe609c67ea, type: 3}
   chainLength: 3

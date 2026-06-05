@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_blackmage_t2
   modName: mod_blackmage_t2_name
   description: mod_blackmage_t2_desc
+  dialogueKey: mod_blackmage_t2_dialogue
   icon: {fileID: 21300000, guid: d82c8cc2aaf6b4c80999cfe184bdfd90, type: 3}
   limit: 5

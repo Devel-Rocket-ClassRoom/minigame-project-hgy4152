@@ -15,6 +15,7 @@ MonoBehaviour:
   id: mod_geumsuabi_t5
   modName: mod_geumsuabi_t5_name
   description: mod_geumsuabi_t5_desc
+  dialogueKey: mod_geumsuabi_t5_dialogue
   icon: {fileID: 21300000, guid: 5eec0cf9e8ff94ee38a599e54bdc32b6, type: 3}
   chainLength: 3
   factor: 1.2

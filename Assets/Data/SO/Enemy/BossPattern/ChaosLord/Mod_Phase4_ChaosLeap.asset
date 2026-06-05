@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_chaoslord_t4
   modName: mod_chaoslord_t4_name
   description: mod_chaoslord_t4_desc
+  dialogueKey: mod_chaoslord_t4_dialogue
   icon: {fileID: 21300000, guid: 6cd575a7e14b94532b8a18c6c528c6fc, type: 3}
   factor: 0.5

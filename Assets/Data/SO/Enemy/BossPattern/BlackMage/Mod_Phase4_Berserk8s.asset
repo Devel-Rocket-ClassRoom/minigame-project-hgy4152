@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_blackmage_t4
   modName: mod_blackmage_t4_name
   description: mod_blackmage_t4_desc
+  dialogueKey: mod_blackmage_t4_dialogue
   icon: {fileID: 21300000, guid: af64414b5881d4bd9a7fe66363674f2c, type: 3}
   seconds: 8

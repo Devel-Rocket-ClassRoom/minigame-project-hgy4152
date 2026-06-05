@@ -15,5 +15,6 @@ MonoBehaviour:
   id: mod_geumsuabi_t4
   modName: mod_geumsuabi_t4_name
   description: mod_geumsuabi_t4_desc
+  dialogueKey: mod_geumsuabi_t4_dialogue
   icon: {fileID: 21300000, guid: ea06a4b8cdc81b54ba166e80c077d832, type: 3}
   factor: 1.3

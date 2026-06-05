@@ -10,6 +10,7 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public BlockData blockData;
     public Rarity rarity;
     public string displayName;
+    public string charDescription;
     public string passiveName;
     public string description;
     public Sprite passiveIcon;

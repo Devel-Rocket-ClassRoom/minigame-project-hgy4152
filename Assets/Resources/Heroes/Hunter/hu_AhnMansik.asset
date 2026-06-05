@@ -19,7 +19,7 @@ MonoBehaviour:
   rarity: 1
   displayName: chr_hu_ahnmansik_name
   passiveName: chr_hu_ahnmansik_passive_name
-  description: chr_hu_ahnmansik_desc
+  description: chr_hu_ahnmansik_passive_desc
   passiveIcon: {fileID: 0}
   unlockConditions:
   - type: 0

@@ -16,7 +16,7 @@ MonoBehaviour:
   patternName: pat_blackmage_name
   passive:
   - {fileID: 11400000, guid: ec0864a98c4425e4c834e236af9b028e, type: 2}
-  turnModifiers:
+  phaseModifiers:
   - {fileID: 0}
   - {fileID: 11400000, guid: 423e9e1c19114d44fb3770a00a9bf319, type: 2}
   - {fileID: 11400000, guid: 8bdb6f0c559fd1c4798c427f12995674, type: 2}

@@ -16,7 +16,7 @@ MonoBehaviour:
   patternName: pat_chaoslord_name
   passive:
   - {fileID: 11400000, guid: a1d28b3cbbf9bfa468a4587a5f42f277, type: 2}
-  turnModifiers:
+  phaseModifiers:
   - {fileID: 11400000, guid: 0feee669d7f5ca243bfb4d1238e1ccb0, type: 2}
   - {fileID: 11400000, guid: 9ba7828d8ace8b743bd51bf3d17ad108, type: 2}
   - {fileID: 11400000, guid: df8d8a7ea940a5b44bb2bb1d0a3bbb9e, type: 2}

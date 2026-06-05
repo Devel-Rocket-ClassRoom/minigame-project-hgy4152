@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c26783ae0e25314ea9c8c3d9723281c, type: 3}
-  m_Name: Mod_Turn5_GoldRush
+  m_Name: Mod_Phase5_GoldRush
   m_EditorClassIdentifier: ChainKnights::Mod_ChainLevelMultiplier
   id: mod_geumsuabi_t5
   modName: mod_geumsuabi_t5_name

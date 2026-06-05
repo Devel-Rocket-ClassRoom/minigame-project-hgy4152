@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58f5e0433b2c25d4bbc73eda49a7ee9c, type: 3}
-  m_Name: Mod_Turn3_Curse
+  m_Name: Mod_Phase3_Curse
   m_EditorClassIdentifier: ChainKnights::Mod_DisableDiscardBonus
   id: mod_blackmage_t3
   modName: mod_blackmage_t3_name

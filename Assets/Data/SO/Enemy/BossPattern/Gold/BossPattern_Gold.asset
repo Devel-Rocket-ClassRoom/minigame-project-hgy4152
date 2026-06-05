@@ -16,7 +16,7 @@ MonoBehaviour:
   patternName: pat_geumsuabi_name
   passive:
   - {fileID: 11400000, guid: c9537b8be8b7fae4ca0a195da5201ca9, type: 2}
-  turnModifiers:
+  phaseModifiers:
   - {fileID: 0}
   - {fileID: 11400000, guid: 5b86f811eea592a4a8960a5fcb8a1e63, type: 2}
   - {fileID: 0}

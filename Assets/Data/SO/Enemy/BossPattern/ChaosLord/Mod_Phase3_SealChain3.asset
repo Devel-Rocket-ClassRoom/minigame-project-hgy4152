@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f8c79bb7558b74cbbd0f2a60295665, type: 3}
-  m_Name: Mod_Turn5_Meteor
-  m_EditorClassIdentifier: ChainKnights::Mod_NullifyPrevTurnClasses
-  id: mod_blackmage_t5
-  modName: mod_blackmage_t5_name
-  description: mod_blackmage_t5_desc
+  m_Script: {fileID: 11500000, guid: a10e1c32ddc2a3f42a4abc9791e8e657, type: 3}
+  m_Name: Mod_Phase3_SealChain3
+  m_EditorClassIdentifier: ChainKnights::Mod_NullifyChainLevel
+  id: mod_chaoslord_t3
+  modName: mod_chaoslord_t3_name
+  description: mod_chaoslord_t3_desc
   icon: {fileID: 21300000, guid: 01976252770024713a92ffbe609c67ea, type: 3}
+  chainLength: 3

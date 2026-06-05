@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BlockData", menuName = "ChainKnights/BlockData")]
 public class BlockData : ScriptableObject, IDisplayable
 {
-    public string id;
     public string displayName;
     public string description;
     public Sprite icon;

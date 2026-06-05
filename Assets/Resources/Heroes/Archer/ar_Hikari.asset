@@ -19,5 +19,5 @@ MonoBehaviour:
   rarity: 0
   displayName: chr_ar_hikari_name
   passiveName: chr_ar_hikari_passive_name
-  description: chr_ar_hikari_desc
+  description: chr_ar_hikari_passive_desc
   icon: {fileID: 0}

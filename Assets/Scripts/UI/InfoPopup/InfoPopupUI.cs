@@ -99,7 +99,7 @@ public class InfoPopupUI : MonoBehaviour
                 infoIconImage.preserveAspect = true;
             }
             SetText(titleNameText, Localization.Get(def.displayName));
-            SetText(descText, Localization.Get(def.description));
+            SetText(descText, Localization.Get(def.charDescription));
 
             SetSubPanel(
                 subPanel1,

@@ -26,7 +26,7 @@ public static class ChainResolver
                 i < hand.Count
                 && hand[i] != null
                 && hand[i].data != null
-                && hand[i].data.ownerClass == group.Blocks[0].data.ownerClass
+                && hand[i].owner == group.Blocks[0].owner
                 && group.Length < MaxChainLength
             )
             {

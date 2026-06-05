@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: ar_Skadi
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: ar3
+  id: ar_skadi
   classType: 3
   prefab: {fileID: 599632863282659553, guid: 234738714b96f8444b0d2a3567ad4fa0, type: 3}
   blockData: {fileID: 11400000, guid: 6474f382c20787b41b3dc8d39aa206b6, type: 2}
   rarity: 1
-  displayName: Skadi
-  passiveName: "\uD639\uD55C\uC758 \uD6C4\uC608"
-  description: 
+  displayName: chr_ar_skadi_name
+  charDescription: chr_ar_skadi_char_desc
+  passiveName: chr_ar_skadi_passive_name
+  description: chr_ar_skadi_passive_desc
   passiveIcon: {fileID: 21300000, guid: 22180d298ba58408f94037f2afa04819, type: 3}
   buffIcon: {fileID: 0}
   unlockConditions:

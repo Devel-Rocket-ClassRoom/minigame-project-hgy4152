@@ -1,14 +1,14 @@
 Key,Value
-chr_pa_victor_name,빅터
-chr_pa_victor_char_desc, 사슬기사단 제 4부대장. 생긴 것과 다르게 따뜻한 마음씨를 지녔다.
-chr_pa_victor_passive_name,수호의 정령
-chr_pa_victor_passive_desc, 자신의 블럭 20개를 희생할 시 수호의 힘을 빌어 1턴간 모든 디버프를 무효화 한다. (스테이지 당 1회)
+chr_pa1_name,빅터
+chr_pa1_char_desc, 사슬기사단 제 4부대장. 생긴 것과 다르게 따뜻한 마음씨를 지녔다.
+chr_pa1_passive_name,수호의 정령
+chr_pa1_passive_desc, 자신의 블럭 20개를 희생할 시 수호의 힘을 빌어 1턴간 모든 디버프를 무효화 한다. (스테이지 당 1회)
 blk_pa1_name, 홀리 스트라이크
 blk_pa1_desc, 적을 향해 돌진하여 강력한 신성 피해를 입힌다.
-chr_pa_captainjg_name,캡틴JG
-chr_pa_captainjg_char_desc, 파도부대의 선장. 바다의 주인을 해치우고 사슬 해역을 영역으로 삼은 해적이다. 하지만 직접 싸우는 모습은 그 누구도 본 적이 없다. 
-chr_pa_captainjg_passive_name,파도부대 선장
-chr_pa_captainjg_passive_desc, 3체인 공격 시 무작위 다른 파티원이 1체인 공격을 발동한다.
+chr_pa3_name,캡틴JG
+chr_pa3_char_desc, 파도부대의 선장. 바다의 주인을 해치우고 사슬 해역을 영역으로 삼은 해적이다. 하지만 직접 싸우는 모습은 그 누구도 본 적이 없다.
+chr_pa3_passive_name,파도부대 선장
+chr_pa3_passive_desc, 3체인 공격 시 무작위 다른 파티원이 1체인 공격을 발동한다.
 blk_pa3_name,파도부대 집결!
 blk_pa3_desc, 파도부대원들이 나와서 함께 공격한다. 체인에 따라 인원수가 늘어난다.
 chr_wa_reon_name,레온

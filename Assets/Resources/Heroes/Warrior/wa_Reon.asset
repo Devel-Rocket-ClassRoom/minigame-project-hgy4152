@@ -18,6 +18,7 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: a4760b6928a91cc4c85170b8c68eb767, type: 2}
   rarity: 0
   displayName: chr_wa_reon_name
+  charDescription: chr_wa_reon_char_desc
   passiveName: chr_wa_reon_passive_name
   description: chr_wa_reon_passive_desc
   passiveIcon: {fileID: 0}

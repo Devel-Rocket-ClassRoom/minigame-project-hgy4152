@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < groups.Count; i++)
         {
             var group = groups[i];
-            var character = characterSet?.GetCharacter(group.DominantClass);
+            var character = group.DominantCharacter;
 
             int groupBonus = 0;
             if (jokerManager != null)
@@ -496,7 +496,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(highlightDuration);
 
             // 애니메이션
-            var character = characterSet?.GetCharacter(groups[i].DominantClass);
+            var character = groups[i].DominantCharacter;
             characterSet?.NotifyAnyGroupAttackStart(groups[i], boss);
             character?.PlayAttack(boss.transform.position);
             var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);

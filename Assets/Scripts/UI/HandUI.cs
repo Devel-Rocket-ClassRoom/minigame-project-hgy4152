@@ -19,11 +19,11 @@ public class HandUI : MonoBehaviour
         for (int i = 0; i < groups.Count; i++)
         {
             var g = groups[i];
-            // µî·Ï ¹× Áßº¹Ã¼Å© 
+            // ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ßºï¿½Ã¼Å© 
             if (!seen.Add((g.DominantClass, g.Length)))
                 continue;
 
-            var character = gameManager.CharacterSet?.GetCharacter(g.DominantClass);
+            var character = g.DominantCharacter;
             string hex =
                 character != null ? ColorUtility.ToHtmlStringRGB(character.classColor) : "FFFFFF";
             sb.AppendLine(

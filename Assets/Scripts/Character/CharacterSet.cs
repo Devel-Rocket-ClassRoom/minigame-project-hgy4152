@@ -55,6 +55,9 @@ public class CharacterSet : MonoBehaviour
         return null;
     }
 
+    public Character[] GetInstances() =>
+        System.Array.FindAll(instances, c => c != null);
+
     public CharacterDef GetDef(ClassType classType)
     {
         foreach (var d in characterDefs)
@@ -62,9 +65,6 @@ public class CharacterSet : MonoBehaviour
                 return d;
         return null;
     }
-
-    public Block CreateBlock(ClassType classType, Transform parent = null) =>
-        GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);
 
     public ClassType[] GetDeployedClassTypes()
     {

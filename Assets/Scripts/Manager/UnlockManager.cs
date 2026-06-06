@@ -17,6 +17,11 @@ public static class UnlockManager
     public static event Action<UnlockKind, string> OnUnlocked;
 
     static readonly string[] DefaultCharacterIds = { "wa1", "ar1", "pr1", "pa1", "wi1", "hu1" };
+    static readonly (string bossId, string prerequisiteId)[] BossUnlockChain =
+    {
+        ("bss2", "bss1"),
+        ("bss3", "bss2"),
+    };
     static readonly string[] DefaultJokerIds =
     {
         "cwar1",
@@ -68,6 +73,15 @@ public static class UnlockManager
     {
         EnsureLoaded();
         return _enemies.Contains(id);
+    }
+
+    public static bool IsBossPlayable(string id)
+    {
+        EnsureLoaded();
+        foreach (var (bossId, prereq) in BossUnlockChain)
+            if (bossId == id)
+                return _bosses.Contains(prereq);
+        return true;
     }
 
     public static bool IsBossUnlocked(string id)

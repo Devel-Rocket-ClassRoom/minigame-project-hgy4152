@@ -8,7 +8,15 @@ public class BossSlotUI : MonoBehaviour
     public TextMeshProUGUI bossNameLabel;
     public TextMeshProUGUI rarityLabel;
 
+    [SerializeField] GameObject lockOverlay;
+
     public BossData Def { get; private set; }
+
+    public void SetLocked(bool locked)
+    {
+        if (lockOverlay != null)
+            lockOverlay.SetActive(locked);
+    }
 
     public void Setup(BossData boss)
     {

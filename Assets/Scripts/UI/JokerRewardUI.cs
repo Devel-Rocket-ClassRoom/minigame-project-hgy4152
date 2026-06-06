@@ -191,6 +191,8 @@ public class JokerRewardUI : MonoBehaviour
                 swapNewCardImage.sprite = card.icon;
                 swapNewCardImage.preserveAspect = true;
             }
+            skipButton?.gameObject.SetActive(false);
+            confirmButton?.gameObject.SetActive(false);
             swapPromptPanel?.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
             jokerHandUI?.EnterSwapMode();

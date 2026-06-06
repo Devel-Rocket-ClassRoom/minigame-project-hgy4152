@@ -382,11 +382,34 @@ public class GameManager : MonoBehaviour
     {
         if (saveManager == null)
             return;
+
         int emptySlot = saveManager.FindFirstEmptySlot();
-        if (emptySlot < 0)
+        if (emptySlot >= 0)
+        {
+            saveManager.Save(emptySlot, saveManager.BuildFromCurrentState(this));
+            return;
+        }
+
+        // 모든 슬롯이 채워진 경우 수동 선택 UI
+        if (saveSlotPickerUI == null)
             return;
         var draft = saveManager.BuildFromCurrentState(this);
-        saveManager.Save(emptySlot, draft);
+        saveSlotPickerUI.Show(
+            saveManager,
+            draft,
+            onSlotPicked: slot =>
+            {
+                if (saveManager.HasSlot(slot))
+                    confirmDialog?.Show(
+                        string.Format(Localization.Get("ui_confirm_overwrite"), slot + 1),
+                        onYes: () => saveManager.Save(slot, draft),
+                        onNo: OpenSaveFlow
+                    );
+                else
+                    saveManager.Save(slot, draft);
+            },
+            onCanceled: () => { }
+        );
     }
 
     public void OnStageIntroComplete()

@@ -25,6 +25,12 @@ public static class UnlockManager
         "wi_acan",
         "hu_raven",
     };
+    static readonly (string bossId, string prerequisiteId)[] BossUnlockChain =
+    {
+        ("boss_blackmage", "boss_geumsuabi"),
+        ("boss_chaoslord", "boss_blackmage"),
+    };
+
     static readonly string[] DefaultJokerIds =
     {
         "cwar1",
@@ -76,6 +82,15 @@ public static class UnlockManager
     {
         EnsureLoaded();
         return _enemies.Contains(id);
+    }
+
+    public static bool IsBossPlayable(string id)
+    {
+        EnsureLoaded();
+        foreach (var (bossId, prereq) in BossUnlockChain)
+            if (bossId == id)
+                return _bosses.Contains(prereq);
+        return true;
     }
 
     public static bool IsBossUnlocked(string id)

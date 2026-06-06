@@ -126,8 +126,10 @@ public class BossReadyUI : MonoBehaviour
     private void ShowBoss(int index)
     {
         bossIndex = index;
-        bossDisplay?.Setup(bossList[index]);
-        patternPreview?.Show(bossList[index].bossPattern);
+        var boss = bossList[index];
+        bossDisplay?.Setup(boss);
+        bossDisplay?.SetLocked(!UnlockManager.IsBossPlayable(boss.id));
+        patternPreview?.Show(boss.bossPattern);
         RefreshStartButton();
     }
 
@@ -149,7 +151,8 @@ public class BossReadyUI : MonoBehaviour
     {
         if (startButton == null)
             return;
-        startButton.interactable = saveSlotIndex >= 0 && bossIndex >= 0;
+        bool bossPlayable = bossIndex >= 0 && UnlockManager.IsBossPlayable(bossList[bossIndex].id);
+        startButton.interactable = saveSlotIndex >= 0 && bossPlayable;
     }
 
     private void OnStartClicked()

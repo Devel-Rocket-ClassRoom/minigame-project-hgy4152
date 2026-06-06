@@ -574,7 +574,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator PhaseTransitionRoutine(System.Collections.Generic.List<Modifier> mods)
+    IEnumerator PhaseTransitionRoutine(List<Modifier> mods)
     {
         foreach (var mod in mods)
         {
@@ -584,13 +584,15 @@ public class GameManager : MonoBehaviour
                     bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey))
                 );
 
+            // 디버프 텍스트 (항상)
+            if (stageIntroUI != null)
+                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
+
             // 이펙트 + 플로팅 텍스트 + 아이콘 갱신
             if (phaseEffectSpawner != null && mod.effectPrefab != null)
                 yield return StartCoroutine(
                     phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName))
                 );
-            else if (stageIntroUI != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
         }
 
         _turnDamageTotal = 0;
@@ -598,6 +600,7 @@ public class GameManager : MonoBehaviour
         totalDmgObject?.SetActive(false);
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
+        bossPatternSystem?.CommitPhase();
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         drawPhaseTimer.StartDrawPhaseInstant();

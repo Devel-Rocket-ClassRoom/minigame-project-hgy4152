@@ -14,20 +14,16 @@ public class PhaseEffectSpawner : MonoBehaviour
 
     public IEnumerator PlayEffect(GameObject effectPrefab, string floatText)
     {
-        var fx = Instantiate(effectPrefab, effectSpawnPoint.position, Quaternion.identity);
-
-        // 플로팅 텍스트 소환
+        // 플로팅 텍스트 소환 (fire-and-forget)
         if (floatingTextPrefab != null && !string.IsNullOrEmpty(floatText))
         {
             var floatInst = Instantiate(floatingTextPrefab, effectSpawnPoint);
             floatInst.Show(floatText);
-            yield return new WaitForSeconds(floatInst.TotalDuration);
         }
 
-        // 플로팅 텍스트 종료 시점에 디버프 아이콘 갱신
+        // 이펙트 + 디버프 아이콘 + 플로팅 텍스트 동시
+        var fx = Instantiate(effectPrefab, effectSpawnPoint.position, Quaternion.identity);
         debuffIconBarUI?.Refresh();
-
-        // 이펙트 완료 대기
         yield return StartCoroutine(WaitForEffectComplete(fx));
         if (fx != null)
             Destroy(fx);

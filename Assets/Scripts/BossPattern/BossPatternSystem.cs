@@ -8,6 +8,7 @@ public class BossPatternSystem : MonoBehaviour
 
     BossPattern current;
     int phaseIndex;
+    int _effectivePhaseIndex;
 
     int[] _prevChainCounts = new int[3];
     Dictionary<ClassType, int> _prevClassDist = new();
@@ -32,6 +33,7 @@ public class BossPatternSystem : MonoBehaviour
     {
         current = entry.bossData?.bossPattern ?? entry.enemyData?.bossPattern;
         phaseIndex = 0;
+        _effectivePhaseIndex = 0;
         _prevChainCounts = new int[3];
         _prevClassDist = new Dictionary<ClassType, int>();
         _prevChainSequence = null;
@@ -49,7 +51,7 @@ public class BossPatternSystem : MonoBehaviour
         if (AccumulateModifiers)
         {
             // BossPlay: 지나온 모든 구간 패턴 누적 유지
-            for (int i = 0; i <= phaseIndex && i < current.phaseModifiers.Length; i++)
+            for (int i = 0; i < _effectivePhaseIndex && i < current.phaseModifiers.Length; i++)
                 if (current.phaseModifiers[i] != null)
                     yield return current.phaseModifiers[i];
         }
@@ -118,4 +120,10 @@ public class BossPatternSystem : MonoBehaviour
     }
 
     public void AdvancePhase() => phaseIndex++;
+
+    public void CommitPhase()
+    {
+        _effectivePhaseIndex = phaseIndex;
+        OnInjected?.Invoke();
+    }
 }

@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
     float highlightScale = 1.2f;
 
     bool _stageClearPending;
+    bool _allStagesClearedPending;
     bool _jokerRewardPending;
     bool _isAdventureMode;
     bool _isBossPlay;
@@ -377,11 +378,7 @@ public class GameManager : MonoBehaviour
     void HandleAllStagesCleared()
     {
         drawPhaseTimer.StopDrawPhase();
-        modeClearUI?.Show(this, Color.green);
-        if (_isAdventureMode)
-            UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
-        if (!_isBossPlay)
-            OpenSaveFlow();
+        _allStagesClearedPending = true;
     }
 
     void OpenSaveFlow()
@@ -535,6 +532,16 @@ public class GameManager : MonoBehaviour
             _stageClearPending = false;
             yield return StartCoroutine(ShowStageClear());
             stageManager.AdvanceToNext();
+        }
+        else if (_allStagesClearedPending)
+        {
+            _allStagesClearedPending = false;
+            yield return StartCoroutine(ShowStageClear());
+            modeClearUI?.Show(this, Color.green);
+            if (_isAdventureMode)
+                UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
+            if (!_isBossPlay)
+                OpenSaveFlow();
         }
         else if (boss.IsAlive)
         {

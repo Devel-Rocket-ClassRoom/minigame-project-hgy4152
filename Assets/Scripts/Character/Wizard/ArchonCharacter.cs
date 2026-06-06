@@ -12,6 +12,8 @@ public class ArchonCharacter : Character
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 
+    protected override void OnLastChainHitComplete() => StartBreathing();
+
     // Arcane Surge: 스테이지 누적 본인 그룹 1개당 데미지 +10% (누적)
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {

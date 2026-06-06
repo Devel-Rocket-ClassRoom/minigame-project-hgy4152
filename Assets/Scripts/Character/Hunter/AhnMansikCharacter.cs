@@ -9,6 +9,8 @@ public class AhnMansikCharacter : Character
 
     int _effectiveChainCount;
 
+    protected override void OnLastChainHitComplete() => StartBreathing();
+
     // 명령 불복종: 1체인 → 33% 확률로 3체인, 3체인 → 33% 확률로 1체인
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {

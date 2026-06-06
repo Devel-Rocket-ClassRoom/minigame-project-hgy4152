@@ -35,6 +35,24 @@ public class SaveManager : MonoBehaviour
             File.Delete(path);
     }
 
+    public int FindFirstEmptySlot()
+    {
+        for (int i = 0; i < SlotCount; i++)
+            if (!HasSlot(i))
+                return i;
+        return -1;
+    }
+
+    public static void DeleteAll()
+    {
+        for (int i = 0; i < SlotCount; i++)
+        {
+            var path = Path.Combine(Application.persistentDataPath, $"save_{i}.json");
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+    }
+
     public SaveSlotData BuildFromCurrentState(GameManager gm)
     {
         var data = new SaveSlotData { clearedAtIso = DateTime.UtcNow.ToString("o") };

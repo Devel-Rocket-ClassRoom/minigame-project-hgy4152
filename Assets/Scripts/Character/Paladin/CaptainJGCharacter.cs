@@ -7,6 +7,8 @@ public class CaptainJGCharacter : Character
     public override ClassType Type => ClassType.Paladin;
     public override Color classColor => Color.white;
 
+    protected override void OnLastChainHitComplete() => StartBreathing();
+
     // 파도부대 선장: 3체인 공격 시 무작위 다른 파티원 1체인 발동
     public override void OnAfterGroupPlayed(CharacterSet characterSet, ChainGroup group)
     {

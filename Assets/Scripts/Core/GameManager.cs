@@ -380,25 +380,13 @@ public class GameManager : MonoBehaviour
 
     void OpenSaveFlow()
     {
-        if (saveManager == null || saveSlotPickerUI == null)
+        if (saveManager == null)
+            return;
+        int emptySlot = saveManager.FindFirstEmptySlot();
+        if (emptySlot < 0)
             return;
         var draft = saveManager.BuildFromCurrentState(this);
-        saveSlotPickerUI.Show(
-            saveManager,
-            draft,
-            onSlotPicked: slot =>
-            {
-                if (saveManager.HasSlot(slot))
-                    confirmDialog?.Show(
-                        string.Format(Localization.Get("ui_confirm_overwrite"), slot + 1),
-                        onYes: () => saveManager.Save(slot, draft),
-                        onNo: OpenSaveFlow
-                    );
-                else
-                    saveManager.Save(slot, draft);
-            },
-            onCanceled: () => { }
-        );
+        saveManager.Save(emptySlot, draft);
     }
 
     public void OnStageIntroComplete()

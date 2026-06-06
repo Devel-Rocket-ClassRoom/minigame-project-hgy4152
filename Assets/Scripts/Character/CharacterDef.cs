@@ -11,6 +11,7 @@ public class CharacterDef : ScriptableObject, IDisplayable
     public Rarity rarity;
     public string displayName;
     public string charDescription;
+    public int attackPower = 10;
     public string passiveName;
     public string description;
     public Sprite passiveIcon;

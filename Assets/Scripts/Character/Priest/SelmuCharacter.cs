@@ -17,6 +17,8 @@ public class SelmuCharacter : Character
     public override Color classColor => Color.green;
     protected override bool IsSingleCast => true;
 
+    protected override void OnLastChainHitComplete() => StartBreathing();
+
     public override void OnStageStart()
     {
         _accumulatedBonus = 0;

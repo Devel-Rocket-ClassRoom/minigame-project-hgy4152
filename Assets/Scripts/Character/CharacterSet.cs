@@ -55,8 +55,27 @@ public class CharacterSet : MonoBehaviour
         return null;
     }
 
-    public Block CreateBlock(ClassType classType, Transform parent = null) =>
-        GetCharacter(classType)?.Creator?.CreateBlock(parent != null ? parent : blockHand);
+    public Character[] GetInstances() =>
+        System.Array.FindAll(instances, c => c != null);
+
+    public Character GetInstanceAt(int index) =>
+        (instances != null && index >= 0 && index < instances.Length) ? instances[index] : null;
+
+    public CharacterDef GetDef(ClassType classType)
+    {
+        foreach (var d in characterDefs)
+            if (d != null && d.classType == classType)
+                return d;
+        return null;
+    }
+
+    public CharacterDef GetDef(Character character)
+    {
+        for (int i = 0; i < instances.Length; i++)
+            if (instances[i] == character)
+                return characterDefs[i];
+        return null;
+    }
 
     public ClassType[] GetDeployedClassTypes()
     {
@@ -85,13 +104,13 @@ public class CharacterSet : MonoBehaviour
                 c.OnAnyGroupDamageApplied(rawDamage, finalDamage);
     }
 
-    public void NotifyTurnProcessed(ClassType usedClass)
+    public void NotifyTurnProcessed(Character usedCharacter)
     {
         if (instances == null)
             return;
         foreach (var c in instances)
             if (c != null)
-                c.OnTurnProcessed(c.Type == usedClass);
+                c.OnTurnProcessed(c == usedCharacter);
     }
 
     public void NotifyAfterGroupPlayed(ChainGroup group)

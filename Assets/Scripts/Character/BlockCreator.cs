@@ -14,6 +14,7 @@ public abstract class BlockCreator : MonoBehaviour
     {
         Block block = Instantiate(blockPrefab, spawner);
         block.Init(blockData);
+        block.owner = GetComponent<Character>();
         return block;
     }
 }

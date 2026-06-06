@@ -129,7 +129,12 @@ public abstract class Character : MonoBehaviour
         int idx = _hitEventIndex - 1;
         if (_target != null && _perHitDamages != null && idx >= 0 && idx < _perHitDamages.Length)
             _target.TakeDamage(_perHitDamages[idx], classColor);
+
+        if (_hitEventIndex == _chainCount)
+            OnLastChainHitComplete();
     }
+
+    protected virtual void OnLastChainHitComplete() { }
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 

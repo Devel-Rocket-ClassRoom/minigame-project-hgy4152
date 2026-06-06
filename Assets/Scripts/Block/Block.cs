@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Block : MonoBehaviour
 {
     public BlockData data;
+    public Character owner;
     public int chainGroupId = -1;
 
     [SerializeField]

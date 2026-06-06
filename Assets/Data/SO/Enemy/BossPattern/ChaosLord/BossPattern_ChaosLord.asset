@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8b2907a1e9c689d4e883c4cfa3f35f2b, type: 2}
   - {fileID: 11400000, guid: 9fb59a7a1fac61e4a8e75f1605298043, type: 2}
   hpThresholds:
-  - 0.75
-  - 0.5
-  - 0.25
-  - 0
+  - 0.8
+  - 0.6
+  - 0.4
+  - 0.2

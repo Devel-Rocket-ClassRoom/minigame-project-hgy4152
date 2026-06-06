@@ -17,7 +17,6 @@ MonoBehaviour:
   passive:
   - {fileID: 11400000, guid: ec0864a98c4425e4c834e236af9b028e, type: 2}
   phaseModifiers:
-  - {fileID: 0}
   - {fileID: 11400000, guid: 2e03285ab49824e4d886aeaeeab11ce5, type: 2}
   - {fileID: 11400000, guid: bf64673d14f60784ca7318e7d42303f0, type: 2}
   - {fileID: 11400000, guid: 724e7808faa2af8468e1827d94d69e66, type: 2}
@@ -26,4 +25,3 @@ MonoBehaviour:
   - 0.75
   - 0.5
   - 0.25
-  - 0

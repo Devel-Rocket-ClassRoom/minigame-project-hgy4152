@@ -15,6 +15,7 @@ MonoBehaviour:
   id: mod_chaoslord_t2
   modName: mod_chaoslord_t2_name
   description: mod_chaoslord_t2_desc
-  dialogueKey: mod_chaoslord_t2_dialogue
   icon: {fileID: 21300000, guid: 508e850c1ff364c71a040c1b5ca822db, type: 3}
+  dialogueKey: mod_chaoslord_t2_dialogue
+  effectPrefab: {fileID: 6236783633167038915, guid: 4ecd6e30a77a772489d30b9c991d97e5, type: 3}
   requiredClassCount: 3

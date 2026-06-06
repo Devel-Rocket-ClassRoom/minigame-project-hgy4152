@@ -38,6 +38,9 @@ public class JokerRewardUI : MonoBehaviour
     [SerializeField]
     JokerCardHandUI jokerHandUI;
 
+    [SerializeField]
+    InfoPopupUI infoPopupUI;
+
     Button[] _buttons;
     Image[] _selectFrames;
     Image[] _cardImages;
@@ -218,6 +221,8 @@ public class JokerRewardUI : MonoBehaviour
     {
         if (jokerHandUI == null || jokerHandUI.SelectedSlotIndex < 0)
             return;
+
+        infoPopupUI?.HideImmediate();
 
         int selectedSlot = jokerHandUI.SelectedSlotIndex;
         jokerHandUI.ExitSwapMode();

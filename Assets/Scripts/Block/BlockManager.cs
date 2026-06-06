@@ -52,18 +52,18 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        var deployedTypes = characterSet.GetDeployedClassTypes();
-        if (deployedTypes.Length == 0)
+        var instances = characterSet.GetInstances();
+        if (instances == null || instances.Length == 0)
         {
             Debug.LogError("[BlockManager] 배포된 캐릭터가 없습니다.");
             return null;
         }
-        ClassType classType = deployedTypes[UnityEngine.Random.Range(0, deployedTypes.Length)];
-        Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
+        var character = instances[UnityEngine.Random.Range(0, instances.Length)];
+        Block block = character?.Creator?.CreateBlock(slots[slotIndex].transform);
 
         if (block == null)
         {
-            Debug.LogWarning($"[BlockManager] Failed to create block for {classType}.");
+            Debug.LogWarning($"[BlockManager] Failed to create block for {character?.Type}.");
             return null;
         }
 
@@ -95,18 +95,18 @@ public class BlockManager : MonoBehaviour
             return null;
         }
 
-        var deployedTypes = characterSet.GetDeployedClassTypes();
-        if (deployedTypes.Length == 0)
+        var instances = characterSet.GetInstances();
+        if (instances == null || instances.Length == 0)
         {
             Debug.LogError("[BlockManager] 배포된 캐릭터가 없습니다.");
             return null;
         }
-        ClassType classType = deployedTypes[UnityEngine.Random.Range(0, deployedTypes.Length)];
-        Block block = characterSet.CreateBlock(classType, slots[slotIndex].transform);
+        var character = instances[UnityEngine.Random.Range(0, instances.Length)];
+        Block block = character?.Creator?.CreateBlock(slots[slotIndex].transform);
 
         if (block == null)
         {
-            Debug.LogWarning($"[BlockManager] Failed to create block for {classType}.");
+            Debug.LogWarning($"[BlockManager] Failed to create block for {character?.Type}.");
             return null;
         }
 
@@ -250,7 +250,7 @@ public class BlockManager : MonoBehaviour
 
         Block cur = hand[i];
         Block prev = hand[i - 1];
-        if (prev.data.id != cur.data.id)
+        if (prev.owner != cur.owner)
         {
             cur.chainGroupId = prev.chainGroupId + 1;
             return;

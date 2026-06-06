@@ -39,7 +39,7 @@ public class DebuffIconBarUI : MonoBehaviour
             bossInfoUIPanel.Show(entry.enemyData);
     }
 
-    void Refresh()
+    public void Refresh()
     {
         foreach (Transform child in iconContainer)
             Destroy(child.gameObject);

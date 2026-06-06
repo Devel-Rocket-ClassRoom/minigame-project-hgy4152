@@ -43,6 +43,16 @@ public class SaveManager : MonoBehaviour
         return -1;
     }
 
+    public static void DeleteAll()
+    {
+        for (int i = 0; i < SlotCount; i++)
+        {
+            var path = Path.Combine(Application.persistentDataPath, $"save_{i}.json");
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+    }
+
     public SaveSlotData BuildFromCurrentState(GameManager gm)
     {
         var data = new SaveSlotData { clearedAtIso = DateTime.UtcNow.ToString("o") };

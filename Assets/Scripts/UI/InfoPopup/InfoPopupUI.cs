@@ -254,12 +254,12 @@ public class InfoPopupUI : MonoBehaviour
                 SetSubPanel(subPanel1, subTitle1Text, subDesc1Text, false);
 
             bool anyTurn = false;
-            if (bp?.turnModifiers != null)
+            if (bp?.phaseModifiers != null)
             {
                 var sb = new StringBuilder();
-                for (int i = 0; i < bp.turnModifiers.Length; i++)
+                for (int i = 0; i < bp.phaseModifiers.Length; i++)
                 {
-                    var m = bp.turnModifiers[i];
+                    var m = bp.phaseModifiers[i];
                     if (m == null)
                         continue;
                     if (sb.Length > 0)

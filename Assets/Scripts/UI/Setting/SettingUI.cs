@@ -30,6 +30,9 @@ public class SettingUI : MonoBehaviour
     [SerializeField]
     Button quitButton;
 
+    [SerializeField]
+    Button resetDataButton;
+
     public UnityEvent onClose = new UnityEvent();
 
     void Awake()
@@ -57,6 +60,8 @@ public class SettingUI : MonoBehaviour
             closeButton.onClick.AddListener(Close);
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
+        if (resetDataButton != null)
+            resetDataButton.onClick.AddListener(ResetAllData);
     }
 
     public void Open()
@@ -94,6 +99,13 @@ public class SettingUI : MonoBehaviour
     {
         if (mixer != null)
             mixer.SetFloat(SFXExposedParam, Mathf.Log10(Mathf.Max(v, MinVolume)) * 20f);
+    }
+
+    void ResetAllData()
+    {
+        UnlockManager.ResetAll();
+        SaveManager.DeleteAll();
+        Debug.Log("[Debug] 세이브 데이터 초기화 완료");
     }
 
     void QuitGame()

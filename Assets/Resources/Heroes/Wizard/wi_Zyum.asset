@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d8f61221ae5374cae325bc02f87948, type: 3}
   m_Name: wi_Zyum
   m_EditorClassIdentifier: ChainKnights::CharacterDef
-  id: wi_zyum
+  id: wi2
   classType: 6
   prefab: {fileID: 7689006509562128344, guid: c56d058e3e3b7ed419604fb04e74917a, type: 3}
   blockData: {fileID: 11400000, guid: e6f7a2b3c4d5e6f7a2b3c4d5e6f7a2b3, type: 2}
   rarity: 1
-  displayName: chr_wi_zyum_name
-  passiveName: chr_wi_zyum_passive_name
-  description: chr_wi_zyum_passive_desc
+  displayName: chr_wi2_name
+  charDescription: chr_wi2_char_desc
+  attackPower: 5
+  passiveName: chr_wi2_passive_name
+  description: chr_wi2_passive_desc
   passiveIcon: {fileID: 0}
   buffIcon: {fileID: 21300000, guid: 516af4deac0b04177992ca278089feba, type: 3}
   unlockConditions:

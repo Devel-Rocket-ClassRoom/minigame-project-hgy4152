@@ -39,12 +39,19 @@ public class VitorCharacter : Character
     }
 
     bool _stageImmunityUsed;
+    int _stageDiscardsUsed;
+    public override int StackCount => _stageImmunityUsed ? -1 : _stageDiscardsUsed;
 
-    public override void OnStageStart() => _stageImmunityUsed = false;
+    public override void OnStageStart()
+    {
+        _stageImmunityUsed = false;
+        _stageDiscardsUsed = 0;
+    }
 
     // Divine Shield: 스테이지 누적 디스카드 20개 도달 시 이번 턴 디버프 전부 무효화 (스테이지당 1회)
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {
+        _stageDiscardsUsed = judge.stageDiscardsUsed;
         if (!_stageImmunityUsed && judge.stageDiscardsUsed >= 20)
         {
             judge.ClearDebuffs();

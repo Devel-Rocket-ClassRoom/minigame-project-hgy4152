@@ -7,7 +7,7 @@ public class BeatriceCharacter : Character
     public override ClassType Type => ClassType.Priest;
     public override Color classColor => Color.green;
 
-    public int StackCount { get; private set; }
+    public override int StackCount { get; private set; }
 
     public override void OnStageStart() => StackCount = 0;
 

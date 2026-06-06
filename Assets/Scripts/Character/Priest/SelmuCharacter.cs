@@ -10,6 +10,7 @@ public class SelmuCharacter : Character
     int _accumulatedBonus;
     bool _thresholdReached;
     bool _pendingConsume;
+    public override int StackCount => _accumulatedBonus;
 
     Skill_Selmu SelmuSkill => skill as Skill_Selmu;
 

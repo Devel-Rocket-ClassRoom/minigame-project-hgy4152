@@ -8,6 +8,7 @@ public class RavenCharacter : Character
     public override Color classColor => Color.green;
 
     int _stageGroupCounter;
+    public override int StackCount => _stageGroupCounter;
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 

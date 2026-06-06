@@ -7,7 +7,12 @@ public class ZyumCharacter : Character
     [SerializeField]
     float bonusPerChain3 = 0.1f;
 
+    int _lastChain3Count;
+    public override int StackCount => _lastChain3Count;
+
     Skill_Zyum ZyumSkill => skill as Skill_Zyum;
+
+    public override void OnStageStart() => _lastChain3Count = 0;
 
     public override ClassType Type => ClassType.Wizard;
     public override Color classColor => Color.magenta;
@@ -26,6 +31,7 @@ public class ZyumCharacter : Character
         }
 
         int myCount = arr[2];
+        _lastChain3Count = myCount;
         if (myCount == 0)
         {
             ZyumSkill?.SetPassiveActive(false);

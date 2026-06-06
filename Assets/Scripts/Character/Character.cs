@@ -150,5 +150,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void OnTurnSequenceEnd() { }
 
+    public virtual int StackCount => -1;
+
     public virtual void OnAnyGroupAttackStart(ChainGroup group, EnemyController target) { }
 }

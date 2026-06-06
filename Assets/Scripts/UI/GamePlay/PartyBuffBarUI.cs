@@ -48,16 +48,18 @@ public class PartyBuffBarUI : MonoBehaviour
         var reg = TableRegistry.Instance;
         if (characterSet != null && reg != null && reg.Character != null)
         {
-            foreach (var id in characterSet.GetCurrentCharacterIds())
+            var ids = characterSet.GetCurrentCharacterIds();
+            for (int i = 0; i < ids.Length; i++)
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(ids[i]))
                     continue;
-                var def = reg.Character.Get(id);
+                var def = reg.Character.Get(ids[i]);
                 if (def == null || def.buffIcon == null)
                     continue;
                 var icon = Instantiate(buffIconPrefab, iconContainer);
                 icon.GetComponent<Image>().sprite = def.buffIcon;
                 icon.GetComponent<Button>().onClick.AddListener(ShowPanel);
+                icon.GetComponent<BuffIconUI>()?.Bind(characterSet.GetInstanceAt(i));
             }
         }
 

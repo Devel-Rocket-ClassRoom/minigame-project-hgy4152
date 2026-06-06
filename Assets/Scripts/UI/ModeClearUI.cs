@@ -45,13 +45,10 @@ public class ModeClearUI : MonoBehaviour
         }
 
         var charSet = gameManager.CharacterSet;
-        var deployed = charSet?.GetDeployedClassTypes();
+        var instances = charSet?.GetInstances();
         for (int i = 0; i < characterIcons.Length; i++)
         {
-            var character =
-                (deployed != null && i < deployed.Length)
-                    ? charSet.GetCharacter(deployed[i])
-                    : null;
+            var character = (instances != null && i < instances.Length) ? instances[i] : null;
             SetSprite(characterIcons[i], character?.Icon);
         }
 

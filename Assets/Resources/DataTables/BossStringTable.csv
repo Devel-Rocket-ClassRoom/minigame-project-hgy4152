@@ -16,6 +16,9 @@ mod_geumsuabi_t4_name,단단해지기
 mod_geumsuabi_t4_desc,이번 턴 데미지 30% 감소
 mod_geumsuabi_t5_name,골드 러쉬
 mod_geumsuabi_t5_desc,3체인 1개당 보너스 +20%
+mod_geumsuabi_t2_dialogue,군더더기는 필요 없다.
+mod_geumsuabi_t4_dialogue,내 껍질을 벗겨낼 자격이 있느냐.
+mod_geumsuabi_t5_dialogue,기본에 충실하다면... 해볼 만하겠지.
 mod_blackmage_p1_name,시간 가속
 mod_blackmage_p1_desc,드로우 페이즈 20초 → 14초
 mod_blackmage_t2_name,혼란의 파동
@@ -26,6 +29,10 @@ mod_blackmage_t4_name,광폭화
 mod_blackmage_t4_desc,드로우 페이즈 14초 → 8초
 mod_blackmage_t5_name,종말의 운석
 mod_blackmage_t5_desc,이전 턴에 사용한 직업의 그룹 무효화
+mod_blackmage_t2_dialogue,선택지를 줄여주마. 혼란 속에서 헤매어라.
+mod_blackmage_t3_dialogue,버려봤자 소용없다.
+mod_blackmage_t4_dialogue,이제부터 진짜 시간이 시작된다!
+mod_blackmage_t5_dialogue,지난 전략 따위... 잿더미로 만들어주마.
 mod_chaoslord_p1_name,직업 차별
 mod_chaoslord_p1_desc,한 직업 블록당 받는 데미지 -10% 누적
 mod_chaoslord_t1_name,선전포고
@@ -38,3 +45,8 @@ mod_chaoslord_t4_name,혼돈의 도약
 mod_chaoslord_t4_desc,시프트 없이 제출 시 데미지 50% 감소
 mod_chaoslord_t5_name,최후 심판
 mod_chaoslord_t5_desc,가장 오른쪽 조커카드 2장 무효화
+mod_chaoslord_t1_dialogue,오합지졸의 잔재주는 이미 간파했다.
+mod_chaoslord_t2_dialogue,진정한 힘은 균형에서 나온다.
+mod_chaoslord_t3_dialogue,극단적인 힘은 용납하지 않는다.
+mod_chaoslord_t4_dialogue,혼돈의 흐름을 읽지 못하는 자는 무너진다.
+mod_chaoslord_t5_dialogue,그 요행에 기댄 힘은... 내가 빼앗겠다.

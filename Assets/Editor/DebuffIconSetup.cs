@@ -19,7 +19,11 @@ public static class DebuffIconSetup
     static void Run()
     {
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Font/JejuGothic SDF.asset");
-        if (font == null) { Debug.LogError("[DebuffSetup] Font not found"); return; }
+        if (font == null)
+        {
+            Debug.LogError("[DebuffSetup] Font not found");
+            return;
+        }
 
         CreateModifierEntryPrefab(font);
         CreateDebuffIconPrefab();
@@ -55,7 +59,14 @@ public static class DebuffIconSetup
         root.AddComponent<Image>().color = new Color(0.15f, 0.15f, 0.2f, 0.8f);
 
         MakeTMP(root.transform, "NameText", font, 16, FontStyles.Bold, Color.white);
-        MakeTMP(root.transform, "DescText", font, 13, FontStyles.Normal, new Color(0.85f, 0.85f, 0.85f));
+        MakeTMP(
+            root.transform,
+            "DescText",
+            font,
+            13,
+            FontStyles.Normal,
+            new Color(0.85f, 0.85f, 0.85f)
+        );
 
         PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
@@ -132,7 +143,10 @@ public static class DebuffIconSetup
 
     static void WireGamePlayScene()
     {
-        var scene = EditorSceneManager.OpenScene("Assets/Scenes/GamePlay.unity", OpenSceneMode.Single);
+        var scene = EditorSceneManager.OpenScene(
+            "Assets/Scenes/GamePlay.unity",
+            OpenSceneMode.Single
+        );
 
         var enemyMgr = FindByName("EnemyManager");
         var infoUIGO = FindByName("InfoUI");
@@ -152,18 +166,23 @@ public static class DebuffIconSetup
         if (debuffPopupInst == null)
         {
             // 없으면 InfoUI Content 하위에 프리팹 인스턴스 추가
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabRoot}/DebuffInfoPopup.prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                $"{PrefabRoot}/DebuffInfoPopup.prefab"
+            );
             var content = FindDeepChild(infoUIGO.transform, "Content");
             if (prefab != null && content != null)
             {
-                debuffPopupInst = (PrefabUtility.InstantiatePrefab(prefab, content) as GameObject)
-                    .GetComponent<DebuffInfoPopupUI>();
+                debuffPopupInst = (
+                    PrefabUtility.InstantiatePrefab(prefab, content) as GameObject
+                ).GetComponent<DebuffInfoPopupUI>();
                 debuffPopupInst.gameObject.SetActive(false);
                 Debug.Log("[DebuffSetup] DebuffInfoPopup instance added to InfoUI > ... > Content");
             }
             else
             {
-                Debug.LogWarning("[DebuffSetup] InfoUI Content를 찾지 못했습니다. 수동으로 DebuffInfoPopup을 배치하세요.");
+                Debug.LogWarning(
+                    "[DebuffSetup] InfoUI Content를 찾지 못했습니다. 수동으로 DebuffInfoPopup을 배치하세요."
+                );
             }
         }
 
@@ -180,7 +199,11 @@ public static class DebuffIconSetup
         if (iconBarGO == null)
         {
             var modal = FindByName("Modal");
-            if (modal == null) { Debug.LogError("[DebuffSetup] Modal not found"); return; }
+            if (modal == null)
+            {
+                Debug.LogError("[DebuffSetup] Modal not found");
+                return;
+            }
 
             iconBarGO = new GameObject("DebuffIconBar");
             iconBarGO.transform.SetParent(modal.transform, false);
@@ -242,19 +265,28 @@ public static class DebuffIconSetup
     {
         foreach (Transform child in parent)
         {
-            if (child.name == name) return child;
+            if (child.name == name)
+                return child;
             var found = FindDeepChild(child, name);
-            if (found != null) return found;
+            if (found != null)
+                return found;
         }
         return null;
     }
 
     static GameObject FindByName(string name) =>
-        Resources.FindObjectsOfTypeAll<GameObject>()
+        Resources
+            .FindObjectsOfTypeAll<GameObject>()
             .FirstOrDefault(g => g.scene.isLoaded && g.name == name);
 
-    static GameObject MakeTMP(Transform parent, string goName, TMP_FontAsset font,
-        float size, FontStyles style, Color color)
+    static GameObject MakeTMP(
+        Transform parent,
+        string goName,
+        TMP_FontAsset font,
+        float size,
+        FontStyles style,
+        Color color
+    )
     {
         var go = new GameObject(goName);
         go.transform.SetParent(parent, false);
@@ -263,7 +295,7 @@ public static class DebuffIconSetup
         tmp.fontSize = size;
         tmp.fontStyle = style;
         tmp.color = color;
-        tmp.enableWordWrapping = true;
+        tmp.textWrappingMode = TextWrappingModes.Normal;
         return go;
     }
 }

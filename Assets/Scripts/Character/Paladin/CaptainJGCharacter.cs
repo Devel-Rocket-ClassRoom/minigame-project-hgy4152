@@ -13,11 +13,10 @@ public class CaptainJGCharacter : Character
         if (group.DominantClass != Type || group.Length != 3)
             return;
 
-        var others = System.Array.FindAll(characterSet.GetDeployedClassTypes(), t => t != Type);
+        var others = System.Array.FindAll(characterSet.GetInstances(), c => c.Type != Type);
         if (others.Length == 0)
             return;
 
-        var targetType = others[Random.Range(0, others.Length)];
-        characterSet.GetCharacter(targetType)?.PlaySkillEffect(1, null, null);
+        others[Random.Range(0, others.Length)]?.PlaySkillEffect(1, null, null);
     }
 }

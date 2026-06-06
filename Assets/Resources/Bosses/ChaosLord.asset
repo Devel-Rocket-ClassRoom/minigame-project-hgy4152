@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c823081f35997419cdbb194d8d7885, type: 3}
   m_Name: ChaosLord
   m_EditorClassIdentifier: ChainKnights::BossData
-  id: boss_chaoslord
+  id: bss3
   enemyType: 2
   rarity: 0
   bossName: bss_chaoslord_name

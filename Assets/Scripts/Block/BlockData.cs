@@ -3,16 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BlockData", menuName = "ChainKnights/BlockData")]
 public class BlockData : ScriptableObject, IDisplayable
 {
-    public string id;
     public string displayName;
     public string description;
     public Sprite icon;
-    public Rarity rarity;
-    public int attackPower = 10;
     public ClassType ownerClass;
     public Color blockColor = Color.white;
 
-    public string Id => id;
+    public string Id => ownerClass.ToString();
     public string DisplayName => displayName;
     string IDisplayable.Description => description;
 }

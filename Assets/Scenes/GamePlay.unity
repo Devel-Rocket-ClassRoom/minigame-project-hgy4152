@@ -1186,6 +1186,8 @@ MonoBehaviour:
   bossPatternSystem: {fileID: 8296404970221016779}
   jokerRewardUI: {fileID: 1779941388}
   stageIntroUI: {fileID: 2134137695}
+  bossSpeechBubbleUI: {fileID: 0}
+  phaseEffectSpawner: {fileID: 0}
   clearTextObject: {fileID: 140098330}
   modeClearUI: {fileID: 717309953}
   saveManager: {fileID: 1567787298}
@@ -5741,7 +5743,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -86}
+  m_AnchoredPosition: {x: 0, y: -86.000015}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &717008799
@@ -10898,7 +10900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
-  m_Content: {fileID: 0}
+  m_Content: {fileID: 738453888}
   m_Horizontal: 1
   m_Vertical: 1
   m_MovementType: 1

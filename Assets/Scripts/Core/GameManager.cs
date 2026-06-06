@@ -386,7 +386,18 @@ public class GameManager : MonoBehaviour
 
     void OpenSaveFlow()
     {
-        if (saveManager == null || saveSlotPickerUI == null)
+        if (saveManager == null)
+            return;
+
+        int emptySlot = saveManager.FindFirstEmptySlot();
+        if (emptySlot >= 0)
+        {
+            saveManager.Save(emptySlot, saveManager.BuildFromCurrentState(this));
+            return;
+        }
+
+        // 모든 슬롯이 채워진 경우 수동 선택 UI
+        if (saveSlotPickerUI == null)
             return;
         var draft = saveManager.BuildFromCurrentState(this);
         saveSlotPickerUI.Show(

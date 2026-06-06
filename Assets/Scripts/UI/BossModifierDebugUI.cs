@@ -30,12 +30,15 @@ public class BossModifierDebugUI : MonoBehaviour
         }
 
         var sb = new StringBuilder();
-        sb.Append($"Turn {system.TurnIndex + 1}: ");
+        sb.Append($"Phase {system.PhaseIndex + 1}: ");
         foreach (var m in p.passive)
             if (m != null)
                 sb.Append($"[P]{m.modName} ");
-        if (system.TurnIndex < p.turnModifiers.Length && p.turnModifiers[system.TurnIndex] != null)
-            sb.Append($"[T]{p.turnModifiers[system.TurnIndex].modName}");
+        if (
+            system.PhaseIndex < p.phaseModifiers.Length
+            && p.phaseModifiers[system.PhaseIndex] != null
+        )
+            sb.Append($"[P]{p.phaseModifiers[system.PhaseIndex].modName}");
         label.text = sb.ToString();
     }
 }

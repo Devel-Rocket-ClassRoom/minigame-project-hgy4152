@@ -41,12 +41,9 @@ public class CharacterPortraitGroupUI : MonoBehaviour
             if (i < ids.Length && !string.IsNullOrEmpty(ids[i]))
             {
                 def = reg.Character.Get(ids[i]);
-                if (def != null)
-                {
-                    var character = characterSet.GetCharacter(def.classType);
-                    if (character != null)
-                        icon = character.Icon;
-                }
+                var character = characterSet.GetInstanceAt(i);
+                if (character != null)
+                    icon = character.Icon;
             }
 
             slots[i].Bind(def, icon);

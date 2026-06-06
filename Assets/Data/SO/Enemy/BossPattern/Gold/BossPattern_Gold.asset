@@ -16,9 +16,11 @@ MonoBehaviour:
   patternName: pat_geumsuabi_name
   passive:
   - {fileID: 11400000, guid: c9537b8be8b7fae4ca0a195da5201ca9, type: 2}
-  turnModifiers:
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 5b86f811eea592a4a8960a5fcb8a1e63, type: 2}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: a7bc6f5bc32477d4bb05aae7e73b033e, type: 2}
-  - {fileID: 11400000, guid: 7995068890f0201408147749a45248ad, type: 2}
+  phaseModifiers:
+  - {fileID: 11400000, guid: 3bfef3faa2b03d6449a19899f7681c54, type: 2}
+  - {fileID: 11400000, guid: 57c1f7bb4f8aa9f4aab1ca59e049bdb5, type: 2}
+  - {fileID: 11400000, guid: 5be271591df71604697c08ae8288fe31, type: 2}
+  hpThresholds:
+  - 0.75
+  - 0.5
+  - 0.25

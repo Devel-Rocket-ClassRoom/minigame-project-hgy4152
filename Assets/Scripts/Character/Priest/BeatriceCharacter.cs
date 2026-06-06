@@ -11,6 +11,8 @@ public class BeatriceCharacter : Character
 
     public override void OnStageStart() => StackCount = 0;
 
+    protected override void OnLastChainHitComplete() => StartBreathing();
+
     // Sacrifice: 버린 블럭 횟수당 데미지 +1%
     public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
     {

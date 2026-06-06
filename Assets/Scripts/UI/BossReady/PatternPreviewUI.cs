@@ -12,7 +12,8 @@ public class PatternPreviewUI : MonoBehaviour
         foreach (Transform child in cardContainer)
             Destroy(child.gameObject);
 
-        if (pattern == null) return;
+        if (pattern == null)
+            return;
 
         foreach (var passive in pattern.passive)
         {
@@ -20,10 +21,10 @@ public class PatternPreviewUI : MonoBehaviour
             card.Setup(Localization.Get("ui_label_passive"), passive);
         }
 
-        for (int i = 0; i < pattern.turnModifiers.Length; i++)
+        for (int i = 0; i < pattern.phaseModifiers.Length; i++)
         {
             var card = Instantiate(cardPrefab, cardContainer);
-            card.Setup($"Turn {i + 1}", pattern.turnModifiers[i]);
+            card.Setup($"Phase {i + 1}", pattern.phaseModifiers[i]);
         }
     }
 

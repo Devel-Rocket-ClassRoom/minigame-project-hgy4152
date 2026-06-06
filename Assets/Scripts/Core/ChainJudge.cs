@@ -12,7 +12,7 @@ public class ChainJudge
     private ClassType previousClass = ClassType.None;
 
     public float remainingTimeRatio;
-    public int turnIndex;
+    public int phaseIndex;
     public int discardRemaining;
     public int discardUsed;
     public int stageDiscardsUsed;

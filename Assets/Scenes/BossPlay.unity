@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -765, y: 259.99997}
-  m_SizeDelta: {x: 500, y: 60}
+  m_SizeDelta: {x: 500, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &17426131
 MonoBehaviour:
@@ -1577,13 +1577,15 @@ MonoBehaviour:
   bossPatternSystem: {fileID: 8296404970221016779}
   jokerRewardUI: {fileID: 1779941388}
   stageIntroUI: {fileID: 2134137695}
+  bossSpeechBubbleUI: {fileID: 1623750469}
+  phaseEffectSpawner: {fileID: 8296404970221016780}
   clearTextObject: {fileID: 140098330}
   modeClearUI: {fileID: 717309953}
   saveManager: {fileID: 1567787298}
   saveSlotPickerUI: {fileID: 2010759400}
   confirmDialog: {fileID: 558488645}
   totalDmgObject: {fileID: 1473051649}
-  debugBossData: {fileID: 11400000, guid: 0a8f9fa479e324549b1853ccc7aeca96, type: 2}
+  debugBossData: {fileID: 11400000, guid: 410e523c308ed9c45a6e87752d072867, type: 2}
   maxTurns: 5
   stageClearDisplayDuration: 1.5
   perGroupDelay: 0.8
@@ -8684,7 +8686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4891733236188243147, guid: af69e3c309742714482a03fff994b2b9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -27.676022
+      value: -27.676025
       objectReference: {fileID: 0}
     - target: {fileID: 4891733236188243147, guid: af69e3c309742714482a03fff994b2b9, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -15249,6 +15251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1623750466}
   - component: {fileID: 1623750468}
+  - component: {fileID: 1623750469}
   m_Layer: 0
   m_Name: BossPanel
   m_TagString: Untagged
@@ -15273,6 +15276,7 @@ RectTransform:
   - {fileID: 1115457222}
   - {fileID: 1546382597}
   - {fileID: 1473051652}
+  - {fileID: 1653609333}
   m_Father: {fileID: 847333269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -15296,6 +15300,21 @@ MonoBehaviour:
   hpSlider: {fileID: 663892598}
   hpText: {fileID: 1793064446}
   turnDamageText: {fileID: 1453427171}
+--- !u!114 &1623750469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623750465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c40315b7c2234c478aead7fe6aed131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::BossSpeechBubbleUI
+  panel: {fileID: 1653609332}
+  dialogueText: {fileID: 2097728183}
+  displayDuration: 2
 --- !u!1 &1649699498
 GameObject:
   m_ObjectHideFlags: 0
@@ -15509,6 +15528,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652994722}
   m_CullTransparentMesh: 1
+--- !u!1 &1653609332 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5633029793929905851, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+  m_PrefabInstance: {fileID: 5396812993748482626}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1653609333 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+  m_PrefabInstance: {fileID: 5396812993748482626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1662449977
 GameObject:
   m_ObjectHideFlags: 0
@@ -18474,6 +18503,17 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!114 &2097728183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6816799288631459515, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+  m_PrefabInstance: {fileID: 5396812993748482626}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &2107358368
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18839,7 +18879,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSet
   characterDefs:
-  - {fileID: 11400000, guid: a1b2c3d4e5f601a2b3c4d5e6f7a8b9c0, type: 2}
+  - {fileID: 11400000, guid: 146b557c9c2293247b763894fd0c4c31, type: 2}
   - {fileID: 11400000, guid: e5f6a7b8c9d001e2f3a4b5c6d7e8f9a0, type: 2}
   - {fileID: 11400000, guid: 78612501d2d7e7b4fb6d5fa32ba1905c, type: 2}
   blockHand: {fileID: 1011179040}
@@ -19472,7 +19512,7 @@ Transform:
   m_GameObject: {fileID: 5531655725160451616}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.459961, y: -0.3, z: 0}
+  m_LocalPosition: {x: 4.459961, y: -0.957, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -19525,9 +19565,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8740668491474340918, guid: e9a7795489b594645b44eb92f4aa1891, type: 3}
+  m_Sprite: {fileID: -7092273832628659466, guid: 281726a6776f7ca438fdb6a9f23bf2ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -19537,6 +19577,107 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &5396812993748482626
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1623750466}
+    m_Modifications:
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 158
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918455434060147400, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5633029793929905851, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_Name
+      value: SpeechBubble
+      objectReference: {fileID: 0}
+    - target: {fileID: 5633029793929905851, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 042795a8a98bc23478d86aa4e1cf6df2, type: 3}
 --- !u!114 &5520288398883822952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19572,6 +19713,7 @@ GameObject:
   - component: {fileID: 4430328352376464985}
   - component: {fileID: 8296404970221016779}
   - component: {fileID: 6678341970593504435}
+  - component: {fileID: 8296404970221016780}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -19646,6 +19788,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossPatternSystem
   stageManager: {fileID: 1083830752}
+--- !u!114 &8296404970221016780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5531655725160451616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb8261bbf88dad4387f0635ca14eea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ChainKnights::PhaseEffectSpawner
+  effectSpawnPoint: {fileID: 1230021606}
+  floatingTextPrefab: {fileID: -7310519626717570033, guid: 0597bcad54f526743818be44cd299d5f, type: 3}
+  debuffIconBarUI: {fileID: 299313725}
 --- !u!224 &9083566363011093034
 RectTransform:
   m_ObjectHideFlags: 0

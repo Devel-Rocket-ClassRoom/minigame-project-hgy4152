@@ -29,10 +29,6 @@ public class ReonCharacter : Character
     }
 
     // Chain Mastery: 3체인 시 데미지 +30%
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
-    {
-        if (group.Length >= 3)
-            return Mathf.RoundToInt(damage * 1.3f);
-        return damage;
-    }
+    public override float GetChainTypeBonus(ChainJudge judge, ChainGroup group) =>
+        group.Length >= 3 ? 0.3f : 0f;
 }

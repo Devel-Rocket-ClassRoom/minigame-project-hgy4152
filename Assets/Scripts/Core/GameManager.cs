@@ -226,12 +226,15 @@ public class GameManager : MonoBehaviour
     public int[] PreviewGroupDamages(List<ChainGroup> groups)
     {
         var judge = new ChainJudge();
+        judge.isPreview = true;
         judge.IngestGroups(groups);
         judge.IngestHand(blockManager.hand);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
         judge.discardRemaining = blockManager.DiscardsRemaining;
         judge.discardUsed = blockManager.DiscardsUsed;
+        judge.stageDiscardsUsed = blockManager.StageDiscardsUsed;
         judge.discardsByClass = blockManager.DiscardsByClass;
+        judge.stageDiscardsByClass = blockManager.StageDiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
@@ -242,9 +245,8 @@ public class GameManager : MonoBehaviour
         return CalcDamages(groups, judge);
     }
 
-    int[] CalcDamages(List<ChainGroup> groups, ChainJudge judge)
+    (HashSet<int> skipJokerIndices, float deckBonus) BuildJokerContext(ChainJudge judge)
     {
-        // 우측 조커 스킵 인덱스 계산
         var skipJokerIndices = new HashSet<int>();
         if (judge.skipRightmostJokers > 0 && jokerManager != null)
         {
@@ -269,40 +271,85 @@ public class GameManager : MonoBehaviour
                 if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
                     deckBonus *= jokerManager.ActiveHand[k].DeckBonus(judge);
 
-        var result = new int[groups.Count];
-        for (int i = 0; i < groups.Count; i++)
-        {
-            var group = groups[i];
-            var character = group.DominantCharacter;
+        return (skipJokerIndices, deckBonus);
+    }
 
-            int groupBonus = 0;
-            if (jokerManager != null)
-                for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
-                    if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
-                        groupBonus += jokerManager.ActiveHand[k].GetBonus(judge, group);
+    // boss 배율·시프트 페널티는 CalcSingleGroupDamage에서 ApplyPassive 이전 적용 (Hikari flat 보너스 수치 보존)
+    float CalcPartyBonus(ChainJudge judge, float deckBonus)
+    {
+        bool protection = false;
+        float partyPassiveBonus = 0f;
 
-            int dmg = CalcGroupDamage(group, judge);
-            dmg -= judge.bossFlatBonus;
-            dmg += groupBonus;
-            dmg = Mathf.FloorToInt(dmg * (2 - judge.bossDamageMultiplier));
-
-            if (judge.classDiscriminateActive)
+        if (characterSet != null)
+            foreach (var c in characterSet.GetInstances())
             {
-                int classBlocks = judge.blockDistribution.GetValueOrDefault(group.DominantClass);
-                dmg = Mathf.FloorToInt(
-                    dmg * Mathf.Max(0f, 1f - judge.classDiscriminatePerBlock * classBlocks)
-                );
+                if (c.IsProtectionPassive(judge))
+                    protection = true;
+                else
+                    partyPassiveBonus += c.GetPartyBonus(judge);
             }
 
-            if (!judge.isShiftBlock && judge.nonShiftPenaltyMultiplier != 1f)
-                dmg = Mathf.FloorToInt(dmg * judge.nonShiftPenaltyMultiplier);
+        if (protection)
+            judge.ClearDebuffs();
 
-            int rawDmg = dmg;
-            dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
-            dmg = Mathf.FloorToInt(dmg * deckBonus);
-            result[i] = dmg;
-            characterSet?.NotifyAnyGroupDamage(rawDmg, dmg);
+        return (1f + partyPassiveBonus) * deckBonus;
+    }
+
+    int CalcSingleGroupDamage(
+        ChainGroup group,
+        ChainJudge judge,
+        HashSet<int> skipJokerIndices,
+        float partyBonus
+    )
+    {
+        var character = group.DominantCharacter;
+
+        int jokerGroupBonus = 0;
+        if (jokerManager != null)
+            for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
+                if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
+                    jokerGroupBonus += jokerManager.ActiveHand[k].GetBonus(judge, group);
+
+        int dmg = CalcGroupDamage(group, judge);
+        dmg -= judge.bossFlatBonus;
+        dmg += jokerGroupBonus;
+
+        float chainBonus = character?.GetChainTypeBonus(judge, group) ?? 0f;
+        float classBonus = character?.GetClassTypeBonus(judge, group) ?? 0f;
+        if (chainBonus != 0f || classBonus != 0f)
+            dmg = Mathf.RoundToInt(dmg * (1f + chainBonus + classBonus));
+
+        if (judge.classDiscriminateActive)
+        {
+            int classBlocks = judge.blockDistribution.GetValueOrDefault(group.DominantClass);
+            dmg = Mathf.FloorToInt(
+                dmg * Mathf.Max(0f, 1f - judge.classDiscriminatePerBlock * classBlocks)
+            );
         }
+
+        // 보스 데미지 배율·시프트 페널티: ApplyPassive 이전 적용 (flat 보너스 패시브 수치 보존)
+        dmg = Mathf.FloorToInt(dmg * (2f - judge.bossDamageMultiplier));
+        if (!judge.isShiftBlock && judge.nonShiftPenaltyMultiplier != 1f)
+            dmg = Mathf.FloorToInt(dmg * judge.nonShiftPenaltyMultiplier);
+
+        // 미이관 패시브 (ApplyPassive 유지: Hikari, AhnMansik)
+        dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
+
+        int rawDmg = dmg;
+        dmg = Mathf.FloorToInt(dmg * partyBonus);
+
+        character?.ApplyDebuffPassive(judge, group);
+        characterSet?.NotifyAnyGroupDamage(rawDmg, dmg);
+        return dmg;
+    }
+
+    int[] CalcDamages(List<ChainGroup> groups, ChainJudge judge)
+    {
+        var (skipJokerIndices, deckBonus) = BuildJokerContext(judge);
+        float partyBonus = CalcPartyBonus(judge, deckBonus);
+        var result = new int[groups.Count];
+        for (int i = 0; i < groups.Count; i++)
+            result[i] = CalcSingleGroupDamage(groups[i], judge, skipJokerIndices, partyBonus);
         return result;
     }
 
@@ -462,6 +509,7 @@ public class GameManager : MonoBehaviour
         judge.discardUsed = blockManager.DiscardsUsed;
         judge.stageDiscardsUsed = blockManager.StageDiscardsUsed;
         judge.discardsByClass = blockManager.DiscardsByClass;
+        judge.stageDiscardsByClass = blockManager.StageDiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
 
         if (bossPatternSystem != null)
@@ -493,7 +541,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge)
     {
-        var damages = CalcDamages(groups, judge);
+        var (skipJokerIndices, deckBonus) = BuildJokerContext(judge);
+        float partyBonus = CalcPartyBonus(judge, deckBonus);
         for (int i = 0; i < groups.Count; i++)
         {
             // 블록 강조 펄스
@@ -507,7 +556,8 @@ public class GameManager : MonoBehaviour
             var character = groups[i].DominantCharacter;
             characterSet?.NotifyAnyGroupAttackStart(groups[i], boss);
             character?.PlayAttack(boss.transform.position);
-            var perHitDamages = SplitDamageWeighted(damages[i], groups[i].Length);
+            int dmg = CalcSingleGroupDamage(groups[i], judge, skipJokerIndices, partyBonus);
+            var perHitDamages = SplitDamageWeighted(dmg, groups[i].Length);
             character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
 
             characterSet?.NotifyTurnProcessed(groups[i].DominantCharacter);
@@ -517,7 +567,7 @@ public class GameManager : MonoBehaviour
             for (int b = 0; b < bonusCount; b++)
             {
                 yield return new WaitForSeconds(0.2f);
-                int bonusDmg = damages[i] / Mathf.Max(1, bonusCount);
+                int bonusDmg = dmg / Mathf.Max(1, bonusCount);
                 character?.PlaySkillEffect(1, new[] { bonusDmg }, boss);
             }
 
@@ -594,6 +644,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PhaseTransitionRoutine(List<Modifier> mods)
     {
+        blockManager.ResetStageDiscardCount();
+        characterSet?.NotifyStageStart();
         foreach (var mod in mods)
         {
             // 보스 말풍선 대사

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ar_Skadi
   m_EditorClassIdentifier: ChainKnights::BlockData
   id: ar3
-  displayName: Skadi
-  description: 
+  displayName: blk_ar2_name
+  description: blk_ar2_desc
   icon: {fileID: 8301016614953160362, guid: 792b48a72622ece4981d43ff9ad0cd98, type: 3}
   rarity: 1
   attackPower: 10

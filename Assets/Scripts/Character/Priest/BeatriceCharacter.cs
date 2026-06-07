@@ -7,16 +7,19 @@ public class BeatriceCharacter : Character
     public override ClassType Type => ClassType.Priest;
     public override Color classColor => Color.green;
 
-    public int StackCount { get; private set; }
+    private int _stackCount;
+    public override int StackCount => _stackCount;
 
-    public override void OnStageStart() => StackCount = 0;
+    public override void OnStageStart() => _stackCount = 0;
 
     protected override void OnLastChainHitComplete() => StartBreathing();
 
-    // Sacrifice: 버린 블럭 횟수당 데미지 +1%
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
+    // Sacrifice: 자기 클래스 블럭을 버린 횟수당 데미지 +1%
+    public override float GetClassTypeBonus(ChainJudge judge, ChainGroup group)
     {
-        StackCount = judge.stageDiscardsUsed;
-        return Mathf.RoundToInt(damage * (1f + judge.discardUsed * 0.01f));
+        int classDiscards = 0;
+        judge.stageDiscardsByClass?.TryGetValue(Type, out _stackCount);
+        judge.discardsByClass?.TryGetValue(Type, out classDiscards);
+        return classDiscards * 0.01f;
     }
 }

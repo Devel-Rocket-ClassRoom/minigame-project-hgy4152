@@ -13,6 +13,10 @@ public abstract class Modifier : ScriptableObject, IIdentifiable
 
     public abstract void Apply(ChainJudge judge);
 
+    public virtual float GetChainBonusPenalty(ChainGroup group) => 0f;
+
+    public virtual float GetClassBonusPenalty(ChainGroup group) => 0f;
+
     public virtual void PreResolve(BlockManager blockMgr) { }
 
     public virtual void OnTurnStart(BlockManager blockMgr, DrawPhaseTimer dpt) { }

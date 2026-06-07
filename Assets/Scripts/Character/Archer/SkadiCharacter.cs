@@ -53,20 +53,29 @@ public class SkadiCharacter : Character
     public override void OnChainHitEvent()
     {
         base.OnChainHitEvent();
-
-        if (_hitEventIndex > _chainCount || _cachedTarget == null || _frostStacks <= 0)
-            return;
-
-        // 타격마다 동상 스택 1 소모 + 적 최대 체력의 5% 추가 피해
-        _frostStacks--;
-        int bonus = Mathf.RoundToInt(_cachedTarget.MaxHp * 0.05f);
-        _cachedTarget.TakeDamage(bonus, classColor);
     }
 
     // 혹한의 후예: 공격 시 동상 1중첩 추가 (최대 5)
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
+    public override void ApplyDebuffPassive(ChainJudge judge, ChainGroup group)
     {
-        _frostStacks = Mathf.Min(_frostStacks + 1, MaxFrostStacks);
-        return damage;
+        if (!judge.isPreview)
+            _frostStacks = Mathf.Min(_frostStacks + 1, MaxFrostStacks);
+    }
+
+    // 다른 파티원이 공격할 때 동상 스택 소모 + 적 최대 체력의 5% 추가 피해
+    public override void OnAnyGroupAttackStart(ChainGroup group, EnemyController target)
+    {
+        if (group.DominantClass == Type)
+            return;
+        if (target == null || _frostStacks <= 0)
+            return;
+
+        int hits = Mathf.Min(group.Length, _frostStacks);
+        for (int i = 0; i < hits; i++)
+        {
+            _frostStacks--;
+            int bonus = Mathf.RoundToInt(target.MaxHp * 0.05f);
+            target.TakeDamage(bonus, classColor);
+        }
     }
 }

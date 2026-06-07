@@ -39,23 +39,34 @@ public class VitorCharacter : Character
     }
 
     bool _stageImmunityUsed;
+    int _stageDiscardsUsed;
+    public override int StackCount => _stageImmunityUsed ? -1 : _stageDiscardsUsed;
 
-    public override void OnStageStart() => _stageImmunityUsed = false;
-
-    // Divine Shield: 스테이지 누적 디스카드 20개 도달 시 이번 턴 디버프 전부 무효화 (스테이지당 1회)
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
+    public override void OnStageStart()
     {
-        if (!_stageImmunityUsed && judge.stageDiscardsUsed >= 20)
+        _stageImmunityUsed = false;
+        _stageDiscardsUsed = 0;
+    }
+
+    // Divine Shield: 자기 클래스 블럭 스테이지 누적 디스카드 20개 도달 시 이번 턴 디버프 전부 무효화 (스테이지당 1회)
+    public override bool IsProtectionPassive(ChainJudge judge)
+    {
+        _stageDiscardsUsed = 0;
+        judge.stageDiscardsByClass?.TryGetValue(Type, out _stageDiscardsUsed);
+        if (!_stageImmunityUsed && _stageDiscardsUsed >= 20)
         {
-            judge.ClearDebuffs();
-            _stageImmunityUsed = true;
-            var prefab = (skill as Skill_Victor)?.passiveEffectPrefab;
-            if (prefab != null)
+            if (!judge.isPreview)
             {
-                var go = Instantiate(prefab, transform.position, Quaternion.identity);
-                Destroy(go, 0.5f);
+                _stageImmunityUsed = true;
+                var prefab = (skill as Skill_Victor)?.passiveEffectPrefab;
+                if (prefab != null)
+                {
+                    var go = Instantiate(prefab, transform.position, Quaternion.identity);
+                    Destroy(go, 0.5f);
+                }
             }
+            return true;
         }
-        return damage;
+        return false;
     }
 }

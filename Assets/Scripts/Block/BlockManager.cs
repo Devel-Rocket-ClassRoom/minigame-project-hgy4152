@@ -11,6 +11,7 @@ public class BlockManager : MonoBehaviour
     int _runtimeDiscardLimit = -1; // -1 = 무제한, 0 이상 = 해당 횟수로 제한
     bool _swapPending;
     Dictionary<ClassType, int> _discardsByClass = new();
+    Dictionary<ClassType, int> _stageDiscardsByClass = new();
 
     bool IsDiscardLimitReached =>
         _runtimeDiscardLimit >= 0 && _discardsUsed >= _runtimeDiscardLimit;
@@ -136,6 +137,7 @@ public class BlockManager : MonoBehaviour
         _discardsUsed++;
         _stageDiscardsUsed++;
         _discardsByClass[cls] = _discardsByClass.GetValueOrDefault(cls) + 1;
+        _stageDiscardsByClass[cls] = _stageDiscardsByClass.GetValueOrDefault(cls) + 1;
 
         // 오른쪽 블록들을 슬롯 고정 상태에서 왼쪽으로 슬라이드
         for (int i = idx; i < hand.Count; i++)
@@ -160,6 +162,7 @@ public class BlockManager : MonoBehaviour
     public int DiscardsUsed => _discardsUsed;
     public int StageDiscardsUsed => _stageDiscardsUsed;
     public IReadOnlyDictionary<ClassType, int> DiscardsByClass => _discardsByClass;
+    public IReadOnlyDictionary<ClassType, int> StageDiscardsByClass => _stageDiscardsByClass;
 
     public void ResetDiscardCount()
     {
@@ -167,7 +170,11 @@ public class BlockManager : MonoBehaviour
         _discardsByClass.Clear();
     }
 
-    public void ResetStageDiscardCount() => _stageDiscardsUsed = 0;
+    public void ResetStageDiscardCount()
+    {
+        _stageDiscardsUsed = 0;
+        _stageDiscardsByClass.Clear();
+    }
 
     public void RefreshAllBlockVisuals()
     {

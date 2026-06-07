@@ -138,6 +138,21 @@ public abstract class Character : MonoBehaviour
 
     public virtual int ApplyPassive(ChainJudge judge, ChainGroup group, int damage) => damage;
 
+    public virtual float GetPartyBonus(ChainJudge judge) => 0f;
+
+    public virtual bool IsProtectionPassive(ChainJudge judge) => false;
+
+    public virtual float GetChainTypeBonus(ChainJudge judge, ChainGroup group) => 0f;
+
+    public virtual float GetClassTypeBonus(ChainJudge judge, ChainGroup group) => 0f;
+
+    public virtual (int dmg, AttackBonusType type) GetAttackPassive(
+        ChainJudge judge,
+        ChainGroup group
+    ) => (0, AttackBonusType.None);
+
+    public virtual void ApplyDebuffPassive(ChainJudge judge, ChainGroup group) { }
+
     public virtual void OnStageStart() { }
 
     public virtual void OnAnyGroupDamageApplied(int rawDamage, int finalDamage) { }
@@ -149,6 +164,8 @@ public abstract class Character : MonoBehaviour
     public virtual int GetBonusAttackCount(ChainJudge judge, ChainGroup group) => 0;
 
     public virtual void OnTurnSequenceEnd() { }
+
+    public virtual int StackCount => -1;
 
     public virtual void OnAnyGroupAttackStart(ChainGroup group, EnemyController target) { }
 }

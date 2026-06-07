@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
+public enum AttackBonusType
+{
+    None,
+    Chain,
+    Class,
+    Reaction,
+}
+
 public class ChainJudge
 {
     public int chain1Count;
@@ -38,7 +46,9 @@ public class ChainJudge
     public int[] chainSequence; // 이번 턴 그룹 길이 배열 (등장 순서)
     public int[] prevChainSequence; // 이전 턴 그룹 길이 배열
     public IReadOnlyDictionary<ClassType, int> discardsByClass; // 이번 턴 클래스별 디스카드 수
+    public IReadOnlyDictionary<ClassType, int> stageDiscardsByClass; // 스테이지 누적 클래스별 디스카드 수
     public Dictionary<ClassType, int[]> chainCountByClass = new(); // [0]=1체인 [1]=2체인 [2]=3체인
+    public bool isPreview;
 
     public void ClearDebuffs()
     {

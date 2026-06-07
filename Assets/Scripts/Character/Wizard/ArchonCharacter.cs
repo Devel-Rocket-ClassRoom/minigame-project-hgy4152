@@ -8,17 +8,19 @@ public class ArchonCharacter : Character
     public override Color classColor => Color.blue;
 
     int _stageGroupCounter;
-    public int StackCount => _stageGroupCounter;
+    public override int StackCount => _stageGroupCounter;
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 
     protected override void OnLastChainHitComplete() => StartBreathing();
 
     // Arcane Surge: 스테이지 누적 본인 그룹 1개당 데미지 +10% (누적)
-    public override int ApplyPassive(ChainJudge judge, ChainGroup group, int damage)
+    public override float GetChainTypeBonus(ChainJudge judge, ChainGroup group) =>
+        group.DominantClass == Type ? 0.1f * _stageGroupCounter : 0f;
+
+    public override void ApplyDebuffPassive(ChainJudge judge, ChainGroup group)
     {
-        float mult = 1f + 0.10f * _stageGroupCounter;
-        _stageGroupCounter++;
-        return Mathf.RoundToInt(damage * mult);
+        if (!judge.isPreview && group.DominantClass == Type)
+            _stageGroupCounter++;
     }
 }

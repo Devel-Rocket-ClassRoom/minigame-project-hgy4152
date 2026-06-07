@@ -316,6 +316,11 @@ public class GameManager : MonoBehaviour
 
         float chainBonus = character?.GetChainTypeBonus(judge, group) ?? 0f;
         float classBonus = character?.GetClassTypeBonus(judge, group) ?? 0f;
+        foreach (var m in judge.activeModifiers)
+        {
+            chainBonus -= m.GetChainBonusPenalty(group);
+            classBonus -= m.GetClassBonusPenalty(group);
+        }
         if (chainBonus != 0f || classBonus != 0f)
             dmg = Mathf.RoundToInt(dmg * (1f + chainBonus + classBonus));
 

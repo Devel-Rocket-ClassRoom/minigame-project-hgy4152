@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: pa_CaptainJG
   m_EditorClassIdentifier: ChainKnights::BlockData
   id: pa3
-  displayName: CapatainJG
-  description: 
+  displayName: blk_pa2_name
+  description: blk_pa2_desc
   icon: {fileID: 377464685342414568, guid: 374a0560025ceb548b96fc52f485d277, type: 3}
   rarity: 1
   attackPower: 10

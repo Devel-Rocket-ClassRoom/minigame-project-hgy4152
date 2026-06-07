@@ -5897,7 +5897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -86.000015}
+  m_AnchoredPosition: {x: 0, y: -86}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &717008799
@@ -16853,7 +16853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 33.199997, y: -165}
+  m_AnchoredPosition: {x: 33.19995, y: -165}
   m_SizeDelta: {x: 350, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1997168438
@@ -17802,9 +17802,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSet
   characterDefs:
-  - {fileID: 11400000, guid: 50852183176f5a9498f994721da270ea, type: 2}
-  - {fileID: 11400000, guid: 146b557c9c2293247b763894fd0c4c31, type: 2}
-  - {fileID: 11400000, guid: a1b2c3d4e5f601a2b3c4d5e6f7a8b9c0, type: 2}
+  - {fileID: 11400000, guid: 91cb2823a48610042bb1e99daa0df188, type: 2}
+  - {fileID: 11400000, guid: 0a6983fa42b58c742bd36551fc366ba8, type: 2}
+  - {fileID: 11400000, guid: 1581195a95883dd41ab9c8918d8300c5, type: 2}
   blockHand: {fileID: 2022750320}
   heroSlots:
   - {fileID: 969158368}

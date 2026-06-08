@@ -336,6 +336,8 @@ public class InfoPopupUI : MonoBehaviour
     {
         if (tmp == null)
             return;
+        if (!tmp.gameObject.activeSelf)
+            text = string.Empty;
         tmp.gameObject.SetActive(true);
         tmp.text = text;
     }
@@ -352,11 +354,17 @@ public class InfoPopupUI : MonoBehaviour
         if (root != null)
             root.SetActive(active);
         if (!active)
+        {
+            if (titleTmp != null)
+                titleTmp.text = string.Empty;
+            if (descTmp != null)
+                descTmp.text = string.Empty;
             return;
+        }
         if (titleTmp != null && title != null)
-            titleTmp.text = title;
+            titleTmp.text = titleTmp.gameObject.activeSelf ? title : string.Empty;
         if (descTmp != null && desc != null)
-            descTmp.text = desc;
+            descTmp.text = descTmp.gameObject.activeSelf ? desc : string.Empty;
     }
 
     public void Hide()

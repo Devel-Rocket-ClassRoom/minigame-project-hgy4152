@@ -183,7 +183,9 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // 즉시 모드 클리어
-            HandleAllStagesCleared();
+            drawPhaseTimer.StopDrawPhase();
+            SetPaused(true);
+            StartCoroutine(CheatAllClear());
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -694,6 +696,16 @@ public class GameManager : MonoBehaviour
     {
         yield return StartCoroutine(ShowStageClear());
         stageManager.AdvanceToNext();
+    }
+
+    IEnumerator CheatAllClear()
+    {
+        yield return StartCoroutine(ShowStageClear());
+        modeClearUI?.Show(this, Color.green);
+        if (_isAdventureMode)
+            UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
+        if (!_isBossPlay)
+            OpenSaveFlow();
     }
 
     int CalcGroupDamage(ChainGroup group, ChainJudge judge)

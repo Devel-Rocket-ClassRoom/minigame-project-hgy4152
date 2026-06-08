@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de612acadf9bde40b98ddfa14a28277, type: 3}
   m_Name: BossTable
   m_EditorClassIdentifier: ChainKnights::BossTable
-  entries: []
+  entries:
+  - {fileID: 11400000, guid: 410e523c308ed9c45a6e87752d072867, type: 2}
+  - {fileID: 11400000, guid: 0a8f9fa479e324549b1853ccc7aeca96, type: 2}
+  - {fileID: 11400000, guid: ce8938d1f13b19a44a4695441094e7df, type: 2}

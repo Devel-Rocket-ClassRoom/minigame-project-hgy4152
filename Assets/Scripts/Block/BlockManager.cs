@@ -31,6 +31,10 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     HandUI handUI;
 
+    [Header("=== 오디오 ===")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip blockUseClip;
+
     public List<Block> hand = new();
     public bool IsHandFull => hand.Count >= MaxHandSize;
 
@@ -220,6 +224,8 @@ public class BlockManager : MonoBehaviour
 
     public void RemoveGroup(ChainGroup group)
     {
+        if (audioSource != null && blockUseClip != null)
+            audioSource.PlayOneShot(blockUseClip);
         foreach (var block in group.Blocks)
         {
             int idx = hand.IndexOf(block);

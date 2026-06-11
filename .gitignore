@@ -133,3 +133,6 @@ $RECYCLE.BIN/
 Assets/Imported/
 Assets/Imported.meta
 
+# Android signing
+*.keystore
+

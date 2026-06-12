@@ -1,4 +1,6 @@
-using System.Collections;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Skill_CaptainJG : Skill
@@ -45,39 +47,45 @@ public class Skill_CaptainJG : Skill
 
     // 1체인: 파도부대 2명
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(SpawnUnits(targetPos, scaleFactor, 2));
+        SpawnUnitsAsync(targetPos, scaleFactor, 2, this.GetCancellationTokenOnDestroy()).Forget();
 
     // 2체인: 파도부대 4명
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(SpawnUnits(targetPos, scaleFactor, 4));
+        SpawnUnitsAsync(targetPos, scaleFactor, 4, this.GetCancellationTokenOnDestroy()).Forget();
 
     // 3체인: 파도부대 6명
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(SpawnUnits(targetPos, scaleFactor, 6));
+        SpawnUnitsAsync(targetPos, scaleFactor, 6, this.GetCancellationTokenOnDestroy()).Forget();
 
-    IEnumerator SpawnUnits(Vector3 targetPos, float scaleFactor, int count)
+    async UniTaskVoid SpawnUnitsAsync(
+        Vector3 targetPos,
+        float scaleFactor,
+        int count,
+        CancellationToken ct
+    )
     {
         bool hasSprites = unitSprites != null && unitSprites.Length > 0;
         if (effectPrefab == null && !hasSprites)
-            yield break;
+            return;
 
         GameObject hitEffect =
             hitEffectPrefab != null
-                ? Instantiate(hitEffectPrefab, targetPos, Quaternion.identity)
+                ? SpawnEffect(hitEffectPrefab, targetPos, Quaternion.identity)
                 : null;
 
         int[] remaining = { count };
 
         for (int i = 0; i < count; i++)
         {
-            float randX = Random.Range(-spawnOffsetX, spawnOffsetX);
-            float randY = Random.Range(spawnYMin, spawnYMax);
+            float randX = UnityEngine.Random.Range(-spawnOffsetX, spawnOffsetX);
+            float randY = UnityEngine.Random.Range(spawnYMin, spawnYMax);
             Vector3 spawnPos = targetPos + new Vector3(randX, randY, 0f);
 
             GameObject go;
-            if (effectPrefab != null)
+            bool pooled = effectPrefab != null;
+            if (pooled)
             {
-                go = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
+                go = SpawnEffect(effectPrefab, spawnPos, Quaternion.identity);
             }
             else
             {
@@ -89,27 +97,35 @@ public class Skill_CaptainJG : Skill
             {
                 var sr = go.GetComponent<SpriteRenderer>();
                 if (sr != null)
-                    sr.sprite = unitSprites[Random.Range(0, unitSprites.Length)];
+                    sr.sprite = unitSprites[UnityEngine.Random.Range(0, unitSprites.Length)];
             }
 
-            StartCoroutine(
-                MoveUnit(
+            MoveUnitAsync(
                     go,
                     spawnPos,
                     targetPos,
+                    pooled,
                     () =>
                     {
                         if (--remaining[0] <= 0 && hitEffect != null)
-                            Destroy(hitEffect);
-                    }
+                            ReleaseEffect(hitEffect);
+                    },
+                    ct
                 )
-            );
+                .Forget();
 
-            yield return new WaitForSeconds(unitSpawnInterval);
+            await UniTask.Delay(TimeSpan.FromSeconds(unitSpawnInterval), cancellationToken: ct);
         }
     }
 
-    IEnumerator MoveUnit(GameObject go, Vector3 from, Vector3 to, System.Action onDone)
+    async UniTaskVoid MoveUnitAsync(
+        GameObject go,
+        Vector3 from,
+        Vector3 to,
+        bool pooled,
+        Action onDone,
+        CancellationToken ct
+    )
     {
         float t = 0f;
         while (t < unitTravelDuration)
@@ -118,10 +134,15 @@ public class Skill_CaptainJG : Skill
             if (go == null)
                 break;
             go.transform.position = Vector3.Lerp(from, to, Mathf.Clamp01(t / unitTravelDuration));
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
-            Destroy(go);
+        {
+            if (pooled)
+                ReleaseEffect(go);
+            else
+                Destroy(go);
+        }
         onDone?.Invoke();
     }
 }

@@ -140,6 +140,16 @@ public class Block : MonoBehaviour
         OnDiscardRequested?.Invoke(this);
     }
 
+    // 풀 재사용 시 애니메이션 잔존 상태(스케일·위치·레이아웃 무시) 초기화
+    public void PrepareForReuse()
+    {
+        EnsureInitialized();
+        _rectTransform.localScale = Vector3.one;
+        _rectTransform.anchoredPosition = Vector2.zero;
+        if (_layoutElement != null)
+            _layoutElement.ignoreLayout = false;
+    }
+
     public void Init(BlockData blockData)
     {
         EnsureInitialized();

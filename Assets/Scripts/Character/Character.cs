@@ -168,4 +168,9 @@ public abstract class Character : MonoBehaviour
     public virtual int StackCount => -1;
 
     public virtual void OnAnyGroupAttackStart(ChainGroup group, EnemyController target) { }
+
+    // 핸드 되돌리기(커맨드 Undo)용 패시브 상태 스냅샷 — 상태 보유 캐릭터만 오버라이드
+    public virtual object CaptureState() => null;
+
+    public virtual void RestoreState(object state) { }
 }

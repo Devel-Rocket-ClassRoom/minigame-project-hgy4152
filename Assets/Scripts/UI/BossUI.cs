@@ -16,15 +16,22 @@ public class BossUI : MonoBehaviour
     [SerializeField]
     TMP_Text turnDamageText;
 
+    GameManager _gameManager;
+
+    void Awake()
+    {
+        // 씬 검색은 1회만 — 구독/해제는 캐시된 참조로 (해제 시 재검색 실패로 구독이 남는 문제 방지)
+        _gameManager = FindAnyObjectByType<GameManager>();
+    }
+
     void OnEnable()
     {
         if (boss == null)
             return;
         boss.OnHpChanged += HandleHpChanged;
 
-        var gm = FindAnyObjectByType<GameManager>();
-        if (gm != null)
-            gm.OnTurnDamageChanged += HandleTurnDamageChanged;
+        if (_gameManager != null)
+            _gameManager.OnTurnDamageChanged += HandleTurnDamageChanged;
     }
 
     void OnDisable()
@@ -33,9 +40,8 @@ public class BossUI : MonoBehaviour
             return;
         boss.OnHpChanged -= HandleHpChanged;
 
-        var gm = FindAnyObjectByType<GameManager>();
-        if (gm != null)
-            gm.OnTurnDamageChanged -= HandleTurnDamageChanged;
+        if (_gameManager != null)
+            _gameManager.OnTurnDamageChanged -= HandleTurnDamageChanged;
     }
 
     void HandleHpChanged(int current, int max)

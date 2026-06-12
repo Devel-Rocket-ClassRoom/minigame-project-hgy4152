@@ -5,11 +5,8 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
-    const string BGMVolumeKey = "Setting.BGMVolume";
-    const string SFXVolumeKey = "Setting.SFXVolume";
     const string BGMExposedParam = "BGMVolume";
     const string SFXExposedParam = "SFXVolume";
-    const float DefaultVolume = 0.8f;
     const float MinVolume = 0.0001f;
 
     [SerializeField]
@@ -35,8 +32,12 @@ public class SettingUI : MonoBehaviour
 
     public UnityEvent onClose = new UnityEvent();
 
+    SettingsModel _model;
+
     void Awake()
     {
+        _model = new SettingsModel();
+
         if (panel != null)
             panel.SetActive(false);
 
@@ -44,7 +45,7 @@ public class SettingUI : MonoBehaviour
         {
             bgmSlider.minValue = MinVolume;
             bgmSlider.maxValue = 1f;
-            bgmSlider.value = PlayerPrefs.GetFloat(BGMVolumeKey, DefaultVolume);
+            bgmSlider.value = _model.BgmVolume;
             bgmSlider.onValueChanged.AddListener(SetBgmVolume);
             ApplyBgmVolume(bgmSlider.value);
         }
@@ -52,7 +53,7 @@ public class SettingUI : MonoBehaviour
         {
             sfxSlider.minValue = MinVolume;
             sfxSlider.maxValue = 1f;
-            sfxSlider.value = PlayerPrefs.GetFloat(SFXVolumeKey, DefaultVolume);
+            sfxSlider.value = _model.SfxVolume;
             sfxSlider.onValueChanged.AddListener(SetSfxVolume);
             ApplySfxVolume(sfxSlider.value);
         }
@@ -64,6 +65,9 @@ public class SettingUI : MonoBehaviour
             resetDataButton.onClick.AddListener(ResetAllData);
     }
 
+    // 닫기 외 경로(씬 전환 등)로 비활성화돼도 변경분을 저장
+    void OnDisable() => _model?.Save();
+
     public void Open()
     {
         if (panel != null)
@@ -72,6 +76,7 @@ public class SettingUI : MonoBehaviour
 
     public void Close()
     {
+        _model.Save(); // 더티 플래그: 변경이 있을 때만 닫는 시점에 1회 기록
         if (panel != null)
             panel.SetActive(false);
         onClose?.Invoke();
@@ -79,14 +84,14 @@ public class SettingUI : MonoBehaviour
 
     void SetBgmVolume(float v)
     {
-        ApplyBgmVolume(v);
-        PlayerPrefs.SetFloat(BGMVolumeKey, v);
+        ApplyBgmVolume(v); // 청각 피드백은 즉시, 저장은 Model에 위임
+        _model.SetBgmVolume(v);
     }
 
     void SetSfxVolume(float v)
     {
         ApplySfxVolume(v);
-        PlayerPrefs.SetFloat(SFXVolumeKey, v);
+        _model.SetSfxVolume(v);
     }
 
     void ApplyBgmVolume(float v)

@@ -15,9 +15,6 @@ public class JokerRewardUI : MonoBehaviour
     JokerManager jokerManager;
 
     [SerializeField]
-    GameManager gameManager;
-
-    [SerializeField]
     Button skipButton;
 
     [SerializeField]
@@ -248,11 +245,14 @@ public class JokerRewardUI : MonoBehaviour
         FinishReward();
     }
 
+    // 보상 종료를 이벤트로 알림 — UI가 게임 흐름(BeginBattle)을 직접 제어하지 않도록 분리
+    public event System.Action OnClosed;
+
     void FinishReward()
     {
         skipButton.gameObject.SetActive(false);
         confirmButton?.gameObject.SetActive(false);
-        gameManager.BeginBattle();
+        OnClosed?.Invoke();
     }
 
     int FindEmptySlot()

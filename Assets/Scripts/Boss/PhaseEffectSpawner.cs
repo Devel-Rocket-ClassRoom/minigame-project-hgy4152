@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PhaseEffectSpawner : MonoBehaviour
@@ -12,7 +13,7 @@ public class PhaseEffectSpawner : MonoBehaviour
     [SerializeField]
     DebuffIconBarUI debuffIconBarUI;
 
-    public IEnumerator PlayEffect(GameObject effectPrefab, string floatText)
+    public async UniTask PlayEffectAsync(GameObject effectPrefab, string floatText)
     {
         // 플로팅 텍스트 소환 (fire-and-forget)
         if (floatingTextPrefab != null && !string.IsNullOrEmpty(floatText))
@@ -24,30 +25,32 @@ public class PhaseEffectSpawner : MonoBehaviour
         // 이펙트 + 디버프 아이콘 + 플로팅 텍스트 동시
         var fx = Instantiate(effectPrefab, effectSpawnPoint.position, Quaternion.identity);
         debuffIconBarUI?.Refresh();
-        yield return StartCoroutine(WaitForEffectComplete(fx));
+        await WaitForEffectComplete(fx);
         if (fx != null)
             Destroy(fx);
     }
 
-    IEnumerator WaitForEffectComplete(GameObject fx)
+    async UniTask WaitForEffectComplete(GameObject fx)
     {
         if (fx == null)
-            yield break;
+            return;
+
+        var ct = this.GetCancellationTokenOnDestroy();
 
         var ps = fx.GetComponent<ParticleSystem>();
         if (ps != null)
         {
-            yield return new WaitUntil(() => fx == null || !ps.IsAlive(true));
-            yield break;
+            await UniTask.WaitUntil(() => fx == null || !ps.IsAlive(true), cancellationToken: ct);
+            return;
         }
 
         var anim = fx.GetComponent<Animation>();
         if (anim != null && anim.clip != null)
         {
-            yield return new WaitForSeconds(anim.clip.length);
-            yield break;
+            await UniTask.Delay(TimeSpan.FromSeconds(anim.clip.length), cancellationToken: ct);
+            return;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1.5f), cancellationToken: ct);
     }
 }

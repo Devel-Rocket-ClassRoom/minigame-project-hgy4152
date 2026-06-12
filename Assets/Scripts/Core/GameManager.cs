@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -283,8 +284,9 @@ public class GameManager : MonoBehaviour
         totalDmgObject?.SetActive(false);
 
         // 어드벤처/기존 보스 모드: TURN n / maxTurns 표시
+        // UniTask 전환 브리지 (part101에서 전체 async 전환 시 제거)
         if (!_isBossPlay && stageIntroUI != null)
-            yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
+            yield return stageIntroUI.ShowTurnAsync(_currentTurn, maxTurns).ToCoroutine();
 
         if (stageIntroUI != null && bossPatternSystem != null)
         {
@@ -294,7 +296,7 @@ public class GameManager : MonoBehaviour
                     ? p.phaseModifiers[bossPatternSystem.PhaseIndex]
                     : null;
             if (phaseMod != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(phaseMod));
+                yield return stageIntroUI.ShowBossRoutineAsync(phaseMod).ToCoroutine();
         }
 
         drawPhaseTimer.ResetPhaseDuration();
@@ -394,7 +396,7 @@ public class GameManager : MonoBehaviour
             if (passives != null)
                 foreach (var passive in passives)
                     if (passive != null)
-                        yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(passive));
+                        yield return stageIntroUI.ShowBossRoutineAsync(passive).ToCoroutine();
         }
         BeginBattle();
     }
@@ -431,9 +433,7 @@ public class GameManager : MonoBehaviour
         {
             // 블록 강조 펄스
             foreach (var block in groups[i].Blocks)
-                block.StartCoroutine(
-                    block.HighlightPulseRoutine(highlightScale, highlightDuration)
-                );
+                block.HighlightPulse(highlightScale, highlightDuration);
             yield return new WaitForSeconds(highlightDuration);
 
             // 애니메이션
@@ -535,19 +535,17 @@ public class GameManager : MonoBehaviour
         {
             // 보스 말풍선 대사
             if (bossSpeechBubbleUI != null && !string.IsNullOrEmpty(mod.dialogueKey))
-                yield return StartCoroutine(
-                    bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey))
-                );
+                yield return bossSpeechBubbleUI.ShowAsync(Localization.Get(mod.dialogueKey)).ToCoroutine();
 
             // 디버프 텍스트 (항상)
             if (stageIntroUI != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
+                yield return stageIntroUI.ShowBossRoutineAsync(mod).ToCoroutine();
 
             // 이펙트 + 플로팅 텍스트 + 아이콘 갱신
             if (phaseEffectSpawner != null && mod.effectPrefab != null)
-                yield return StartCoroutine(
-                    phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName))
-                );
+                yield return phaseEffectSpawner
+                    .PlayEffectAsync(mod.effectPrefab, Localization.Get(mod.modName))
+                    .ToCoroutine();
         }
 
         _turnDamageTotal = 0;

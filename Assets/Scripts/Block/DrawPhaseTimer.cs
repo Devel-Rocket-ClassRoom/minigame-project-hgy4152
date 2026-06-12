@@ -1,5 +1,6 @@
 using System;
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DrawPhaseTimer : MonoBehaviour
@@ -21,13 +22,13 @@ public class DrawPhaseTimer : MonoBehaviour
 
     public event Action OnPhaseEnded;
 
-    Coroutine _phaseCoroutine;
+    CancellationTokenSource _phaseCts;
     float _endTime;
 
-    public bool IsActive => _phaseCoroutine != null;
+    public bool IsActive => _phaseCts != null;
 
     public float RemainingRatio =>
-        _phaseCoroutine != null ? Mathf.Clamp01((_endTime - Time.time) / _phaseDuration) : 0f;
+        _phaseCts != null ? Mathf.Clamp01((_endTime - Time.time) / _phaseDuration) : 0f;
 
     public void SetPhaseDuration(float seconds) => _phaseDuration = Mathf.Max(1f, seconds);
 
@@ -41,73 +42,88 @@ public class DrawPhaseTimer : MonoBehaviour
 
     public void StartDrawPhase()
     {
-        if (_phaseCoroutine != null)
-            StopCoroutine(_phaseCoroutine);
+        var ct = RestartPhase();
         blockManager.ResetDiscardCount();
-        _phaseCoroutine = StartCoroutine(DrawPhaseRoutine());
+        DrawPhaseAsync(ct).Forget();
     }
 
     public void StopDrawPhase()
     {
-        if (_phaseCoroutine == null)
+        if (_phaseCts == null)
             return;
-        StopCoroutine(_phaseCoroutine);
-        _phaseCoroutine = null;
+        _phaseCts.Cancel();
+        _phaseCts.Dispose();
+        _phaseCts = null;
     }
 
     // 보스 플레이 모드: 블록을 즉시 채운 뒤 타이머만 시작
     public void StartDrawPhaseInstant()
     {
-        if (_phaseCoroutine != null)
-            StopCoroutine(_phaseCoroutine);
+        var ct = RestartPhase();
         blockManager.ResetDiscardCount();
         blockManager.DrawInstanceFull();
-        _phaseCoroutine = StartCoroutine(TimerOnlyRoutine());
+        TimerOnlyAsync(ct).Forget();
     }
 
-    IEnumerator TimerOnlyRoutine()
+    CancellationToken RestartPhase()
+    {
+        StopDrawPhase();
+        _phaseCts = CancellationTokenSource.CreateLinkedTokenSource(
+            this.GetCancellationTokenOnDestroy()
+        );
+        return _phaseCts.Token;
+    }
+
+    // 타이머 자연 만료 시 핸들만 비움 (취소 아님 — IsActive/RemainingRatio가 비활성으로 전환)
+    void ClearPhaseHandle()
+    {
+        _phaseCts?.Dispose();
+        _phaseCts = null;
+    }
+
+    async UniTaskVoid TimerOnlyAsync(CancellationToken ct)
     {
         _endTime = Time.time + _phaseDuration;
-        yield return new WaitForSeconds(_phaseDuration);
-        _phaseCoroutine = null;
+        await UniTask.Delay(TimeSpan.FromSeconds(_phaseDuration), cancellationToken: ct);
+        ClearPhaseHandle();
         EndPhase();
     }
 
     public void PlayHandNow()
     {
         StopDrawPhase();
-        StartCoroutine(FillThenEnd());
+        FillThenEndAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    IEnumerator DrawPhaseRoutine()
+    async UniTaskVoid DrawPhaseAsync(CancellationToken ct)
     {
         _endTime = Time.time + _phaseDuration;
 
         while (Time.time < _endTime)
         {
             blockManager.DrawBlock();
-            yield return new WaitForSeconds(drawInterval);
+            await UniTask.Delay(TimeSpan.FromSeconds(drawInterval), cancellationToken: ct);
         }
 
-        _phaseCoroutine = null;
-        yield return StartCoroutine(FillHandRoutine());
+        ClearPhaseHandle();
+        await FillHandAsync(this.GetCancellationTokenOnDestroy());
         EndPhase();
     }
 
-    IEnumerator FillThenEnd()
+    async UniTaskVoid FillThenEndAsync(CancellationToken ct)
     {
-        yield return StartCoroutine(FillHandRoutine());
+        await FillHandAsync(ct);
         EndPhase();
     }
 
-    IEnumerator FillHandRoutine()
+    async UniTask FillHandAsync(CancellationToken ct)
     {
         while (!blockManager.IsHandFull)
         {
             blockManager.DrawBlock();
-            yield return new WaitForSeconds(0.3f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3f), cancellationToken: ct);
         }
-        yield return new WaitForSeconds(0.5f);
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: ct);
     }
 
     void EndPhase()

@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -19,13 +20,16 @@ public class BossSpeechBubbleUI : MonoBehaviour
             panel.SetActive(false);
     }
 
-    public IEnumerator Show(string text)
+    public async UniTask ShowAsync(string text)
     {
         if (dialogueText != null)
             dialogueText.text = text;
         if (panel != null)
             panel.SetActive(true);
-        yield return new WaitForSeconds(displayDuration);
+        await UniTask.Delay(
+            TimeSpan.FromSeconds(displayDuration),
+            cancellationToken: this.GetCancellationTokenOnDestroy()
+        );
         if (panel != null)
             panel.SetActive(false);
     }

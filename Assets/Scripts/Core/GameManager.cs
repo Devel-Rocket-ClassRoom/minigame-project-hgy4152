@@ -130,6 +130,8 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageStart += HandleStageStart;
         if (boss != null)
             boss.OnDamageTaken += HandleBossDamageTaken;
+        if (jokerRewardUI != null)
+            jokerRewardUI.OnClosed += BeginBattle;
     }
 
     void OnDisable()
@@ -140,6 +142,8 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageStart -= HandleStageStart;
         if (boss != null)
             boss.OnDamageTaken -= HandleBossDamageTaken;
+        if (jokerRewardUI != null)
+            jokerRewardUI.OnClosed -= BeginBattle;
     }
 
     void HandleBossDamageTaken(int amount)

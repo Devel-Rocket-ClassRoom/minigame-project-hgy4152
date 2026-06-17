@@ -59,6 +59,6 @@ public class FloatingDamageText : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        GameObjectPool.Release(gameObject);
     }
 }

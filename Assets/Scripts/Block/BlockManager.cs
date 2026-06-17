@@ -132,7 +132,7 @@ public class BlockManager : MonoBehaviour
 
         var cls = block.data.ownerClass;
         hand.RemoveAt(idx);
-        Destroy(block.gameObject);
+        ReleaseBlock(block);
         slots[idx].Clear();
         _discardsUsed++;
         _stageDiscardsUsed++;
@@ -227,7 +227,7 @@ public class BlockManager : MonoBehaviour
                 continue;
 
             hand.RemoveAt(idx);
-            Destroy(block.gameObject);
+            ReleaseBlock(block);
 
             Slot empty = slots[idx];
             empty.Clear();
@@ -237,6 +237,15 @@ public class BlockManager : MonoBehaviour
         }
         RefreshAllBlockVisuals();
         RefreshConnectors();
+    }
+
+    // 블록을 소유 캐릭터의 풀로 반환 (캐릭터가 교체·파괴된 경우만 직접 파괴)
+    void ReleaseBlock(Block block)
+    {
+        if (block.owner != null && block.owner.Creator != null)
+            block.owner.Creator.ReleaseBlock(block);
+        else
+            Destroy(block.gameObject);
     }
 
     public void DisableDiscard()

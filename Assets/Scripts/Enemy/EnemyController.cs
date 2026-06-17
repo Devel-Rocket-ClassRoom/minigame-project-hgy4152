@@ -166,7 +166,7 @@ public class EnemyController : MonoBehaviour
     {
         if (damageTextPrefab == null || damageSpawnRoot == null)
             return;
-        var instance = Instantiate(damageTextPrefab, damageSpawnRoot);
+        var instance = GameObjectPool.Get(damageTextPrefab, damageSpawnRoot);
         instance.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         instance.Show(amount, color);
     }

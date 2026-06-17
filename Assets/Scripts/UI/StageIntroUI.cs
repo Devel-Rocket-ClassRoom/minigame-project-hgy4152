@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,45 +79,54 @@ public class StageIntroUI : MonoBehaviour
         stageText.text = $"{entry.stage} {Localization.Get("ui_stage")}";
 
         panel.SetActive(true);
-        StartCoroutine(IntroRoutine());
+        IntroAsync().Forget();
     }
 
-    IEnumerator IntroRoutine()
+    async UniTaskVoid IntroAsync()
     {
-        yield return new WaitForSeconds(introDuration);
+        await UniTask.Delay(
+            TimeSpan.FromSeconds(introDuration),
+            cancellationToken: this.GetCancellationTokenOnDestroy()
+        );
         panel.SetActive(false);
         gameManager.OnStageIntroComplete();
     }
 
-    public IEnumerator ShowBossRoutineRoutine(Modifier mod)
+    public async UniTask ShowBossRoutineAsync(Modifier mod)
     {
         if (mod == null)
-            yield break;
+            return;
         if (bossRoutineNameText != null)
             bossRoutineNameText.text = Localization.Get(mod.modName);
         if (bossRoutineDescText != null)
             bossRoutineDescText.text = Localization.Get(mod.description);
         if (bossRoutinePanel != null)
             bossRoutinePanel.SetActive(true);
-        yield return new WaitForSeconds(bossRoutineDuration);
+        await UniTask.Delay(
+            TimeSpan.FromSeconds(bossRoutineDuration),
+            cancellationToken: this.GetCancellationTokenOnDestroy()
+        );
         if (bossRoutinePanel != null)
             bossRoutinePanel.SetActive(false);
     }
 
-    public IEnumerator ShowMultipleRoutinesRoutine(
+    public async UniTask ShowMultipleRoutinesAsync(
         System.Collections.Generic.IEnumerable<Modifier> mods
     )
     {
         foreach (var mod in mods)
-            yield return StartCoroutine(ShowBossRoutineRoutine(mod));
+            await ShowBossRoutineAsync(mod);
     }
 
-    public IEnumerator ShowTurnRoutine(int turn, int maxTurns)
+    public async UniTask ShowTurnAsync(int turn, int maxTurns)
     {
         introText.text = $"TURN {turn} / {maxTurns}";
         TurnText.text = $"TURN {turn} / {maxTurns}";
         panel.SetActive(true);
-        yield return new WaitForSeconds(turnDisplayDuration);
+        await UniTask.Delay(
+            TimeSpan.FromSeconds(turnDisplayDuration),
+            cancellationToken: this.GetCancellationTokenOnDestroy()
+        );
         panel.SetActive(false);
     }
 }

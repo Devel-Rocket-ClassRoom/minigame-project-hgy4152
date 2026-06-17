@@ -35,7 +35,7 @@ public abstract class BlockCreator : MonoBehaviour
 
     public void ReleaseBlock(Block block)
     {
-        block.StopAllCoroutines();
+        block.CancelAnimations();
         block.OnDiscardRequested = null;
         block.chainGroupId = -1;
         block.gameObject.SetActive(false);

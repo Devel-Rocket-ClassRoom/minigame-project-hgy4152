@@ -14,6 +14,14 @@ public class ZyumCharacter : Character
 
     public override void OnStageStart() => _lastChain3Count = 0;
 
+    public override object CaptureState() => _lastChain3Count;
+
+    public override void RestoreState(object state)
+    {
+        if (state is int count)
+            _lastChain3Count = count;
+    }
+
     public override ClassType Type => ClassType.Wizard;
     public override Color classColor => Color.magenta;
     protected override bool IsSingleCast => true;

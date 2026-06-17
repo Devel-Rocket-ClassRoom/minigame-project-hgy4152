@@ -54,6 +54,19 @@ public class SelmuCharacter : Character
         }
     }
 
+    public override object CaptureState() =>
+        (_accumulatedBonus, _thresholdReached, _pendingConsume);
+
+    public override void RestoreState(object state)
+    {
+        if (state is not (int bonus, bool threshold, bool pending))
+            return;
+        _accumulatedBonus = bonus;
+        _thresholdReached = threshold;
+        _pendingConsume = pending;
+        SelmuSkill?.SetThresholdEffectActive(_thresholdReached || _pendingConsume);
+    }
+
     // 다음 턴 첫 공격 시 소비
     public override void OnAnyGroupAttackStart(ChainGroup group, EnemyController target)
     {

@@ -176,6 +176,31 @@ public class BlockManager : MonoBehaviour
         _stageDiscardsByClass.Clear();
     }
 
+    // 핸드 되돌리기용 스테이지 누적 디스카드 캡처/복원
+    public (int used, Dictionary<ClassType, int> byClass) CaptureStageDiscards() =>
+        (_stageDiscardsUsed, new Dictionary<ClassType, int>(_stageDiscardsByClass));
+
+    public void RestoreStageDiscards((int used, Dictionary<ClassType, int> byClass) snapshot)
+    {
+        _stageDiscardsUsed = snapshot.used;
+        _stageDiscardsByClass = new Dictionary<ClassType, int>(snapshot.byClass);
+    }
+
+    // 핸드 전체를 풀로 반환하고 슬롯을 비움 (되돌리기 후 즉시 재드로우 전제)
+    public void ClearHand()
+    {
+        for (int i = 0; i < hand.Count; i++)
+        {
+            if (hand[i] != null)
+                ReleaseBlock(hand[i]);
+            if (i < slots.Count)
+                slots[i].Clear();
+        }
+        hand.Clear();
+        RefreshAllBlockVisuals();
+        RefreshConnectors();
+    }
+
     public void RefreshAllBlockVisuals()
     {
         var groups = ChainResolver.ResolveChains(hand);

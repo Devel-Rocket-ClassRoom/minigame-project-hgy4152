@@ -12,6 +12,14 @@ public class ArchonCharacter : Character
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 
+    public override object CaptureState() => _stageGroupCounter;
+
+    public override void RestoreState(object state)
+    {
+        if (state is int counter)
+            _stageGroupCounter = counter;
+    }
+
     protected override void OnLastChainHitComplete() => StartBreathing();
 
     // Arcane Surge: 스테이지 누적 본인 그룹 1개당 데미지 +10% (누적)

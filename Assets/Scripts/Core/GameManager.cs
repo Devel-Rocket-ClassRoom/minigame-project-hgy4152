@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
     int maxTurns = 5;
 
     [SerializeField]
+    int rewindLimitPerSegment = 1; // 보스 플레이 구간당 핸드 되돌리기 허용 횟수
+
+    [SerializeField]
     float stageClearDisplayDuration = 1.5f;
 
     [SerializeField]
@@ -109,6 +112,10 @@ public class GameManager : MonoBehaviour
 
     DamageCalculator _damage;
     CancellationToken DestroyToken => this.GetCancellationTokenOnDestroy();
+
+    // 보스 플레이 핸드 되돌리기 (커맨드 패턴)
+    readonly CommandHistory _handHistory = new();
+    int _rewindsUsedThisSegment;
 
     void Awake()
     {
@@ -165,6 +172,16 @@ public class GameManager : MonoBehaviour
             bossPatternSystem.AccumulateModifiers = _isBossPlay;
 
         _jokerRewardPending = !_isBossPlay;
+
+        if (_isBossPlay)
+        {
+            var canvas = totalDmgObject != null
+                ? totalDmgObject.GetComponentInParent<Canvas>(true)
+                : null;
+            if (canvas != null)
+                HandRewindButtonUI.Create(this, canvas);
+        }
+
         stageManager.StartStage();
     }
 
@@ -286,6 +303,8 @@ public class GameManager : MonoBehaviour
         SetPhase(BattlePhase.StageIntro);
         _currentTurn = 0;
         _handPlaysThisPhase = 0;
+        _handHistory.Clear();
+        _rewindsUsedThisSegment = 0;
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         blockManager?.ResetStageDiscardCount();
         characterSet?.NotifyStageStart();
@@ -318,7 +337,10 @@ public class GameManager : MonoBehaviour
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
 
         if (_isBossPlay)
+        {
+            RecordBossHandStart();
             drawPhaseTimer.StartDrawPhaseInstant();
+        }
         else
             drawPhaseTimer.StartDrawPhase();
         SetPhase(BattlePhase.DrawPhase);
@@ -334,8 +356,38 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
+        RecordBossHandStart();
         drawPhaseTimer.StartDrawPhaseInstant();
         SetPhase(BattlePhase.DrawPhase);
+    }
+
+    // 핸드 시작 직전 상태를 커맨드로 기록 (되돌리기의 Undo 단위)
+    void RecordBossHandStart()
+    {
+        if (!_isBossPlay)
+            return;
+        _handHistory.Push(new HandPlayCommand(boss, blockManager, bossPatternSystem, characterSet));
+    }
+
+    public bool CanRewindHand =>
+        _isBossPlay
+        && Phase == BattlePhase.DrawPhase
+        && _handPlaysThisPhase >= 2
+        && _rewindsUsedThisSegment < rewindLimitPerSegment
+        && _handHistory.Count > 0;
+
+    // 현재 HP 구간의 첫 핸드 직전 상태로 복원 (커맨드 스택 일괄 Undo)
+    public void RewindToSegmentStart()
+    {
+        if (!CanRewindHand)
+            return;
+
+        _rewindsUsedThisSegment++;
+        drawPhaseTimer.StopDrawPhase();
+        blockManager.ClearHand();
+        _handHistory.UndoAll();
+        _handPlaysThisPhase = 0;
+        ContinueBossHand();
     }
 
     void HandleStageClear(StageManager.StageEntry entry)
@@ -606,6 +658,9 @@ public class GameManager : MonoBehaviour
         bossPatternSystem?.CommitPhase();
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
+        _handHistory.Clear(); // 새 HP 구간 — 이전 구간으로의 되돌리기 차단
+        _rewindsUsedThisSegment = 0;
+        RecordBossHandStart();
         drawPhaseTimer.StartDrawPhaseInstant();
         SetPhase(BattlePhase.DrawPhase);
     }

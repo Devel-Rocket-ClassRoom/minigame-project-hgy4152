@@ -1,4 +1,6 @@
-using System.Collections;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Skill_Zyum : Skill
@@ -78,10 +80,15 @@ public class Skill_Zyum : Skill
         }
 
         if (_passiveActive && weaponTransform != null)
-            StartCoroutine(MoveWeaponAndExplode(targetPos, scaleFactor));
+            MoveWeaponAndExplodeAsync(targetPos, scaleFactor, this.GetCancellationTokenOnDestroy())
+                .Forget();
     }
 
-    IEnumerator MoveWeaponAndExplode(Vector3 targetPos, float scaleFactor)
+    async UniTaskVoid MoveWeaponAndExplodeAsync(
+        Vector3 targetPos,
+        float scaleFactor,
+        CancellationToken ct
+    )
     {
         Vector3 arrivalPos = targetPos + new Vector3(-weaponXOffset, 0f, 0f);
         Vector3 originPos = _weaponOriginPos;
@@ -91,9 +98,9 @@ public class Skill_Zyum : Skill
         {
             t += Time.deltaTime;
             if (weaponTransform == null)
-                yield break;
+                return;
             weaponTransform.position = Vector3.Lerp(originPos, arrivalPos, t / weaponMoveDuration);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
 
         weaponTransform.position = arrivalPos;
@@ -113,16 +120,16 @@ public class Skill_Zyum : Skill
             Destroy(bonus, animDuration);
         }
 
-        yield return new WaitForSeconds(animDuration);
+        await UniTask.Delay(TimeSpan.FromSeconds(animDuration), cancellationToken: ct);
 
         t = 0f;
         while (t < weaponMoveDuration)
         {
             t += Time.deltaTime;
             if (weaponTransform == null)
-                yield break;
+                return;
             weaponTransform.position = Vector3.Lerp(arrivalPos, originPos, t / weaponMoveDuration);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
 
         if (weaponTransform != null)

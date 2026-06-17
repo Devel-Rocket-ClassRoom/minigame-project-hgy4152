@@ -1,4 +1,5 @@
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Skill_AhnMansik : Skill
@@ -47,22 +48,29 @@ public class Skill_AhnMansik : Skill
         var sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = grenadeSprite;
         go.transform.position = transform.position;
-        StartCoroutine(Throw(go, transform.position, targetPos, arcHeight));
+        ThrowAsync(go, transform.position, targetPos, arcHeight, this.GetCancellationTokenOnDestroy())
+            .Forget();
     }
 
-    IEnumerator Throw(GameObject go, Vector3 start, Vector3 target, float arcHeight)
+    async UniTaskVoid ThrowAsync(
+        GameObject go,
+        Vector3 start,
+        Vector3 target,
+        float arcHeight,
+        CancellationToken ct
+    )
     {
         float t = 0f;
         while (t < throwDuration)
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
+                return;
             float ratio = Mathf.Clamp01(t / throwDuration);
             go.transform.position =
                 Vector3.Lerp(start, target, ratio)
                 + Vector3.up * (arcHeight * Mathf.Sin(Mathf.PI * ratio));
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
         {

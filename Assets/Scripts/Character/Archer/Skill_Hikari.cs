@@ -1,4 +1,5 @@
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Skill_Hikari : Skill
@@ -39,12 +40,17 @@ public class Skill_Hikari : Skill
     {
         if (effectPrefab == null)
             return;
-        var go = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+        var go = SpawnEffect(effectPrefab, transform.position, Quaternion.identity);
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(MoveTo(go, targetPos, hitPrefab));
+        MoveToAsync(go, targetPos, hitPrefab, this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 targetPos, GameObject hitPrefab)
+    async UniTaskVoid MoveToAsync(
+        GameObject go,
+        Vector3 targetPos,
+        GameObject hitPrefab,
+        CancellationToken ct
+    )
     {
         Vector3 start = go.transform.position;
         float t = 0f;
@@ -52,15 +58,15 @@ public class Skill_Hikari : Skill
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
+                return;
             go.transform.position = Vector3.Lerp(start, targetPos, t / moveDuration);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
         {
             go.transform.position = targetPos;
             SpawnAnimEffect(hitPrefab, targetPos);
-            Destroy(go);
+            ReleaseEffect(go);
         }
     }
 

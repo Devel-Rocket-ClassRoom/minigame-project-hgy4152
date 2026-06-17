@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ public class Skill_Reon : Skill
     List<GameObject> _activeEffects = new();
 
     ReonCharacter _character;
+    CancellationToken DestroyToken => this.GetCancellationTokenOnDestroy();
 
     void Awake() => _character = GetComponent<ReonCharacter>();
 
@@ -62,15 +64,12 @@ public class Skill_Reon : Skill
     }
 
     public override void Chain1(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(Chain1Routine(targetPos, scaleFactor));
+        Chain1Async(targetPos, scaleFactor, DestroyToken).Forget();
 
     public override void Chain2(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(Chain2Routine(targetPos, scaleFactor));
+        Chain2Async(targetPos, scaleFactor, DestroyToken).Forget();
 
-    public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(Chain3Routine(targetPos, scaleFactor));
-
-    IEnumerator Chain1Routine(Vector3 targetPos, float scaleFactor)
+    async UniTaskVoid Chain1Async(Vector3 targetPos, float scaleFactor, CancellationToken ct)
     {
         Vector3 idlePos = _character.IdlePos;
         Vector3 targetLocal =
@@ -95,14 +94,15 @@ public class Skill_Reon : Skill
             var go = Instantiate(effectPrefab);
             go.transform.position = startPos;
             _activeEffects.Add(go);
-            StartCoroutine(MoveTo(go, startPos, targetPos, hitPos));
+            MoveToAsync(go, startPos, targetPos, hitPos, ct).Forget();
         }
 
-        yield return seq.WaitForCompletion();
+        // 외부 DOTween.Kill 시에도 대기가 풀리는 WaitForCompletion과 동일한 의미
+        await UniTask.WaitWhile(() => seq.IsActive(), PlayerLoopTiming.Update, ct);
         _character.TryReturnAfterChain(DestroyActiveEffects);
     }
 
-    IEnumerator Chain2Routine(Vector3 targetPos, float scaleFactor)
+    async UniTaskVoid Chain2Async(Vector3 targetPos, float scaleFactor, CancellationToken ct)
     {
         Vector3 idlePos = _character.IdlePos;
         Vector3 targetLocal =
@@ -128,14 +128,15 @@ public class Skill_Reon : Skill
             go.transform.position = startPos;
             go.GetComponent<SpriteRenderer>().flipY = true;
             _activeEffects.Add(go);
-            StartCoroutine(MoveTo(go, startPos, targetPos, hitPos));
+            MoveToAsync(go, startPos, targetPos, hitPos, ct).Forget();
         }
 
-        yield return seq.WaitForCompletion();
+        // 외부 DOTween.Kill 시에도 대기가 풀리는 WaitForCompletion과 동일한 의미
+        await UniTask.WaitWhile(() => seq.IsActive(), PlayerLoopTiming.Update, ct);
         _character.TryReturnAfterChain(DestroyActiveEffects);
     }
 
-    IEnumerator Chain3Routine(Vector3 targetPos, float scaleFactor)
+    public override void Chain3(Vector3 targetPos, float scaleFactor)
     {
         Vector3 idlePos = _character.IdlePos;
         Vector3 targetLocal =
@@ -164,7 +165,7 @@ public class Skill_Reon : Skill
                 var go3 = Instantiate(effectPrefab, startPos3, Quaternion.Euler(0, 0, -135f));
                 go3.transform.localScale *= scaleFactor * 1.2f;
                 _activeEffects.Add(go3);
-                StartCoroutine(MoveTo(go3, startPos3, targetPos, hitPos));
+                MoveToAsync(go3, startPos3, targetPos, hitPos, DestroyToken).Forget();
             })
             .Append(transform.DOLocalMove(idlePos, returnDuration).SetEase(Ease.InOutSine))
             .OnComplete(() =>
@@ -172,21 +173,25 @@ public class Skill_Reon : Skill
                 _character.StartBreathing();
                 DestroyActiveEffects();
             });
-
-        yield return null;
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 start, Vector3 target, Vector3 hitPos)
+    async UniTaskVoid MoveToAsync(
+        GameObject go,
+        Vector3 start,
+        Vector3 target,
+        Vector3 hitPos,
+        CancellationToken ct
+    )
     {
         float t = 0f;
         while (t < moveDuration)
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
+                return;
             float ratio = t / moveDuration;
             go.transform.position = Vector3.Lerp(start, target, ratio * ratio);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
         {

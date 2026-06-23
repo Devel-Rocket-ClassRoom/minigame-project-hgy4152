@@ -3,9 +3,9 @@ using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using UnityEngine;
 
-public static class RealtimeDbCodexService
+public static class RealtimeDbEncyclopediaService
 {
-    public static async UniTask PushAsync(CodexCloudData data, string userId)
+    public static async UniTask PushAsync(EncyclopediaCloudData data, string userId)
     {
         try
         {
@@ -18,14 +18,14 @@ public static class RealtimeDbCodexService
         }
     }
 
-    public static async UniTask<CodexCloudData> PullAsync(string userId)
+    public static async UniTask<EncyclopediaCloudData> PullAsync(string userId)
     {
         try
         {
             var reference = FirebaseDatabase.DefaultInstance.GetReference($"codex/{userId}");
             var snapshot = await reference.GetValueAsync().AsUniTask();
             if (!snapshot.Exists) return null;
-            return JsonUtility.FromJson<CodexCloudData>(snapshot.GetRawJsonValue());
+            return JsonUtility.FromJson<EncyclopediaCloudData>(snapshot.GetRawJsonValue());
         }
         catch (Exception e)
         {

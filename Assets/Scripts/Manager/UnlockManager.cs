@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public enum UnlockKind
@@ -158,6 +159,57 @@ public static class UnlockManager
         if (File.Exists(SavePath))
             File.Delete(SavePath);
         _loaded = false;
+    }
+
+    public static CodexCloudData ToCloudData()
+    {
+        EnsureLoaded();
+        return new CodexCloudData
+        {
+            unlockedCharacterIds = new List<string>(_chars),
+            unlockedJokerIds = new List<string>(_jokers),
+            defeatedEnemyIds = new List<string>(_enemies),
+            defeatedBossIds = new List<string>(_bosses),
+            adventureClearCount = _adventureClearCount,
+            bossModeClearCount = _bossModeClearCount,
+            chain1Used = _chain1Used,
+            chain2Used = _chain2Used,
+            chain3Used = _chain3Used,
+            blocksDiscarded = _blocksDiscarded,
+            classClearCounts = _classClearCounts
+                .Select(kv => new ClassClearEntryCloud { classType = kv.Key.ToString(), count = kv.Value })
+                .ToList(),
+            lastSyncedUtcMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+        };
+    }
+
+    public static void MergeFromCloud(CodexCloudData cloud)
+    {
+        if (cloud == null) return;
+        EnsureLoaded();
+
+        if (cloud.unlockedCharacterIds != null) foreach (var id in cloud.unlockedCharacterIds) _chars.Add(id);
+        if (cloud.unlockedJokerIds != null) foreach (var id in cloud.unlockedJokerIds) _jokers.Add(id);
+        if (cloud.defeatedEnemyIds != null) foreach (var id in cloud.defeatedEnemyIds) _enemies.Add(id);
+        if (cloud.defeatedBossIds != null) foreach (var id in cloud.defeatedBossIds) _bosses.Add(id);
+
+        _adventureClearCount = Mathf.Max(_adventureClearCount, cloud.adventureClearCount);
+        _bossModeClearCount = Mathf.Max(_bossModeClearCount, cloud.bossModeClearCount);
+        _chain1Used = Mathf.Max(_chain1Used, cloud.chain1Used);
+        _chain2Used = Mathf.Max(_chain2Used, cloud.chain2Used);
+        _chain3Used = Mathf.Max(_chain3Used, cloud.chain3Used);
+        _blocksDiscarded = Mathf.Max(_blocksDiscarded, cloud.blocksDiscarded);
+
+        if (cloud.classClearCounts != null)
+            foreach (var e in cloud.classClearCounts)
+                if (Enum.TryParse<ClassType>(e.classType, out var ct))
+                {
+                    _classClearCounts.TryGetValue(ct, out int cur);
+                    _classClearCounts[ct] = Mathf.Max(cur, e.count);
+                }
+
+        CheckAndUnlockAll();
+        Save();
     }
 
     static void RecordClassClears(string[] partyCharacterIds)
@@ -331,6 +383,14 @@ public static class UnlockManager
                 .ToArray(),
         };
         File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
+        PushToCloudAsync().Forget();
+    }
+
+    static async UniTaskVoid PushToCloudAsync()
+    {
+        var user = AuthManager.Instance?.CurrentUser;
+        if (user == null) return;
+        await RealtimeDbCodexService.PushAsync(ToCloudData(), user.UserId);
     }
 
     [Serializable]

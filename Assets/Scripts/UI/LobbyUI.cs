@@ -49,4 +49,10 @@ public class LobbyUI : MonoBehaviour
         if (encyclopediaUI != null)
             encyclopediaUI.Open();
     }
+
+    public void OnLogoutClicked()
+    {
+        AuthManager.Instance?.SignOut();
+        GameStateMachine.Instance.TransitionTo(GameState.Title);
+    }
 }

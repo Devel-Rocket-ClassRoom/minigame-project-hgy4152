@@ -30,6 +30,9 @@ public class SettingUI : MonoBehaviour
     [SerializeField]
     Button resetDataButton;
 
+    [SerializeField]
+    AuthUI authUI;
+
     public UnityEvent onClose = new UnityEvent();
 
     SettingsModel _model;
@@ -104,6 +107,12 @@ public class SettingUI : MonoBehaviour
     {
         if (mixer != null)
             mixer.SetFloat(SFXExposedParam, Mathf.Log10(Mathf.Max(v, MinVolume)) * 20f);
+    }
+
+    public void OnAccountLinkClicked()
+    {
+        if (authUI != null)
+            authUI.gameObject.SetActive(true);
     }
 
     void ResetAllData()

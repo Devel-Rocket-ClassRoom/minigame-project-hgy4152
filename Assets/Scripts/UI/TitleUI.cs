@@ -12,7 +12,7 @@ public class TitleUI : MonoBehaviour
 
     void Awake()
     {
-        //Debug.unityLogger.logEnabled = false;
+        Debug.unityLogger.logEnabled = false;
         if (loginPanel != null)
             loginPanel.SetActive(false);
     }

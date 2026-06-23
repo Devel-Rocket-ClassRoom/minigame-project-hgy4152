@@ -15,7 +15,6 @@ public class CodexCloudData
     public int chain3Used;
     public int blocksDiscarded;
     public List<ClassClearEntryCloud> classClearCounts;
-    public long lastSyncedUtcMs;
 }
 
 [Serializable]

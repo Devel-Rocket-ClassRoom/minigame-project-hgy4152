@@ -24,12 +24,6 @@ public class LobbyUI : MonoBehaviour
     {
         if (AuthManager.Instance != null)
             AuthManager.Instance.OnSessionExpired += OnSessionExpired;
-
-        var user = AuthManager.Instance?.CurrentUser;
-        if (user == null)
-            Debug.Log("[Lobby] CurrentUser: null");
-        else
-            Debug.Log($"[Lobby] CurrentUser: uid={user.UserId}, email={user.Email ?? "(none)"}, isAnonymous={user.IsAnonymous}");
     }
 
     void OnDestroy()

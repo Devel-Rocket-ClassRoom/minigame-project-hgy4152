@@ -16,7 +16,6 @@ public class AuthManager : MonoBehaviour
     public event Action OnSessionExpired;
 
     FirebaseAuth _auth;
-    bool _firebaseReady;
 
     public bool IsFirebaseReady { get; private set; }
     public UniTask PendingCloudSync { get; private set; } = UniTask.CompletedTask;
@@ -42,26 +41,25 @@ public class AuthManager : MonoBehaviour
         }
         _auth = FirebaseAuth.DefaultInstance;
         _auth.StateChanged += HandleAuthStateChanged;
-        _firebaseReady = true;
         IsFirebaseReady = true;
         OnFirebaseReady?.Invoke();
     }
 
     public void SignInWithEmail(string email, string password)
     {
-        if (!_firebaseReady) return;
+        if (!IsFirebaseReady) return;
         SignInWithEmailAsync(email, password).Forget();
     }
 
     public void SignUpWithEmail(string email, string password)
     {
-        if (!_firebaseReady) return;
+        if (!IsFirebaseReady) return;
         SignUpWithEmailAsync(email, password).Forget();
     }
 
     public void SignInAnonymously()
     {
-        if (!_firebaseReady) return;
+        if (!IsFirebaseReady) return;
         SignInAnonymouslyAsync().Forget();
     }
 
@@ -162,20 +160,19 @@ public class AuthManager : MonoBehaviour
         CurrentUser = user;
         if (user != null)
         {
-            Debug.Log($"[Auth] StateChanged → uid={user.UserId}, email={user.Email ?? "(none)"}, isAnonymous={user.IsAnonymous}");
             PendingCloudSync = SyncCloudAsync(user.UserId).Preserve();
             await PendingCloudSync;
             OnSignInSuccess?.Invoke(user);
         }
         else
         {
-            Debug.Log("[Auth] StateChanged → signed out");
             OnSignedOut?.Invoke();
         }
     }
 
     async UniTask SyncCloudAsync(string userId)
     {
+        UnlockManager.PrepareForUser(userId);
         var cloud = await RealtimeDbCodexService.PullAsync(userId);
         UnlockManager.MergeFromCloud(cloud);
     }

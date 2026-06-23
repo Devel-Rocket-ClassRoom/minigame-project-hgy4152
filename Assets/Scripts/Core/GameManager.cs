@@ -486,6 +486,7 @@ public class GameManager : MonoBehaviour
 
         // 2. 체인 그룹 해석
         var groups = ChainResolver.ResolveChains(blockManager.hand);
+        foreach (var g in groups) UnlockManager.RecordChainUsed(g.Length);
 
         // 3. judge 구성
         var judge = BuildJudge(groups, isPreview: false);

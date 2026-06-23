@@ -55,6 +55,7 @@ public static class UnlockManager
     static Dictionary<ClassType, int> _classClearCounts;
 
     static bool _loaded;
+    static string _savedUserId = "";
 
     static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
 
@@ -154,11 +155,30 @@ public static class UnlockManager
         }
     }
 
+    public static void PrepareForUser(string userId)
+    {
+        EnsureLoaded();
+        if (_savedUserId == userId) return;
+        _chars = new HashSet<string>(DefaultCharacterIds);
+        _jokers = new HashSet<string>(DefaultJokerIds);
+        _enemies = new HashSet<string>();
+        _bosses = new HashSet<string>();
+        _adventureClearCount = 0;
+        _bossModeClearCount = 0;
+        _chain1Used = 0;
+        _chain2Used = 0;
+        _chain3Used = 0;
+        _blocksDiscarded = 0;
+        _classClearCounts = new Dictionary<ClassType, int>();
+        _savedUserId = userId;
+    }
+
     public static void ResetAll()
     {
         if (File.Exists(SavePath))
             File.Delete(SavePath);
         _loaded = false;
+        _savedUserId = "";
     }
 
     public static CodexCloudData ToCloudData()
@@ -179,7 +199,6 @@ public static class UnlockManager
             classClearCounts = _classClearCounts
                 .Select(kv => new ClassClearEntryCloud { classType = kv.Key.ToString(), count = kv.Value })
                 .ToList(),
-            lastSyncedUtcMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
         };
     }
 
@@ -290,6 +309,7 @@ public static class UnlockManager
         if (File.Exists(SavePath))
         {
             var dto = JsonUtility.FromJson<CodexData>(File.ReadAllText(SavePath));
+            _savedUserId = dto.userId ?? "";
             _chars = new HashSet<string>(dto.unlockedCharacterIds ?? Array.Empty<string>());
             _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
             _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
@@ -368,6 +388,7 @@ public static class UnlockManager
     {
         var dto = new CodexData
         {
+            userId = _savedUserId,
             unlockedCharacterIds = _chars.ToArray(),
             unlockedJokerIds = _jokers.ToArray(),
             defeatedEnemyIds = _enemies.ToArray(),
@@ -403,6 +424,7 @@ public static class UnlockManager
     [Serializable]
     class CodexData
     {
+        public string userId;
         public string[] unlockedCharacterIds;
         public string[] unlockedJokerIds;
         public string[] defeatedEnemyIds;

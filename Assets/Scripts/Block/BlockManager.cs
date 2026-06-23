@@ -138,6 +138,7 @@ public class BlockManager : MonoBehaviour
         _stageDiscardsUsed++;
         _discardsByClass[cls] = _discardsByClass.GetValueOrDefault(cls) + 1;
         _stageDiscardsByClass[cls] = _stageDiscardsByClass.GetValueOrDefault(cls) + 1;
+        UnlockManager.RecordBlocksDiscarded(1);
 
         // 오른쪽 블록들을 슬롯 고정 상태에서 왼쪽으로 슬라이드
         for (int i = idx; i < hand.Count; i++)

@@ -12,6 +12,14 @@ public class BeatriceCharacter : Character
 
     public override void OnStageStart() => _stackCount = 0;
 
+    public override object CaptureState() => _stackCount;
+
+    public override void RestoreState(object state)
+    {
+        if (state is int count)
+            _stackCount = count;
+    }
+
     protected override void OnLastChainHitComplete() => StartBreathing();
 
     // Sacrifice: 자기 클래스 블럭을 버린 횟수당 데미지 +1%

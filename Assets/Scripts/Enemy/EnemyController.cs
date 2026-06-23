@@ -160,13 +160,20 @@ public class EnemyController : MonoBehaviour
             OnDefeated?.Invoke();
     }
 
+    // 핸드 되돌리기용 HP 복원 (피격 연출 없이 즉시 반영)
+    public void RestoreHp(int hp)
+    {
+        currentHp = Mathf.Clamp(hp, 0, maxHp);
+        OnHpChanged?.Invoke(currentHp, maxHp);
+    }
+
     protected virtual void PlayHitEffect(int damage) { }
 
     void SpawnDamageText(int amount, Color color)
     {
         if (damageTextPrefab == null || damageSpawnRoot == null)
             return;
-        var instance = Instantiate(damageTextPrefab, damageSpawnRoot);
+        var instance = GameObjectPool.Get(damageTextPrefab, damageSpawnRoot);
         instance.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         instance.Show(amount, color);
     }

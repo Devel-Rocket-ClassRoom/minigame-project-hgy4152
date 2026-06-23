@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,21 @@ public class Block : MonoBehaviour
     public BlockData data;
     public Character owner;
     public int chainGroupId = -1;
+
+    // 풀링 객체라 GetCancellationTokenOnDestroy 대신 lease별 CTS 사용 (풀 반환 시 Cancel)
+    CancellationTokenSource _animCts;
+    CancellationToken AnimToken => (_animCts ??= new CancellationTokenSource()).Token;
+
+    public void CancelAnimations()
+    {
+        if (_animCts == null)
+            return;
+        _animCts.Cancel();
+        _animCts.Dispose();
+        _animCts = null;
+    }
+
+    void OnDestroy() => CancelAnimations();
 
     [SerializeField]
     Sprite backgroundSprite;
@@ -49,7 +65,8 @@ public class Block : MonoBehaviour
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = true;
 
-        StartCoroutine(FlyInCoroutine(targetLocalPos, duration, onComplete));
+        MoveAsync(targetLocalPos + new Vector2(1000, 0), targetLocalPos, duration, onComplete, AnimToken)
+            .Forget();
     }
 
     public void Slide(Vector2 targetLocalPos, float duration, Action onComplete = null)
@@ -57,16 +74,16 @@ public class Block : MonoBehaviour
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = true;
 
-        StartCoroutine(
-            SlideCoroutine(_rectTransform.anchoredPosition, targetLocalPos, duration, onComplete)
-        );
+        MoveAsync(_rectTransform.anchoredPosition, targetLocalPos, duration, onComplete, AnimToken)
+            .Forget();
     }
 
-    IEnumerator SlideCoroutine(
+    async UniTaskVoid MoveAsync(
         Vector2 startPos,
         Vector2 targetLocalPos,
         float duration,
-        Action onComplete
+        Action onComplete,
+        CancellationToken ct
     )
     {
         float elapsed = 0;
@@ -75,42 +92,25 @@ public class Block : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            t = t * (2 - t);
-            _rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetLocalPos, t);
-            yield return null;
-        }
-
-        _rectTransform.anchoredPosition = targetLocalPos;
-        if (_layoutElement != null)
-            _layoutElement.ignoreLayout = false;
-
-        yield return new WaitForEndOfFrame();
-        onComplete?.Invoke();
-    }
-
-    IEnumerator FlyInCoroutine(Vector2 targetLocalPos, float duration, System.Action onComplete)
-    {
-        Vector2 startPos = targetLocalPos + new Vector2(1000, 0);
-        float elapsed = 0;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
             t = t * (2 - t); // EaseOutQuad
             _rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetLocalPos, t);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
 
         _rectTransform.anchoredPosition = targetLocalPos;
         if (_layoutElement != null)
             _layoutElement.ignoreLayout = false;
 
-        yield return new WaitForEndOfFrame();
+        await UniTask.WaitForEndOfFrame(this, ct);
         onComplete?.Invoke();
     }
 
-    public IEnumerator HighlightPulseRoutine(float scale = 1.2f, float duration = 0.2f)
+    public void HighlightPulse(float scale = 1.2f, float duration = 0.2f)
+    {
+        HighlightPulseAsync(scale, duration, AnimToken).Forget();
+    }
+
+    async UniTaskVoid HighlightPulseAsync(float scale, float duration, CancellationToken ct)
     {
         Vector3 originalScale = _rectTransform.localScale;
         float elapsed = 0f;
@@ -123,7 +123,7 @@ public class Block : MonoBehaviour
                     ? Mathf.SmoothStep(1f, scale, t * 2f)
                     : Mathf.SmoothStep(scale, 1f, (t - 0.5f) * 2f);
             _rectTransform.localScale = originalScale * s;
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         _rectTransform.localScale = originalScale;
     }
@@ -138,6 +138,16 @@ public class Block : MonoBehaviour
     void OnClicked()
     {
         OnDiscardRequested?.Invoke(this);
+    }
+
+    // 풀 재사용 시 애니메이션 잔존 상태(스케일·위치·레이아웃 무시) 초기화
+    public void PrepareForReuse()
+    {
+        EnsureInitialized();
+        _rectTransform.localScale = Vector3.one;
+        _rectTransform.anchoredPosition = Vector2.zero;
+        if (_layoutElement != null)
+            _layoutElement.ignoreLayout = false;
     }
 
     public void Init(BlockData blockData)

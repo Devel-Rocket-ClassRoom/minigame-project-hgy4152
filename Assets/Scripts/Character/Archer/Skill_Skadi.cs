@@ -1,4 +1,6 @@
-using System.Collections;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Skill_Skadi : Skill
@@ -50,25 +52,25 @@ public class Skill_Skadi : Skill
 
     // 3체인: 나선 2발 + 기를 모아 큰 화살 1발
     public override void Chain3(Vector3 targetPos, float scaleFactor) =>
-        StartCoroutine(GlacialArrow(targetPos, scaleFactor));
+        GlacialArrowAsync(targetPos, scaleFactor, this.GetCancellationTokenOnDestroy()).Forget();
 
     void FireArrow(Vector3 targetPos, Vector3 spawnOffset)
     {
         if (effectPrefab == null)
             return;
-        var go = Instantiate(effectPrefab, transform.position + spawnOffset, Quaternion.identity);
-        StartCoroutine(MoveTo(go, targetPos));
+        var go = SpawnEffect(effectPrefab, transform.position + spawnOffset, Quaternion.identity);
+        MoveToAsync(go, targetPos, this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    IEnumerator GlacialArrow(Vector3 targetPos, float scaleFactor)
+    async UniTaskVoid GlacialArrowAsync(Vector3 targetPos, float scaleFactor, CancellationToken ct)
     {
         FireArrow(targetPos, new Vector3(0, spiralOffset, 0));
         FireArrow(targetPos, new Vector3(0, -spiralOffset, 0));
 
-        yield return new WaitForSeconds(bigArrowDelay);
+        await UniTask.Delay(TimeSpan.FromSeconds(bigArrowDelay), cancellationToken: ct);
 
         if (impactEffectPrefab == null)
-            yield break;
+            return;
         var impact = Instantiate(
             impactEffectPrefab,
             targetPos + new Vector3(0, impactOffsetY, 0),
@@ -84,7 +86,7 @@ public class Skill_Skadi : Skill
         }
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 targetPos)
+    async UniTaskVoid MoveToAsync(GameObject go, Vector3 targetPos, CancellationToken ct)
     {
         Vector3 start = go.transform.position;
         float t = 0f;
@@ -92,14 +94,16 @@ public class Skill_Skadi : Skill
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
+                return;
             go.transform.position = Vector3.Lerp(start, targetPos, t / moveDuration);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
         {
             go.transform.position = targetPos;
-            Destroy(go, 0.1f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f), cancellationToken: ct);
+            if (go != null)
+                ReleaseEffect(go);
         }
     }
 }

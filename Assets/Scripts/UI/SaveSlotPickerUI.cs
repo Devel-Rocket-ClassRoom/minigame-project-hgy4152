@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -68,6 +69,14 @@ public class SaveSlotPickerUI : MonoBehaviour
                 onCanceled?.Invoke();
             });
         }
+    }
+
+    // 슬롯 선택을 await로 대기. 취소 시 -1 반환.
+    public UniTask<int> ShowAsync(SaveManager mgr, SaveSlotData draft)
+    {
+        var tcs = new UniTaskCompletionSource<int>();
+        Show(mgr, draft, onSlotPicked: slot => tcs.TrySetResult(slot), onCanceled: () => tcs.TrySetResult(-1));
+        return tcs.Task;
     }
 
     void Hide()

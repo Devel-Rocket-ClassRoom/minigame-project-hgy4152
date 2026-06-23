@@ -28,6 +28,14 @@ public class SkadiCharacter : Character
 
     public override void OnStageStart() => _frostStacks = 0;
 
+    public override object CaptureState() => _frostStacks;
+
+    public override void RestoreState(object state)
+    {
+        if (state is int stacks)
+            _frostStacks = stacks;
+    }
+
     public override void PlaySkillEffect(
         int chainCount,
         int[] perHitDamages = null,

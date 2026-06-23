@@ -12,6 +12,14 @@ public class RavenCharacter : Character
 
     public override void OnStageStart() => _stageGroupCounter = 0;
 
+    public override object CaptureState() => _stageGroupCounter;
+
+    public override void RestoreState(object state)
+    {
+        if (state is int counter)
+            _stageGroupCounter = counter;
+    }
+
     // Predator: 스테이지 누적 본인 그룹 3번째마다 데미지 +50%
     public override float GetChainTypeBonus(ChainJudge judge, ChainGroup group)
     {

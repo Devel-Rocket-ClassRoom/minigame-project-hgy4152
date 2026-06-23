@@ -119,6 +119,24 @@ public class BossPatternSystem : MonoBehaviour
         OnInjected?.Invoke();
     }
 
+    // 핸드 되돌리기용 이전 턴 스냅샷 캡처/복원 (구간 내 phaseIndex는 변하지 않으므로 제외)
+    public (
+        int[] chainCounts,
+        Dictionary<ClassType, int> classDist,
+        int[] chainSequence
+    ) CaptureSnapshot() =>
+        ((int[])_prevChainCounts.Clone(), new Dictionary<ClassType, int>(_prevClassDist), _prevChainSequence);
+
+    public void RestoreSnapshot(
+        (int[] chainCounts, Dictionary<ClassType, int> classDist, int[] chainSequence) snapshot
+    )
+    {
+        _prevChainCounts = (int[])snapshot.chainCounts.Clone();
+        _prevClassDist = new Dictionary<ClassType, int>(snapshot.classDist);
+        _prevChainSequence = snapshot.chainSequence;
+        OnInjected?.Invoke();
+    }
+
     public void AdvancePhase() => phaseIndex++;
 
     public void CommitPhase()

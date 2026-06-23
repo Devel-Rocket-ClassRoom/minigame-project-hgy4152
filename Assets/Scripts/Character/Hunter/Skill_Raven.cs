@@ -1,4 +1,5 @@
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -91,26 +92,31 @@ public class Skill_Raven : Skill
         Vector3 dir = (targetPos - start).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         SpawnParticleEffect(muzzleFlashPrefab, start + new Vector3(muzzleFlashOffsetX, 0f, 0f));
-        var go = Instantiate(effectPrefab, start, Quaternion.Euler(0, 0, angle));
+        var go = SpawnEffect(effectPrefab, start, Quaternion.Euler(0, 0, angle));
         go.transform.localScale = Vector3.one * scale;
-        StartCoroutine(MoveTo(go, start, targetPos));
+        MoveToAsync(go, start, targetPos, this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    IEnumerator MoveTo(GameObject go, Vector3 start, Vector3 target)
+    async UniTaskVoid MoveToAsync(
+        GameObject go,
+        Vector3 start,
+        Vector3 target,
+        CancellationToken ct
+    )
     {
         float t = 0f;
         while (t < moveDuration)
         {
             t += Time.deltaTime;
             if (go == null)
-                yield break;
+                return;
             go.transform.position = Vector3.Lerp(start, target, t / moveDuration);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
         if (go != null)
         {
             SpawnParticleEffect(hitEffectPrefab, target);
-            Destroy(go);
+            ReleaseEffect(go);
         }
     }
 

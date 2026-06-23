@@ -25,6 +25,7 @@ public class DebuffIconBarUI : MonoBehaviour
     SkadiCharacter _skadi;
     GameObject _frostIconGO;
     TextMeshProUGUI _frostStackText;
+    int _lastFrost = int.MinValue; // 더티 플래그: 스택이 바뀐 프레임에만 UI 갱신
 
     void OnEnable()
     {
@@ -51,10 +52,13 @@ public class DebuffIconBarUI : MonoBehaviour
     {
         if (_skadi == null || _frostIconGO == null)
             return;
-        bool hasFrost = _skadi.FrostStacks > 0;
-        _frostIconGO.SetActive(hasFrost);
-        if (hasFrost && _frostStackText != null)
-            _frostStackText.text = _skadi.FrostStacks.ToString();
+        int frost = _skadi.FrostStacks;
+        if (frost == _lastFrost)
+            return;
+        _lastFrost = frost;
+        _frostIconGO.SetActive(frost > 0);
+        if (frost > 0 && _frostStackText != null)
+            _frostStackText.text = frost.ToString();
     }
 
     public void Refresh()
@@ -63,6 +67,7 @@ public class DebuffIconBarUI : MonoBehaviour
             Destroy(child.gameObject);
         _frostIconGO = null;
         _frostStackText = null;
+        _lastFrost = int.MinValue;
 
         var mods = new System.Collections.Generic.List<Modifier>(
             bossPatternSystem.GetActiveModifiers()

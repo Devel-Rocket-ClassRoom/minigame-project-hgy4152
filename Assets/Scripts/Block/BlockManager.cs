@@ -31,6 +31,10 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     HandUI handUI;
 
+    [Header("=== 오디오 ===")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip blockUseClip;
+
     public List<Block> hand = new();
     public bool IsHandFull => hand.Count >= MaxHandSize;
 
@@ -132,12 +136,13 @@ public class BlockManager : MonoBehaviour
 
         var cls = block.data.ownerClass;
         hand.RemoveAt(idx);
-        Destroy(block.gameObject);
+        ReleaseBlock(block);
         slots[idx].Clear();
         _discardsUsed++;
         _stageDiscardsUsed++;
         _discardsByClass[cls] = _discardsByClass.GetValueOrDefault(cls) + 1;
         _stageDiscardsByClass[cls] = _stageDiscardsByClass.GetValueOrDefault(cls) + 1;
+        UnlockManager.RecordBlocksDiscarded(1);
 
         // 오른쪽 블록들을 슬롯 고정 상태에서 왼쪽으로 슬라이드
         for (int i = idx; i < hand.Count; i++)
@@ -174,6 +179,31 @@ public class BlockManager : MonoBehaviour
     {
         _stageDiscardsUsed = 0;
         _stageDiscardsByClass.Clear();
+    }
+
+    // 핸드 되돌리기용 스테이지 누적 디스카드 캡처/복원
+    public (int used, Dictionary<ClassType, int> byClass) CaptureStageDiscards() =>
+        (_stageDiscardsUsed, new Dictionary<ClassType, int>(_stageDiscardsByClass));
+
+    public void RestoreStageDiscards((int used, Dictionary<ClassType, int> byClass) snapshot)
+    {
+        _stageDiscardsUsed = snapshot.used;
+        _stageDiscardsByClass = new Dictionary<ClassType, int>(snapshot.byClass);
+    }
+
+    // 핸드 전체를 풀로 반환하고 슬롯을 비움 (되돌리기 후 즉시 재드로우 전제)
+    public void ClearHand()
+    {
+        for (int i = 0; i < hand.Count; i++)
+        {
+            if (hand[i] != null)
+                ReleaseBlock(hand[i]);
+            if (i < slots.Count)
+                slots[i].Clear();
+        }
+        hand.Clear();
+        RefreshAllBlockVisuals();
+        RefreshConnectors();
     }
 
     public void RefreshAllBlockVisuals()
@@ -220,6 +250,8 @@ public class BlockManager : MonoBehaviour
 
     public void RemoveGroup(ChainGroup group)
     {
+        if (audioSource != null && blockUseClip != null)
+            audioSource.PlayOneShot(blockUseClip);
         foreach (var block in group.Blocks)
         {
             int idx = hand.IndexOf(block);
@@ -227,7 +259,7 @@ public class BlockManager : MonoBehaviour
                 continue;
 
             hand.RemoveAt(idx);
-            Destroy(block.gameObject);
+            ReleaseBlock(block);
 
             Slot empty = slots[idx];
             empty.Clear();
@@ -237,6 +269,15 @@ public class BlockManager : MonoBehaviour
         }
         RefreshAllBlockVisuals();
         RefreshConnectors();
+    }
+
+    // 블록을 소유 캐릭터의 풀로 반환 (캐릭터가 교체·파괴된 경우만 직접 파괴)
+    void ReleaseBlock(Block block)
+    {
+        if (block.owner != null && block.owner.Creator != null)
+            block.owner.Creator.ReleaseBlock(block);
+        else
+            Destroy(block.gameObject);
     }
 
     public void DisableDiscard()

@@ -20,6 +20,23 @@ public class LobbyUI : MonoBehaviour
     [SerializeField]
     GameObject inputBlocker;
 
+    void Start()
+    {
+        if (AuthManager.Instance != null)
+            AuthManager.Instance.OnSessionExpired += OnSessionExpired;
+    }
+
+    void OnDestroy()
+    {
+        if (AuthManager.Instance != null)
+            AuthManager.Instance.OnSessionExpired -= OnSessionExpired;
+    }
+
+    void OnSessionExpired()
+    {
+        GameStateMachine.Instance.TransitionTo(GameState.Title);
+    }
+
     public void OnAdventureClicked()
     {
         inputBlocker?.SetActive(true);
@@ -48,5 +65,11 @@ public class LobbyUI : MonoBehaviour
     {
         if (encyclopediaUI != null)
             encyclopediaUI.Open();
+    }
+
+    public void OnLogoutClicked()
+    {
+        AuthManager.Instance?.SignOut();
+        GameStateMachine.Instance.TransitionTo(GameState.Title);
     }
 }

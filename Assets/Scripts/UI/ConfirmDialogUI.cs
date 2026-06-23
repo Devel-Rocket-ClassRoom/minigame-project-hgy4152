@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,6 +45,14 @@ public class ConfirmDialogUI : MonoBehaviour
 
         if (panel != null)
             panel.SetActive(true);
+    }
+
+    // 예/아니오 버튼 입력을 await로 대기 (UniTaskCompletionSource)
+    public UniTask<bool> ShowAsync(string message)
+    {
+        var tcs = new UniTaskCompletionSource<bool>();
+        Show(message, onYes: () => tcs.TrySetResult(true), onNo: () => tcs.TrySetResult(false));
+        return tcs.Task;
     }
 
     void Hide()

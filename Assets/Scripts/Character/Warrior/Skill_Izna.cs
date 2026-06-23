@@ -1,4 +1,6 @@
-using System.Collections;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -71,16 +73,16 @@ public class Skill_Izna : Skill
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
-            StartCoroutine(TestChain(1));
+            TestChainAsync(1, this.GetCancellationTokenOnDestroy()).Forget();
 
         if (Input.GetKeyDown(KeyCode.W))
-            StartCoroutine(TestChain(2));
+            TestChainAsync(2, this.GetCancellationTokenOnDestroy()).Forget();
 
         if (Input.GetKeyDown(KeyCode.E))
-            StartCoroutine(TestChain(3));
+            TestChainAsync(3, this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    IEnumerator TestChain(int chainCount)
+    async UniTaskVoid TestChainAsync(int chainCount, CancellationToken ct)
     {
         float scaleFactor = chainCount switch
         {
@@ -91,7 +93,7 @@ public class Skill_Izna : Skill
         float prev = 0f;
         for (int i = 0; i < chainCount; i++)
         {
-            yield return new WaitForSeconds(TestTimings[i] - prev);
+            await UniTask.Delay(TimeSpan.FromSeconds(TestTimings[i] - prev), cancellationToken: ct);
             prev = TestTimings[i];
             switch (i + 1)
             {
@@ -212,14 +214,14 @@ public class Skill_Izna : Skill
                     SpawnAnimEffect(chain3HitEffect1, effect1Pos, chain3HitEffect1Speed);
                 }
                 if (chain3HitEffect2 != null)
-                    StartCoroutine(
-                        SpawnDelayed(
+                    SpawnDelayedAsync(
                             chain3HitEffect2,
                             targetPos,
                             chain3HitEffect2Delay,
-                            chain3HitEffect2Speed
+                            chain3HitEffect2Speed,
+                            this.GetCancellationTokenOnDestroy()
                         )
-                    );
+                        .Forget();
             })
             .Append(transform.DOLocalMove(slamPos, chain3DownDuration).SetEase(Ease.InQuart))
             .Join(transform.DOLocalRotate(Vector3.zero, chain3DownDuration))
@@ -248,9 +250,15 @@ public class Skill_Izna : Skill
         }
     }
 
-    IEnumerator SpawnDelayed(GameObject prefab, Vector3 pos, float delay, float speed = 1f)
+    async UniTaskVoid SpawnDelayedAsync(
+        GameObject prefab,
+        Vector3 pos,
+        float delay,
+        float speed,
+        CancellationToken ct
+    )
     {
-        yield return new WaitForSeconds(delay);
+        await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: ct);
         SpawnAnimEffect(prefab, pos, speed);
     }
 }

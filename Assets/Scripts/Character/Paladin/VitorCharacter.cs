@@ -48,6 +48,16 @@ public class VitorCharacter : Character
         _stageDiscardsUsed = 0;
     }
 
+    public override object CaptureState() => (_stageImmunityUsed, _stageDiscardsUsed);
+
+    public override void RestoreState(object state)
+    {
+        if (state is not (bool immunityUsed, int discards))
+            return;
+        _stageImmunityUsed = immunityUsed;
+        _stageDiscardsUsed = discards;
+    }
+
     // Divine Shield: 자기 클래스 블럭 스테이지 누적 디스카드 20개 도달 시 이번 턴 디버프 전부 무효화 (스테이지당 1회)
     public override bool IsProtectionPassive(ChainJudge judge)
     {

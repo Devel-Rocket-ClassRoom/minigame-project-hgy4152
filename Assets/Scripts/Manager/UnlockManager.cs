@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public enum UnlockKind
@@ -54,6 +55,7 @@ public static class UnlockManager
     static Dictionary<ClassType, int> _classClearCounts;
 
     static bool _loaded;
+    static string _savedUserId = "";
 
     static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
 
@@ -153,11 +155,80 @@ public static class UnlockManager
         }
     }
 
+    public static void PrepareForUser(string userId)
+    {
+        EnsureLoaded();
+        if (_savedUserId == userId) return;
+        _chars = new HashSet<string>(DefaultCharacterIds);
+        _jokers = new HashSet<string>(DefaultJokerIds);
+        _enemies = new HashSet<string>();
+        _bosses = new HashSet<string>();
+        _adventureClearCount = 0;
+        _bossModeClearCount = 0;
+        _chain1Used = 0;
+        _chain2Used = 0;
+        _chain3Used = 0;
+        _blocksDiscarded = 0;
+        _classClearCounts = new Dictionary<ClassType, int>();
+        _savedUserId = userId;
+    }
+
     public static void ResetAll()
     {
         if (File.Exists(SavePath))
             File.Delete(SavePath);
         _loaded = false;
+        _savedUserId = "";
+    }
+
+    public static CodexCloudData ToCloudData()
+    {
+        EnsureLoaded();
+        return new CodexCloudData
+        {
+            unlockedCharacterIds = new List<string>(_chars),
+            unlockedJokerIds = new List<string>(_jokers),
+            defeatedEnemyIds = new List<string>(_enemies),
+            defeatedBossIds = new List<string>(_bosses),
+            adventureClearCount = _adventureClearCount,
+            bossModeClearCount = _bossModeClearCount,
+            chain1Used = _chain1Used,
+            chain2Used = _chain2Used,
+            chain3Used = _chain3Used,
+            blocksDiscarded = _blocksDiscarded,
+            classClearCounts = _classClearCounts
+                .Select(kv => new ClassClearEntryCloud { classType = kv.Key.ToString(), count = kv.Value })
+                .ToList(),
+        };
+    }
+
+    public static void MergeFromCloud(CodexCloudData cloud)
+    {
+        if (cloud == null) return;
+        EnsureLoaded();
+
+        if (cloud.unlockedCharacterIds != null) foreach (var id in cloud.unlockedCharacterIds) _chars.Add(id);
+        if (cloud.unlockedJokerIds != null) foreach (var id in cloud.unlockedJokerIds) _jokers.Add(id);
+        if (cloud.defeatedEnemyIds != null) foreach (var id in cloud.defeatedEnemyIds) _enemies.Add(id);
+        if (cloud.defeatedBossIds != null) foreach (var id in cloud.defeatedBossIds) _bosses.Add(id);
+
+        _adventureClearCount = Mathf.Max(_adventureClearCount, cloud.adventureClearCount);
+        _bossModeClearCount = Mathf.Max(_bossModeClearCount, cloud.bossModeClearCount);
+        _chain1Used = Mathf.Max(_chain1Used, cloud.chain1Used);
+        _chain2Used = Mathf.Max(_chain2Used, cloud.chain2Used);
+        _chain3Used = Mathf.Max(_chain3Used, cloud.chain3Used);
+        _blocksDiscarded = Mathf.Max(_blocksDiscarded, cloud.blocksDiscarded);
+
+        if (cloud.classClearCounts != null)
+            foreach (var e in cloud.classClearCounts)
+                if (Enum.TryParse<ClassType>(e.classType, out var ct))
+                {
+                    _classClearCounts.TryGetValue(ct, out int cur);
+                    _classClearCounts[ct] = Mathf.Max(cur, e.count);
+                }
+
+        CheckAndUnlockAll();
+        Save();
     }
 
     static void RecordClassClears(string[] partyCharacterIds)
@@ -238,6 +309,7 @@ public static class UnlockManager
         if (File.Exists(SavePath))
         {
             var dto = JsonUtility.FromJson<CodexData>(File.ReadAllText(SavePath));
+            _savedUserId = dto.userId ?? "";
             _chars = new HashSet<string>(dto.unlockedCharacterIds ?? Array.Empty<string>());
             _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
             _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
@@ -316,6 +388,7 @@ public static class UnlockManager
     {
         var dto = new CodexData
         {
+            userId = _savedUserId,
             unlockedCharacterIds = _chars.ToArray(),
             unlockedJokerIds = _jokers.ToArray(),
             defeatedEnemyIds = _enemies.ToArray(),
@@ -331,6 +404,14 @@ public static class UnlockManager
                 .ToArray(),
         };
         File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
+        PushToCloudAsync().Forget();
+    }
+
+    static async UniTaskVoid PushToCloudAsync()
+    {
+        var user = AuthManager.Instance?.CurrentUser;
+        if (user == null) return;
+        await RealtimeDbCodexService.PushAsync(ToCloudData(), user.UserId);
     }
 
     [Serializable]
@@ -343,6 +424,7 @@ public static class UnlockManager
     [Serializable]
     class CodexData
     {
+        public string userId;
         public string[] unlockedCharacterIds;
         public string[] unlockedJokerIds;
         public string[] defeatedEnemyIds;

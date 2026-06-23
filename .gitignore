@@ -11,6 +11,7 @@
 *.so
 *.dylib
 *.dll
+*.bundle
 
 # Static libraries
 *.a
@@ -135,4 +136,12 @@ Assets/Imported.meta
 
 # Android signing
 *.keystore
+
+# Firebase
+Assets/google-services.json
+Assets/google-services.json.meta
+Assets/GoogleService-Info.plist
+Assets/GoogleService-Info.plist.meta
+Assets/StreamingAssets/google-services-desktop.json
+Assets/StreamingAssets/google-services-desktop.json.meta
 

@@ -1,5 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -63,6 +65,9 @@ public class GameManager : MonoBehaviour
     int maxTurns = 5;
 
     [SerializeField]
+    int rewindLimitPerSegment = 1; // 보스 플레이 구간당 핸드 되돌리기 허용 횟수
+
+    [SerializeField]
     float stageClearDisplayDuration = 1.5f;
 
     [SerializeField]
@@ -93,6 +98,30 @@ public class GameManager : MonoBehaviour
     public CharacterSet CharacterSet => characterSet;
     public JokerManager JokerManager => jokerManager;
 
+    // 전투 진행 상태 (상태 패턴 — 흩어진 pending bool 분기의 단일 전이 지점)
+    public BattlePhase Phase { get; private set; } = BattlePhase.None;
+    public event System.Action<BattlePhase> OnBattlePhaseChanged;
+
+    void SetPhase(BattlePhase phase)
+    {
+        if (Phase == phase)
+            return;
+        Phase = phase;
+        OnBattlePhaseChanged?.Invoke(phase);
+    }
+
+    DamageCalculator _damage;
+    CancellationToken DestroyToken => this.GetCancellationTokenOnDestroy();
+
+    // 보스 플레이 핸드 되돌리기 (커맨드 패턴)
+    readonly CommandHistory _handHistory = new();
+    int _rewindsUsedThisSegment;
+
+    void Awake()
+    {
+        _damage = new DamageCalculator(jokerManager, characterSet);
+    }
+
     void OnEnable()
     {
         drawPhaseTimer.OnPhaseEnded += Settle;
@@ -101,6 +130,8 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageStart += HandleStageStart;
         if (boss != null)
             boss.OnDamageTaken += HandleBossDamageTaken;
+        if (jokerRewardUI != null)
+            jokerRewardUI.OnClosed += BeginBattle;
     }
 
     void OnDisable()
@@ -111,6 +142,8 @@ public class GameManager : MonoBehaviour
         stageManager.OnStageStart -= HandleStageStart;
         if (boss != null)
             boss.OnDamageTaken -= HandleBossDamageTaken;
+        if (jokerRewardUI != null)
+            jokerRewardUI.OnClosed -= BeginBattle;
     }
 
     void HandleBossDamageTaken(int amount)
@@ -143,6 +176,16 @@ public class GameManager : MonoBehaviour
             bossPatternSystem.AccumulateModifiers = _isBossPlay;
 
         _jokerRewardPending = !_isBossPlay;
+
+        if (_isBossPlay)
+        {
+            var canvas = totalDmgObject != null
+                ? totalDmgObject.GetComponentInParent<Canvas>(true)
+                : null;
+            if (canvas != null)
+                HandRewindButtonUI.Create(this, canvas);
+        }
+
         stageManager.StartStage();
     }
 
@@ -185,7 +228,7 @@ public class GameManager : MonoBehaviour
             // 즉시 모드 클리어
             drawPhaseTimer.StopDrawPhase();
             SetPaused(true);
-            StartCoroutine(CheatAllClear());
+            CheatAllClearAsync(DestroyToken).Forget();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -194,7 +237,7 @@ public class GameManager : MonoBehaviour
             drawPhaseTimer.StopDrawPhase();
             SetPaused(true);
             _jokerRewardPending = true;
-            StartCoroutine(CheatStageClear());
+            CheatStageClearAsync(DestroyToken).Forget();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -227,8 +270,20 @@ public class GameManager : MonoBehaviour
     // 시퀀스랑 합쳐놓으면 턴 인덱스가 시작할 때 증가되기 때문에 2턴에 진행될 정보가 들어가서 틀려짐
     public int[] PreviewGroupDamages(List<ChainGroup> groups)
     {
+        var judge = BuildJudge(groups, isPreview: true);
+
+        if (bossPatternSystem != null)
+        {
+            bossPatternSystem.PopulatePrevState(judge);
+            bossPatternSystem.ApplyModifiers(judge);
+        }
+        return _damage.CalcDamages(groups, judge);
+    }
+
+    ChainJudge BuildJudge(List<ChainGroup> groups, bool isPreview)
+    {
         var judge = new ChainJudge();
-        judge.isPreview = true;
+        judge.isPreview = isPreview;
         judge.IngestGroups(groups);
         judge.IngestHand(blockManager.hand);
         judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
@@ -238,144 +293,28 @@ public class GameManager : MonoBehaviour
         judge.discardsByClass = blockManager.DiscardsByClass;
         judge.stageDiscardsByClass = blockManager.StageDiscardsByClass;
         judge.bossMaxHp = boss.MaxHp;
-
-        if (bossPatternSystem != null)
-        {
-            bossPatternSystem.PopulatePrevState(judge);
-            bossPatternSystem.ApplyModifiers(judge);
-        }
-        return CalcDamages(groups, judge);
-    }
-
-    (HashSet<int> skipJokerIndices, float deckBonus) BuildJokerContext(ChainJudge judge)
-    {
-        var skipJokerIndices = new HashSet<int>();
-        if (judge.skipRightmostJokers > 0 && jokerManager != null)
-        {
-            int skipped = 0;
-            for (
-                int k = jokerManager.ActiveHand.Length - 1;
-                k >= 0 && skipped < judge.skipRightmostJokers;
-                k--
-            )
-            {
-                if (jokerManager.ActiveHand[k] != null)
-                {
-                    skipJokerIndices.Add(k);
-                    skipped++;
-                }
-            }
-        }
-
-        float deckBonus = 1f;
-        if (jokerManager != null)
-            for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
-                if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
-                    deckBonus *= jokerManager.ActiveHand[k].DeckBonus(judge);
-
-        return (skipJokerIndices, deckBonus);
-    }
-
-    // boss 배율·시프트 페널티는 CalcSingleGroupDamage에서 ApplyPassive 이전 적용 (Hikari flat 보너스 수치 보존)
-    float CalcPartyBonus(ChainJudge judge, float deckBonus)
-    {
-        bool protection = false;
-        float partyPassiveBonus = 0f;
-
-        if (characterSet != null)
-            foreach (var c in characterSet.GetInstances())
-            {
-                if (c.IsProtectionPassive(judge))
-                    protection = true;
-                else
-                    partyPassiveBonus += c.GetPartyBonus(judge);
-            }
-
-        if (protection)
-            judge.ClearDebuffs();
-
-        return (1f + partyPassiveBonus) * deckBonus;
-    }
-
-    int CalcSingleGroupDamage(
-        ChainGroup group,
-        ChainJudge judge,
-        HashSet<int> skipJokerIndices,
-        float partyBonus
-    )
-    {
-        var character = group.DominantCharacter;
-
-        int jokerGroupBonus = 0;
-        if (jokerManager != null)
-            for (int k = 0; k < jokerManager.ActiveHand.Length; k++)
-                if (jokerManager.ActiveHand[k] != null && !skipJokerIndices.Contains(k))
-                    jokerGroupBonus += jokerManager.ActiveHand[k].GetBonus(judge, group);
-
-        int dmg = CalcGroupDamage(group, judge);
-        dmg -= judge.bossFlatBonus;
-        dmg += jokerGroupBonus;
-
-        float chainBonus = character?.GetChainTypeBonus(judge, group) ?? 0f;
-        float classBonus = character?.GetClassTypeBonus(judge, group) ?? 0f;
-        foreach (var m in judge.activeModifiers)
-        {
-            chainBonus -= m.GetChainBonusPenalty(group);
-            classBonus -= m.GetClassBonusPenalty(group);
-        }
-        if (chainBonus != 0f || classBonus != 0f)
-            dmg = Mathf.RoundToInt(dmg * (1f + chainBonus + classBonus));
-
-        if (judge.classDiscriminateActive)
-        {
-            int classBlocks = judge.blockDistribution.GetValueOrDefault(group.DominantClass);
-            dmg = Mathf.FloorToInt(
-                dmg * Mathf.Max(0f, 1f - judge.classDiscriminatePerBlock * classBlocks)
-            );
-        }
-
-        // 보스 데미지 배율·시프트 페널티: ApplyPassive 이전 적용 (flat 보너스 패시브 수치 보존)
-        dmg = Mathf.FloorToInt(dmg * (2f - judge.bossDamageMultiplier));
-        if (!judge.isShiftBlock && judge.nonShiftPenaltyMultiplier != 1f)
-            dmg = Mathf.FloorToInt(dmg * judge.nonShiftPenaltyMultiplier);
-
-        // 미이관 패시브 (ApplyPassive 유지: Hikari, AhnMansik)
-        dmg = character?.ApplyPassive(judge, group, dmg) ?? dmg;
-
-        int rawDmg = dmg;
-        dmg = Mathf.FloorToInt(dmg * partyBonus);
-
-        character?.ApplyDebuffPassive(judge, group);
-        characterSet?.NotifyAnyGroupDamage(rawDmg, dmg);
-        return dmg;
-    }
-
-    int[] CalcDamages(List<ChainGroup> groups, ChainJudge judge)
-    {
-        var (skipJokerIndices, deckBonus) = BuildJokerContext(judge);
-        float partyBonus = CalcPartyBonus(judge, deckBonus);
-        var result = new int[groups.Count];
-        for (int i = 0; i < groups.Count; i++)
-            result[i] = CalcSingleGroupDamage(groups[i], judge, skipJokerIndices, partyBonus);
-        return result;
+        return judge;
     }
 
     public void BeginBattle()
     {
         SetPaused(false);
-        StartCoroutine(StartTurnRoutine());
+        StartTurnAsync(DestroyToken).Forget();
     }
 
     void HandleStageStart(StageManager.StageEntry entry)
     {
+        SetPhase(BattlePhase.StageIntro);
         _currentTurn = 0;
         _handPlaysThisPhase = 0;
+        _handHistory.Clear();
+        _rewindsUsedThisSegment = 0;
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
         blockManager?.ResetStageDiscardCount();
         characterSet?.NotifyStageStart();
     }
 
-    IEnumerator StartTurnRoutine()
+    async UniTask StartTurnAsync(CancellationToken ct)
     {
         _currentTurn++;
         _turnDamageTotal = 0;
@@ -384,7 +323,7 @@ public class GameManager : MonoBehaviour
 
         // 어드벤처/기존 보스 모드: TURN n / maxTurns 표시
         if (!_isBossPlay && stageIntroUI != null)
-            yield return StartCoroutine(stageIntroUI.ShowTurnRoutine(_currentTurn, maxTurns));
+            await stageIntroUI.ShowTurnAsync(_currentTurn, maxTurns);
 
         if (stageIntroUI != null && bossPatternSystem != null)
         {
@@ -394,7 +333,7 @@ public class GameManager : MonoBehaviour
                     ? p.phaseModifiers[bossPatternSystem.PhaseIndex]
                     : null;
             if (phaseMod != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(phaseMod));
+                await stageIntroUI.ShowBossRoutineAsync(phaseMod);
         }
 
         drawPhaseTimer.ResetPhaseDuration();
@@ -402,13 +341,17 @@ public class GameManager : MonoBehaviour
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
 
         if (_isBossPlay)
+        {
+            RecordBossHandStart();
             drawPhaseTimer.StartDrawPhaseInstant();
+        }
         else
             drawPhaseTimer.StartDrawPhase();
+        SetPhase(BattlePhase.DrawPhase);
     }
 
     // 보스 플레이 모드: 같은 구간 내 연속 핸드 (연출 없이 즉시 채움)
-    IEnumerator ContinueBossHandRoutine()
+    void ContinueBossHand()
     {
         OnHandPlayCountChanged?.Invoke(_handPlaysThisPhase + 1, MaxHandsPerPhase);
         _turnDamageTotal = 0;
@@ -417,8 +360,38 @@ public class GameManager : MonoBehaviour
         drawPhaseTimer.ResetPhaseDuration();
         blockManager.ResetDiscardLimit();
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
+        RecordBossHandStart();
         drawPhaseTimer.StartDrawPhaseInstant();
-        yield break;
+        SetPhase(BattlePhase.DrawPhase);
+    }
+
+    // 핸드 시작 직전 상태를 커맨드로 기록 (되돌리기의 Undo 단위)
+    void RecordBossHandStart()
+    {
+        if (!_isBossPlay)
+            return;
+        _handHistory.Push(new HandPlayCommand(boss, blockManager, bossPatternSystem, characterSet));
+    }
+
+    public bool CanRewindHand =>
+        _isBossPlay
+        && Phase == BattlePhase.DrawPhase
+        && _handPlaysThisPhase >= 2
+        && _rewindsUsedThisSegment < rewindLimitPerSegment
+        && _handHistory.Count > 0;
+
+    // 현재 HP 구간의 첫 핸드 직전 상태로 복원 (커맨드 스택 일괄 Undo)
+    public void RewindToSegmentStart()
+    {
+        if (!CanRewindHand)
+            return;
+
+        _rewindsUsedThisSegment++;
+        drawPhaseTimer.StopDrawPhase();
+        blockManager.ClearHand();
+        _handHistory.UndoAll();
+        _handPlaysThisPhase = 0;
+        ContinueBossHand();
     }
 
     void HandleStageClear(StageManager.StageEntry entry)
@@ -435,7 +408,8 @@ public class GameManager : MonoBehaviour
         _allStagesClearedPending = true;
     }
 
-    void OpenSaveFlow()
+    // 슬롯 선택 → 덮어쓰기 확인 → 거절 시 재선택을 선형 async 흐름으로 처리
+    async UniTaskVoid OpenSaveFlowAsync()
     {
         if (saveManager == null)
             return;
@@ -451,22 +425,27 @@ public class GameManager : MonoBehaviour
         if (saveSlotPickerUI == null)
             return;
         var draft = saveManager.BuildFromCurrentState(this);
-        saveSlotPickerUI.Show(
-            saveManager,
-            draft,
-            onSlotPicked: slot =>
+
+        while (true)
+        {
+            int slot = await saveSlotPickerUI.ShowAsync(saveManager, draft);
+            if (slot < 0)
+                return; // 취소
+
+            if (saveManager.HasSlot(slot))
             {
-                if (saveManager.HasSlot(slot))
-                    confirmDialog?.Show(
-                        string.Format(Localization.Get("ui_confirm_overwrite"), slot + 1),
-                        onYes: () => saveManager.Save(slot, draft),
-                        onNo: OpenSaveFlow
-                    );
-                else
-                    saveManager.Save(slot, draft);
-            },
-            onCanceled: () => { }
-        );
+                if (confirmDialog == null)
+                    return;
+                bool overwrite = await confirmDialog.ShowAsync(
+                    string.Format(Localization.Get("ui_confirm_overwrite"), slot + 1)
+                );
+                if (!overwrite)
+                    continue; // 다시 슬롯 선택
+            }
+
+            saveManager.Save(slot, draft);
+            return;
+        }
     }
 
     public void OnStageIntroComplete()
@@ -474,11 +453,12 @@ public class GameManager : MonoBehaviour
         if (_jokerRewardPending)
         {
             _jokerRewardPending = false;
+            SetPhase(BattlePhase.JokerReward);
             jokerRewardUI.Show();
         }
         else if (_isBossPlay && _currentTurn == 0)
         {
-            StartCoroutine(BossPassiveIntroRoutine());
+            BossPassiveIntroAsync().Forget();
         }
         else
         {
@@ -486,7 +466,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator BossPassiveIntroRoutine()
+    async UniTaskVoid BossPassiveIntroAsync()
     {
         if (stageIntroUI != null && bossPatternSystem?.Current != null)
         {
@@ -494,7 +474,7 @@ public class GameManager : MonoBehaviour
             if (passives != null)
                 foreach (var passive in passives)
                     if (passive != null)
-                        yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(passive));
+                        await stageIntroUI.ShowBossRoutineAsync(passive);
         }
         BeginBattle();
     }
@@ -506,18 +486,10 @@ public class GameManager : MonoBehaviour
 
         // 2. 체인 그룹 해석
         var groups = ChainResolver.ResolveChains(blockManager.hand);
+        foreach (var g in groups) UnlockManager.RecordChainUsed(g.Length);
 
         // 3. judge 구성
-        var judge = new ChainJudge();
-        judge.IngestGroups(groups);
-        judge.IngestHand(blockManager.hand);
-        judge.remainingTimeRatio = drawPhaseTimer.RemainingRatio;
-        judge.discardRemaining = blockManager.DiscardsRemaining;
-        judge.discardUsed = blockManager.DiscardsUsed;
-        judge.stageDiscardsUsed = blockManager.StageDiscardsUsed;
-        judge.discardsByClass = blockManager.DiscardsByClass;
-        judge.stageDiscardsByClass = blockManager.StageDiscardsByClass;
-        judge.bossMaxHp = boss.MaxHp;
+        var judge = BuildJudge(groups, isPreview: false);
 
         if (bossPatternSystem != null)
         {
@@ -529,42 +501,32 @@ public class GameManager : MonoBehaviour
                 bossPatternSystem.AdvancePhase();
         }
 
-        StartCoroutine(PlayGroupSequence(groups, judge));
+        PlayGroupSequenceAsync(groups, judge, DestroyToken).Forget();
     }
 
-    static int[] SplitDamageWeighted(int total, int chainLength)
+    async UniTask PlayGroupSequenceAsync(
+        List<ChainGroup> groups,
+        ChainJudge judge,
+        CancellationToken ct
+    )
     {
-        var result = new int[chainLength];
-        int weightSum = chainLength * (chainLength + 1) / 2;
-        int accumulated = 0;
-        for (int i = 0; i < chainLength - 1; i++)
-        {
-            result[i] = Mathf.RoundToInt(total * (i + 1) / (float)weightSum);
-            accumulated += result[i];
-        }
-        result[chainLength - 1] = total - accumulated;
-        return result;
-    }
-
-    IEnumerator PlayGroupSequence(List<ChainGroup> groups, ChainJudge judge)
-    {
-        var (skipJokerIndices, deckBonus) = BuildJokerContext(judge);
-        float partyBonus = CalcPartyBonus(judge, deckBonus);
+        SetPhase(BattlePhase.Resolving);
+        var (skipJokerIndices, deckBonus) = _damage.BuildJokerContext(judge);
+        float partyBonus = _damage.CalcPartyBonus(judge, deckBonus);
         for (int i = 0; i < groups.Count; i++)
         {
             // 블록 강조 펄스
             foreach (var block in groups[i].Blocks)
-                block.StartCoroutine(
-                    block.HighlightPulseRoutine(highlightScale, highlightDuration)
-                );
-            yield return new WaitForSeconds(highlightDuration);
+                block.HighlightPulse(highlightScale, highlightDuration);
+            await UniTask.Delay(TimeSpan.FromSeconds(highlightDuration), cancellationToken: ct);
 
             // 애니메이션
             var character = groups[i].DominantCharacter;
             characterSet?.NotifyAnyGroupAttackStart(groups[i], boss);
             character?.PlayAttack(boss.transform.position);
-            int dmg = CalcSingleGroupDamage(groups[i], judge, skipJokerIndices, partyBonus);
-            var perHitDamages = SplitDamageWeighted(dmg, groups[i].Length);
+            int dmg = _damage.CalcSingleGroupDamage(groups[i], judge, skipJokerIndices, partyBonus);
+            DamageLog.Group(i, groups[i], dmg);
+            var perHitDamages = DamageCalculator.SplitDamageWeighted(dmg, groups[i].Length);
             character?.PlaySkillEffect(groups[i].Length, perHitDamages, boss);
 
             characterSet?.NotifyTurnProcessed(groups[i].DominantCharacter);
@@ -573,56 +535,77 @@ public class GameManager : MonoBehaviour
             int bonusCount = character?.GetBonusAttackCount(judge, groups[i]) ?? 0;
             for (int b = 0; b < bonusCount; b++)
             {
-                yield return new WaitForSeconds(0.2f);
+                await UniTask.Delay(TimeSpan.FromSeconds(0.2f), cancellationToken: ct);
                 int bonusDmg = dmg / Mathf.Max(1, bonusCount);
                 character?.PlaySkillEffect(1, new[] { bonusDmg }, boss);
             }
 
             blockManager.RemoveGroup(groups[i]);
-            yield return new WaitForSeconds(perGroupDelay + 0.25f * (groups[i].Length - 1));
+            await UniTask.Delay(
+                TimeSpan.FromSeconds(perGroupDelay + 0.25f * (groups[i].Length - 1)),
+                cancellationToken: ct
+            );
         }
 
         characterSet?.NotifyTurnSequenceEnd();
 
+        await NextPhaseAfterResolveAsync(ct);
+    }
+
+    // 정산 종료 후 다음 전투 단계 결정 — 전이 분기의 단일 지점
+    async UniTask NextPhaseAfterResolveAsync(CancellationToken ct)
+    {
         if (_stageClearPending)
         {
             _stageClearPending = false;
-            yield return StartCoroutine(ShowStageClear());
+            await ShowStageClearAsync(ct);
             stageManager.AdvanceToNext();
         }
         else if (_allStagesClearedPending)
         {
             _allStagesClearedPending = false;
-            yield return StartCoroutine(ShowStageClear());
-            modeClearUI?.Show(this, Color.green);
-            if (_isAdventureMode)
-                UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
-            if (!_isBossPlay)
-                OpenSaveFlow();
+            await ShowStageClearAsync(ct);
+            ShowModeClear();
         }
         else if (boss.IsAlive)
         {
             if (_isBossPlay)
-                HandleBossPlayHandResult();
+                await HandleBossPlayHandResultAsync(ct);
             else if (_currentTurn >= maxTurns)
-                modeClearUI?.Show(this, Color.red, "ui_game_over");
+                ShowGameOver();
             else
-                StartCoroutine(StartTurnRoutine());
+                await StartTurnAsync(ct);
         }
     }
 
-    void HandleBossPlayHandResult()
+    void ShowModeClear()
+    {
+        SetPhase(BattlePhase.ModeClear);
+        modeClearUI?.Show(this, Color.green);
+        if (_isAdventureMode)
+            UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
+        if (!_isBossPlay)
+            OpenSaveFlowAsync().Forget();
+    }
+
+    void ShowGameOver()
+    {
+        SetPhase(BattlePhase.GameOver);
+        modeClearUI?.Show(this, Color.red, "ui_game_over");
+    }
+
+    async UniTask HandleBossPlayHandResultAsync(CancellationToken ct)
     {
         var pattern = bossPatternSystem?.Current;
         if (pattern == null || pattern.hpThresholds == null || pattern.hpThresholds.Length == 0)
         {
-            StartCoroutine(ContinueBossHandRoutine());
+            ContinueBossHand();
             return;
         }
 
         // 이번 핸드에서 돌파된 모든 구간 수집
         float hpRatio = (float)boss.CurrentHp / boss.MaxHp;
-        var crossedMods = new System.Collections.Generic.List<Modifier>();
+        var crossedMods = new List<Modifier>();
         while (
             bossPatternSystem.PhaseIndex < pattern.hpThresholds.Length
             && hpRatio <= pattern.hpThresholds[bossPatternSystem.PhaseIndex]
@@ -637,38 +620,38 @@ public class GameManager : MonoBehaviour
         if (crossedMods.Count > 0)
         {
             _handPlaysThisPhase = 0;
-            StartCoroutine(PhaseTransitionRoutine(crossedMods));
+            await PhaseTransitionAsync(crossedMods, ct);
         }
         else
         {
             _handPlaysThisPhase++;
             if (_handPlaysThisPhase >= MaxHandsPerPhase)
-                modeClearUI?.Show(this, Color.red, "ui_game_over");
+                ShowGameOver();
             else
-                StartCoroutine(ContinueBossHandRoutine());
+                ContinueBossHand();
         }
     }
 
-    IEnumerator PhaseTransitionRoutine(List<Modifier> mods)
+    async UniTask PhaseTransitionAsync(List<Modifier> mods, CancellationToken ct)
     {
+        SetPhase(BattlePhase.PhaseTransition);
         blockManager.ResetStageDiscardCount();
         characterSet?.NotifyStageStart();
         foreach (var mod in mods)
         {
             // 보스 말풍선 대사
             if (bossSpeechBubbleUI != null && !string.IsNullOrEmpty(mod.dialogueKey))
-                yield return StartCoroutine(
-                    bossSpeechBubbleUI.Show(Localization.Get(mod.dialogueKey))
-                );
+                await bossSpeechBubbleUI.ShowAsync(Localization.Get(mod.dialogueKey));
 
             // 디버프 텍스트 (항상)
             if (stageIntroUI != null)
-                yield return StartCoroutine(stageIntroUI.ShowBossRoutineRoutine(mod));
+                await stageIntroUI.ShowBossRoutineAsync(mod);
 
             // 이펙트 + 플로팅 텍스트 + 아이콘 갱신
             if (phaseEffectSpawner != null && mod.effectPrefab != null)
-                yield return StartCoroutine(
-                    phaseEffectSpawner.PlayEffect(mod.effectPrefab, Localization.Get(mod.modName))
+                await phaseEffectSpawner.PlayEffectAsync(
+                    mod.effectPrefab,
+                    Localization.Get(mod.modName)
                 );
         }
 
@@ -680,54 +663,32 @@ public class GameManager : MonoBehaviour
         bossPatternSystem?.CommitPhase();
         bossPatternSystem?.ApplyPhaseStart(blockManager, drawPhaseTimer);
         OnHandPlayCountChanged?.Invoke(1, MaxHandsPerPhase);
+        _handHistory.Clear(); // 새 HP 구간 — 이전 구간으로의 되돌리기 차단
+        _rewindsUsedThisSegment = 0;
+        RecordBossHandStart();
         drawPhaseTimer.StartDrawPhaseInstant();
+        SetPhase(BattlePhase.DrawPhase);
     }
 
-    IEnumerator ShowStageClear()
+    async UniTask ShowStageClearAsync(CancellationToken ct)
     {
+        SetPhase(BattlePhase.StageClear);
         if (clearTextObject != null)
             clearTextObject.SetActive(true);
-        yield return new WaitForSeconds(stageClearDisplayDuration);
+        await UniTask.Delay(TimeSpan.FromSeconds(stageClearDisplayDuration), cancellationToken: ct);
         if (clearTextObject != null)
             clearTextObject.SetActive(false);
     }
 
-    IEnumerator CheatStageClear()
+    async UniTaskVoid CheatStageClearAsync(CancellationToken ct)
     {
-        yield return StartCoroutine(ShowStageClear());
+        await ShowStageClearAsync(ct);
         stageManager.AdvanceToNext();
     }
 
-    IEnumerator CheatAllClear()
+    async UniTaskVoid CheatAllClearAsync(CancellationToken ct)
     {
-        yield return StartCoroutine(ShowStageClear());
-        modeClearUI?.Show(this, Color.green);
-        if (_isAdventureMode)
-            UnlockManager.OnAdventureClear(characterSet.GetCurrentCharacterIds());
-        if (!_isBossPlay)
-            OpenSaveFlow();
-    }
-
-    int CalcGroupDamage(ChainGroup group, ChainJudge judge)
-    {
-        int idx = group.Length - 1;
-        if (idx < 0 || idx > 2)
-            return 0;
-        if (judge.chainLevelNullified[idx])
-            return 0;
-        if (judge.classNullified.Contains(group.DominantClass))
-            return 0;
-        if (judge.requireAllThreeClasses && judge.classDistribution.Count < 3)
-            return 0;
-
-        float baseMul = group.Length switch
-        {
-            2 => 1.1f,
-            3 => 1.2f,
-            _ => 1f,
-        };
-        baseMul *= judge.chainLevelMultiplier[idx];
-        int ap = characterSet?.GetDef(group.DominantCharacter)?.attackPower ?? 10;
-        return Mathf.FloorToInt(baseMul * ap * group.Length);
+        await ShowStageClearAsync(ct);
+        ShowModeClear();
     }
 }

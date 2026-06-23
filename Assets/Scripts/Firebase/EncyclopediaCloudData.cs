@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class CodexCloudData
+public class EncyclopediaCloudData
 {
     public List<string> unlockedCharacterIds;
     public List<string> unlockedJokerIds;

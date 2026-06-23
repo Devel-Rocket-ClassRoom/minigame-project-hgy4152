@@ -181,10 +181,10 @@ public static class UnlockManager
         _savedUserId = "";
     }
 
-    public static CodexCloudData ToCloudData()
+    public static EncyclopediaCloudData ToCloudData()
     {
         EnsureLoaded();
-        return new CodexCloudData
+        return new EncyclopediaCloudData
         {
             unlockedCharacterIds = new List<string>(_chars),
             unlockedJokerIds = new List<string>(_jokers),
@@ -202,7 +202,7 @@ public static class UnlockManager
         };
     }
 
-    public static void MergeFromCloud(CodexCloudData cloud)
+    public static void MergeFromCloud(EncyclopediaCloudData cloud)
     {
         if (cloud == null) return;
         EnsureLoaded();
@@ -411,7 +411,7 @@ public static class UnlockManager
     {
         var user = AuthManager.Instance?.CurrentUser;
         if (user == null) return;
-        await RealtimeDbCodexService.PushAsync(ToCloudData(), user.UserId);
+        await RealtimeDbEncyclopediaService.PushAsync(ToCloudData(), user.UserId);
     }
 
     [Serializable]

@@ -13,6 +13,7 @@ public class AuthManager : MonoBehaviour
     public event Action<FirebaseUser> OnSignInSuccess;
     public event Action<string> OnSignInFailed;
     public event Action OnSignedOut;
+    public event Action OnSessionExpired;
 
     FirebaseAuth _auth;
     bool _firebaseReady;
@@ -74,19 +75,21 @@ public class AuthManager : MonoBehaviour
         {
             var credential = EmailAuthProvider.GetCredential(email, password);
             if (_auth.CurrentUser != null && _auth.CurrentUser.IsAnonymous)
+            {
                 await _auth.CurrentUser.LinkWithCredentialAsync(credential).AsUniTask();
+                await UniTask.SwitchToMainThread();
+                CurrentUser = _auth.CurrentUser;
+                OnSignInSuccess?.Invoke(CurrentUser);
+            }
             else
+            {
                 await _auth.CreateUserWithEmailAndPasswordAsync(email, password).AsUniTask();
+            }
         }
         catch (Exception e)
         {
             await UniTask.SwitchToMainThread();
-            var message = e is Firebase.FirebaseException fe
-                && (AuthError)fe.ErrorCode == AuthError.EmailAlreadyInUse
-                ? "이미 있는 Id입니다"
-                : e.Message;
-            Debug.LogWarning($"[Auth] 회원가입 실패: {message}");
-            OnSignInFailed?.Invoke(message);
+            FireSignInFailed(e);
         }
     }
 
@@ -98,9 +101,8 @@ public class AuthManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"[Auth] 이메일 로그인 실패: {e.Message}");
             await UniTask.SwitchToMainThread();
-            OnSignInFailed?.Invoke(e.Message);
+            FireSignInFailed(e);
         }
     }
 
@@ -112,10 +114,38 @@ public class AuthManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"[Auth] 익명 로그인 실패: {e.Message}");
             await UniTask.SwitchToMainThread();
-            OnSignInFailed?.Invoke(e.Message);
+            FireSignInFailed(e);
         }
+    }
+
+    void FireSignInFailed(Exception e)
+    {
+        var message = ToKoreanMessage(e);
+        Debug.LogWarning($"[Auth] 실패: {message}");
+        if (e is Firebase.FirebaseException fe && (AuthError)fe.ErrorCode == AuthError.UserTokenExpired)
+        {
+            _auth?.SignOut();
+            OnSessionExpired?.Invoke();
+            return;
+        }
+        OnSignInFailed?.Invoke(message);
+    }
+
+    static string ToKoreanMessage(Exception e)
+    {
+        if (e is not Firebase.FirebaseException fe) return e.Message;
+        return (AuthError)fe.ErrorCode switch
+        {
+            AuthError.EmailAlreadyInUse    => "이미 있는 Id입니다",
+            AuthError.InvalidEmail         => "이메일 양식이 틀립니다",
+            AuthError.WrongPassword        => "비밀번호가 틀립니다",
+            AuthError.UserNotFound         => "존재하지 않는 계정입니다",
+            AuthError.WeakPassword         => "비밀번호는 6자 이상이어야 합니다",
+            AuthError.NetworkRequestFailed => "네트워크 연결을 확인해 주세요",
+            AuthError.UserTokenExpired     => "로그인이 만료됐습니다. 다시 로그인해 주세요",
+            _                              => e.Message,
+        };
     }
 
     void HandleAuthStateChanged(object sender, EventArgs e)

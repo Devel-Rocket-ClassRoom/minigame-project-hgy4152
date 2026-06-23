@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -32,6 +33,12 @@ public class SettingUI : MonoBehaviour
 
     [SerializeField]
     AuthUI authUI;
+
+    [SerializeField]
+    GameObject accountLinkButton;
+
+    [SerializeField]
+    TMP_Text accountStatusText;
 
     public UnityEvent onClose = new UnityEvent();
 
@@ -68,8 +75,37 @@ public class SettingUI : MonoBehaviour
             resetDataButton.onClick.AddListener(ResetAllData);
     }
 
-    // 닫기 외 경로(씬 전환 등)로 비활성화돼도 변경분을 저장
-    void OnDisable() => _model?.Save();
+    void OnEnable()
+    {
+        if (AuthManager.Instance == null) return;
+        AuthManager.Instance.OnSignInSuccess += OnAuthChanged;
+        AuthManager.Instance.OnSignedOut += RefreshAccountLinkButton;
+        RefreshAccountLinkButton();
+    }
+
+    void OnDisable()
+    {
+        _model?.Save();
+        if (AuthManager.Instance == null) return;
+        AuthManager.Instance.OnSignInSuccess -= OnAuthChanged;
+        AuthManager.Instance.OnSignedOut -= RefreshAccountLinkButton;
+    }
+
+    void OnAuthChanged(Firebase.Auth.FirebaseUser _) => RefreshAccountLinkButton();
+
+    void RefreshAccountLinkButton()
+    {
+        var user = AuthManager.Instance?.CurrentUser;
+        bool isAnonymous = user != null && user.IsAnonymous;
+
+        if (accountLinkButton != null)
+            accountLinkButton.SetActive(isAnonymous);
+
+        if (accountStatusText != null)
+            accountStatusText.text = user == null ? string.Empty
+                : isAnonymous ? $"게스트 : {user.UserId}"
+                : user.Email;
+    }
 
     public void Open()
     {

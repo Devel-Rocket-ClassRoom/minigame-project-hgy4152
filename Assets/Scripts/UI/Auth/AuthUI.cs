@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+using Firebase.Auth;
 using TMPro;
 using UnityEngine;
 
@@ -6,41 +6,46 @@ public class AuthUI : MonoBehaviour
 {
     [SerializeField] TMP_InputField emailInput;
     [SerializeField] TMP_InputField passwordInput;
-    [SerializeField] TMP_Text errorText;
+    [SerializeField] GameObject stateTextBox;
+    [SerializeField] TMP_Text stateText;
+
+    enum PendingAction { None, Login, SignUp, Guest }
+    PendingAction _pending;
 
     void OnEnable()
     {
         if (AuthManager.Instance == null) return;
-        AuthManager.Instance.OnSignInFailed += ShowError;
+        AuthManager.Instance.OnSignInSuccess += HandleSignInSuccess;
+        AuthManager.Instance.OnSignInFailed += HandleSignInFailed;
     }
 
     void OnDisable()
     {
         if (AuthManager.Instance == null) return;
-        AuthManager.Instance.OnSignInFailed -= ShowError;
+        AuthManager.Instance.OnSignInSuccess -= HandleSignInSuccess;
+        AuthManager.Instance.OnSignInFailed -= HandleSignInFailed;
     }
 
     public void OnLoginClicked()
     {
-        ClearError();
+        _pending = PendingAction.Login;
         AuthManager.Instance?.SignInWithEmail(emailInput.text, passwordInput.text);
     }
 
     public void OnSignUpClicked()
     {
-        ClearError();
+        _pending = PendingAction.SignUp;
         AuthManager.Instance?.SignUpWithEmail(emailInput.text, passwordInput.text);
     }
 
     public void OnGuestClicked()
     {
-        ClearError();
+        _pending = PendingAction.Guest;
         AuthManager.Instance?.SignInAnonymously();
     }
 
     public void OnLogoutClicked()
     {
-        ClearError();
         AuthManager.Instance?.SignOut();
     }
 
@@ -49,23 +54,36 @@ public class AuthUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void ShowError(string message)
+    public void OnBackDropClicked()
     {
-        if (errorText == null) return;
-        errorText.text = message;
-        HideErrorAfterDelayAsync().Forget();
+        if (stateTextBox != null)
+            stateTextBox.SetActive(false);
     }
 
-    async UniTaskVoid HideErrorAfterDelayAsync()
+    public void SetText(string message)
     {
-        await UniTask.Delay(3000, cancellationToken: this.GetCancellationTokenOnDestroy());
-        if (errorText != null)
-            errorText.text = string.Empty;
+        if (stateTextBox == null) return;
+        if (stateText != null) stateText.text = message;
+        stateTextBox.SetActive(true);
     }
 
-    void ClearError()
+    void HandleSignInSuccess(FirebaseUser user)
     {
-        if (errorText != null)
-            errorText.text = string.Empty;
+        string message = _pending switch
+        {
+            PendingAction.Login  => "로그인 성공",
+            PendingAction.SignUp => AuthManager.Instance.CurrentUser?.IsAnonymous == false
+                && user.Email != null ? "계정 연결 성공" : "회원가입 성공",
+            PendingAction.Guest  => "게스트로 시작합니다",
+            _                    => "로그인 성공",
+        };
+        _pending = PendingAction.None;
+        SetText(message);
+    }
+
+    void HandleSignInFailed(string message)
+    {
+        _pending = PendingAction.None;
+        SetText(message);
     }
 }

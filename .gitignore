@@ -12,6 +12,7 @@
 *.dylib
 *.dll
 *.bundle
+*.so.meta
 
 # Static libraries
 *.a
@@ -89,6 +90,8 @@ playground.xcworkspace
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
+Assets/Firebase/Plugins/x86_64/*.bundle.meta
+Assets/Firebase/Plugins/x86_64/*.so.meta
 
 # Build output
 *.apk

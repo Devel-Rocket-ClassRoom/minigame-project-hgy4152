@@ -173,7 +173,7 @@ public class AuthManager : MonoBehaviour
     async UniTask SyncCloudAsync(string userId)
     {
         UnlockManager.PrepareForUser(userId);
-        var cloud = await RealtimeDbCodexService.PullAsync(userId);
+        var cloud = await RealtimeDbEncyclopediaService.PullAsync(userId);
         UnlockManager.MergeFromCloud(cloud);
     }
 

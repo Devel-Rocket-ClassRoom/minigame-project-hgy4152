@@ -78,6 +78,7 @@ public abstract class Character : MonoBehaviour
 
         if (_hitCoroutine != null)
             StopCoroutine(_hitCoroutine);
+        skill?.PlayCastSound();
         _hitCoroutine = StartCoroutine(RunHitTimings());
     }
 

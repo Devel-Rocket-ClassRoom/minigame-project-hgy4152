@@ -11,8 +11,13 @@ public class EffectHitSpawner : MonoBehaviour
     [SerializeField]
     bool inheritScale = false;
 
+    Skill _skill;
+
+    void Awake() => _skill = GetComponentInParent<Skill>();
+
     public void HitEffect()
     {
+        _skill?.PlayBossHitSound();
         if (hitEffectPrefab == null)
             return;
         var go = Instantiate(

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -54,32 +53,30 @@ public static class UnlockManager
     static int _blocksDiscarded;
     static Dictionary<ClassType, int> _classClearCounts;
 
-    static bool _loaded;
+    static bool _initialized;
     static string _savedUserId = "";
-
-    static string SavePath => Path.Combine(Application.persistentDataPath, "codex.json");
 
     public static bool IsCharacterUnlocked(string id)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         return _chars.Contains(id);
     }
 
     public static bool IsJokerUnlocked(string id)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         return _jokers.Contains(id);
     }
 
     public static bool IsEnemyUnlocked(string id)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         return _enemies.Contains(id);
     }
 
     public static bool IsBossPlayable(string id)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         foreach (var (bossId, prereq) in BossUnlockChain)
             if (bossId == id)
                 return _bosses.Contains(prereq);
@@ -88,31 +85,31 @@ public static class UnlockManager
 
     public static bool IsBossUnlocked(string id)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         return _bosses.Contains(id);
     }
 
     public static void OnAdventureClear(string[] partyCharacterIds)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         _adventureClearCount++;
         RecordClassClears(partyCharacterIds);
         CheckAndUnlockAll();
-        Save();
+        PushToCloudAsync().Forget();
     }
 
     public static void OnBossModeClear(string[] partyCharacterIds)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         _bossModeClearCount++;
         RecordClassClears(partyCharacterIds);
         CheckAndUnlockAll();
-        Save();
+        PushToCloudAsync().Forget();
     }
 
     public static void RecordChainUsed(int chainLength)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         if (chainLength == 1)
             _chain1Used++;
         else if (chainLength == 2)
@@ -120,25 +117,25 @@ public static class UnlockManager
         else if (chainLength >= 3)
             _chain3Used++;
         CheckAndUnlockAll();
-        Save();
+        PushToCloudAsync().Forget();
     }
 
     public static void RecordBlocksDiscarded(int count)
     {
-        EnsureLoaded();
+        EnsureInitialized();
         _blocksDiscarded += count;
         CheckAndUnlockAll();
-        Save();
+        PushToCloudAsync().Forget();
     }
 
     public static void OnEnemyDefeated(string enemyId)
     {
         if (string.IsNullOrEmpty(enemyId))
             return;
-        EnsureLoaded();
+        EnsureInitialized();
         if (_enemies.Add(enemyId))
         {
-            Save();
+            PushToCloudAsync().Forget();
             OnUnlocked?.Invoke(UnlockKind.Enemy, enemyId);
         }
     }
@@ -147,17 +144,16 @@ public static class UnlockManager
     {
         if (string.IsNullOrEmpty(bossId))
             return;
-        EnsureLoaded();
+        EnsureInitialized();
         if (_bosses.Add(bossId))
         {
-            Save();
+            PushToCloudAsync().Forget();
             OnUnlocked?.Invoke(UnlockKind.Boss, bossId);
         }
     }
 
     public static void PrepareForUser(string userId)
     {
-        EnsureLoaded();
         if (_savedUserId == userId) return;
         _chars = new HashSet<string>(DefaultCharacterIds);
         _jokers = new HashSet<string>(DefaultJokerIds);
@@ -171,19 +167,29 @@ public static class UnlockManager
         _blocksDiscarded = 0;
         _classClearCounts = new Dictionary<ClassType, int>();
         _savedUserId = userId;
+        _initialized = true;
     }
 
     public static void ResetAll()
     {
-        if (File.Exists(SavePath))
-            File.Delete(SavePath);
-        _loaded = false;
+        _chars = new HashSet<string>(DefaultCharacterIds);
+        _jokers = new HashSet<string>(DefaultJokerIds);
+        _enemies = new HashSet<string>();
+        _bosses = new HashSet<string>();
+        _adventureClearCount = 0;
+        _bossModeClearCount = 0;
+        _chain1Used = 0;
+        _chain2Used = 0;
+        _chain3Used = 0;
+        _blocksDiscarded = 0;
+        _classClearCounts = new Dictionary<ClassType, int>();
+        _initialized = false;
         _savedUserId = "";
     }
 
     public static EncyclopediaCloudData ToCloudData()
     {
-        EnsureLoaded();
+        EnsureInitialized();
         return new EncyclopediaCloudData
         {
             unlockedCharacterIds = new List<string>(_chars),
@@ -205,12 +211,16 @@ public static class UnlockManager
     public static void MergeFromCloud(EncyclopediaCloudData cloud)
     {
         if (cloud == null) return;
-        EnsureLoaded();
+        EnsureInitialized();
 
         if (cloud.unlockedCharacterIds != null) foreach (var id in cloud.unlockedCharacterIds) _chars.Add(id);
         if (cloud.unlockedJokerIds != null) foreach (var id in cloud.unlockedJokerIds) _jokers.Add(id);
         if (cloud.defeatedEnemyIds != null) foreach (var id in cloud.defeatedEnemyIds) _enemies.Add(id);
-        if (cloud.defeatedBossIds != null) foreach (var id in cloud.defeatedBossIds) _bosses.Add(id);
+        if (cloud.defeatedBossIds != null)
+        {
+            foreach (var id in MigrateBossIds(cloud.defeatedBossIds.ToArray()))
+                _bosses.Add(id);
+        }
 
         _adventureClearCount = Mathf.Max(_adventureClearCount, cloud.adventureClearCount);
         _bossModeClearCount = Mathf.Max(_bossModeClearCount, cloud.bossModeClearCount);
@@ -227,8 +237,9 @@ public static class UnlockManager
                     _classClearCounts[ct] = Mathf.Max(cur, e.count);
                 }
 
+        MigrateCharIds(_chars);
         CheckAndUnlockAll();
-        Save();
+        PushToCloudAsync().Forget();
     }
 
     static void RecordClassClears(string[] partyCharacterIds)
@@ -302,47 +313,10 @@ public static class UnlockManager
         return v;
     }
 
-    static void EnsureLoaded()
+    static void EnsureInitialized()
     {
-        if (_loaded)
-            return;
-        if (File.Exists(SavePath))
-        {
-            var dto = JsonUtility.FromJson<CodexData>(File.ReadAllText(SavePath));
-            _savedUserId = dto.userId ?? "";
-            _chars = new HashSet<string>(dto.unlockedCharacterIds ?? Array.Empty<string>());
-            _jokers = new HashSet<string>(dto.unlockedJokerIds ?? Array.Empty<string>());
-            _enemies = new HashSet<string>(dto.defeatedEnemyIds ?? Array.Empty<string>());
-            _bosses = new HashSet<string>(
-                MigrateBossIds(dto.defeatedBossIds ?? Array.Empty<string>())
-            );
-            MigrateCharIds(_chars);
-            _adventureClearCount = dto.adventureClearCount;
-            _bossModeClearCount = dto.bossModeClearCount;
-            _chain1Used = dto.chain1Used;
-            _chain2Used = dto.chain2Used;
-            _chain3Used = dto.chain3Used;
-            _blocksDiscarded = dto.blocksDiscarded;
-            _classClearCounts = new Dictionary<ClassType, int>();
-            if (dto.classClearCounts != null)
-                foreach (var e in dto.classClearCounts)
-                    _classClearCounts[e.classType] = e.count;
-        }
-        else
-        {
-            _chars = new HashSet<string>(DefaultCharacterIds);
-            _jokers = new HashSet<string>(DefaultJokerIds);
-            _enemies = new HashSet<string>();
-            _bosses = new HashSet<string>();
-            _adventureClearCount = 0;
-            _bossModeClearCount = 0;
-            _chain1Used = 0;
-            _chain2Used = 0;
-            _chain3Used = 0;
-            _blocksDiscarded = 0;
-            _classClearCounts = new Dictionary<ClassType, int>();
-        }
-        _loaded = true;
+        if (!_initialized)
+            Debug.LogWarning("[UnlockManager] PrepareForUser() has not been called yet.");
     }
 
     static readonly Dictionary<string, string> CharIdMigration = new()
@@ -384,57 +358,10 @@ public static class UnlockManager
             yield return BossIdMigration.TryGetValue(id, out var newId) ? newId : id;
     }
 
-    static void Save()
-    {
-        var dto = new CodexData
-        {
-            userId = _savedUserId,
-            unlockedCharacterIds = _chars.ToArray(),
-            unlockedJokerIds = _jokers.ToArray(),
-            defeatedEnemyIds = _enemies.ToArray(),
-            defeatedBossIds = _bosses.ToArray(),
-            adventureClearCount = _adventureClearCount,
-            bossModeClearCount = _bossModeClearCount,
-            chain1Used = _chain1Used,
-            chain2Used = _chain2Used,
-            chain3Used = _chain3Used,
-            blocksDiscarded = _blocksDiscarded,
-            classClearCounts = _classClearCounts
-                .Select(kv => new ClassClearEntry { classType = kv.Key, count = kv.Value })
-                .ToArray(),
-        };
-        File.WriteAllText(SavePath, JsonUtility.ToJson(dto, true));
-        PushToCloudAsync().Forget();
-    }
-
     static async UniTaskVoid PushToCloudAsync()
     {
         var user = AuthManager.Instance?.CurrentUser;
         if (user == null) return;
         await RealtimeDbEncyclopediaService.PushAsync(ToCloudData(), user.UserId);
-    }
-
-    [Serializable]
-    class ClassClearEntry
-    {
-        public ClassType classType;
-        public int count;
-    }
-
-    [Serializable]
-    class CodexData
-    {
-        public string userId;
-        public string[] unlockedCharacterIds;
-        public string[] unlockedJokerIds;
-        public string[] defeatedEnemyIds;
-        public string[] defeatedBossIds;
-        public int adventureClearCount;
-        public int bossModeClearCount;
-        public int chain1Used;
-        public int chain2Used;
-        public int chain3Used;
-        public int blocksDiscarded;
-        public ClassClearEntry[] classClearCounts;
     }
 }

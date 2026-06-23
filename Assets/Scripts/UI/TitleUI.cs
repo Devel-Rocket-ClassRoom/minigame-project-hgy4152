@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using UnityEngine;
 
@@ -9,10 +8,11 @@ public class TitleUI : MonoBehaviour
 
     bool _touched;
     bool _transitioning;
+    bool _syncReady;
 
     void Awake()
     {
-        Debug.unityLogger.logEnabled = false;
+        //Debug.unityLogger.logEnabled = false;
         if (loginPanel != null)
             loginPanel.SetActive(false);
     }
@@ -51,14 +51,16 @@ public class TitleUI : MonoBehaviour
     {
         if (!_touched) return;
 
-        if (AuthManager.Instance.IsSignedIn)
+        if (_syncReady)
             TransitionToLobby();
-        else if (loginPanel != null)
+        else if (!AuthManager.Instance.IsSignedIn && loginPanel != null)
             loginPanel.SetActive(true);
+        // 로그인은 됐지만 sync 미완료 → HandleSignInSuccess에서 처리
     }
 
     void HandleSignInSuccess(FirebaseUser user)
     {
+        _syncReady = true;
         if (_touched)
             TransitionToLobby();
     }
@@ -67,13 +69,6 @@ public class TitleUI : MonoBehaviour
     {
         if (_transitioning) return;
         _transitioning = true;
-        TransitionToLobbyAsync().Forget();
-    }
-
-    async UniTaskVoid TransitionToLobbyAsync()
-    {
-        if (AuthManager.Instance != null)
-            await AuthManager.Instance.PendingCloudSync;
         GameStateMachine.Instance.TransitionTo(GameState.Lobby);
     }
 

@@ -19,6 +19,7 @@ public class AuthManager : MonoBehaviour
     bool _firebaseReady;
 
     public bool IsFirebaseReady { get; private set; }
+    public UniTask PendingCloudSync { get; private set; } = UniTask.CompletedTask;
     public event Action OnFirebaseReady;
 
     void Awake()
@@ -77,9 +78,10 @@ public class AuthManager : MonoBehaviour
             if (_auth.CurrentUser != null && _auth.CurrentUser.IsAnonymous)
             {
                 await _auth.CurrentUser.LinkWithCredentialAsync(credential).AsUniTask();
-                await UniTask.SwitchToMainThread();
-                CurrentUser = _auth.CurrentUser;
-                OnSignInSuccess?.Invoke(CurrentUser);
+                // Desktop SDK는 LinkWithCredentialAsync 후 익명 토큰을 그대로 유지해서
+                // 재시작 시 다시 게스트로 복원됨. 로그아웃 → 이메일 재로그인으로 영속화
+                _auth.SignOut();
+                await _auth.SignInWithEmailAndPasswordAsync(email, password).AsUniTask();
             }
             else
             {
@@ -160,14 +162,22 @@ public class AuthManager : MonoBehaviour
         CurrentUser = user;
         if (user != null)
         {
+            Debug.Log($"[Auth] StateChanged → uid={user.UserId}, email={user.Email ?? "(none)"}, isAnonymous={user.IsAnonymous}");
+            PendingCloudSync = SyncCloudAsync(user.UserId).Preserve();
+            await PendingCloudSync;
             OnSignInSuccess?.Invoke(user);
-            var cloud = await RealtimeDbCodexService.PullAsync(user.UserId);
-            UnlockManager.MergeFromCloud(cloud);
         }
         else
         {
+            Debug.Log("[Auth] StateChanged → signed out");
             OnSignedOut?.Invoke();
         }
+    }
+
+    async UniTask SyncCloudAsync(string userId)
+    {
+        var cloud = await RealtimeDbCodexService.PullAsync(userId);
+        UnlockManager.MergeFromCloud(cloud);
     }
 
     void OnDestroy()

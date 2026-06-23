@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using UnityEngine;
 
@@ -7,10 +8,11 @@ public class TitleUI : MonoBehaviour
     [SerializeField] AuthUI authUI;
 
     bool _touched;
+    bool _transitioning;
 
     void Awake()
     {
-        Debug.unityLogger.logEnabled = false;
+        //Debug.unityLogger.logEnabled = false;
         if (loginPanel != null)
             loginPanel.SetActive(false);
     }
@@ -55,10 +57,23 @@ public class TitleUI : MonoBehaviour
             loginPanel.SetActive(true);
     }
 
-    void HandleSignInSuccess(FirebaseUser user) => TransitionToLobby();
+    void HandleSignInSuccess(FirebaseUser user)
+    {
+        if (_touched)
+            TransitionToLobby();
+    }
 
     void TransitionToLobby()
     {
+        if (_transitioning) return;
+        _transitioning = true;
+        TransitionToLobbyAsync().Forget();
+    }
+
+    async UniTaskVoid TransitionToLobbyAsync()
+    {
+        if (AuthManager.Instance != null)
+            await AuthManager.Instance.PendingCloudSync;
         GameStateMachine.Instance.TransitionTo(GameState.Lobby);
     }
 
